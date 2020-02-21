@@ -35,6 +35,7 @@ import StaAttendance from '../views/HRM/StaffAttendance.vue';
 import Department from '../views/HRM/Department.vue';
 import Designation from '../views/HRM/Designation.vue';
 import AddStaDirectory from '../views/HRM/AddStaffDirectory.vue';
+import ViewStaDirectory from '../views/HRM/ViewStaffDirectory.vue';
 
 //Download Center
 import UploadContent from '../views/DownloadCenter/UploadContent.vue';
@@ -317,10 +318,14 @@ export const routes = [
         path: '/staffdirectory/add',
         component: AddStaDirectory
     },
-    ,
     {
         name: 'editstadirectory',
         path: '/stadirectory/edit',
         component: AddStaDirectory
+    },
+    {
+        name: 'viewstaffdirectory',
+        path: '/viewstaffdirectory',
+        component: ViewStaDirectory
     }
 ];

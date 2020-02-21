@@ -116,6 +116,8 @@ Route::group(['prefix' => 'staffdirectory'], function () {
     Route::post('update/{id}', 'StaffDirectoryController@update');
     Route::delete('delete/{id}', 'StaffDirectoryController@delete');
     Route::get('search/{data}', 'StaffDirectoryController@search');
+    Route::get('search_by_role/{id}', 'StaffDirectoryController@search_by_role');
+    Route::get('search_by_other/{id}', 'StaffDirectoryController@search_by_other');
 });
 
 /**

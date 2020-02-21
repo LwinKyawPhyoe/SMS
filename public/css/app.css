@@ -3025,10 +3025,11 @@ button:focus {
 }
 
 .StaffInformation .staffinfo-box h5 {
+  font-size: 1em;
+  font-weight: 600;
   display: block;
-  margin-bottom: 0;
+  margin-bottom: 2px;
   margin-top: 5px;
-  font-family: "Roboto-Bold";
 }
 
 .StaffInformation .staffinfo-box p {
@@ -3036,6 +3037,8 @@ button:focus {
   display: block;
   font-size: 10px;
   line-height: normal;
+  margin-top: 2px;
+  margin-bottom: 2px;
 }
 
 .StaffInformation .staffinfo-box p span {
@@ -3046,6 +3049,10 @@ button:focus {
   text-align: center;
   color: #424242;
   line-height: 18px;
+}
+
+.StaffInformation .staffsub {
+  font-size: 0.8em;
 }
 
 .StaffInformation .infoFooter {
@@ -3081,11 +3088,6 @@ button:focus {
 .StaffInformation .key {
   color: black;
   font-size: 14px;
-}
-
-.StaffInformation .center {
-  width: 45% !important;
-  float: left;
 }
 
 .StaffInformation table img {
@@ -3649,6 +3651,326 @@ button:focus {
   transition: background 0s;
 }
 
+.ViewStaffDirectory #row {
+  margin-top: -1rem;
+  margin: -1rem;
+  padding: 0;
+}
+
+.ViewStaffDirectory #row .tableCard .Profile {
+  padding: 1rem;
+}
+
+.ViewStaffDirectory #row .tableCard .Profile img {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  margin: 0 auto;
+  display: block;
+  border: 3px solid #1b5e2033;
+  padding: 3px;
+}
+
+.ViewStaffDirectory #row .tableCard .Profile .name {
+  text-align: center;
+  font-weight: bold;
+  margin-top: 5px;
+}
+
+.ViewStaffDirectory #row .tableCard .table-responsive {
+  padding: 0;
+}
+
+.ViewStaffDirectory #row .tableCard .table-responsive .table tr td {
+  padding: 0.4rem 15px;
+}
+
+.ViewStaffDirectory #row .tableCard .table-responsive .table tr td .data {
+  color: #0e3511;
+  display: -webkit-box;
+  display: flex;
+  float: right;
+  margin-bottom: 0;
+  cursor: default;
+  position: relative;
+  overflow: hidden;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  background-position: center;
+  -webkit-transition: background 0.6s;
+  transition: background 0.6s;
+}
+
+.ViewStaffDirectory #row .tableCard .table-responsive .table tr td .data:after {
+  content: "";
+  background: #111111e0;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  -webkit-transition: all 0.8s;
+  transition: all 0.8s;
+}
+
+.ViewStaffDirectory #row .tableCard .table-responsive .table tr td .data:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  -webkit-transition: 0s;
+  transition: 0s;
+}
+
+.ViewStaffDirectory #row .detailsCard {
+  padding: 0;
+}
+
+.ViewStaffDirectory #row .detailsCard .buttonCard {
+  height: 103%;
+}
+
+.ViewStaffDirectory #row .detailsCard .buttonCard .tab,
+.ViewStaffDirectory #row .detailsCard .buttonCard .tab1,
+.ViewStaffDirectory #row .detailsCard .buttonCard .tab2,
+.ViewStaffDirectory #row .detailsCard .buttonCard .tab3 {
+  height: 100%;
+  background: none;
+  padding: 0 1rem;
+  font-size: 10pt;
+  position: relative;
+  overflow: hidden;
+  border: none;
+  color: white;
+  margin-top: 0.7px;
+}
+
+.ViewStaffDirectory #row .detailsCard .buttonCard .tab {
+  background: white;
+  color: black;
+}
+
+.ViewStaffDirectory #row .detailsCardBody {
+  background: #ffffff;
+  margin: 1rem;
+  box-shadow: 0px 7px 15px #888888;
+}
+
+.ViewStaffDirectory #row .detailsCardBody .table-responsive {
+  padding: 0;
+}
+
+.ViewStaffDirectory #row .detailsCardBody .table-responsive .table {
+  margin-bottom: 0;
+}
+
+.ViewStaffDirectory #row .detailsCardBody .table-responsive .table tr .all {
+  padding: 0.4rem 15px;
+}
+
+.ViewStaffDirectory #row .detailsCardBody .table-responsive .table tr .all .data {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.ViewStaffDirectory #row .addresscardBody .table-responsive {
+  padding: 0;
+}
+
+.ViewStaffDirectory #row .addresscardBody .table-responsive .table {
+  margin-bottom: 0;
+}
+
+.ViewStaffDirectory #row .addresscardBody .table-responsive .table tr .all {
+  padding: 0.4rem 15px;
+}
+
+.ViewStaffDirectory #row .addresscardBody .table-responsive .table tr .all .data {
+  font-weight: bold;
+  margin-bottom: 0;
+}
+
+.ViewStaffDirectory #row .attendanceBody .attendance {
+  padding: 15px;
+}
+
+.ViewStaffDirectory #row .attendanceBody .attendance .row .col-lg-4,
+.ViewStaffDirectory #row .attendanceBody .attendance .row .col-md-4 {
+  padding: 0 5px 10px 5px;
+}
+
+.ViewStaffDirectory #row .attendanceBody .attendance .row .col-lg-4 .attendanceCard,
+.ViewStaffDirectory #row .attendanceBody .attendance .row .col-md-4 .attendanceCard {
+  height: 70px;
+  border: 1px solid rgba(128, 128, 128, 0.226);
+  border-radius: 3px;
+  background: whitesmoke;
+}
+
+.ViewStaffDirectory #row .attendanceBody .attendance .row .col-lg-4 .attendanceCard .day,
+.ViewStaffDirectory #row .attendanceBody .attendance .row .col-md-4 .attendanceCard .day {
+  font-size: 12pt;
+  font-weight: bold;
+  padding: 10px;
+}
+
+.ViewStaffDirectory #row .attendanceBody .attendance .row .col-lg-4 .attendanceCard .number,
+.ViewStaffDirectory #row .attendanceBody .attendance .row .col-md-4 .attendanceCard .number {
+  margin: 0 1rem;
+}
+
+.ViewStaffDirectory #row .attendanceBody .attendance .row .year {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+          align-items: center;
+}
+
+.ViewStaffDirectory #row .attendanceBody .attendance .row .year label {
+  margin: 0 5px;
+}
+
+.ViewStaffDirectory #row .attendanceBody .attendance .row .text {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: center;
+          justify-content: center;
+}
+
+.ViewStaffDirectory #row .attendanceBody .attendance .row .text label {
+  font-size: 10pt;
+  margin-right: 10px;
+}
+
+.ViewStaffDirectory #row .documentbody .noLists {
+  font-size: 12pt;
+  padding: 10px 0;
+  color: red;
+  text-align: center;
+}
+
+.ViewStaffDirectory #row .timelinebody {
+  padding-top: 1rem;
+}
+
+.ViewStaffDirectory #row .timelinebody .add {
+  margin-top: -5px;
+  height: 25px;
+  width: 60px;
+  background: #1b5e1fee;
+  color: rgba(255, 255, 255, 0.61);
+}
+
+.ViewStaffDirectory #row .timelinebody .add:active,
+.ViewStaffDirectory #row .timelinebody .add:hover {
+  background: #1b5e20;
+  color: white;
+}
+
+.ViewStaffDirectory #row .timelinebody .TimeLine {
+  /* The actual timeline (the vertical ruler) */
+  /* Container around content */
+  /* The circles on the timeline */
+  /* Add arrows to the right container (pointing left) */
+  /* Fix the circle for containers on the right side */
+  /* The actual content */
+}
+
+.ViewStaffDirectory #row .timelinebody .TimeLine span {
+  color: white;
+  background-color: var(--success);
+  padding: 3px;
+  display: inline-block;
+  border-radius: 5px;
+  font-size: 13px;
+  margin-left: 10px;
+}
+
+.ViewStaffDirectory #row .timelinebody .TimeLine .timeline {
+  position: relative;
+  margin: 0 auto;
+  color: white;
+  padding-right: 20px;
+}
+
+.ViewStaffDirectory #row .timelinebody .TimeLine .timeline::after {
+  content: "";
+  position: absolute;
+  width: 6px;
+  background-color: #1b5e20;
+  top: 0;
+  bottom: 0;
+  margin-left: 36px;
+}
+
+.ViewStaffDirectory #row .timelinebody .TimeLine .container {
+  padding: 10px 0px 10px 40px;
+  position: relative;
+  background-color: none;
+  width: 90%;
+}
+
+.ViewStaffDirectory #row .timelinebody .TimeLine .container::after {
+  content: "";
+  position: absolute;
+  width: 25px;
+  height: 25px;
+  right: -17px;
+  background-color: white;
+  border: 1px solid black;
+  top: 15px;
+  border-radius: 50%;
+  z-index: 1;
+}
+
+.ViewStaffDirectory #row .timelinebody .TimeLine .right::before {
+  content: " ";
+  height: 0;
+  position: absolute;
+  top: 22px;
+  width: 0;
+  z-index: 1;
+  left: 30px;
+  border: medium solid white;
+  border-width: 10px 10px 10px 0;
+  border-color: transparent #1b5e20 transparent transparent;
+}
+
+.ViewStaffDirectory #row .timelinebody .TimeLine .right::after {
+  left: -16px;
+}
+
+.ViewStaffDirectory #row .timelinebody .TimeLine .right {
+  background-color: white;
+  margin-left: 42px;
+  padding-right: 1rem;
+}
+
+.ViewStaffDirectory #row .timelinebody .TimeLine .content {
+  position: relative;
+  border-radius: 6px;
+  background-color: #ddd;
+}
+
+.ViewStaffDirectory #row .timelinebody .TimeLine .content h6 {
+  width: 100%;
+  color: white;
+  background-color: #1b5e20;
+  padding: 10px;
+  border-top-right-radius: 3px;
+  border-top-left-radius: 3px;
+}
+
+.ViewStaffDirectory #row .timelinebody .TimeLine .content p {
+  margin-top: -8px;
+  padding: 10px;
+  color: black;
+  border-bottom-right-radius: 3px;
+  border-bottom-left-radius: 3px;
+}
+
 .NoData {
   color: #909dabdb;
   margin-top: 38px;
@@ -3894,17 +4216,23 @@ body {
 
   .imgcard {
     padding: 5px;
-    width: 50% !important;
+    width: 100% !important;
+  }
+}
+
+@media (min-width: 220px) and (max-width: 320px) {
+  .stafficons {
+    padding-left: 10px !important;
   }
 }
 
 @media (min-width: 769px) and (max-width: 1023.9px) {
   .textbox {
-    width: 33.33% !important;
+    width: 100% !important;
   }
 
   .textarea {
-    width: 33.33% !important;
+    width: 100% !important;
   }
 
   .imgcard {
@@ -3913,7 +4241,7 @@ body {
   }
 }
 
-@media (min-width: 1024px) and (max-width: 1440px) {
+@media (min-width: 1124px) and (max-width: 1440px) {
   .textbox {
     width: 25% !important;
   }
@@ -3924,7 +4252,8 @@ body {
 
   .imgcard {
     padding: 5px;
-    width: 33.33% !important;
+    /*wys fixed*/
+    width: 24.33% !important;
   }
 }
 

@@ -164,9 +164,11 @@
                 </div>
                 <div class="overlay3">
                   <div class="stafficons">
-                    <a title="Show">
-                      <i class="fa fa-navicon"></i>
-                    </a>
+                    <router-link to="/viewstaffdirectory">
+                      <a title="Show">
+                        <i class="fa fa-navicon"></i>
+                      </a>
+                    </router-link>
                     <router-link :to="{name: 'editstadirectory', params: { id: staff.id }}">
                       <a title="Edit">
                         <i @click="editStaff(staff)" class="fa fa-pencil"></i>
@@ -237,7 +239,7 @@ export default {
           .then(response => {
             console.log("-->" + JSON.stringify(response));
             this.staffs = response.data;
-            if ((response.data == "")) {
+            if (response.data == "") {
               this.isEmpty = true;
             } else {
               this.isEmpty = false;
@@ -245,7 +247,6 @@ export default {
             setTimeout(() => {
               this.search_by_other = "";
             }, 100);
-            
           });
       }
     },

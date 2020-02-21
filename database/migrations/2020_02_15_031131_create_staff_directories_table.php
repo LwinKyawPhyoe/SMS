@@ -25,7 +25,7 @@ class CreateStaffDirectoriesTable extends Migration
             $table->string('email',200);
             $table->string('gender',50);
             $table->string('dob', 20);
-            $table->string('phone', 200)->nullable()->change();
+            $table->string('phone', 200)->nullable();
             $table->string('emergency_contact_no' , 200)->nullable();
             $table->string('marital_status' ,100)->nullable();
             $table->string('image',200)->nullable();

@@ -549,7 +549,7 @@
                   <div class="dropdownForm">
                     <ul class="link" id="link4">
                       <li class="nav-list">
-                        <router-link class="nav-list" to="/stadirectory">
+                        <router-link class="nav-list" to="/staffdirectory">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Staff Directory
                         </router-link>
                       </li>
@@ -913,7 +913,7 @@
               <li>
                 <i class="fa fa-street-view smallIcon" style="zoom: 1.4 !important;"></i>
                 <ul class="smallLists">
-                  <router-link to="/stadirectory" class="smallLink">
+                  <router-link to="/staffdirectory" class="smallLink">
                     <li class="smLink">
                       <i class="fa fa-angle-double-right smIcon"></i>
                       Staff Directory
