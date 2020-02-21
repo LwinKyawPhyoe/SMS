@@ -14,15 +14,11 @@ class StudentController extends Controller
      */
     public function index()
     {   
-        // $allData = [
-        //     'allClass'=>[],
-        //     'allHostel'=>[]
-        // ];
-        $allClass = DB::select('select * from hostels where is_active="yes" ');
-        $allHostel = DB::select('select * from classes where is_active="yes" ');
+        
+        $allHostel = DB::select('select * from hostels where is_active="yes" and domain="TS" ');
+        $allClass = DB::select('select * from classes where is_active="yes"  and domain="TS" and session_id="1" ');
         
         return ['class'=>$allClass,'hostel'=>$allHostel];
-        // return $allClass;
     }
     public function upload(Request $req){
         echo $req->file('image')->store('public');
@@ -35,7 +31,7 @@ class StudentController extends Controller
         $section = [];
         $classsection = DB::select('SELECT * FROM class_sections WHERE class_id =? AND is_active="yes"',[$id]);
         for($i = 0;$i<count($classsection);$i++){
-            $test = DB::select('SELECT * FROM sections WHERE id=?',[$classsection[$i]->id]);
+            $test = DB::select('SELECT * FROM sections WHERE id=?',[$classsection[$i]->section_id]);
             foreach($test as $test1){
                 array_push($section,$test1);
             }

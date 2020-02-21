@@ -1,7 +1,7 @@
 
 <template>
   <div id="bar" class="Student" style="transition:all 0.5s;">
-    <div class="toplink">
+    <div class="toplink" style="margin-top:-20px;">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
         <router-link to="/Student">Home</router-link>> Student Admission
@@ -58,7 +58,7 @@
                 <select id="section" class="inputbox" v-model="sibling_section_id"
                 @change="selectSiblingSection($event)"
                 >
-                  <option disabled selected>Select section</option>
+                  <option selected>Select section</option>
                   <option v-for="list in siblingSectionList" :key="list.id" :value="list.id">
                     {{list.section}}
                   </option>
@@ -739,7 +739,6 @@ export default {
       .get(`api/student/siblings/${this.sibling_id}`)
       .then(response=>{
         data = response.data;
-        console.log(JSON.stringify(data));
         if(data[0].father_name || data[0].father_phone || data[0].father_nrc || data[0].father_job ||data[0].father_photo || data[0].mother_name ||data[0].mother_phone ||data[0].mother_nrc ||data[0].mother_job ||data[0].mother_photo){
         this.student.father_name = data[0].father_name;
         this.student.father_phone = data[0].father_phone;
@@ -776,15 +775,19 @@ export default {
         });
     },
     selectClass(e){
+      this.sectionList =[];
+      this.section_id ='';
       var id = e.target.value;
       this.sibling_class_id = id;
       this.axios
         .get(`/api/student/section/${id}`)
         .then(response=>{
+
           this.sectionList = response.data;
         })
     },
     selectSiblingClass(e){
+      this.sibling_section_id='';
       var id = e.target.value;
       this.axios
         .get(`/api/student/section/${id}`)
@@ -1085,7 +1088,9 @@ export default {
           .post('/api/student/add', formData,config)
           .then(response=> {
             if(response.data !="not"){
-              console.log("saved")
+              this.addSessions();
+              this.addSibling();
+              this.addDocument();
             }
           })
           .catch(errors=>{
@@ -1093,6 +1098,20 @@ export default {
           })
     },
     addSibling(){
+      this.sibling=[];
+      if(this.sibling_id){
+        this.sibling =[
+        {
+          'sibling_admission_no':this.sibling_id,
+          'admission_no':this.student.admission_no,
+          'is_active': this.student.is_active, 
+          'domain': this.student.domain,
+          'session_id':this.student.session_id,
+        }
+      ];
+      }
+      
+      
       if(this.sibling){
               this.axios
             .post('api/studentsiblings/add',this.sibling)
@@ -1114,7 +1133,6 @@ export default {
        this.axios
       .post('api/sessions/add',this.session)
       .then(response=>{
-        console.log(response.data);
       })
       .catch(errors=>{
       })
@@ -1234,6 +1252,8 @@ export default {
       if(this.viladition == true){
         this.addStudent();
       }
+      // this.addSibling();
+      
     },
     onValidate(value, inputId, megId) {
       if (value == "" || value == undefined)

@@ -138,13 +138,13 @@ Route::group(['prefix' => 'attendancetype'], function () {
     Route::post('update/{id}', 'AttendanceTypeController@update');
     Route::delete('delete/{id}', 'AttendanceTypeController@destroy');
 });
-Route::get('studentattendances', 'StudentAttendancesController@index');
+Route::get('studentattendances', 'StudentAttendanceController@index');
 Route::group(['prefix' => 'studentattendance'], function () {
-    Route::post('add', 'StudentAttendancesController@store');
-    Route::get('show/{para}', 'StudentAttendancesController@show');
-    Route::get('edit/{id}', 'StudentAttendancesController@edit');
-    Route::post('update/{id}', 'StudentAttendancesController@update');
-    Route::delete('delete/{id}', 'StudentAttendancesController@destroy');
+    Route::post('add', 'StudentAttendanceController@store');
+    Route::get('show/{para}', 'StudentAttendanceController@show');
+    Route::get('edit/{id}', 'StudentAttendanceController@edit');
+    Route::post('update/{id}', 'StudentAttendanceController@update');
+    Route::delete('delete/{id}', 'StudentAttendanceController@destroy');
 });
 Route::get('student','StudentController@index');
 Route::group(['prefix' => 'student'], function() {

@@ -2637,6 +2637,10 @@ input[type=file] {
   height: 180px;
 }
 
+.modalinput {
+  margin: 5px 10px 5px 10px;
+}
+
 .StudentInformation .table td,
 .StudentHistory .table td {
   text-align: center;
