@@ -14,12 +14,12 @@ class DatabaseSeeder extends Seeder
     {
         // $this->call(UsersTableSeeder::class);
 
-        $items = [    
+        $items = [
             [
                 'type' => 'Present',
                 'key_value' => '<b class="text-success">P<b>',
                 'is_active' => 'yes',
-                'domain' => 'all', 
+                'domain' => 'all',
                 'session_id' => '1',
             ],
             [
@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
                 'is_active' => 'yes',
                 'domain' => 'all',
                 'session_id' => '1',
-            ],     
+            ],
             [
                 'type' => 'Absent',
                 'key_value' => '<b class="text-danger">A<b>',
@@ -57,7 +57,7 @@ class DatabaseSeeder extends Seeder
                 'domain' => 'all',
                 'session_id' => '1'
             ]
-            ];
+        ];
         $roles = [
             [
                 'name' => "Super Admin",
@@ -84,6 +84,12 @@ class DatabaseSeeder extends Seeder
                 'domain' => $role['domain'],
             ]);
         }
+        DB::table('departments')->insert([
+            'department_name' => "Arts"
+        ]);
+        DB::table('designations')->insert([
+            'designation_name' => "Teacher"
+        ]);
 
         foreach ($items as $item) {
             DB::table('attendance_types')->insert([
@@ -91,11 +97,8 @@ class DatabaseSeeder extends Seeder
                 'key_value' => $item['key_value'],
                 'is_active' => $item['is_active'],
                 'domain' => $item['domain'],
-                'session_id'=> $item['session_id']
+                'session_id' => $item['session_id']
             ]);
         }
-        
-        
-
     }
 }

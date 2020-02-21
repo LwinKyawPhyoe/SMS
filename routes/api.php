@@ -111,6 +111,7 @@ Route::group(['prefix' => 'role'], function () {
  */
 Route::get('staffs', 'StaffDirectoryController@index');
 Route::group(['prefix' => 'staffdirectory'], function () {
+    Route::get('show/{id}', 'StaffDirectoryController@show');
     Route::post('store', 'StaffDirectoryController@store');
     Route::get('edit/{id}', 'StaffDirectoryController@edit');
     Route::post('update/{id}', 'StaffDirectoryController@update');

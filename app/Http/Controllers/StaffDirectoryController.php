@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\StaffDirectory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
+use Illuminate\Support\Facades\Hash;
 
 class StaffDirectoryController extends Controller
 {
@@ -37,12 +38,19 @@ class StaffDirectoryController extends Controller
      */
     public function store(Request $request)
     {
+        /***
+         * Random Password
+         */
+        $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
+        $password = substr($random, 0, 10);
+        echo $password;
         /**
          * COUNT DATA
          */
         $check_staff_id = StaffDirectory::where('staff_id', $request->staff_id)->count();
         $check_email    = StaffDirectory::where('email', $request->email)->count();
         $check_phone    = StaffDirectory::where('phone', $request->phone)->count();
+
 
         if ($check_staff_id > 0) {
             return response()->json('Staff ID already exists!');
@@ -113,9 +121,12 @@ class StaffDirectoryController extends Controller
      * @param  \App\StaffDirectory  $staffDirectory
      * @return \Illuminate\Http\Response
      */
-    public function show(StaffDirectory $staffDirectory)
+    public function show($id)
     {
         //
+        $staffDirectory  = StaffDirectory::with('role', 'department', 'designation')->find($id);
+        // $count = StaffDirectory::where('id', $id)->count();
+        return response()->json($staffDirectory);
     }
 
     /**

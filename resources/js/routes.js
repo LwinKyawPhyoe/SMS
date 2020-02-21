@@ -29,13 +29,18 @@ import Class from '../views/Academics/class.vue';
 import Sections from '../views/Academics/sections.vue';
 import AcademicYear from '../views/Academics/academicyear.vue';
 
-//HRM
-import StaDirectory from '../views/HRM/StaffDirectory.vue';
+//HRM by wai yan soe
+/**
+ * StaffDirectory
+ */
+import StaDirectory from '../views/HRM/StaffDirectory/StaffDirectory.vue';
+import AddStaDirectory from '../views/HRM/StaffDirectory/AddStaffDirectory.vue'; //add and update form
+import ViewStaDirectory from '../views/HRM/StaffDirectory/ViewStaffDirectory.vue';
+
 import StaAttendance from '../views/HRM/StaffAttendance.vue';
 import Department from '../views/HRM/Department.vue';
 import Designation from '../views/HRM/Designation.vue';
-import AddStaDirectory from '../views/HRM/AddStaffDirectory.vue';
-import ViewStaDirectory from '../views/HRM/ViewStaffDirectory.vue';
+
 
 //Download Center
 import UploadContent from '../views/DownloadCenter/UploadContent.vue';
@@ -309,6 +314,7 @@ export const routes = [
         component: EvaluationReport
     }
     ,
+    /**Staff directory */
     {
         name: 'staffdirectory',
         path: '/staffdirectory',
@@ -319,18 +325,21 @@ export const routes = [
         path: '/staffdirectory/add',
         component: AddStaDirectory
     },
+    ,
     {
         name: 'editstadirectory',
-        path: '/stadirectory/edit',
+        path: '/staffdirectory/edit/:id',
         component: AddStaDirectory
     },
     {
         name: 'viewstaffdirectory',
-        path: '/viewstaffdirectory',
+        path: '/staffdirectory/profile/:id',
         component: ViewStaDirectory
-    },{
-        name:'editExamSchadule',
-        path:'/editExamSchadule',
+    },
+/**end of staff directory */ {
+        name: 'editExamSchadule',
+        path: '/editExamSchadule',
         component: editExamSchadule
-    }
+    },
+
 ];
