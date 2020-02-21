@@ -232,9 +232,9 @@ class ExamSchaduleController extends Controller
      * @param  \App\examSchadule  $examSchadule
      * @return \Illuminate\Http\Response
      */
-    public function edit(examSchadule $examSchadule)
+    public function edit()
     {
-        //
+        
     }
 
     /**
@@ -244,9 +244,33 @@ class ExamSchaduleController extends Controller
      * @param  \App\examSchadule  $examSchadule
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, examSchadule $examSchadule)
+    public function update($id,Request $request)
     {
-        //
+        $academicYearId = $this->getAcademicActiveId();
+        $returnValue = 'Updated Successfully';
+        for($i=0;$i<count($request->examSchaduleObj);$i++){
+            $exam_SsSchadule1 = examSchadule::where('session_id',$academicYearId)->where('exam_id',$request->examSchaduleObj[$i]['exam_id'])->where('assign_subject_id',$request->examSchaduleObj[$i]['assign_subject_id'])->where('is_active','yes')->where('domain','TS')->count();
+            if($exam_SsSchadule1 > 0){
+                $returnValue = 'This Exam Schadule List Is already Exists';
+            }
+            else{
+            $exam_SsSchadule = examSchadule::where('session_id',$academicYearId)->where('exam_id',$id)->where('assign_subject_id',$request->examSchaduleObj[$i]['assign_subject_id'])->where('is_active','yes')->where('domain','TS')->get();
+            $exam_SsSchadule[0]->session_id = $academicYearId;
+            $exam_SsSchadule[0]->exam_id = $request->examSchaduleObj[$i]['exam_id'];
+            $exam_SsSchadule[0]->assign_subject_id = $request->examSchaduleObj[$i]['assign_subject_id'];
+            $exam_SsSchadule[0]->date_of_exam = $request->examSchaduleObj[$i]['date_of_exam'];
+            $exam_SsSchadule[0]->start_time = $request->examSchaduleObj[$i]['start_time'];
+            $exam_SsSchadule[0]->end_time = $request->examSchaduleObj[$i]['end_time'];
+            $exam_SsSchadule[0]->room_no = $request->examSchaduleObj[$i]['room_no'];
+            $exam_SsSchadule[0]->full_marks = $request->examSchaduleObj[$i]['full_marks'];
+            $exam_SsSchadule[0]->passing_marks = $request->examSchaduleObj[$i]['passing_marks'];
+            $exam_SsSchadule[0]->note = $request->examSchaduleObj[$i]['note'];
+            $exam_SsSchadule[0]->is_active = $request->examSchaduleObj[$i]['is_active'];
+            $exam_SsSchadule[0]->save();
+            }
+        }
+        return response($returnValue);
+        
     }
 
     /**

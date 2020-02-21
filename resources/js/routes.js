@@ -69,6 +69,7 @@ import Assign from '../views/SystemSettings/assign_permission.vue';
 //Homework
 import AddHomework from '../views/Homework/AddHomework.vue';
 import EvaluationReport from '../views/Homework/EvaluationReport.vue';
+import editExamSchadule from '../views/Examinations/editExamSchadule.vue';
 
 export const routes = [
     {
@@ -327,5 +328,9 @@ export const routes = [
         name: 'viewstaffdirectory',
         path: '/viewstaffdirectory',
         component: ViewStaDirectory
+    },{
+        name:'editExamSchadule',
+        path:'/editExamSchadule',
+        component: editExamSchadule
     }
 ];

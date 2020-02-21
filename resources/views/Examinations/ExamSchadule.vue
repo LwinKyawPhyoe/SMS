@@ -104,7 +104,7 @@
         <input type="text" id="myInput" v-on:keyup="searchTable()" placeholder="Search..." class="searchText" />
         
         <div v-if="data == false">
-          <h1 class="NoData">No Exam is held</h1>
+          <h1 class="NoData">No Data</h1>
         </div>
         <div class="table-responsive" v-if="data == true">
           <table class="table table-hover table-striped" id="studenttable">
@@ -119,14 +119,20 @@
               <tr class="active" v-for="examnames in examNames" :key="examnames.id">
                 <td>1</td>
                 <td class="all" nowrap>
-                  <p class="toolText">
+                  <p class="toolText" v-if="examnames.is_active == 'yes'">
                     {{examnames.name}}
                     <span class="tooltipLabel">{{examnames.remark}}</span>
                   </p>
+                  <p class="toolText" v-else>
+                    
+                  </p>
                 </td>
                 <td style="text-align:right;">
-                  <!--  -->
-                  <button class="viewButton btn-sm" data-toggle="modal" data-target="#exampleModalCenter" @click="GetExamData(id1,id2,examnames.id,examnames.name)">View</button>
+                  <router-link :to="{name: 'editExamSchadule', params: { exam_id: examnames.id , exam_name:examnames.name , class_id:id1 , section_id:id2 , class_name:Class_Name , section_name:Section_name}}" style="color:white;margin-left:5px;">
+                    <i class="fa fa-pencil pen">
+                      <span class="penLabel">Edit</span>
+                    </i></router-link>
+                  <button v-if="examnames.is_active == 'yes'" class="viewButton btn-sm" data-toggle="modal" data-target="#exampleModalCenter" @click="GetExamData(id1,id2,examnames.id,examnames.name)">View</button>
                 </td>
               </tr>
             </tbody>
@@ -179,11 +185,9 @@ export default {
         .then(response => {
           this.Sections = response.data;
           this.id1=event.target.value;
-          this.display = false;
         });
     },getSectionId(eventS){
       this.id2 = eventS.target.value;
-      this.display = false;
       
     },Search(Class_id,Section_id){
       this.array.push(Class_id);

@@ -6029,6 +6029,12 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -6071,12 +6077,10 @@ __webpack_require__.r(__webpack_exports__);
       this.axios.get("/api/getClassSection/".concat(event.target.value)).then(function (response) {
         _this2.Sections = response.data;
         _this2.id1 = event.target.value;
-        _this2.display = false;
       });
     },
     getSectionId: function getSectionId(eventS) {
       this.id2 = eventS.target.value;
-      this.display = false;
     },
     Search: function Search(Class_id, Section_id) {
       var _this3 = this;
@@ -6165,6 +6169,236 @@ __webpack_require__.r(__webpack_exports__);
     Test: function Test() {
       for (var i = 0; i < this.TestArray.length; i++) {
         console.log(this.TestArray[i].name);
+      }
+    }
+  }
+});
+
+/***/ }),
+
+/***/ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/views/Examinations/editExamSchadule.vue?vue&type=script&lang=js&":
+/*!********************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/babel-loader/lib??ref--4-0!./node_modules/vue-loader/lib??vue-loader-options!./resources/views/Examinations/editExamSchadule.vue?vue&type=script&lang=js& ***!
+  \********************************************************************************************************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var vue2_datepicker__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! vue2-datepicker */ "./node_modules/vue2-datepicker/index.esm.js");
+/* harmony import */ var vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! vue2-datepicker/index.css */ "./node_modules/vue2-datepicker/index.css");
+/* harmony import */ var vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_1___default = /*#__PURE__*/__webpack_require__.n(vue2_datepicker_index_css__WEBPACK_IMPORTED_MODULE_1__);
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+
+
+/* harmony default export */ __webpack_exports__["default"] = ({
+  components: {
+    DatePicker: vue2_datepicker__WEBPACK_IMPORTED_MODULE_0__["default"]
+  },
+  data: function data() {
+    return {
+      exams: [],
+      id1: '',
+      id2: '',
+      id3: '',
+      academicYearId: '',
+      Sections: [],
+      Class: [],
+      arrayClassSectionExam: [],
+      Subjects: [],
+      check1: null,
+      check2: null,
+      SubjectName: [],
+      SubjectNameS: [],
+      mainExamSubjects: [],
+      SaveExamSchadule: {
+        examSchaduleObj: []
+      },
+      message: '',
+      display: false,
+      data: false,
+      newExamId: '',
+      alertMessage: ''
+    };
+  },
+  created: function created() {
+    var _this = this;
+
+    this.id1 = this.$route.params.exam_id;
+    this.id2 = this.$route.params.class_id;
+    this.id3 = this.$route.params.section_id;
+    this.Search();
+    this.getExamName();
+    this.getClass();
+    this.getSection();
+    setTimeout(function () {
+      _this.display = true;
+    }, 1300);
+  },
+  methods: {
+    getClass: function getClass() {
+      var _this2 = this;
+
+      this.axios.get("/api/getClasses").then(function (response) {
+        _this2.Class = response.data;
+      });
+    },
+    getExamName: function getExamName() {
+      var _this3 = this;
+
+      this.axios.get('/api/ExamList').then(function (response) {
+        _this3.exams = response.data;
+      });
+    },
+    getSectionId: function getSectionId(eventS) {
+      this.id3 = eventS.target.value;
+      console.log(this.id1 + this.id2 + this.id3);
+    },
+    getExamId: function getExamId(event) {
+      this.newExamId = event.target.value;
+    },
+    getClassId: function getClassId(event) {
+      this.id2 = event.target.value;
+    },
+    Search: function Search() {
+      var _this4 = this;
+
+      this.mainExamSubjects = [];
+      this.arrayClassSectionExam.push(this.id1);
+      this.arrayClassSectionExam.push(this.id2);
+      this.arrayClassSectionExam.push(this.id3);
+      this.axios.get("/api/searchExamSchadule/".concat(this.arrayClassSectionExam)).then(function (response) {
+        // this.Subjects = response.data;
+        _this4.mainExamSubjects = response.data;
+        _this4.arrayClassSectionExam = [];
+      });
+      setTimeout(function () {
+        var dataValue;
+
+        for (var i = 0; i < _this4.mainExamSubjects.length; i++) {
+          dataValue = _this4.mainExamSubjects[i].subject;
+        }
+
+        if (dataValue == undefined) {
+          _this4.data = false;
+        } else {
+          _this4.data = true;
+        }
+
+        _this4.display = true;
+      }, 500);
+    },
+    allData: function allData() {
+      for (var i = 0; i < this.mainExamSubjects.length; i++) {
+        this.SaveExamSchadule.examSchaduleObj.push({
+          'session_id': '',
+          'exam_id': this.newExamId,
+          'assign_subject_id': this.mainExamSubjects[i].id,
+          'date_of_exam': this.mainExamSubjects[i].date,
+          'start_time': this.mainExamSubjects[i].start_time,
+          'end_time': this.mainExamSubjects[i].end_time,
+          'room_no': this.mainExamSubjects[i].room,
+          'full_marks': this.mainExamSubjects[i].full_marks,
+          'passing_marks': this.mainExamSubjects[i].passing_marks,
+          'note': 'no',
+          'is_active': 'yes',
+          'domain': 'TS'
+        });
+      }
+    },
+    allData1: function allData1() {
+      for (var i = 0; i < this.mainExamSubjects.length; i++) {
+        this.SaveExamSchadule.examSchaduleObj.push({
+          'session_id': '',
+          'exam_id': this.id1,
+          'assign_subject_id': this.mainExamSubjects[i].id,
+          'date_of_exam': this.mainExamSubjects[i].date,
+          'start_time': this.mainExamSubjects[i].start_time,
+          'end_time': this.mainExamSubjects[i].end_time,
+          'room_no': this.mainExamSubjects[i].room,
+          'full_marks': this.mainExamSubjects[i].full_marks,
+          'passing_marks': this.mainExamSubjects[i].passing_marks,
+          'note': 'no',
+          'is_active': 'yes',
+          'domain': 'TS'
+        });
+      }
+    },
+    getSection: function getSection() {
+      var _this5 = this;
+
+      this.axios.get("/api/getSections").then(function (response) {
+        _this5.Sections = response.data;
+      });
+    },
+    updateExamSchadule: function updateExamSchadule() {
+      var _this6 = this;
+
+      if (this.newExamId == '') {
+        this.allData1();
+        this.axios.post("/api/examSchadules/addExamSchadule", this.SaveExamSchadule).then(function (response) {
+          _this6.alertMessage = response.data;
+        });
+      } else {
+        this.allData();
+        this.axios.post("/api/examSchadules/updateExamSchadule/".concat(this.id1), this.SaveExamSchadule).then(function (response) {
+          _this6.alertMessage = response.data;
+        });
       }
     }
   }
@@ -6343,7 +6577,28 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
+  data: function data() {
+    return {
+      marksGrade: [],
+      saveMarksGrade: {},
+      successAlertmsg: "",
+      successAlertmsg1: "",
+      erroralertmsg: "",
+      savebutton: '',
+      errors: [],
+      check: false,
+      error: {},
+      arrayError: []
+    };
+  },
+  created: function created() {
+    this.getmarksGrades();
+  },
   methods: {
     allTableHeader: function allTableHeader(id, id1, id2, id3) {
       document.getElementById(id).style.background = "#1b5e20";
@@ -6354,6 +6609,122 @@ __webpack_require__.r(__webpack_exports__);
       document.getElementById(id2).style.color = "white";
       document.getElementById(id3).style.background = "#1b5e20";
       document.getElementById(id3).style.color = "white";
+    },
+    getmarksGrades: function getmarksGrades() {
+      var _this = this;
+
+      this.axios.get("/api/marksGrade/getMarksGrade").then(function (response) {
+        _this.marksGrade = response.data;
+      });
+    },
+    SaveMarksGrade: function SaveMarksGrade() {
+      var _this2 = this;
+
+      this.checkValidate();
+
+      if (this.check == true) {
+        this.successAlertmsg = "exam Added Successfully";
+
+        if (this.saveMarksGrade.description == undefined || this.saveMarksGrade.description == '') {
+          this.saveMarksGrade.description = 'No description';
+        }
+
+        $('#OthAlert').css('display', 'block');
+        this.axios.post("/api/marksGrade/addMarksGrade", this.saveMarksGrade).then(function (response) {
+          _this2.saveMarksGrade = {};
+
+          _this2.getmarksGrades();
+
+          _this2.successAlertmsg = response.data;
+        });
+      } else {
+        console.log('required');
+      }
+    },
+    goAlertClose: function goAlertClose(aVal) {
+      if (aVal == 1) $('#OthAlert').css('display', 'none');else $('#deleteAlert').css('display', 'none');
+    },
+    searchTable: function searchTable() {
+      var input, filter, found, table, tr, td, i, j;
+      input = document.getElementById("myInput");
+      filter = input.value.toUpperCase();
+      table = document.getElementById("myTable");
+      tr = table.getElementsByTagName("tr");
+
+      for (i = 0; i < tr.length; i++) {
+        td = tr[i].getElementsByTagName("td");
+
+        for (j = 0; j < td.length; j++) {
+          if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+            found = true;
+          }
+        }
+
+        if (found) {
+          tr[i].style.display = "";
+          found = false;
+        } else {
+          tr[i].style.display = "none";
+        }
+      }
+    },
+    onValidate: function onValidate(value, inputId, megId) {
+      if (value == "" || value == undefined) document.getElementById(inputId).style.border = 'solid 1px red';else {
+        document.getElementById(inputId).style.border = 'solid 1px #d2d6de';
+        document.getElementById(megId).style.display = 'none';
+      }
+    },
+    onValidateMessage: function onValidateMessage(inputId, megId) {
+      document.getElementById(inputId).style.border = 'solid 1px red';
+      document.getElementById(megId).style.display = 'block';
+    },
+    checkValidate: function checkValidate() {
+      if (this.saveMarksGrade.name == "" || this.saveMarksGrade.name == undefined) {
+        this.onValidateMessage('nameid', 'namemsg');
+        this.arrayError.push('noop');
+      }
+
+      if (this.saveMarksGrade.mark_from == "" || this.saveMarksGrade.mark_from == undefined) {
+        this.onValidateMessage('markFrom', 'markFrommsg');
+        this.arrayError.push('noop');
+      }
+
+      if (this.saveMarksGrade.marks_upto == "" || this.saveMarksGrade.marks_upto == undefined) {
+        this.onValidateMessage('marksUpto', 'marksUptomsg');
+        this.arrayError.push('noop');
+      }
+
+      if (this.arrayError.length > 0) {
+        this.check = false;
+      } else {
+        this.check = true;
+      }
+
+      this.arrayError = [];
+    },
+    Test: function Test() {
+      console.log('test');
+    },
+    DeleteMarksGrade: function DeleteMarksGrade(id) {
+      var _this3 = this;
+
+      this.axios.get("/api/marksGrade/deleteMarksGrade/".concat(id)).then(function (response) {
+        _this3.successAlertmsg1 = response.data;
+        $('#deleteAlert').css('display', 'block');
+
+        var i = _this3.marksGrade.map(function (item) {
+          return item.id;
+        }).indexOf(id);
+
+        _this3.marksGrade.splice(i, 1);
+      });
+    },
+    EditMarksGrade: function EditMarksGrade(id) {
+      var _this4 = this;
+
+      this.axios.get("/api/marksGrade/editMarksGrade/".concat(id)).then(function (response) {
+        _this4.saveMarksGrade = response.data;
+      });
     }
   }
 });
@@ -61066,9 +61437,7 @@ var render = function() {
             _vm._v(" "),
             _vm.data == false
               ? _c("div", [
-                  _c("h1", { staticClass: "NoData" }, [
-                    _vm._v("No Exam is held")
-                  ])
+                  _c("h1", { staticClass: "NoData" }, [_vm._v("No Data")])
                 ])
               : _vm._e(),
             _vm._v(" "),
@@ -61097,18 +61466,20 @@ var render = function() {
                                 "td",
                                 { staticClass: "all", attrs: { nowrap: "" } },
                                 [
-                                  _c("p", { staticClass: "toolText" }, [
-                                    _vm._v(
-                                      "\r\n                    " +
-                                        _vm._s(examnames.name) +
-                                        "\r\n                    "
-                                    ),
-                                    _c(
-                                      "span",
-                                      { staticClass: "tooltipLabel" },
-                                      [_vm._v(_vm._s(examnames.remark))]
-                                    )
-                                  ])
+                                  examnames.is_active == "yes"
+                                    ? _c("p", { staticClass: "toolText" }, [
+                                        _vm._v(
+                                          "\r\n                    " +
+                                            _vm._s(examnames.name) +
+                                            "\r\n                    "
+                                        ),
+                                        _c(
+                                          "span",
+                                          { staticClass: "tooltipLabel" },
+                                          [_vm._v(_vm._s(examnames.remark))]
+                                        )
+                                      ])
+                                    : _c("p", { staticClass: "toolText" })
                                 ]
                               ),
                               _vm._v(" "),
@@ -61117,27 +61488,66 @@ var render = function() {
                                 { staticStyle: { "text-align": "right" } },
                                 [
                                   _c(
-                                    "button",
+                                    "router-link",
                                     {
-                                      staticClass: "viewButton btn-sm",
-                                      attrs: {
-                                        "data-toggle": "modal",
-                                        "data-target": "#exampleModalCenter"
+                                      staticStyle: {
+                                        color: "white",
+                                        "margin-left": "5px"
                                       },
-                                      on: {
-                                        click: function($event) {
-                                          return _vm.GetExamData(
-                                            _vm.id1,
-                                            _vm.id2,
-                                            examnames.id,
-                                            examnames.name
-                                          )
+                                      attrs: {
+                                        to: {
+                                          name: "editExamSchadule",
+                                          params: {
+                                            exam_id: examnames.id,
+                                            exam_name: examnames.name,
+                                            class_id: _vm.id1,
+                                            section_id: _vm.id2,
+                                            class_name: _vm.Class_Name,
+                                            section_name: _vm.Section_name
+                                          }
                                         }
                                       }
                                     },
-                                    [_vm._v("View")]
-                                  )
-                                ]
+                                    [
+                                      _c(
+                                        "i",
+                                        { staticClass: "fa fa-pencil pen" },
+                                        [
+                                          _c(
+                                            "span",
+                                            { staticClass: "penLabel" },
+                                            [_vm._v("Edit")]
+                                          )
+                                        ]
+                                      )
+                                    ]
+                                  ),
+                                  _vm._v(" "),
+                                  examnames.is_active == "yes"
+                                    ? _c(
+                                        "button",
+                                        {
+                                          staticClass: "viewButton btn-sm",
+                                          attrs: {
+                                            "data-toggle": "modal",
+                                            "data-target": "#exampleModalCenter"
+                                          },
+                                          on: {
+                                            click: function($event) {
+                                              return _vm.GetExamData(
+                                                _vm.id1,
+                                                _vm.id2,
+                                                examnames.id,
+                                                examnames.name
+                                              )
+                                            }
+                                          }
+                                        },
+                                        [_vm._v("View")]
+                                      )
+                                    : _vm._e()
+                                ],
+                                1
                               )
                             ]
                           )
@@ -61229,6 +61639,335 @@ var staticRenderFns = [
           [_vm._v("Action")]
         )
       ])
+    ])
+  }
+]
+render._withStripped = true
+
+
+
+/***/ }),
+
+/***/ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/views/Examinations/editExamSchadule.vue?vue&type=template&id=7a290040&":
+/*!************************************************************************************************************************************************************************************************************************!*\
+  !*** ./node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!./node_modules/vue-loader/lib??vue-loader-options!./resources/views/Examinations/editExamSchadule.vue?vue&type=template&id=7a290040& ***!
+  \************************************************************************************************************************************************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "render", function() { return render; });
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return staticRenderFns; });
+var render = function() {
+  var _vm = this
+  var _h = _vm.$createElement
+  var _c = _vm._self._c || _h
+  return _c("div", { staticClass: "form", attrs: { id: "bar" } }, [
+    _c("div", { staticClass: "toplink" }, [
+      _c("h2", { staticClass: "stuName" }, [_vm._v("Examinations")]),
+      _vm._v(" "),
+      _c(
+        "h4",
+        { staticClass: "stuLink" },
+        [
+          _c("router-link", { staticClass: "home", attrs: { to: "/home" } }, [
+            _vm._v("Home ")
+          ]),
+          _vm._v(" > "),
+          _c(
+            "router-link",
+            { staticClass: "home", attrs: { to: "/examschadule" } },
+            [_vm._v("Exam Schedule")]
+          ),
+          _vm._v(" > Add Examinations\n       ")
+        ],
+        1
+      )
+    ]),
+    _vm._v(" "),
+    _c("hr"),
+    _vm._v(" "),
+    this.display == true
+      ? _c("div", { staticClass: "card" }, [
+          _vm._m(0),
+          _vm._v(" "),
+          _c("div", { staticClass: "card-body" }, [
+            _c("div", { staticClass: "row", attrs: { id: "row" } }, [
+              _c("div", { staticClass: "col-lg-4 col-md-4 col-12 textbox" }, [
+                _vm._m(1),
+                _vm._v(" "),
+                _c(
+                  "select",
+                  {
+                    staticClass: "inputbox",
+                    on: {
+                      change: function($event) {
+                        return _vm.getExamId($event)
+                      }
+                    }
+                  },
+                  [
+                    _c("option", [_vm._v("Select")]),
+                    _vm._v(" "),
+                    _vm._l(_vm.exams, function(Exams) {
+                      return _c(
+                        "option",
+                        { key: Exams.id, domProps: { value: Exams.id } },
+                        [_vm._v(_vm._s(Exams.name))]
+                      )
+                    })
+                  ],
+                  2
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "table-responsive",
+                  staticStyle: { "margin-top": "23px" }
+                },
+                [
+                  _c(
+                    "table",
+                    { staticClass: "table table-hover table-striped" },
+                    [
+                      _vm._m(2),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        _vm._l(_vm.mainExamSubjects, function(n) {
+                          return _c("tr", { key: n.id }, [
+                            _c("td", [_vm._v(_vm._s(n.subject))]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: n.date,
+                                    expression: "n.date"
+                                  }
+                                ],
+                                attrs: { type: "date" },
+                                domProps: { value: n.date },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(n, "date", $event.target.value)
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: n.start_time,
+                                    expression: "n.start_time"
+                                  }
+                                ],
+                                attrs: { type: "time" },
+                                domProps: { value: n.start_time },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      n,
+                                      "start_time",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: n.end_time,
+                                    expression: "n.end_time"
+                                  }
+                                ],
+                                attrs: { type: "time" },
+                                domProps: { value: n.end_time },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(n, "end_time", $event.target.value)
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: n.room,
+                                    expression: "n.room"
+                                  }
+                                ],
+                                staticClass: "inputbox",
+                                attrs: { type: "text" },
+                                domProps: { value: n.room },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(n, "room", $event.target.value)
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: n.full_marks,
+                                    expression: "n.full_marks"
+                                  }
+                                ],
+                                staticClass: "inputbox",
+                                attrs: { type: "text" },
+                                domProps: { value: n.full_marks },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      n,
+                                      "full_marks",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ]),
+                            _vm._v(" "),
+                            _c("td", [
+                              _c("input", {
+                                directives: [
+                                  {
+                                    name: "model",
+                                    rawName: "v-model",
+                                    value: n.passing_marks,
+                                    expression: "n.passing_marks"
+                                  }
+                                ],
+                                staticClass: "inputbox",
+                                attrs: { type: "text" },
+                                domProps: { value: n.passing_marks },
+                                on: {
+                                  input: function($event) {
+                                    if ($event.target.composing) {
+                                      return
+                                    }
+                                    _vm.$set(
+                                      n,
+                                      "passing_marks",
+                                      $event.target.value
+                                    )
+                                  }
+                                }
+                              })
+                            ])
+                          ])
+                        }),
+                        0
+                      )
+                    ]
+                  )
+                ]
+              ),
+              _vm._v(" "),
+              _c("div", { staticStyle: { width: "100%" } }, [
+                _c(
+                  "button",
+                  {
+                    staticClass: "save",
+                    staticStyle: { margin: "10px 1rem 1rem 0px" },
+                    attrs: { type: "button" },
+                    on: {
+                      click: function($event) {
+                        return _vm.updateExamSchadule()
+                      }
+                    }
+                  },
+                  [
+                    _c(
+                      "router-link",
+                      {
+                        staticClass: "submit",
+                        staticStyle: { color: "white" },
+                        attrs: { to: "examschadule" }
+                      },
+                      [_vm._v("Update")]
+                    )
+                  ],
+                  1
+                )
+              ])
+            ])
+          ])
+        ])
+      : _vm._e()
+  ])
+}
+var staticRenderFns = [
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h6", [_vm._v("Reuse Exam")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", [_vm._v("Exam name: "), _c("strong", [_vm._v("*")])])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("th", { attrs: { nowrap: "" } }, [_vm._v("Subject")]),
+      _vm._v(" "),
+      _c("th", { attrs: { nowrap: "" } }, [_vm._v("Date")]),
+      _vm._v(" "),
+      _c("th", { attrs: { nowrap: "" } }, [_vm._v("Start Time")]),
+      _vm._v(" "),
+      _c("th", { attrs: { nowrap: "" } }, [_vm._v("End Time")]),
+      _vm._v(" "),
+      _c("th", { attrs: { nowrap: "" } }, [_vm._v("Room")]),
+      _vm._v(" "),
+      _c("th", { attrs: { nowrap: "" } }, [_vm._v("Full Marks")]),
+      _vm._v(" "),
+      _c("th", { attrs: { nowrap: "" } }, [_vm._v("Passing Marks")])
     ])
   }
 ]
@@ -61892,7 +62631,272 @@ var render = function() {
         staticStyle: { "align-items": "end !important" }
       },
       [
-        _vm._m(0),
+        _c(
+          "div",
+          {
+            staticClass: "col-lg-5 col-md-12",
+            staticStyle: { "padding-left": "2px" }
+          },
+          [
+            _c("div", { staticClass: "card" }, [
+              _vm._m(0),
+              _vm._v(" "),
+              _c(
+                "div",
+                {
+                  staticClass: "card-body",
+                  staticStyle: {
+                    padding: "1rem 0",
+                    "border-bottom": "1px solid #8080808c"
+                  }
+                },
+                [
+                  _c(
+                    "div",
+                    {
+                      staticClass: "alert alert-success",
+                      staticStyle: {
+                        margin: "0 10px 10px 10px",
+                        display: "none"
+                      },
+                      attrs: { id: "OthAlert", role: "alert" }
+                    },
+                    [
+                      _vm._v(
+                        "\n              " +
+                          _vm._s(_vm.successAlertmsg) +
+                          "\n              "
+                      ),
+                      _c(
+                        "button",
+                        {
+                          staticClass: "close",
+                          attrs: { type: "button" },
+                          on: {
+                            click: function($event) {
+                              return _vm.goAlertClose(1)
+                            }
+                          }
+                        },
+                        [
+                          _c("span", { attrs: { "aria-hidden": "true" } }, [
+                            _vm._v("×")
+                          ])
+                        ]
+                      )
+                    ]
+                  ),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-12" }, [
+                    _vm._m(1),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.saveMarksGrade.name,
+                          expression: "saveMarksGrade.name"
+                        }
+                      ],
+                      staticClass: "inputbox",
+                      attrs: { id: "nameid", type: "text", name: "gradename" },
+                      domProps: { value: _vm.saveMarksGrade.name },
+                      on: {
+                        keyup: function($event) {
+                          return _vm.onValidate(
+                            _vm.saveMarksGrade.name,
+                            "nameid",
+                            "namemsg"
+                          )
+                        },
+                        blur: function($event) {
+                          return _vm.onValidate(
+                            _vm.saveMarksGrade.name,
+                            "nameid",
+                            "namemsg"
+                          )
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.saveMarksGrade,
+                            "name",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass: "error_message",
+                        attrs: { id: "namemsg" }
+                      },
+                      [_vm._v("Grade Name is required")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-12" }, [
+                    _vm._m(2),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.saveMarksGrade.mark_from,
+                          expression: "saveMarksGrade.mark_from"
+                        }
+                      ],
+                      staticClass: "inputbox",
+                      attrs: { id: "markFrom", type: "text", name: "percent" },
+                      domProps: { value: _vm.saveMarksGrade.mark_from },
+                      on: {
+                        keyup: function($event) {
+                          return _vm.onValidate(
+                            _vm.saveMarksGrade.mark_from,
+                            "markFrom",
+                            "markFrommsg"
+                          )
+                        },
+                        blur: function($event) {
+                          return _vm.onValidate(
+                            _vm.saveMarksGrade.mark_from,
+                            "markFrom",
+                            "markFrommsg"
+                          )
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.saveMarksGrade,
+                            "mark_from",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass: "error_message",
+                        attrs: { id: "markFrommsg" }
+                      },
+                      [_vm._v("Marks_from field is required")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-12" }, [
+                    _vm._m(3),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.saveMarksGrade.marks_upto,
+                          expression: "saveMarksGrade.marks_upto"
+                        }
+                      ],
+                      staticClass: "inputbox",
+                      attrs: { id: "marksUpto", type: "text", name: "upto" },
+                      domProps: { value: _vm.saveMarksGrade.marks_upto },
+                      on: {
+                        keyup: function($event) {
+                          return _vm.onValidate(
+                            _vm.saveMarksGrade.marks_upto,
+                            "marksUpto",
+                            "marksUptomsg"
+                          )
+                        },
+                        blur: function($event) {
+                          return _vm.onValidate(
+                            _vm.saveMarksGrade.marks_upto,
+                            "marksUpto",
+                            "marksUptomsg"
+                          )
+                        },
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.saveMarksGrade,
+                            "marks_upto",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    }),
+                    _vm._v(" "),
+                    _c(
+                      "span",
+                      {
+                        staticClass: "error_message",
+                        attrs: { id: "marksUptomsg" }
+                      },
+                      [_vm._v("Marks_upto field is required")]
+                    )
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-12 end" }, [
+                    _c("label", { attrs: { for: "description" } }, [
+                      _vm._v("Description")
+                    ]),
+                    _vm._v(" "),
+                    _c("textarea", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model",
+                          value: _vm.saveMarksGrade.description,
+                          expression: "saveMarksGrade.description"
+                        }
+                      ],
+                      staticClass: "textareas",
+                      attrs: { rows: "3" },
+                      domProps: { value: _vm.saveMarksGrade.description },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.saveMarksGrade,
+                            "description",
+                            $event.target.value
+                          )
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "col-12" }, [
+                    _c(
+                      "button",
+                      {
+                        staticClass: "save",
+                        on: {
+                          click: function($event) {
+                            return _vm.SaveMarksGrade()
+                          }
+                        }
+                      },
+                      [_vm._v("Save")]
+                    )
+                  ])
+                ]
+              )
+            ])
+          ]
+        ),
         _vm._v(" "),
         _c(
           "div",
@@ -61902,38 +62906,83 @@ var render = function() {
           },
           [
             _c("div", { staticClass: "card" }, [
-              _vm._m(1),
+              _vm._m(4),
               _vm._v(" "),
               _c("div", { staticClass: "card-body" }, [
+                _c(
+                  "div",
+                  {
+                    staticClass: "alert alert-success",
+                    staticStyle: {
+                      margin: "10px 10px 10px 10px",
+                      display: "none"
+                    },
+                    attrs: { id: "deleteAlert", role: "alert" }
+                  },
+                  [
+                    _vm._v(
+                      "\n              " +
+                        _vm._s(_vm.successAlertmsg1) +
+                        "\n              "
+                    ),
+                    _c(
+                      "button",
+                      {
+                        staticClass: "close",
+                        attrs: { type: "button" },
+                        on: {
+                          click: function($event) {
+                            return _vm.goAlertClose(2)
+                          }
+                        }
+                      },
+                      [
+                        _c("span", { attrs: { "aria-hidden": "true" } }, [
+                          _vm._v("×")
+                        ])
+                      ]
+                    )
+                  ]
+                ),
+                _vm._v(" "),
                 _c("input", {
                   staticClass: "searchText",
-                  attrs: { type: "text", placeholder: "Search..." }
+                  attrs: {
+                    type: "text",
+                    placeholder: "Search...",
+                    id: "myInput"
+                  },
+                  on: {
+                    keyup: function($event) {
+                      return _vm.searchTable()
+                    }
+                  }
                 }),
                 _vm._v(" "),
                 _c("div", { staticClass: "copyRows" }, [
                   _c("div", { staticClass: "row", attrs: { id: "copyRow" } }, [
-                    _vm._m(2),
-                    _vm._v(" "),
-                    _vm._m(3),
-                    _vm._v(" "),
-                    _vm._m(4),
-                    _vm._v(" "),
                     _vm._m(5),
                     _vm._v(" "),
+                    _vm._m(6),
+                    _vm._v(" "),
+                    _vm._m(7),
+                    _vm._v(" "),
+                    _vm._m(8),
+                    _vm._v(" "),
                     _c("div", { staticClass: "col-2" }, [
-                      _vm._m(6),
+                      _vm._m(9),
                       _vm._v(" "),
                       _c(
                         "div",
                         { staticClass: "columns", attrs: { id: "columns" } },
                         [
-                          _vm._m(7),
-                          _vm._v(" "),
-                          _vm._m(8),
-                          _vm._v(" "),
-                          _vm._m(9),
-                          _vm._v(" "),
                           _vm._m(10),
+                          _vm._v(" "),
+                          _vm._m(11),
+                          _vm._v(" "),
+                          _vm._m(12),
+                          _vm._v(" "),
+                          _vm._m(13),
                           _vm._v(" "),
                           _c(
                             "p",
@@ -61959,7 +63008,100 @@ var render = function() {
                   ])
                 ]),
                 _vm._v(" "),
-                _vm._m(11)
+                _c("div", { staticClass: "table-responsive" }, [
+                  _c(
+                    "table",
+                    {
+                      staticClass: "table table-hover table-striped",
+                      attrs: { id: "studenttable" }
+                    },
+                    [
+                      _vm._m(14),
+                      _vm._v(" "),
+                      _c(
+                        "tbody",
+                        { attrs: { id: "myTable" } },
+                        _vm._l(_vm.marksGrade, function(MarksGrade) {
+                          return _c(
+                            "tr",
+                            { key: MarksGrade.id, staticClass: "active" },
+                            [
+                              _c(
+                                "td",
+                                { staticClass: "all", attrs: { nowrap: "" } },
+                                [
+                                  _c("p", { staticClass: "toolText" }, [
+                                    _vm._v(
+                                      "\n                      " +
+                                        _vm._s(MarksGrade.name) +
+                                        "\n                      "
+                                    ),
+                                    _c(
+                                      "span",
+                                      { staticClass: "tooltipLabel" },
+                                      [_vm._v(_vm._s(MarksGrade.description))]
+                                    )
+                                  ])
+                                ]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                { staticClass: "all", attrs: { nowrap: "" } },
+                                [_vm._v(_vm._s(MarksGrade.mark_from))]
+                              ),
+                              _vm._v(" "),
+                              _c(
+                                "td",
+                                { staticClass: "all", attrs: { nowrap: "" } },
+                                [_vm._v(_vm._s(MarksGrade.marks_upto))]
+                              ),
+                              _vm._v(" "),
+                              _c("td", [
+                                _c(
+                                  "i",
+                                  {
+                                    staticClass: "fa fa-pencil pen",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.EditMarksGrade(MarksGrade.id)
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "penLabel" }, [
+                                      _vm._v("Edit")
+                                    ])
+                                  ]
+                                ),
+                                _vm._v(" "),
+                                _c(
+                                  "i",
+                                  {
+                                    staticClass: "fa fa-trash time",
+                                    on: {
+                                      click: function($event) {
+                                        return _vm.DeleteMarksGrade(
+                                          MarksGrade.id
+                                        )
+                                      }
+                                    }
+                                  },
+                                  [
+                                    _c("span", { staticClass: "timeLabel" }, [
+                                      _vm._v("Delete")
+                                    ])
+                                  ]
+                                )
+                              ])
+                            ]
+                          )
+                        }),
+                        0
+                      )
+                    ]
+                  )
+                ])
               ])
             ])
           ]
@@ -61973,83 +63115,36 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c(
-      "div",
-      {
-        staticClass: "col-lg-5 col-md-12",
-        staticStyle: { "padding-left": "2px" }
-      },
-      [
-        _c("div", { staticClass: "card" }, [
-          _c("div", { staticClass: "card-header" }, [
-            _c("h6", [_vm._v("Add Grade")])
-          ]),
-          _vm._v(" "),
-          _c(
-            "div",
-            {
-              staticClass: "card-body",
-              staticStyle: {
-                padding: "1rem 0",
-                "border-bottom": "1px solid #8080808c"
-              }
-            },
-            [
-              _c("div", { staticClass: "col-12" }, [
-                _c("label", { attrs: { for: "gradename" } }, [
-                  _vm._v("\n              Grade Name\n              "),
-                  _c("strong", [_vm._v("*")])
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "inputbox",
-                  attrs: { type: "text", name: "gradename" }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-12" }, [
-                _c("label", { attrs: { for: "percent" } }, [
-                  _vm._v("\n              Percent Form\n              "),
-                  _c("strong", [_vm._v("*")])
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "inputbox",
-                  attrs: { type: "text", name: "percent" }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-12" }, [
-                _c("label", { attrs: { for: "upto" } }, [
-                  _vm._v("\n              Percent Upto\n              "),
-                  _c("strong", [_vm._v("*")])
-                ]),
-                _vm._v(" "),
-                _c("input", {
-                  staticClass: "inputbox",
-                  attrs: { type: "text", name: "upto" }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-12 end" }, [
-                _c("label", { attrs: { for: "description" } }, [
-                  _vm._v("Description")
-                ]),
-                _vm._v(" "),
-                _c("textarea", {
-                  staticClass: "textareas",
-                  attrs: { rows: "3" }
-                })
-              ]),
-              _vm._v(" "),
-              _c("div", { staticClass: "col-12" }, [
-                _c("button", { staticClass: "save" }, [_vm._v("Save")])
-              ])
-            ]
-          )
-        ])
-      ]
-    )
+    return _c("div", { staticClass: "card-header" }, [
+      _c("h6", [_vm._v("Add Grade")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "gradename" } }, [
+      _vm._v("\n              Grade Name\n              "),
+      _c("strong", [_vm._v("*")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "percent" } }, [
+      _vm._v("\n              Percent Form\n              "),
+      _c("strong", [_vm._v("*")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("label", { attrs: { for: "upto" } }, [
+      _vm._v("\n              Percent Upto\n              "),
+      _c("strong", [_vm._v("*")])
+    ])
   },
   function() {
     var _vm = this
@@ -62169,95 +63264,24 @@ var staticRenderFns = [
     var _vm = this
     var _h = _vm.$createElement
     var _c = _vm._self._c || _h
-    return _c("div", { staticClass: "table-responsive" }, [
-      _c(
-        "table",
-        {
-          staticClass: "table table-hover table-striped",
-          attrs: { id: "studenttable" }
-        },
-        [
-          _c("thead", [
-            _c("tr", [
-              _c("th", { staticClass: "all", attrs: { nowrap: "" } }, [
-                _vm._v("Grade Name")
-              ]),
-              _vm._v(" "),
-              _c("th", { staticClass: "all", attrs: { nowrap: "" } }, [
-                _vm._v("Percent Form")
-              ]),
-              _vm._v(" "),
-              _c("th", { staticClass: "all", attrs: { nowrap: "" } }, [
-                _vm._v("Percent Upto")
-              ]),
-              _vm._v(" "),
-              _c("th", { staticClass: "all", attrs: { nowrap: "" } }, [
-                _vm._v("Action")
-              ])
-            ])
-          ]),
-          _vm._v(" "),
-          _c("tbody", [
-            _c("tr", { staticClass: "active" }, [
-              _c("td", { staticClass: "all", attrs: { nowrap: "" } }, [
-                _c("p", { staticClass: "toolText" }, [
-                  _vm._v("\n                      A++\n                      "),
-                  _c("span", { staticClass: "tooltipLabel" }, [
-                    _vm._v("A++ Grade")
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("td", { staticClass: "all", attrs: { nowrap: "" } }, [
-                _vm._v("90.00")
-              ]),
-              _vm._v(" "),
-              _c("td", { staticClass: "all", attrs: { nowrap: "" } }, [
-                _vm._v("100.00")
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _c("i", { staticClass: "fa fa-pencil pen" }, [
-                  _c("span", { staticClass: "penLabel" }, [_vm._v("Edit")])
-                ]),
-                _vm._v(" "),
-                _c("i", { staticClass: "fa fa-trash time" }, [
-                  _c("span", { staticClass: "timeLabel" }, [_vm._v("Delete")])
-                ])
-              ])
-            ]),
-            _vm._v(" "),
-            _c("tr", { staticClass: "active" }, [
-              _c("td", { staticClass: "all", attrs: { nowrap: "" } }, [
-                _c("p", { staticClass: "toolText" }, [
-                  _vm._v("\n                      A+\n                      "),
-                  _c("span", { staticClass: "tooltipLabel" }, [
-                    _vm._v("A+ Grade")
-                  ])
-                ])
-              ]),
-              _vm._v(" "),
-              _c("td", { staticClass: "all", attrs: { nowrap: "" } }, [
-                _vm._v("75.00")
-              ]),
-              _vm._v(" "),
-              _c("td", { staticClass: "all", attrs: { nowrap: "" } }, [
-                _vm._v("90.00")
-              ]),
-              _vm._v(" "),
-              _c("td", [
-                _c("i", { staticClass: "fa fa-pencil pen" }, [
-                  _c("span", { staticClass: "penLabel" }, [_vm._v("Edit")])
-                ]),
-                _vm._v(" "),
-                _c("i", { staticClass: "fa fa-trash time" }, [
-                  _c("span", { staticClass: "timeLabel" }, [_vm._v("Delete")])
-                ])
-              ])
-            ])
-          ])
-        ]
-      )
+    return _c("thead", [
+      _c("tr", [
+        _c("th", { staticClass: "all", attrs: { nowrap: "" } }, [
+          _vm._v("Grade Name")
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "all", attrs: { nowrap: "" } }, [
+          _vm._v("Percent Form")
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "all", attrs: { nowrap: "" } }, [
+          _vm._v("Percent Upto")
+        ]),
+        _vm._v(" "),
+        _c("th", { staticClass: "all", attrs: { nowrap: "" } }, [
+          _vm._v("Action")
+        ])
+      ])
     ])
   }
 ]
@@ -102036,6 +103060,7 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _views_SystemSettings_assign_permission_vue__WEBPACK_IMPORTED_MODULE_46__ = __webpack_require__(/*! ../views/SystemSettings/assign_permission.vue */ "./resources/views/SystemSettings/assign_permission.vue");
 /* harmony import */ var _views_Homework_AddHomework_vue__WEBPACK_IMPORTED_MODULE_47__ = __webpack_require__(/*! ../views/Homework/AddHomework.vue */ "./resources/views/Homework/AddHomework.vue");
 /* harmony import */ var _views_Homework_EvaluationReport_vue__WEBPACK_IMPORTED_MODULE_48__ = __webpack_require__(/*! ../views/Homework/EvaluationReport.vue */ "./resources/views/Homework/EvaluationReport.vue");
+/* harmony import */ var _views_Examinations_editExamSchadule_vue__WEBPACK_IMPORTED_MODULE_49__ = __webpack_require__(/*! ../views/Examinations/editExamSchadule.vue */ "./resources/views/Examinations/editExamSchadule.vue");
 // Attendance
 
  // Examinations
@@ -102093,6 +103118,7 @@ __webpack_require__.r(__webpack_exports__);
 
 
  //Homework
+
 
 
 
@@ -102300,6 +103326,10 @@ var routes = [{
   name: 'viewstaffdirectory',
   path: '/viewstaffdirectory',
   component: _views_HRM_ViewStaffDirectory_vue__WEBPACK_IMPORTED_MODULE_27__["default"]
+}, {
+  name: 'editExamSchadule',
+  path: '/editExamSchadule',
+  component: _views_Examinations_editExamSchadule_vue__WEBPACK_IMPORTED_MODULE_49__["default"]
 }];
 
 /***/ }),
@@ -103665,6 +104695,75 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExamSchadule_vue_vue_type_template_id_caadc794___WEBPACK_IMPORTED_MODULE_0__["render"]; });
 
 /* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_ExamSchadule_vue_vue_type_template_id_caadc794___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
+
+
+
+/***/ }),
+
+/***/ "./resources/views/Examinations/editExamSchadule.vue":
+/*!***********************************************************!*\
+  !*** ./resources/views/Examinations/editExamSchadule.vue ***!
+  \***********************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _editExamSchadule_vue_vue_type_template_id_7a290040___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ./editExamSchadule.vue?vue&type=template&id=7a290040& */ "./resources/views/Examinations/editExamSchadule.vue?vue&type=template&id=7a290040&");
+/* harmony import */ var _editExamSchadule_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./editExamSchadule.vue?vue&type=script&lang=js& */ "./resources/views/Examinations/editExamSchadule.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport *//* harmony import */ var _node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../../../node_modules/vue-loader/lib/runtime/componentNormalizer.js */ "./node_modules/vue-loader/lib/runtime/componentNormalizer.js");
+
+
+
+
+
+/* normalize component */
+
+var component = Object(_node_modules_vue_loader_lib_runtime_componentNormalizer_js__WEBPACK_IMPORTED_MODULE_2__["default"])(
+  _editExamSchadule_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_1__["default"],
+  _editExamSchadule_vue_vue_type_template_id_7a290040___WEBPACK_IMPORTED_MODULE_0__["render"],
+  _editExamSchadule_vue_vue_type_template_id_7a290040___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"],
+  false,
+  null,
+  null,
+  null
+  
+)
+
+/* hot reload */
+if (false) { var api; }
+component.options.__file = "resources/views/Examinations/editExamSchadule.vue"
+/* harmony default export */ __webpack_exports__["default"] = (component.exports);
+
+/***/ }),
+
+/***/ "./resources/views/Examinations/editExamSchadule.vue?vue&type=script&lang=js&":
+/*!************************************************************************************!*\
+  !*** ./resources/views/Examinations/editExamSchadule.vue?vue&type=script&lang=js& ***!
+  \************************************************************************************/
+/*! exports provided: default */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_editExamSchadule_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/babel-loader/lib??ref--4-0!../../../node_modules/vue-loader/lib??vue-loader-options!./editExamSchadule.vue?vue&type=script&lang=js& */ "./node_modules/babel-loader/lib/index.js?!./node_modules/vue-loader/lib/index.js?!./resources/views/Examinations/editExamSchadule.vue?vue&type=script&lang=js&");
+/* empty/unused harmony star reexport */ /* harmony default export */ __webpack_exports__["default"] = (_node_modules_babel_loader_lib_index_js_ref_4_0_node_modules_vue_loader_lib_index_js_vue_loader_options_editExamSchadule_vue_vue_type_script_lang_js___WEBPACK_IMPORTED_MODULE_0__["default"]); 
+
+/***/ }),
+
+/***/ "./resources/views/Examinations/editExamSchadule.vue?vue&type=template&id=7a290040&":
+/*!******************************************************************************************!*\
+  !*** ./resources/views/Examinations/editExamSchadule.vue?vue&type=template&id=7a290040& ***!
+  \******************************************************************************************/
+/*! exports provided: render, staticRenderFns */
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+__webpack_require__.r(__webpack_exports__);
+/* harmony import */ var _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_editExamSchadule_vue_vue_type_template_id_7a290040___WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! -!../../../node_modules/vue-loader/lib/loaders/templateLoader.js??vue-loader-options!../../../node_modules/vue-loader/lib??vue-loader-options!./editExamSchadule.vue?vue&type=template&id=7a290040& */ "./node_modules/vue-loader/lib/loaders/templateLoader.js?!./node_modules/vue-loader/lib/index.js?!./resources/views/Examinations/editExamSchadule.vue?vue&type=template&id=7a290040&");
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "render", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_editExamSchadule_vue_vue_type_template_id_7a290040___WEBPACK_IMPORTED_MODULE_0__["render"]; });
+
+/* harmony reexport (safe) */ __webpack_require__.d(__webpack_exports__, "staticRenderFns", function() { return _node_modules_vue_loader_lib_loaders_templateLoader_js_vue_loader_options_node_modules_vue_loader_lib_index_js_vue_loader_options_editExamSchadule_vue_vue_type_template_id_7a290040___WEBPACK_IMPORTED_MODULE_0__["staticRenderFns"]; });
 
 
 
@@ -105950,8 +107049,8 @@ __webpack_require__.r(__webpack_exports__);
 /*! no static exports found */
 /***/ (function(module, exports, __webpack_require__) {
 
-__webpack_require__(/*! C:\Users\Hp\Desktop\SMS\resources\js\app.js */"./resources/js/app.js");
-module.exports = __webpack_require__(/*! C:\Users\Hp\Desktop\SMS\resources\sass\app.scss */"./resources/sass/app.scss");
+__webpack_require__(/*! D:\GitHub\SMS\resources\js\app.js */"./resources/js/app.js");
+module.exports = __webpack_require__(/*! D:\GitHub\SMS\resources\sass\app.scss */"./resources/sass/app.scss");
 
 
 /***/ })

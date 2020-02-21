@@ -263,14 +263,22 @@ Route::group(['prefix' => 'examSchadules'], function() {
     Route::get('getExamData/{gettingArrays}','ExamSchaduleController@getExamData');
     Route::get('getClassName/{id}','ExamSchaduleController@getClassName');
     Route::get('getSectionName/{id}','ExamSchaduleController@getSectionName');
+    Route::post('updateExamSchadule/{id}','ExamSchaduleController@update');
 
 });
+
+Route::group(['prefix' => 'marksGrade'], function() {
+    Route::get('getMarksGrade','MarksGradeController@index');
+    Route::post('addMarksGrade','MarksGradeController@store');
+    Route::get('deleteMarksGrade/{id}','MarksGradeController@destroy');
+    Route::get('editMarksGrade/{id}','MarksGradeController@edit');
+    Route::get('getSearchData/{idsArray}','MarksGradeController@getSearchData');
+});
+
 Route::get('activeacademicyr', 'AcademicYearController@activeAcademic');
-Route::get('activeAcademicValue','AcademicYearController@activeAcademicValue');
 Route::get('getClasses', 'ClassesController@Theinindex');
-Route::get('getSection', 'SectionController@index');
+Route::get('getSections', 'SectionController@Theinindex');
 Route::get('getClassSectionId/{arrayids}','ClassSectionController@getAssignSub_id');
 Route::get('getClassSection/{id}', 'ClassSectionController@Theinindex');
 Route::get('searchExamSchadule/{arrayClassSectionExam}', 'ExamSchaduleController@index');
-Route::get('getSubjects', 'SubjectController@index');
 // End Thei Htike Aung Section
