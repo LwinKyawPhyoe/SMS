@@ -7,7 +7,7 @@
       </h4>
     </div>
     <hr />
-    <div class="row rowContainer" style="align-items: end !important;">
+    <div class="row rowContainer" style="align-items: end !important;margin-left: 0px;">
       <div class="col-lg-5 col-md-12" style="padding-left:2px;">
         <div class="card">
           <div class="card-header">
@@ -30,11 +30,11 @@
             <div class="col-12">
               <label for="note">Note</label><br>
               <textarea class="textareas" rows="3" v-model="saveexam.remark"></textarea>
-            </div><br>
+            </div>
 
             <label v-if="savebutton == true" style="margin-left:50px;">Please Activate Academic Year <strong>*</strong></label>
             <div class="col-12">
-              <button class="save" @click="addExam(SessionList.id)" v-for="SessionList in SessionList" :key="SessionList.id">Save</button>
+              <button class="save" id="globalSave" @click="addExam(SessionList.id)" v-for="SessionList in SessionList" :key="SessionList.id">Save</button>
             </div>
           </div>
         </div>

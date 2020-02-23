@@ -8,7 +8,7 @@
     </div>
     <hr />
     <confirm :url="delurl"></confirm>
-    <div class="row rowContainer" style="align-items: end !important;">
+    <div class="row rowContainer" style="align-items: end !important;margin-left: 0px;">
       <div class="col-lg-5 col-md-12" style="padding-left:2px;">
         <div class="card">
           <div class="card-header">
@@ -38,8 +38,9 @@
                   v-if="this.isEdit == false"
                   type="submit"
                   class="save"
+                  id="globalSave"
                 >Save</button>
-                <button v-else @click="updateDepartment()" type="button" class="save">Save</button>
+                <button v-else @click="updateDepartment()" id="globalSave" type="button" class="save">Save</button>
               </div>
             </form>
           </div>

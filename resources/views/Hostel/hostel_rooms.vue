@@ -8,7 +8,7 @@
     </div>
     <hr />
     <confirm :url="delurl"></confirm>
-    <div class="row" style="align-items: end !important;">
+    <div class="row" style="align-items: end !important;margin-left: 0px;">
       <div class="col-lg-5 col-md-12" style="padding-left:2px;">
         <div class="card">
           <div class="card-header">
@@ -110,8 +110,8 @@
                 <textarea v-model="hostelroom.description" class="textareas" rows="3"></textarea>
               </div>
               <div class="col-12">
-                <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
-                <button v-else @click="updateHostelRoom()" type="button" class="save">Save</button>
+                <button v-if="this.isEdit == false" id="globalSave" type="submit" class="save">Save</button>
+                <button v-else @click="updateHostelRoom()" id="globalSave" type="button" class="save">Save</button>
               </div>
             </form>
           </div>

@@ -45,7 +45,7 @@
                     </table>
                 </div>
                 <div style="width: 100%;">
-                    <button class="save" style="margin:10px 1rem 1rem 0px" type="button" @click="updateExamSchadule()"><router-link to="examschadule" style="color:white" class="submit">Update</router-link></button>
+                    <button class="save" id="globalSave" style="margin:10px 1rem 1rem 0px" type="button" @click="updateExamSchadule()"><router-link to="examschadule" style="color:white" class="submit">Update</router-link></button>
                 </div>
                 </div>
             </div>

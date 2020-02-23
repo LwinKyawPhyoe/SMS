@@ -9,7 +9,7 @@
     <hr />
     <br />
     <div class="card">
-      <div class="stucard-header">
+      <div class="card-header">
         <h6>Select Criteria</h6>
         <router-link to="/staffdirectory/add" class="add">Add Staff</router-link>
       </div>
@@ -32,7 +32,7 @@
                 <option :value="role.id" v-for="(role) in roles" :key="role.id">{{role.name}}</option>
               </select>
               <span id="search_rolemsg" class="error_message">Role is required</span>
-              <button type="submit" class="save">Search</button>
+              <button type="submit" id="globalSearch" class="searchButton">Search</button>
             </form>
           </div>
           <div class="textarea">
@@ -43,7 +43,7 @@
                 class="inputbox"
                 placeholder="Search By staff id,name,..etc."
               />
-              <button type="submit" class="save">Search</button>
+              <button type="submit" id="globalSearch" class="searchButton">Search</button>
             </form>
           </div>
         </div>

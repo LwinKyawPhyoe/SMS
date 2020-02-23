@@ -25,7 +25,7 @@
         <div class="modal-content">
           <div class="card">
 
-            <div class="stucard-header">
+            <div class="card-header">
               <h6 style="width:100%">
                 Add Sibling
                 <i
@@ -85,7 +85,7 @@
       </div>
     </div>
     <!-- ----------------------modal end --------------------------- -->
-      <div class="stucard-header">
+      <div class="card-header">
         <h6>Student Admission</h6>
       </div>
       <div class="stucard-body">
@@ -256,7 +256,7 @@
         </div>
       </div>
 
-      <div class="stusub-header">
+      <div class="sub-header">
         <h6>Parents Details</h6>
       </div>
       <div class="stucard-body">
@@ -395,7 +395,7 @@
         </div>
         </div>
         <div class="breakline"></div>
-      <div class="stusub-header">
+      <div class="sub-header">
         <h6>
           Add More Information
           <strong
@@ -416,12 +416,11 @@
       </div>
       <div class="stucard-body" style="padding-top: 15px;" id="addMore">
         <div class="card" style="margin: 15px;">
-          <div class="stucard-header">
+          <div class="card-header">
             <h6>Student Address Details</h6>
           </div>
           <div class="stucard-body">
             <div class="row">
-
               <div class="textarea">
                 <input type="checkbox" value="GuardianAddress" id="ifgurAdd"  @click="currentAddress"/>
                 <label for="ifgurAdd">If Guardian Address Is Current Address</label><br>
@@ -436,7 +435,7 @@
               </div>
             </div>
           </div>
-          <div class="stusub-header">
+          <div class="sub-header">
             <h6>Transport Details</h6>
           </div>
           <div class="stucard-body">
@@ -462,7 +461,7 @@
               </div>
             </div>
           </div>
-          <div class="stusub-header">
+          <div class="sub-header">
             <h6>Previous School Details</h6>
           </div>
           <div class="stucard-body">
@@ -477,7 +476,7 @@
               </div>
             </div>
           </div>
-          <div class="stusub-header">
+          <div class="sub-header">
             <h6>Hostel Details</h6>
           </div>
           <div class="stucard-body">
@@ -502,7 +501,7 @@
               </div>
             </div>
           </div>
-          <div class="stusub-header">
+          <div class="sub-header">
             <h6>Upload Document</h6>
           </div>
           <div class="stucard-body">
@@ -560,7 +559,7 @@
       </div>
 
       <div class="footer" id="footer">
-        <button type="submit">Save</button>
+        <button type="submit" id="globalSave" style="margin-right: 1rem;" class="save">Save</button>
       </div>
       </div>
 </form>

@@ -9,7 +9,7 @@
     <hr />
     <br />
     <div class="card">
-      <div class="stucard-header">
+      <div class="card-header">
         <h6>Select Criteria</h6>
       </div>
       <div class="stucard-body">
@@ -29,7 +29,7 @@
               <option value="b">Class B</option>
               <option value="c">Class C</option>
             </select>
-            <button class="search">Search</button>
+            <button class="searchButton" id="globalSearch">Search</button>
           </div>
         </div>
       </div>

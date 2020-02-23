@@ -43,7 +43,7 @@
             <input type="date" class="inputbox" />
           </div>
           <div class="col-12">
-            <button class="searchButton">Search</button>
+            <button class="searchButton" id="globalSearch">Search</button>
           </div>
         </div>
       </div>

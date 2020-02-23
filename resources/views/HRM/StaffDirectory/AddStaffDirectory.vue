@@ -416,8 +416,8 @@
             </div>
           </div>
         </div>
-        <button v-if="checkroute == false" type="submit" class="save">Save</button>
-        <button v-else @click="updateStaffDirectory()" type="button" class="save">Save</button>
+        <button v-if="checkroute == false" type="submit" id="globalSave" style="margin-right:1rem;" class="save">Save</button>
+        <button v-else @click="updateStaffDirectory()" type="button" style="margin-right:1rem;" id="globalSave" class="save">Save</button>
       </form>
       <br />
     </div>

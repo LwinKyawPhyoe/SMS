@@ -92,7 +92,7 @@
             </select>
           </div>
           <div class="col-12">
-            <button class="searchButton" @click="Search(id1,id2)">Search</button>
+            <button id="globalSearch" class="searchButton" @click="Search(id1,id2)">Search</button>
           </div>
         </div>
       </div>

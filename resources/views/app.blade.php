@@ -30,7 +30,7 @@
 // Change SideBar
 function changeBar() {
         if(document.getElementById('bar').style.marginLeft == '5.5rem') {
-            document.getElementById('bar').style.marginLeft = '15.5rem';
+            document.getElementById('bar').style.marginLeft = '16rem';
             document.getElementById('bigBar').style.display = 'block';
             document.getElementById('list').style.display = 'block';
             document.getElementById('smallBar').style.display = 'none';
@@ -45,7 +45,7 @@ function showForm() {
     if (document.getElementById('bigBar').style.display == 'none') {
         document.getElementById('bar').style.marginLeft = '5.5rem';
     } else {
-        document.getElementById('bar').style.marginLeft = '15.5rem';
+        document.getElementById('bar').style.marginLeft = '16rem';
     }
 }
 
@@ -83,19 +83,19 @@ function openAcademicC(id,item1,item2,item3,item4,item5,item6,item7,item8,time,l
 
 // Student Tab Background
 function toggleBtn(btn1,btn2,btn3,btn4){
-        document.getElementById(btn1).style.backgroundColor = "white";
-        document.getElementById(btn1).style.color = "Black";
-        document.getElementById(btn2).style.backgroundColor = "#1b5e20";
-        document.getElementById(btn2).style.color = "white";
-        document.getElementById(btn3).style.backgroundColor = "#1b5e20";
-        document.getElementById(btn3).style.color = "white";
-        document.getElementById(btn4).style.backgroundColor = "#1b5e20";
-        document.getElementById(btn4).style.color = "white";
+    document.getElementById(btn1).style.backgroundColor = "white";
+    document.getElementById(btn1).style.color = "Black";
+    document.getElementById(btn2).style.backgroundColor = "transparent";
+    document.getElementById(btn2).style.color = "white";
+    document.getElementById(btn3).style.backgroundColor = "transparent";
+    document.getElementById(btn3).style.color = "white";
+    document.getElementById(btn4).style.backgroundColor = "transparent";
+    document.getElementById(btn4).style.color = "white";
 }
 function changeMega(btn1,btn2){
     document.getElementById(btn1).style.backgroundColor = "white";
     document.getElementById(btn1).style.color = "Black";
-    document.getElementById(btn2).style.backgroundColor = "#1b5e20";
+    document.getElementById(btn2).style.backgroundColor = "transparent";
     document.getElementById(btn2).style.color = "white";
 }
 

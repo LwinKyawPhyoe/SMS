@@ -1,5 +1,5 @@
 .ViewStudent {
-    margin-top: 0;
+  margin-top: 0;
   .modalinput {
     width: 100%;
     padding: 10px;
@@ -7,19 +7,6 @@
   .remains {
     .card-body {
       padding-top: 1rem;
-    }
-    .search {
-      // width: 80px;
-      float: right;
-      height: 30px;
-      margin-top: 10px;
-      background: #1b5e20;
-      color: white;
-      font-size: 13px;
-      border: none;
-      border-radius: 3px;
-      padding: 5px;
-      margin-right: 10px;
     }
     .TimeLine {
       span {
@@ -124,7 +111,7 @@
   .metaBtn {
     margin-top: 1px;
     color: white;
-    background-color: #1b5e20;
+    background-color: transparent;
     border: none;
     padding: 5px;
     width: 100px;

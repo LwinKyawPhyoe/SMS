@@ -74,7 +74,7 @@
             </select>
           </div>
           <div class="col-lg-12 col-md-3 col-12">
-            <button class="searchButton" style="margin-top: 1.8rem !important;">Search</button>
+            <button class="searchButton" id="globalSearch" style="margin-top: 2rem !important;">Search</button>
           </div>
         </div>
       </div>

@@ -8,7 +8,7 @@
     </div>
     <hr />
     <confirm :url="delurl"></confirm>
-    <div class="row" style="align-items: end !important;">
+    <div class="row" style="align-items: end !important;margin-left: 0px;">
       <div class="col-lg-5 col-md-12" style="padding-left:2px;">
         <div class="card">
           <div class="card-header">
@@ -38,8 +38,14 @@
               </div>
               <div class="col-12">
                 <!--- store -->
-                <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
-                <button v-else @click="updateRoomType()" type="button" class="save">Save</button>
+                <button v-if="this.isEdit == false" id="globalSave" type="submit" class="save">Save</button>
+                <button
+                  v-else
+                  @click="updateRoomType()"
+                  id="globalSave"
+                  type="button"
+                  class="save"
+                >Save</button>
               </div>
             </form>
           </div>
@@ -61,7 +67,11 @@
             <div class="copyRows">
               <div class="row" id="copyRow">
                 <div class="col-3">
-                  <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Room_Type.xls')" title="Excel">
+                  <a
+                    href="#"
+                    @click.prevent="downloadExcel('studenttable', 'name', 'Room_Type.xls')"
+                    title="Excel"
+                  >
                     <i class="fa fa-file-excel-o"></i>
                   </a>
                 </div>
@@ -127,7 +137,7 @@
  *  COMPONENTS
  */
 import message from "../Alertmessage/message.vue";
-import {Util} from '../../js/util';
+import { Util } from "../../js/util";
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
 export default {
@@ -259,14 +269,12 @@ export default {
       $(".alert").css("display", "none");
     },
 
-    printme(table)
-    {
+    printme(table) {
       Util.printme(table);
     },
 
-    downloadExcel(table, name, filename) 
-    {
-      Util.downloadExcel(table,name,filename);
+    downloadExcel(table, name, filename) {
+      Util.downloadExcel(table, name, filename);
     }
   }
 };

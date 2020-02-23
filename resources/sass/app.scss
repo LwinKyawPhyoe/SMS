@@ -119,7 +119,7 @@ body {
     display: block;
   }
   #bar {
-    margin-left: 15.5rem;
+    margin-left: 16rem;
     margin-top: 2rem;
   }
   .Student {
@@ -306,38 +306,4 @@ body {
     padding-bottom: 1rem;
   }
 }
-//Modal Section Media
-
-@media (max-width: 790px) and (min-width: 530px) {
-  .modal-content {
-    width: 510px !important;
-  }
-}
-@media (max-width: 530px) and (min-width: 411px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-@media (max-width: 411px) and (min-width: 375px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-@media (max-width: 375px) and (min-width: 360px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-
-@media (max-width: 360px) and (min-width: 320px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-@media (max-width: 320px) and (min-width: 0px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-
 //End modal section css.

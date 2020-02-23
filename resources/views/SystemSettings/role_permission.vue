@@ -33,8 +33,8 @@
               </div>
               <div class="col-12">
                 <!--- store -->
-                <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
-                <button v-else @click="updateRole()" type="button" class="save">Save</button>
+                <button v-if="this.isEdit == false" type="submit" id="globalSave" class="save">Save</button>
+                <button v-else @click="updateRole()" type="button" id="globalSave" class="save">Save</button>
               </div>
             </form>
           </div>

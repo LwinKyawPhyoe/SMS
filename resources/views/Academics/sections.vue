@@ -10,7 +10,7 @@
         </div>
         <hr>
 
-        <div class="row" style="align-items: end !important;">
+        <div class="row" style="align-items: end !important;margin-left: 0px;">
             <div class="col-lg-5 col-md-12" style="padding-left:2px;">
                 <div class="card">
                     <div class="card-header">
@@ -27,7 +27,7 @@
                                 <span id="sectionmsg" class="error_message">Section Name is required</span>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="save">Save</button>
+                                <button type="submit" id="globalSave" class="save">Save</button>
                             </div>
                         </form>
                     </div>

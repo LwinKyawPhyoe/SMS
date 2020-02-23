@@ -479,9 +479,10 @@
 .sidebar .expandsidebar {
   float: left;
   z-index: 2;
+  height: 100%;
   position: fixed;
-  width: 245px;
-  background-color: #1b5e20;
+  box-shadow: 0px 7px 15px #888888;
+  width: 255px;
 }
 
 .sidebar .sidebar_header {
@@ -503,7 +504,6 @@
 .header .body_content {
   height: 90.1vh;
   margin: 0px;
-  background: #1b5e20;
   overflow-y: auto;
 }
 
@@ -511,17 +511,12 @@
   color: #ffffffa8;
 }
 
+.header .body_content .additional-menu .navList:hover {
+  background: #1a1a1aa8;
+}
+
 .header .body_content .additional-menu .navList:hover .routerLink {
   color: white;
-}
-
-.header .body_content .active > a {
-  color: white;
-  background: #113511;
-}
-
-.header .body_content .dropdownForm {
-  background: #044604;
 }
 
 .header .body_content .navList {
@@ -530,8 +525,9 @@
   position: relative;
   display: -webkit-box;
   display: flex;
-  -webkit-transition: all 0.2s;
-  transition: all 0.2s;
+  overflow: hidden;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
   -webkit-box-align: center;
           align-items: center;
   border-bottom: 1px solid rgba(245, 245, 245, 0.24);
@@ -554,7 +550,6 @@
 .header .body_content #body_content > .nav-item:focus,
 .header .body_content .nav-item:hover {
   background-color: #666;
-  color: white;
 }
 
 .header .body_content .link {
@@ -564,13 +559,11 @@
   margin: 0;
 }
 
-.header .body_content .link .nav-list:hover {
-  color: white;
-}
-
 .header .body_content .link .nav-list {
   text-decoration: none;
   font-size: 14px;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
@@ -578,12 +571,18 @@
   width: 100%;
   height: 40px;
   outline: none;
+  position: relative;
+  overflow: hidden;
   border: none;
+}
+
+.header .body_content .link .nav-list .nav-list:hover {
+  color: white;
+  background: #1a1a1aa8;
 }
 
 .header .body_content .link .nav-list .listItem {
   float: left;
-  color: white;
   margin: 0 10px 0 3rem;
 }
 
@@ -602,6 +601,27 @@ body {
   height: 61px;
   position: fixed;
   z-index: 1;
+}
+
+.content .content_header .sessions {
+  position: absolute;
+  left: 21rem;
+  top: 15px;
+}
+
+.content .content_header .sessions .session {
+  font-size: 12pt;
+  cursor: pointer;
+}
+
+.content .content_header .sessions .session .pencil {
+  margin: 0 3px;
+}
+
+.content .content_header .sessions p {
+  text-align: center;
+  margin-top: -9px;
+  font-size: 10pt;
 }
 
 .content .content_header .Items {
@@ -633,7 +653,6 @@ body {
 
 .content .content_header .profile .user {
   zoom: 2.5;
-  height: 22px;
   width: 33px;
   padding: 0 5px;
   display: -webkit-box;
@@ -698,9 +717,9 @@ body {
 
 .content .content_header #list {
   position: absolute;
-  left: 150px;
+  left: 175px;
   zoom: 1.5;
-  padding: 0.8rem 2rem;
+  padding: 0.8rem 1rem;
   cursor: pointer;
   color: #000000b3;
 }
@@ -742,7 +761,6 @@ body {
 }
 
 .form .card {
-  background-color: khaki;
   margin-top: 3rem;
 }
 
@@ -787,6 +805,7 @@ body {
   display: none;
   -webkit-transition: all 0.5s;
   transition: all 0.5s;
+  box-shadow: 0px 7px 15px #888888;
 }
 
 .smallView .exit .bigView {
@@ -798,7 +817,6 @@ body {
   font-weight: 500;
   border-bottom: 1px solid;
   color: #f5f5f5d1;
-  background: #1b5e20;
 }
 
 .smallView .exit .bigView:hover {
@@ -806,8 +824,6 @@ body {
 }
 
 .smallView .smallBar {
-  height: 165vh;
-  background: #1b5e20;
   display: block;
   cursor: pointer;
 }
@@ -823,8 +839,11 @@ body {
 }
 
 .smallView .smallBar .Links .link:hover {
-  background: #023502;
-  color: white;
+  background: #0d0e0da6;
+}
+
+.smallView .smallBar .Links .link:hover .smallIcon {
+  color: white !important;
 }
 
 .smallView .smallBar .Links .link {
@@ -857,7 +876,6 @@ body {
 .smallView .smallBar .Links .link .smallLists .smallLink .smLink {
   margin-left: -2.5rem;
   padding: 10px 1rem;
-  background: #044604;
   font-size: 15px;
 }
 
@@ -866,8 +884,7 @@ body {
 }
 
 .smallView .smallBar .Links .link .smallLists .smallLink .smLink:hover {
-  background: #023502;
-  color: white;
+  color: white !important;
 }
 
 .smallView .smallBar .Links .link li .smallIcon {
@@ -1724,14 +1741,6 @@ img {
   padding: 0 5px;
 }
 
-.Student .card,
-.StaffInformation .card,
-.StudentInformation .card,
-.StudentHistory .card,
-.ViewStudent .card {
-  background-color: khaki;
-}
-
 .Student .card .footer,
 .StaffInformation .card .footer,
 .StudentInformation .card .footer,
@@ -1756,63 +1765,6 @@ img {
   font-size: 15px;
   color: white;
   padding: 5px;
-}
-
-.Student .card .stucard-header,
-.StaffInformation .card .stucard-header,
-.StudentInformation .card .stucard-header,
-.StudentHistory .card .stucard-header,
-.ViewStudent .card .stucard-header {
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-align: center;
-          align-items: center;
-  height: 34px;
-  background-color: #1b5e20;
-  margin: -20px 15px 0px 15px;
-  padding: 0;
-  padding-left: 20px;
-  color: white;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-}
-
-.Student .card .stucard-header h6,
-.StaffInformation .card .stucard-header h6,
-.StudentInformation .card .stucard-header h6,
-.StudentHistory .card .stucard-header h6,
-.ViewStudent .card .stucard-header h6 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.Student .card .stusub-header,
-.StaffInformation .card .stusub-header,
-.StudentInformation .card .stusub-header,
-.StudentHistory .card .stusub-header,
-.ViewStudent .card .stusub-header {
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-align: center;
-          align-items: center;
-  height: 34px;
-  background-color: #1b5e20;
-  margin: 0 15px 0px 15px;
-  padding: 0;
-  padding-left: 20px;
-  color: white;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-}
-
-.Student .card .stusub-header h6,
-.StaffInformation .card .stusub-header h6,
-.StudentInformation .card .stusub-header h6,
-.StudentHistory .card .stusub-header h6,
-.ViewStudent .card .stusub-header h6 {
-  margin: 0;
-  font-size: 16px;
-  width: 100%;
 }
 
 .Student .card .stucard-body,
@@ -1928,6 +1880,16 @@ img {
           filter: drop-shadow(0 0 7px rgba(90, 90, 88, 0.7));
 }
 
+.active > a {
+  background: #1a1a1aa8;
+  color: white !important;
+}
+
+.tabTheme {
+  position: relative;
+  overflow: hidden;
+}
+
 .inputbox {
   padding-left: 5px;
   font-size: 9.5pt;
@@ -1963,7 +1925,6 @@ label {
   -webkit-box-align: center;
           align-items: center;
   height: 34px;
-  background-color: #1b5e20;
   margin: -20px 15px 0px 15px;
   padding: 0;
   padding-left: 20px;
@@ -1990,7 +1951,6 @@ label {
   -webkit-box-align: center;
           align-items: center;
   height: 34px;
-  background-color: #1b5e20;
   margin: 0 15px 0px 15px;
   padding: 0;
   padding-left: 20px;
@@ -2291,57 +2251,54 @@ input[type=file] {
   visibility: visible;
 }
 
-.searchButton {
+#globalSearch {
   float: right;
   width: 80px !important;
   height: 30px;
   font-size: 13px;
   margin: 1rem 0 0 1rem;
   border: none;
+  position: relative;
+  overflow: hidden;
   color: White;
-  background-color: #1b5e20;
   border-radius: 3px;
 }
 
-.save {
-  margin: 1rem;
+#globalSave {
   width: 100px;
   font-size: 14px;
-  margin-right: 0px;
-  margin-bottom: 0;
+  margin: 1rem 0;
   float: right;
+  margin-bottom: 0;
   outline: none;
+  -webkit-transition-duration: 0.4s;
+          transition-duration: 0.4s;
   color: white;
+  overflow: hidden;
+  position: relative;
   height: 30px;
-  background: #1b5e20;
   border: none;
   border-radius: 5px;
+}
+
+#globalView {
+  padding: 3px 0.5rem;
+  font-size: 10px;
+  -webkit-transition-duration: 0.4s;
+          transition-duration: 0.4s;
+  position: relative;
+  line-height: 1.5;
+  border-radius: 0.2rem;
+  position: relative;
+  border: none;
+  overflow: hidden;
+  color: white;
+  margin-right: 5px;
 }
 
 /**
   Wai Yan Soe
 **/
-
-.metaBtn {
-  color: white;
-  background-color: #1b5e20;
-  border: none;
-  padding: 5px;
-  text-align: center;
-  font-size: 14px;
-  width: 150px;
-  height: 34px;
-}
-
-.metaBtn:active {
-  border: none;
-  outline: none;
-}
-
-.metaBtn:focus {
-  border: none;
-  outline: none;
-}
 
 .confirmBtn {
   width: 100px;
@@ -2420,44 +2377,38 @@ input[type=file] {
   End of Wai Yan Soe
 **/
 
-.viewButton {
-  padding: 3px 0.5rem;
-  font-size: 10px;
-  line-height: 1.5;
-  background: #1b5e20;
-  border-radius: 0.2rem;
-  border: none;
-  color: white;
-  margin-right: 5px;
+#globalView:after,
+#globalSearch:after,
+#globalSave:after,
+#globalEdit:after,
+.tabTheme:after,
+.navList:after,
+#nav-list:after {
+  content: "";
+  background: #9494947c;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  -webkit-transition: all 0.8s;
+  transition: all 0.8s;
 }
 
-.save,
-.searchButton,
-.tableLink,
-.tableLinks {
-  background-position: center;
-  -webkit-transition: background 0.6s;
-  transition: background 0.6s;
-}
-
-.save:hover,
-.searchButton:hover,
-.tableLink:hover {
-  background: #1b5e20 radial-gradient(circle, transparent 1%, #1b5e20 1%) center/15000%;
-}
-
-.tableLinks:hover {
-  background: whitesmoke radial-gradient(circle, transparent 1%, whitesmoke 1%) center/15000%;
-}
-
-.save:active,
-.searchButton:active,
-.tableLink:active,
-.tableLinks:active {
-  background-color: rgba(44, 92, 51, 0.623);
-  background-size: 100%;
-  -webkit-transition: background 0s;
-  transition: background 0s;
+#globalView:active:after,
+#globalSearch:active:after,
+#globalSave:active:after,
+#globalEdit:active:after,
+.tabTheme:active:after,
+.navList:active:after,
+#nav-list:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  -webkit-transition: 0s;
+  transition: 0s;
 }
 
 .pen,
@@ -2589,10 +2540,6 @@ input[type=file] {
   border-right: 10px solid white !important;
 }
 
-.row {
-  margin: 10px;
-}
-
 .row .textbox {
   width: 25%;
   padding: 5px;
@@ -2703,20 +2650,6 @@ input[type=file] {
 .StudentHistory .view ::-webkit-scrollbar-thumb {
   background: #1b5e20;
   border-radius: 10px;
-}
-
-.StudentInformation .search,
-.StudentHistory .search {
-  width: 80px;
-  float: right;
-  height: 30px;
-  margin-top: 10px;
-  background: #1b5e20;
-  color: white;
-  font-size: 13px;
-  border: none;
-  border-radius: 3px;
-  padding: 3px;
 }
 
 .StudentInformation .main,
@@ -2923,9 +2856,11 @@ button:focus {
 
 .StaffInformation .metaBtn {
   color: white;
-  background-color: #1b5e20;
+  background: transparent;
   border: none;
   padding: 5px;
+  position: relative;
+  overflow: hidden;
   text-align: center;
   font-size: 14px;
 }
@@ -2938,18 +2873,6 @@ button:focus {
 .StaffInformation .metaBtn:focus {
   border: none;
   outline: none;
-}
-
-.StaffInformation .search {
-  width: 100px;
-  float: right;
-  margin-top: 10px;
-  background: #1b5e20;
-  color: white;
-  font-size: 15px;
-  border: none;
-  border-radius: 3px;
-  padding: 3px;
 }
 
 .StaffInformation .main {
@@ -2979,6 +2902,7 @@ button:focus {
   width: 100px;
   height: 100px;
   position: relative;
+  z-index: 1;
   background: #fff;
 }
 
@@ -3029,11 +2953,10 @@ button:focus {
 }
 
 .StaffInformation .staffinfo-box h5 {
-  font-size: 1em;
-  font-weight: 600;
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 0;
   margin-top: 5px;
+  font-family: "Roboto-Bold";
 }
 
 .StaffInformation .staffinfo-box p {
@@ -3041,8 +2964,6 @@ button:focus {
   display: block;
   font-size: 10px;
   line-height: normal;
-  margin-top: 2px;
-  margin-bottom: 2px;
 }
 
 .StaffInformation .staffinfo-box p span {
@@ -3053,10 +2974,6 @@ button:focus {
   text-align: center;
   color: #424242;
   line-height: 18px;
-}
-
-.StaffInformation .staffsub {
-  font-size: 0.8em;
 }
 
 .StaffInformation .infoFooter {
@@ -3092,6 +3009,11 @@ button:focus {
 .StaffInformation .key {
   color: black;
   font-size: 14px;
+}
+
+.StaffInformation .center {
+  width: 45% !important;
+  float: left;
 }
 
 .StaffInformation table img {
@@ -3141,19 +3063,6 @@ button:focus {
 
 .ViewStudent .remains .card-body {
   padding-top: 1rem;
-}
-
-.ViewStudent .remains .search {
-  float: right;
-  height: 30px;
-  margin-top: 10px;
-  background: #1b5e20;
-  color: white;
-  font-size: 13px;
-  border: none;
-  border-radius: 3px;
-  padding: 5px;
-  margin-right: 10px;
 }
 
 .ViewStudent .remains .TimeLine {
@@ -3259,7 +3168,7 @@ button:focus {
 .ViewStudent .metaBtn {
   margin-top: 1px;
   color: white;
-  background-color: #1b5e20;
+  background-color: transparent;
   border: none;
   padding: 5px;
   width: 100px;
@@ -3432,7 +3341,7 @@ button:focus {
 }
 
 .systemsetting .modal-bodys #ThemeColor {
-  margin: 0px;
+  padding: 0 1rem;
 }
 
 .systemsetting .modal-bodys #ThemeColor .col-xs-6 {
@@ -3454,6 +3363,8 @@ button:focus {
   display: flex;
   -webkit-box-pack: center;
           justify-content: center;
+  -webkit-transition: all 0.6s;
+  transition: all 0.6s;
   -webkit-box-align: center;
           align-items: center;
 }
@@ -3465,6 +3376,16 @@ button:focus {
   -webkit-filter: opacity(1);
           filter: opacity(1);
   text-align: center;
+}
+
+.systemsetting .modal-bodys #ThemeColor .blockColor .backColor:hover {
+  border: 35px solid #adadad38 !important;
+}
+
+.systemsetting .modal-bodys #ThemeColor .blockColor .backColor:hover p {
+  -webkit-filter: opacity(1) !important;
+          filter: opacity(1) !important;
+  color: white;
 }
 
 .systemsetting .rowContainer {
@@ -3486,12 +3407,15 @@ button:focus {
   margin: 1rem auto;
   margin-bottom: 0;
   display: block;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
   width: 150px;
-  background: #1b5e20;
   border: none;
   font-weight: bold;
   border-radius: 5px;
   font-size: 14px;
+  position: relative;
+  overflow: hidden;
   outline: none;
   color: white;
   height: 35px;
@@ -3499,23 +3423,6 @@ button:focus {
 
 .systemsetting .rowContainer .imgCard .button .edit .editIcon {
   margin-right: 10px;
-}
-
-.systemsetting .rowContainer .imgCard .button .edit {
-  background-position: center;
-  -webkit-transition: background 0.6s;
-  transition: background 0.6s;
-}
-
-.systemsetting .rowContainer .imgCard .button .edit:hover {
-  background: #1b5e20 radial-gradient(circle, transparent 1%, #1b5e20 1%) center/15000%;
-}
-
-.systemsetting .rowContainer .imgCard .button .edit:active {
-  background-color: rgba(44, 92, 51, 0.623);
-  background-size: 100%;
-  -webkit-transition: background 0s;
-  transition: background 0s;
 }
 
 .systemsetting .rowContainer .tableCard {
@@ -3594,8 +3501,8 @@ button:focus {
   border-radius: 0px !important;
   top: -2px;
   left: -1px;
-  border: 0.1px solid rgba(0, 0, 0, 0.452);
   position: relative;
+  border: 0.1px solid black;
   content: "";
   display: inline-block;
   visibility: visible;
@@ -3625,48 +3532,20 @@ button:focus {
   margin-bottom: 0.2rem;
 }
 
-.systemsetting .rowContainer .editCard .edit {
+.systemsetting .rowContainer .editCard .editSm {
   width: 40px;
   font-size: 11px;
   position: absolute;
   outline: none;
   right: 25px;
-  color: #1b5e20;
   font-weight: bold;
   height: 20px;
   border: none;
   border-radius: 3px;
 }
 
-.systemsetting .rowContainer .editCard .edit {
-  background-position: center;
-  -webkit-transition: background 0.6s;
-  transition: background 0.6s;
-}
-
-.systemsetting .rowContainer .editCard .edit:hover {
-  background: #ffffff radial-gradient(circle, transparent 1%, #ffffff 1%) center/15000%;
-}
-
-.systemsetting .rowContainer .editCard .edit:active {
-  background-color: rgba(255, 255, 255, 0.623);
-  background-size: 100%;
-  -webkit-transition: background 0s;
-  transition: background 0s;
-}
-
-.ViewStaffDirectory .input_readonly {
-  border: none !important;
-  background-color: transparent !important;
-  text-align: right;
-  color: green;
-  font-weight: 600;
-}
-
 .ViewStaffDirectory #row {
   margin-top: -1rem;
-  margin: -1rem;
-  padding: 0;
 }
 
 .ViewStaffDirectory #row .tableCard .Profile {
@@ -3684,7 +3563,7 @@ button:focus {
 }
 
 .ViewStaffDirectory #row .tableCard .Profile .name {
-  text-align: center !important;
+  text-align: center;
   font-weight: bold;
   margin-top: 5px;
 }
@@ -3741,7 +3620,7 @@ button:focus {
 }
 
 .ViewStaffDirectory #row .detailsCard .buttonCard {
-  height: 103%;
+  height: 104%;
 }
 
 .ViewStaffDirectory #row .detailsCard .buttonCard .tab,
@@ -3752,8 +3631,6 @@ button:focus {
   background: none;
   padding: 0 1rem;
   font-size: 10pt;
-  position: relative;
-  overflow: hidden;
   border: none;
   color: white;
   margin-top: 0.7px;
@@ -4087,7 +3964,7 @@ body {
   }
 
   #bar {
-    margin-left: 15.5rem;
+    margin-left: 16rem;
     margin-top: 2rem;
   }
 
@@ -4287,42 +4164,6 @@ body {
 @media (min-width: 260px) and (max-width: 500px) {
   .body_content {
     padding-bottom: 1rem;
-  }
-}
-
-@media (max-width: 790px) and (min-width: 530px) {
-  .modal-content {
-    width: 510px !important;
-  }
-}
-
-@media (max-width: 530px) and (min-width: 411px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-
-@media (max-width: 411px) and (min-width: 375px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-
-@media (max-width: 375px) and (min-width: 360px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-
-@media (max-width: 360px) and (min-width: 320px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-
-@media (max-width: 320px) and (min-width: 0px) {
-  .modal-content {
-    width: 98% !important;
   }
 }
 

@@ -9,7 +9,7 @@
     <hr />
     <br />
     <div class="card">
-      <div class="stucard-header">
+      <div class="card-header">
         <h6>Student Criteria</h6>
       </div>
       <div class="stucard-body">
@@ -34,18 +34,18 @@
               <option value="A">A</option>
               <option value="B">B</option>
             </select>
-            <button class="search">Search</button>
+            <button class="searchButton" id="globalSearch">Search</button>
           </div>
           <div class="textarea">
             <label for="other">Search By Other Option</label>
             <textarea id="other" class="inputbox" placeholder="Search By Name,Nrc,..etc."></textarea>
-            <button class="search">Search</button>
+            <button class="searchButton" id="globalSearch">Search</button>
           </div>
         </div>
       </div>
-      <div class="sub-header">
+      <div class="sub-header" id="globalsubHeader">
         <button
-          class="metaBtn"
+          class="metaBtn tabTheme"
           id="listView"
           onclick="changeMega('listView','detailsView')"
           @click="listView()"
@@ -54,7 +54,7 @@
           <i class="fa fa-list"></i> List View
         </button>
         <button
-          class="metaBtn"
+          class="metaBtn tabTheme"
           id="detailsView"
           onclick="changeMega('detailsView','listView')"
           @click="detailsView()"

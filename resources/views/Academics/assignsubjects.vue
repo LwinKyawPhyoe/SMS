@@ -40,7 +40,7 @@
             </select>
           </div>
           <div class="col-12">
-            <button class="searchButton">Search</button>
+            <button class="searchButton" id="globalSearch">Search</button>
           </div>
         </div>
       </div>
@@ -88,7 +88,7 @@
         </div>
         <hr />
         <div class="col-12">
-          <button class="save" style="margin:0 0 1rem;">Save</button>
+          <button class="save" id="globalSave" style="margin:0 0 1rem;">Save</button>
         </div>
       </div>
     </div>

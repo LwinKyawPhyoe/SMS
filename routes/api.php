@@ -283,3 +283,12 @@ Route::get('getClassSectionId/{arrayids}','ClassSectionController@getAssignSub_i
 Route::get('getClassSection/{id}', 'ClassSectionController@Theinindex');
 Route::get('searchExamSchadule/{arrayClassSectionExam}', 'ExamSchaduleController@index');
 // End Thei Htike Aung Section
+
+// Sai Kaung Htet General Setting
+Route::get('settings','GeneralController@index');
+Route::get('color','GeneralController@getColor');
+Route::group(['prefix' => 'setting'],function() {
+    Route::post('store/{id}', 'GeneralController@store');
+    Route::post('update/{color}', 'GeneralController@update');
+    Route::delete('delete/{id}', 'GeneralController@delete');
+});

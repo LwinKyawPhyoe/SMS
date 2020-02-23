@@ -8,7 +8,7 @@
     </div>
     <hr />
 
-    <div class="row rowContainer" style="align-items: end !important;">
+    <div class="row rowContainer" style="align-items: end !important;margin-left: 0px;">
       <div class="col-lg-5 col-md-12" style="padding-left:2px;">
         <div class="card">
           <div class="card-header">
@@ -56,7 +56,7 @@
               <textarea class="textareas" rows="3" v-model="saveMarksGrade.description"></textarea>
             </div>
             <div class="col-12">
-              <button class="save" @click="SaveMarksGrade()">Save</button>
+              <button class="save" id="globalSave" @click="SaveMarksGrade()">Save</button>
             </div>
           </div>
         </div>

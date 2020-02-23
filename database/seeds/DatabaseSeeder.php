@@ -100,5 +100,8 @@ class DatabaseSeeder extends Seeder
                 'session_id' => $item['session_id']
             ]);
         }
+        DB::table('generals')->insert([
+            'color'=> 'defaultColor'
+        ]);
     }
 }

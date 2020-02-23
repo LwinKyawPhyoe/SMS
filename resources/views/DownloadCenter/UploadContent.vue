@@ -89,7 +89,7 @@
                 <input type="file" class="inputbox" id="faPhoto" />
               </div>
               <div class="col-12">
-                <button type="submit" class="save">Save</button>
+                <button type="submit" id="globalSave" class="save">Save</button>
               </div>
             </form>
           </div>

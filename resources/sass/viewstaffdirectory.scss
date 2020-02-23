@@ -1,15 +1,6 @@
 .ViewStaffDirectory {
-  .input_readonly{
-    border: none !important;
-    background-color: transparent !important;
-    text-align: right;
-    color: green;
-    font-weight: 600;
-  }
   #row {
     margin-top: -1rem;
-    margin: -1rem;
-    padding: 0;
     .tableCard {
       .Profile {
         padding: 1rem;
@@ -23,7 +14,7 @@
           padding: 3px;
         }
         .name {
-          text-align: center !important;
+          text-align: center;
           font-weight: bold;
           margin-top: 5px;
         }
@@ -33,7 +24,7 @@
         .table tr {
           td {
             padding: 0.4rem 15px;
-            .data{
+            .data {
               color: #0e3511;
               display: flex;
               float: right;
@@ -70,7 +61,7 @@
     .detailsCard {
       padding: 0;
       .buttonCard {
-        height: 103%;
+        height: 104%;
         .tab,
         .tab1,
         .tab2,
@@ -79,8 +70,6 @@
           background: none;
           padding: 0 1rem;
           font-size: 10pt;
-          position: relative;
-          overflow: hidden;
           border: none;
           color: white;
           margin-top: 0.7px;
