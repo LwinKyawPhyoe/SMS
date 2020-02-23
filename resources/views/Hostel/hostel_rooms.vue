@@ -103,7 +103,7 @@
                   type="text"
                   class="inputbox"
                 />
-                <span id="cpbmsg" class="error_message">Number Of Bed is required</span>
+                <span id="cpbmsg" class="error_message">Cost Per Bed is required</span>
               </div>
               <div class="col-12 end">
                 <label for="description">Description</label>
@@ -134,12 +134,12 @@
             <div class="copyRows">
               <div class="row" id="copyRow">
                 <div class="col-3">
-                  <a href="#" title="Excel">
+                  <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Hostel_Room.xls')" title="Excel">
                     <i class="fa fa-file-excel-o"></i>
                   </a>
                 </div>
                 <div class="col-3">
-                  <a href="#" title="Print">
+                  <a href="#" @click.prevent="printme('print')" title="Print">
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
@@ -150,7 +150,8 @@
                 </div>
               </div>
             </div>
-            <div class="table-responsive">
+
+            <div class="table-responsive" id="print">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
                   <tr>
@@ -206,6 +207,7 @@
  *  COMPONENTS
  */
 import message from "../Alertmessage/message.vue";
+import {Util} from '../../js/util';
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
 
@@ -346,38 +348,24 @@ export default {
      * FORM VALIDATION
      */
     onValidate(value, inputId, megId) {
-      if (value == "" || value == undefined)
-        document.getElementById(inputId).style.border = "solid 1px red";
-      else {
-        document.getElementById(inputId).style.border = "solid 1px #d2d6de";
-        document.getElementById(megId).style.display = "none";
-      }
+      Util.onValidate(value, inputId, megId);
     },
 
-    onValidateMessage(inputId, megId) {
-      document.getElementById(inputId).style.border = "solid 1px red";
-      document.getElementById(megId).style.display = "block";
-    },
     checkValidate() {
       if (!this.hostelroom.room_no) {
-        this.onValidateMessage("name_id", "namemsg");
-        return false;
+        Util.onValidateMessage("name_id", "namemsg");
       }
       if (!this.hostelroom.hostel_id) {
-        this.onValidateMessage("hostel_id", "hostelmsg");
-        return false;
+        Util.onValidateMessage("hostel_id", "hostelmsg");
       }
       if (!this.hostelroom.room_type_id) {
-        this.onValidateMessage("roomtype_id", "roomtypemsg");
-        return false;
+        Util.onValidateMessage("roomtype_id", "roomtypemsg");
       }
       if (!this.hostelroom.no_of_bed) {
-        this.onValidateMessage("nob_id", "nobmsg");
-        return false;
+        Util.onValidateMessage("nob_id", "nobmsg");
       }
       if (!this.hostelroom.cost_per_bed) {
-        this.onValidateMessage("cpb_id", "cpbmsg");
-        return false;
+        Util.onValidateMessage("cpb_id", "cpbmsg");
       } else {
         return true;
       }
@@ -385,6 +373,16 @@ export default {
     },
     goAlertClose() {
       $(".alert").css("display", "none");
+    },
+
+    printme(table)
+    {
+      Util.printme(table);
+    },
+
+    downloadExcel(table, name, filename) 
+    {
+      Util.downloadExcel(table,name,filename);
     }
   }
 };

@@ -54,28 +54,18 @@
       <div class="card-body">
         <input type="text" placeholder="Search..." class="searchText" />
         <div class="copyRows">
-          <div class="row" id="copyRow">
-            <div class="col-2">
-              <a href="#" title="Copy">
-                <i class="fa fa-copy"></i>
-              </a>
-            </div>
-            <div class="col-2">
-              <a href="#" title="Excel">
+          <div class="row" id="copyRow">                
+            <div class="col-3">
+              <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Attendance_Date.xls')" title="Excel">
                 <i class="fa fa-file-excel-o"></i>
               </a>
             </div>
-            <div class="col-2">
-              <a href="#" title="PDF">
-                <i class="fa fa-file-pdf-o"></i>
-              </a>
-            </div>
-            <div class="col-2">
-              <a href="#" title="Print">
+            <div class="col-3">
+              <a href="#" @click.prevent="printme('print')" title="Print">
                 <i class="fa fa-print"></i>
               </a>
             </div>
-            <div class="col-2">
+            <div class="col-3">
               <a onclick="showColumns()" title="Columns">
                 <i class="fa fa-columns"></i>
               </a>
@@ -109,7 +99,7 @@
           </div>
         </div>
 
-        <div class="table-responsive">
+        <div class="table-responsive" id="print">
           <table class="table table-hover table-striped" id="studenttable">
             <thead>
               <tr role="row">
@@ -168,6 +158,9 @@
   </div>
 </template>
 <script>
+import message from "../Alertmessage/message.vue";
+import {Util} from '../../js/util';
+
 export default {
   data() {
     return {
@@ -184,6 +177,16 @@ export default {
       document.getElementById(id2).style.color = "white";
       document.getElementById(id3).style.background = "#1b5e20";
       document.getElementById(id3).style.color = "white";
+    },
+
+    printme(table)
+    {
+      Util.printme(table);
+    },
+
+    downloadExcel(table, name, filename) 
+    {
+      Util.downloadExcel(table,name,filename);
     }
   }
 };

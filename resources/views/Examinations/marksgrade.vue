@@ -29,7 +29,7 @@
               <input id="nameid" type="text" class="inputbox" name="gradename" v-model="saveMarksGrade.name"
               @keyup="onValidate(saveMarksGrade.name, 'nameid', 'namemsg')" 
                 v-on:blur="onValidate(saveMarksGrade.name, 'nameid', 'namemsg')"/>
-                <span id="namemsg" class="error_message">Grade Name is required</span>
+                <span id="namemsg" class="error_message">Grade name is required</span>
             </div>
             <div class="col-12">
               <label for="percent">
@@ -39,7 +39,7 @@
               <input id="markFrom" type="text" class="inputbox" name="percent" v-model="saveMarksGrade.mark_from"
               @keyup="onValidate(saveMarksGrade.mark_from, 'markFrom', 'markFrommsg')" 
                 v-on:blur="onValidate(saveMarksGrade.mark_from, 'markFrom', 'markFrommsg')"/>
-                <span id="markFrommsg" class="error_message">Marks_from field is required</span>
+                <span id="markFrommsg" class="error_message">Marks from field is required</span>
             </div>
             <div class="col-12">
               <label for="upto">
@@ -49,7 +49,7 @@
               <input id="marksUpto" type="text" class="inputbox" name="upto" v-model="saveMarksGrade.marks_upto"
               @keyup="onValidate(saveMarksGrade.marks_upto, 'marksUpto', 'marksUptomsg')" 
                 v-on:blur="onValidate(saveMarksGrade.marks_upto, 'marksUpto', 'marksUptomsg')"/>
-                <span id="marksUptomsg" class="error_message">Marks_upto field is required</span>
+                <span id="marksUptomsg" class="error_message">Marks upto field is required</span>
             </div>
             <div class="col-12 end">
               <label for="description">Description</label>
@@ -76,28 +76,18 @@
             </div>
             <input v-on:keyup="searchTable()" type="text" placeholder="Search..." class="searchText" id="myInput"/>
             <div class="copyRows">
-              <div class="row" id="copyRow">
-                <div class="col-2">
-                  <a href="#" title="Copy">
-                    <i class="fa fa-copy"></i>
-                  </a>
-                </div>
-                <div class="col-2">
-                  <a href="#" title="Excel">
+              <div class="row" id="copyRow">                
+                <div class="col-3">
+                  <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Mark_Grade.xls')" title="Excel">
                     <i class="fa fa-file-excel-o"></i>
                   </a>
                 </div>
-                <div class="col-2">
-                  <a href="#" title="PDF">
-                    <i class="fa fa-file-pdf-o"></i>
-                  </a>
-                </div>
-                <div class="col-2">
-                  <a href="#" title="Print">
+                <div class="col-3">
+                  <a href="#" @click.prevent="printme('print')" title="Print">
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                   <a onclick="showColumns()" title="Columns">
                     <i class="fa fa-columns"></i>
                   </a>
@@ -125,7 +115,8 @@
                 </div>
               </div>
             </div>
-            <div class="table-responsive">
+
+            <div class="table-responsive" id="print">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
                   <tr>
@@ -164,7 +155,11 @@
     <!-- <button type="button" @click="Test()">Test</button> -->
   </div>
 </template>
+
 <script>
+import message from "../Alertmessage/message.vue";
+import {Util} from '../../js/util';
+
 export default {
   data(){
     return {
@@ -242,37 +237,27 @@ export default {
         tr[i].style.display = "none";
     }
       }
-    },onValidate(value, inputId, megId)
-    {
-        if(value == "" || value == undefined) document.getElementById(inputId).style.border = 'solid 1px red';
-        else 
-        {
-            document.getElementById(inputId).style.border = 'solid 1px #d2d6de';
-            document.getElementById(megId).style.display = 'none';
-        }
     },
-
-    onValidateMessage(inputId, megId)
+    
+    onValidate(value, inputId, megId)
     {
-        document.getElementById(inputId).style.border = 'solid 1px red';
-        document.getElementById(megId).style.display = 'block';
+      Util.onValidate(value, inputId, megId);
     },
-
     checkValidate()
     {   
         if(this.saveMarksGrade.name == "" || this.saveMarksGrade.name == undefined)
         {
-            this.onValidateMessage('nameid', 'namemsg');
+            Util.onValidateMessage('nameid', 'namemsg');
             this.arrayError.push('noop');
 
         }
         if(this.saveMarksGrade.mark_from == "" || this.saveMarksGrade.mark_from == undefined)
         {
-            this.onValidateMessage('markFrom', 'markFrommsg');
+            Util.onValidateMessage('markFrom', 'markFrommsg');
             this.arrayError.push('noop');
         }if(this.saveMarksGrade.marks_upto == "" || this.saveMarksGrade.marks_upto == undefined)
         {
-            this.onValidateMessage('marksUpto', 'marksUptomsg');
+            Util.onValidateMessage('marksUpto', 'marksUptomsg');
             this.arrayError.push('noop');
         }
         if(this.arrayError.length > 0){
@@ -297,6 +282,16 @@ export default {
       .then(response => {
           this.saveMarksGrade = response.data;
       });
+    },
+
+    printme(table)
+    {
+      Util.printme(table);
+    },
+
+    downloadExcel(table, name, filename) 
+    {
+      Util.downloadExcel(table,name,filename);
     }
 
   }

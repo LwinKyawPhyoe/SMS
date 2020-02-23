@@ -56,12 +56,12 @@
             <div class="copyRows">
               <div class="row" id="copyRow">
                 <div class="col-3">
-                  <a href="#" title="Excel">
+                  <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Department.xls')" title="Excel">
                     <i class="fa fa-file-excel-o"></i>
                   </a>
                 </div>
                 <div class="col-3">
-                  <a href="#" title="Print">
+                  <a href="#" @click.prevent="printme('print')" title="Print">
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
@@ -72,7 +72,8 @@
                 </div>
               </div>
             </div>
-            <div class="table-responsive">
+
+            <div class="table-responsive" id="print">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
                   <tr>
@@ -113,6 +114,8 @@
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
 import message from "../Alertmessage/message.vue";
+import {Util} from '../../js/util';
+
 export default {
   components: {
     confirm,
@@ -219,33 +222,27 @@ export default {
      *
      */
     onValidate(value, inputId, megId) {
-      if (value == "" || value == undefined)
-        document.getElementById(inputId).style.border = "solid 1px red";
-      else document.getElementById(inputId).style.border = "solid 1px #d2d6de";
-      document.getElementById(megId).style.display = "none";
-    },
-    onValidationMessage(inputId, megId) {
-      document.getElementById(inputId).style.border = "solid 1px red";
-      document.getElementById(megId).style.display = "block";
+      Util.onValidate(value, inputId, megId);
     },
 
     checkValidate() {
-      if (
-        this.department.department_name == "" ||
-        this.department.department_name == undefined
-      ) {
-        this.onValidationMessage("sessionid", "sessionmsg");
+      if (this.department.department_name == "" ||this.department.department_name == undefined) {
+        Util.onValidateMessage("sessionid", "sessionmsg");
       } else {
         return true;
       }
       return false;
     },
 
-    /***
-     *
-     *End of Form Validation
-     *
-     */
+    printme(table)
+    {
+      Util.printme(table);
+    },
+
+    downloadExcel(table, name, filename) 
+    {
+      Util.downloadExcel(table,name,filename);
+    }
   }
 };
 </script>

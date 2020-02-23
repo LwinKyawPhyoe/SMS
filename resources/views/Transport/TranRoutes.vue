@@ -15,29 +15,26 @@
                         <h6>Create Route</h6>
                     </div>
                     <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
-                        <div id="OthAlert" style="margin: 0 10px 10px 10px;display:none;" class="alert alert-success" role="alert">
-                            {{ alertmessage }}
-                            <button @click="goAlertClose(1)" type="button" class="close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                        <message :alertmessage="msg" />
 
-                        <div class="col-12">
-                            <label for="route">Route Title<strong>*</strong></label>
-                            <input type="text" id="route_title" class="inputbox" v-model="tranRoute.route_title"
-                                @keyup="onValidate(tranRoute.route_title, 'route_title', 'route_title_msg')" 
-                                v-on:blur="onValidate(tranRoute.route_title, 'route_title', 'route_title_msg')" />
-                            <span id="route_title_msg" class="error_message">Route title is required</span>
-                        </div>
-                        <div class="col-12">
-                            <label for="fare">Fare</label>
-                            <input type="text" class="inputbox" v-model="tranRoute.fare" ref="input"
-                                @keydown="restrictSpecialCharacter($event, 101, tranRoute.fare)"
-                                v-on:blur="formatFare()" @keyup.enter="formatFare()" @click="selectAll()" />
-                        </div>
-                        <div class="col-12">
-                            <button @click="goSave()" class="save">Save</button>
-                        </div>
+                        <form @submit.prevent="goSave">
+                            <div class="col-12">
+                                <label for="route">Route Title<strong>*</strong></label>
+                                <input type="text" id="route_title" class="inputbox" v-model="tranRoute.route_title"
+                                    @keyup="onValidate(tranRoute.route_title, 'route_title', 'route_title_msg')" 
+                                    v-on:blur="onValidate(tranRoute.route_title, 'route_title', 'route_title_msg')" />
+                                <span id="route_title_msg" class="error_message">Route title is required</span>
+                            </div>
+                            <div class="col-12">
+                                <label for="fare">Fare</label>
+                                <input type="text" class="inputbox" v-model="tranRoute.fare" ref="input"
+                                    @keydown="restrictSpecialCharacter($event, 101, tranRoute.fare)"
+                                    v-on:blur="formatFare()" @keyup.enter="formatFare()" @click="selectAll()" />
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="save">Save</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -48,23 +45,18 @@
                         <h6>Route List</h6>
                     </div>
                     <div class="card-body">
-                        <div id="deleteAlert" style="margin: 10px 10px 10px 10px;display:none;" class="alert alert-success" role="alert">
-                            {{alertdeletemsg}}
-                            <button @click="goAlertClose(2)" type="button" class="close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                        <message :alertmessage="deletemsg" />
 
                         <input type="text" placeholder="Search..." class="searchText" />
                         <div class="copyRows">
                             <div class="row" id="copyRow">                
                                 <div class="col-3">
-                                    <a href="#" title="Excel">
+                                    <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Tran_Route.xls')" title="Excel">
                                         <i class="fa fa-file-excel-o"></i>
                                     </a>
                                 </div>
                                 <div class="col-3">
-                                    <a href="#" title="Print">
+                                    <a href="#" @click.prevent="printme('print')" title="Print">
                                         <i class="fa fa-print"></i>
                                     </a>
                                 </div>
@@ -75,7 +67,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive">
+                        <div class="table-responsive" id="print">
                             <table class="table table-hover table-striped" id="studenttable">
                                 <thead>
                                     <tr>
@@ -104,153 +96,128 @@
 </template>
 
 <script>
-    export default {
-        data() 
-        {
-            return {
-                tranRoute: {"id":"","route_title":"","fare":""},
-                routeList: [],
-                alertmessage: "",
-                alertdeletemsg: ""
-            };
-        },
+import message from "../Alertmessage/message.vue";
+import {Util} from '../../js/util';
 
-        created() 
-        {
-            this.getRouteList();
-        },
-
-        methods: 
-        {
-            getRouteList()
-            {
-                this.axios.get('/api/tranRouteList').then(response => {            
-                    this.routeList = response.data;
-                });
+export default {
+    components: {
+        message
+    },
+    data() 
+    {
+        return {
+            tranRoute: {"id":"","route_title":"","fare":""},
+            routeList: [],
+            msg: {
+                text: "",
+                type: ""
             },
-
-            goSave() 
-            {
-                if(this.checkValidate())
-                {
-                    this.axios.post('/api/TranRoute/save', this.tranRoute).then(response => (              
-                        this.tranRoute = {"id":"","route_title":"","fare":""},
-                        this.getRouteList(),
-                        this.alertmessage = response.data,
-                        $('#OthAlert').css('display', 'block')              
-                    ))
-                    .catch(error => {            
-                        console.log("err->" + JSON.stringify(this.error.response))
-                    });
-                }
-            },
-
-            goAlertClose(aVal)
-            {
-                if(aVal == 1) $('#OthAlert').css('display', 'none')
-                else $('#deleteAlert').css('display', 'none')
-            },
-
-            goEdit(aId)
-            {      
-                this.axios.get(`/api/TranRoute/edit/${aId}`).then(response => {
-                    this.tranRoute = response.data;
-                });
-            },
-
-            goDelete(aID)
-            {
-                this.axios.get(`/api/TranRoute/delete/${aID}`).then(response => { 
-                    let i = this.routeList.map(item => item.id).indexOf(aID);
-                    this.routeList.splice(i, 1);
-                    this.alertdeletemsg = response.data,
-                    $('#deleteAlert').css('display', 'block') 
-                });
-            },
-
-            onValidate(value, inputId, megId)
-            {
-                if(value == "" || value == undefined) document.getElementById(inputId).style.border = 'solid 1px red';
-                else 
-                {
-                    document.getElementById(inputId).style.border = 'solid 1px #d2d6de';
-                    document.getElementById(megId).style.display = 'none';
-                }
-            },
-
-            onValidateMessage(inputId, megId)
-            {
-                document.getElementById(inputId).style.border = 'solid 1px red';
-                document.getElementById(megId).style.display = 'block';
-            },
-
-            checkValidate()
-            {
-                if(this.tranRoute.route_title == "" || this.tranRoute.route_title == undefined)
-                {
-                    this.onValidateMessage('route_title', 'route_title_msg');
-                }
-                else
-                {
-                    return true;
-                }
-
-                return false;
-            },
-
-            restrictSpecialCharacter(event, fid, value)
-            {
-                if (event.which != 9)
-                {
-                    if (fid == 101)
-                    {
-                        if (/^[\\\"\'\;\:\>\|~`!@#\$%^&*\(\)]$/i.test(event.key))
-                        {
-                            event.preventDefault();
-                        }
-                    }
-                
-                    if (!((event.which > 47 && event.which < 58) || event.which == 8 || event.which == 46 || event.which == 37 || event.which == 39 || event.which == 190 || (event.keyCode >= 96 && event.keyCode <= 105))) 
-                    {
-                        event.preventDefault();
-                    }
-
-                    if(value != undefined)
-                    {
-                        if (value.includes("."))
-                        {
-                            if (/^[\\\"\'\;\:\>\|~`!@#\$%^&*.\(\)]$/i.test(event.key))
-                            {
-                                event.preventDefault();
-                            }
-                        }
-                    }
-                }
-            },
-
-            formatFare()
-            {
-                let amount = this.tranRoute.fare.replace(/,/g, '');
-                if(amount == "" || parseFloat(amount) == 0){
-                    this.tranRoute.fare = "0.00";
-                }else{
-                    this.tranRoute.fare = this.thousand_sperator(parseFloat(amount).toFixed(2));
-                }
-            },
-
-            thousand_sperator(num) 
-            {
-                if (num != "" && num != undefined && num != null) 
-                {
-                    num = num.replace(/,/g, "");
-                }   
-                var parts = num.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-                return parts;
-            },
-
-            selectAll() {
-                this.$refs.input.select();
+            deletemsg: {
+                text: "",
+                type: ""
             }
+        };
+    },
+
+    created() 
+    {
+        this.getRouteList();
+    },
+
+    methods: 
+    {
+        getRouteList()
+        {
+            this.axios.get('/api/tranRouteList').then(response => {            
+                this.routeList = response.data;
+            });
+        },
+
+        goSave() 
+        {
+            if(this.checkValidate())
+            {
+                this.axios.post('/api/TranRoute/save', this.tranRoute).then(response => (              
+                    this.tranRoute = {"id":"","route_title":"","fare":""},
+                    this.getRouteList(),
+                    (this.msg.text = response.data.text),
+                    (this.msg.type = response.data.type)
+                ))
+                .catch(error => {            
+                    console.log("err->" + JSON.stringify(this.error.response))
+                });
+            }
+        },
+
+        goEdit(aId)
+        {      
+            this.axios.get(`/api/TranRoute/edit/${aId}`).then(response => {
+                this.tranRoute = response.data;
+            });
+        },
+
+        goDelete(aID)
+        {
+            this.axios.get(`/api/TranRoute/delete/${aID}`).then(response => { 
+                let i = this.routeList.map(item => item.id).indexOf(aID);
+                this.routeList.splice(i, 1);
+                (this.deletemsg.text = response.data.text),
+                (this.deletemsg.type = response.data.type);
+            });
+        },
+
+        onValidate(value, inputId, megId)
+        {
+            Util.onValidate(value, inputId, megId);
+        },
+
+        checkValidate()
+        {
+            if(this.tranRoute.route_title == "" || this.tranRoute.route_title == undefined)
+            {
+                Util.onValidateMessage('route_title', 'route_title_msg');
+            }
+            else
+            {
+                return true;
+            }
+
+            return false;
+        },
+
+        restrictSpecialCharacter(event, fid, value)
+        {
+            Util.restrictSpecialCharacter(event, fid, value);
+        },
+
+        formatFare()
+        {
+            let amount = this.tranRoute.fare.replace(/,/g, '');
+            if(amount == "" || parseFloat(amount) == 0){
+                this.tranRoute.fare = "0.00";
+            }else{
+                this.tranRoute.fare = this.thousand_sperator(parseFloat(amount).toFixed(2));
+            }
+        },
+
+        thousand_sperator(num) 
+        {
+            return Util.thousand_sperator(num);
+        },
+
+        selectAll() {
+            this.$refs.input.select();
+        },
+
+        printme(table)
+        {
+            Util.printme(table);
+        },
+
+        downloadExcel(table, name, filename) 
+        {
+            Util.downloadExcel(table,name,filename);
         }
-    };
+    }
+};
 </script>

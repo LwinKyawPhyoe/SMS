@@ -52,12 +52,12 @@
                         <div class="copyRows">
                             <div class="row" id="copyRow">                
                                 <div class="col-3">
-                                    <a href="#" title="Excel">
+                                    <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Tran_Assign_Vehicle.xls')" title="Excel">
                                         <i class="fa fa-file-excel-o"></i>
                                     </a>
                                 </div>
                                 <div class="col-3">
-                                    <a href="#" title="Print">
+                                    <a href="#" @click.prevent="printme('print')" title="Print">
                                         <i class="fa fa-print"></i>
                                     </a>
                                 </div>
@@ -68,7 +68,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive">
+                        <div class="table-responsive" id="print">
                             <table class="table table-hover table-striped" id="studenttable">
                                 <thead>
                                     <tr>
@@ -104,6 +104,8 @@
 
 <script>
 import message from "../Alertmessage/message.vue";
+import {Util} from '../../js/util';
+
 export default {
     components: {
         message
@@ -278,6 +280,16 @@ export default {
                 (this.deletemsg.type = response.data.type);
             });
         },
+
+        printme(table)
+        {
+            Util.printme(table);
+        },
+
+        downloadExcel(table, name, filename) 
+        {
+            Util.downloadExcel(table,name,filename);
+        }
     }
 };
 </script>

@@ -15,44 +15,41 @@
                         <h6>Add Vehicle</h6>
                     </div>
                     <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
-                        <div id="OthAlert" style="margin: 0 10px 10px 10px;display:none;" class="alert alert-success" role="alert">
-                            {{ alertmessage }}
-                            <button @click="goAlertClose(1)" type="button" class="close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                        <message :alertmessage="msg" />
 
-                        <div class="col-12">
-                            <label for="number">Vehicle Number <strong>*</strong></label>
-                            <input type="text" id="vehicle_number" class="inputbox" v-model="tranVehicle.vehicle_no" 
-                                @keyup="onValidate(tranVehicle.vehicle_no, 'vehicle_number', 'vehicle_number_msg')" 
-                                v-on:blur="onValidate(tranVehicle.vehicle_no, 'vehicle_number', 'vehicle_number_msg')"/>
-                            <span id="vehicle_number_msg" class="error_message">Vehicle number is required</span>
-                        </div>
-                        <div class="col-12">
-                            <label for="model">Vehicle Model</label>
-                            <input type="text" class="inputbox" v-model="tranVehicle.vehicle_model" />
-                        </div>
-                        <div class="col-12">
-                            <label for="name">Driver Name</label>
-                            <input type="text" class="inputbox" v-model="tranVehicle.driver_name" />
-                        </div>
-                        <div class="col-12">
-                            <label for="licence">Driver Licence</label>
-                            <input type="text" class="inputbox" v-model="tranVehicle.driver_licence" />
-                        </div>
-                        <div class="col-12">
-                            <label for="contact">Driver Contact</label>
-                            <input type="text" class="inputbox" v-model="tranVehicle.driver_contact" 
-                                @keydown="restrictPhoneNo($event, tranVehicle.driver_contact)"/>
-                        </div>
-                        <div class="col-12 end">
-                            <label for="note">Note</label>
-                            <textarea class="textareas" style="font-size: 9.5pt;" rows="2" v-model="tranVehicle.note"></textarea>
-                        </div>
-                        <div class="col-12">
-                            <button @click="goSave()" class="save">Save</button>
-                        </div>
+                        <form @submit.prevent="goSave">
+                            <div class="col-12">
+                                <label for="number">Vehicle Number <strong>*</strong></label>
+                                <input type="text" id="vehicle_number" class="inputbox" v-model="tranVehicle.vehicle_no" 
+                                    @keyup="onValidate(tranVehicle.vehicle_no, 'vehicle_number', 'vehicle_number_msg')" 
+                                    v-on:blur="onValidate(tranVehicle.vehicle_no, 'vehicle_number', 'vehicle_number_msg')"/>
+                                <span id="vehicle_number_msg" class="error_message">Vehicle number is required</span>
+                            </div>
+                            <div class="col-12">
+                                <label for="model">Vehicle Model</label>
+                                <input type="text" class="inputbox" v-model="tranVehicle.vehicle_model" />
+                            </div>
+                            <div class="col-12">
+                                <label for="name">Driver Name</label>
+                                <input type="text" class="inputbox" v-model="tranVehicle.driver_name" />
+                            </div>
+                            <div class="col-12">
+                                <label for="licence">Driver Licence</label>
+                                <input type="text" class="inputbox" v-model="tranVehicle.driver_licence" />
+                            </div>
+                            <div class="col-12">
+                                <label for="contact">Driver Contact</label>
+                                <input type="text" class="inputbox" v-model="tranVehicle.driver_contact" 
+                                    @keydown="restrictPhoneNo($event, tranVehicle.driver_contact)"/>
+                            </div>
+                            <div class="col-12 end">
+                                <label for="note">Note</label>
+                                <textarea class="textareas" style="font-size: 9.5pt;" rows="2" v-model="tranVehicle.note"></textarea>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" class="save">Save</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
@@ -63,23 +60,18 @@
                         <h6>Route List</h6>
                     </div>
                     <div class="card-body">
-                        <div id="deleteAlert" style="margin: 10px 10px 10px 10px;display:none;" class="alert alert-success" role="alert">
-                            {{alertdeletemsg}}
-                            <button @click="goAlertClose(2)" type="button" class="close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>
+                        <message :alertmessage="deletemsg" />
 
                         <input type="text" placeholder="Search..." class="searchText" />
                         <div class="copyRows">
                             <div class="row" id="copyRow">                
                                 <div class="col-3">
-                                    <a href="#" title="Excel">
+                                    <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Tran_Vehicles.xls')" title="Excel">
                                         <i class="fa fa-file-excel-o"></i>
                                     </a>
                                 </div>
                                 <div class="col-3">
-                                    <a href="#" title="Print">
+                                    <a href="#" @click.prevent="printme('print')" title="Print">
                                         <i class="fa fa-print"></i>
                                     </a>
                                 </div>
@@ -90,7 +82,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive">
+                        <div class="table-responsive" id="print">
                             <table class="table table-hover table-striped" id="studenttable">
                                 <thead>
                                     <tr>
@@ -125,115 +117,109 @@
 </template>
 
 <script>
-    export default {
-        data() 
-        {
-            return {
-                tranVehicle: {},
-                vehicleList: [],
-                alertmessage: "",
-                alertdeletemsg: ""
-            };
-        },
+import message from "../Alertmessage/message.vue";
+import {Util} from '../../js/util';
 
-        created() 
-        {
-            this.getVehicleList();
-        },
-
-        methods: 
-        {
-            getVehicleList()
-            {
-                this.axios.get('/api/tranVehicleList').then(response => {            
-                    this.vehicleList = response.data;
-                });
+export default {
+    components: {
+        message
+    },
+    data() 
+    {
+        return {
+            tranVehicle: {},
+            vehicleList: [],
+            msg: {
+                text: "",
+                type: ""
             },
-
-            goSave() 
-            {
-                if(this.checkValidate())
-                {
-                    this.axios.post('/api/TranVehicle/save', this.tranVehicle).then(response => (              
-                        this.tranVehicle = {"id":"","vehicle_no":"","vehicle_mocel":"","driver_name":"","driver_licence":"","driver_contact":"","note":""},
-                        this.getVehicleList(),
-                        this.alertmessage = response.data,
-                        $('#OthAlert').css('display', 'block')              
-                    ))
-                    .catch(error => {            
-                        console.log("err->" + JSON.stringify(this.error.response))
-                    });
-                }
-            },
-
-            goAlertClose(aVal)
-            {
-                if(aVal == 1) $('#OthAlert').css('display', 'none')
-                else $('#deleteAlert').css('display', 'none')
-            },
-
-            goEdit(aId)
-            {      
-                this.axios.get(`/api/TranVehicle/edit/${aId}`).then(response => {
-                    this.tranVehicle = response.data;
-                });
-            },
-
-            goDelete(aID)
-            {
-                this.axios.get(`/api/TranVehicle/delete/${aID}`).then(response => { 
-                    let i = this.vehicleList.map(item => item.id).indexOf(aID);
-                    this.vehicleList.splice(i, 1);
-                    this.alertdeletemsg = response.data,
-                    $('#deleteAlert').css('display', 'block') 
-                });
-            },
-
-            onValidate(value, inputId, megId)
-            {
-                if(value == "" || value == undefined) document.getElementById(inputId).style.border = 'solid 1px red';
-                else 
-                {
-                    document.getElementById(inputId).style.border = 'solid 1px #d2d6de';
-                    document.getElementById(megId).style.display = 'none';
-                }
-            },
-
-            onValidateMessage(inputId, megId)
-            {
-                document.getElementById(inputId).style.border = 'solid 1px red';
-                document.getElementById(megId).style.display = 'block';
-            },
-
-            checkValidate()
-            {
-                if(this.tranVehicle.vehicle_no == "" || this.tranVehicle.vehicle_no == undefined)
-                {
-                    this.onValidateMessage('vehicle_number', 'vehicle_number_msg');
-                }
-                else
-                {
-                    return true;
-                }
-
-                return false;
-            },
-
-            restrictPhoneNo(event, value)
-            {
-                if(event.keyCode != 8 && !(/[0-9\+\-\ ]/i.test(event.key)))
-                {
-                    event.preventDefault();
-                }
-
-                if(value != undefined && value !="")
-                {
-                    if (/^[\\\"\'\;\:\>\|~`!@#\$%^&*+\(\)]$/i.test(event.key))
-                    {
-                        event.preventDefault();
-                    }
-                }
+            deletemsg: {
+                text: "",
+                type: ""
             }
+        };
+    },
+
+    created() 
+    {
+        this.getVehicleList();
+    },
+
+    methods: 
+    {
+        getVehicleList()
+        {
+            this.axios.get('/api/tranVehicleList').then(response => {            
+                this.vehicleList = response.data;
+            });
+        },
+
+        goSave() 
+        {
+            if(this.checkValidate())
+            {
+                this.axios.post('/api/TranVehicle/save', this.tranVehicle).then(response => (              
+                    this.tranVehicle = {"id":"","vehicle_no":"","vehicle_mocel":"","driver_name":"","driver_licence":"","driver_contact":"","note":""},
+                    this.getVehicleList(),
+                    (this.msg.text = response.data.text),
+                    (this.msg.type = response.data.type)
+                ))
+                .catch(error => {            
+                    console.log("err->" + JSON.stringify(this.error.response))
+                });
+            }
+        },
+
+        goEdit(aId)
+        {      
+            this.axios.get(`/api/TranVehicle/edit/${aId}`).then(response => {
+                this.tranVehicle = response.data;
+            });
+        },
+
+        goDelete(aID)
+        {
+            this.axios.get(`/api/TranVehicle/delete/${aID}`).then(response => { 
+                let i = this.vehicleList.map(item => item.id).indexOf(aID);
+                this.vehicleList.splice(i, 1);
+                (this.deletemsg.text = response.data.text),
+                (this.deletemsg.type = response.data.type);
+            });
+        },
+
+        onValidate(value, inputId, megId)
+        {
+            Util.onValidate(value, inputId, megId);
+        },
+
+        checkValidate()
+        {
+            if(this.tranVehicle.vehicle_no == "" || this.tranVehicle.vehicle_no == undefined)
+            {
+                Util.onValidateMessage('vehicle_number', 'vehicle_number_msg');
+            }
+            else
+            {
+                return true;
+            }
+
+            return false;
+        },
+
+        restrictPhoneNo(event, value)
+        {
+            Util.restrictPhoneNo(event, value);
+        },
+
+        printme(table)
+        {
+            Util.printme(table);
+        },
+
+        downloadExcel(table, name, filename) 
+        {
+            Util.downloadExcel(table,name,filename);
         }
-    };
+    }
+};
 </script>

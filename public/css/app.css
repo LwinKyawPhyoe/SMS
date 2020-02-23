@@ -3655,6 +3655,14 @@ button:focus {
   transition: background 0s;
 }
 
+.ViewStaffDirectory .input_readonly {
+  border: none !important;
+  background-color: transparent !important;
+  text-align: right;
+  color: green;
+  font-weight: 600;
+}
+
 .ViewStaffDirectory #row {
   margin-top: -1rem;
   margin: -1rem;
@@ -3676,7 +3684,7 @@ button:focus {
 }
 
 .ViewStaffDirectory #row .tableCard .Profile .name {
-  text-align: center;
+  text-align: center !important;
   font-weight: bold;
   margin-top: 5px;
 }

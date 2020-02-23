@@ -400,6 +400,8 @@
   </div>
 </template>
 <script>
+import message from "../Alertmessage/message.vue";
+import {Util} from '../../js/util';
 import Datepicker from "vuejs-datepicker";
 export default {
   components: {
@@ -610,45 +612,36 @@ export default {
      * FORM VALIDATION
      */
     onValidate(value, inputId, megId) {
-      if (value == "" || value == undefined)
-        document.getElementById(inputId).style.border = "solid 1px red";
-      else {
-        document.getElementById(inputId).style.border = "solid 1px #d2d6de";
-        document.getElementById(megId).style.display = "none";
-      }
+      Util.onValidate(value, inputId, megId);
     },
 
-    onValidateMessage(inputId, megId) {
-      document.getElementById(inputId).style.border = "solid 1px red";
-      document.getElementById(megId).style.display = "block";
-    },
     checkValidate() {
       if (!this.model.staff_id) {
-        this.onValidateMessage("staff_id", "staff_idmsg");
+        Util.onValidateMessage("staff_id", "staff_idmsg");
         return false;
       }
       if (!this.model.role_id) {
-        this.onValidateMessage("role_id", "role_idmsg");
+        Util.onValidateMessage("role_id", "role_idmsg");
         return false;
       }
       if (!this.model.name) {
-        this.onValidateMessage("name_id", "namemsg");
+        Util.onValidateMessage("name_id", "namemsg");
         return false;
       }
       if (!this.model.email) {
-        this.onValidateMessage("email_id", "emailmsg");
+        Util.onValidateMessage("email_id", "emailmsg");
         return false;
       }
       if (!this.model.gender) {
-        this.onValidateMessage("gender_id", "gendermsg");
+        Util.onValidateMessage("gender_id", "gendermsg");
         return false;
       }
       if (!this.model.dob) {
-        this.onValidateMessage("dob_id", "dobmsg");
+        Util.onValidateMessage("dob_id", "dobmsg");
         return false;
       }
       if (!this.model.image) {
-        this.onValidateMessage("image_id", "imagemsg");
+        Util.onValidateMessage("image_id", "imagemsg");
         return false;
       } else {
         return true;

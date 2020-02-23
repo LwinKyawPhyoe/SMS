@@ -77,34 +77,25 @@
         <input type="text" placeholder="Search..." class="searchText" />
         <div class="copyRows">
           <div class="row" id="copyRow">
-            <div class="col-2">
-              <a href="#" title="Copy">
-                <i class="fa fa-copy"></i>
-              </a>
-            </div>
-            <div class="col-2">
-              <a href="#" title="Excel">
+            <div class="col-3">
+              <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Student_Transport_Report.xls')" title="Excel">
                 <i class="fa fa-file-excel-o"></i>
               </a>
             </div>
-            <div class="col-2">
-              <a href="#" title="PDF">
-                <i class="fa fa-file-pdf-o"></i>
-              </a>
-            </div>
-            <div class="col-2">
-              <a href="#" title="Print">
+            <div class="col-3">
+              <a href="#" @click.prevent="printme('print')" title="Print">
                 <i class="fa fa-print"></i>
               </a>
             </div>
-            <div class="col-2">
-              <a title="Columns">
+            <div class="col-3">
+              <a href="#" title="Columns">
                 <i class="fa fa-columns"></i>
               </a>
             </div>
           </div>
         </div>
-        <div class="table-responsive">
+
+        <div class="table-responsive" id="print">
           <table class="table table-hover table-striped" id="studenttable">
             <thead>
               <tr style="font-size:14px;">
@@ -146,3 +137,40 @@
     </div>
   </div>
 </template>
+
+<script>
+import message from "../Alertmessage/message.vue";
+import {Util} from '../../js/util';
+
+export default {
+    components: {
+        message
+    },
+    data() 
+    {
+        return {
+            msg: {
+                text: "",
+                type: ""
+            },
+            deletemsg: {
+                text: "",
+                type: ""
+            }
+        };
+    },
+
+    methods: 
+    {
+      printme(table)
+      {
+        Util.printme(table);
+      },
+
+      downloadExcel(table, name, filename) 
+      {
+        Util.downloadExcel(table,name,filename);
+      }
+    }
+};
+</script>
