@@ -61,24 +61,34 @@
                 <div class="card-body">
                     <input type="text" placeholder="Search..." class="searchText">
                     <div class="copyRows">
-                        <div class="row" id="copyRow">                
-                            <div class="col-3">
-                                <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Evaluation_Report.xls')" title="Excel">
-                                    <i class="fa fa-file-excel-o"></i>
+                        <div class="row" id="copyRow">
+                            <div class="col-2">
+                            <a href="#" title="Copy">
+                                <i class="fa fa-copy"></i>
+                            </a>
+                            </div>
+                            <div class="col-2">
+                                <a href="#" title="Excel">
+                                <i class="fa fa-file-excel-o"></i>
                                 </a>
                             </div>
-                            <div class="col-3">
-                                <a href="#" @click.prevent="printme('print')" title="Print">
-                                    <i class="fa fa-print"></i>
+                            <div class="col-2">
+                                <a href="#" title="PDF">
+                                <i class="fa fa-file-pdf-o"></i>
                                 </a>
                             </div>
-                            <div class="col-3">
+                            <div class="col-2">
+                                <a href="#" title="Print">
+                                <i class="fa fa-print"></i>
+                                </a>
+                            </div>
+                            <div class="col-2">
                                 <a title="Columns" onclick="showColumns('columns','backgroundColumn')">
                                 <i class="fa fa-columns"></i>
                                 </a>
                                 
                                 <div id="columns" class="columns">
-                                    <div v-for="item in arrayTableColumns" :key="item.Id">
+                                    <div v-for="item in arrayTableColumns">
                                         <p @click="clickHideColumn(item)" :id="item.Id" class="tableLink">
                                             <span>{{item.Name}}</span>
                                         </p>
@@ -93,8 +103,7 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="table-responsive" id="print">            
+                    <div class="table-responsive">            
                         <table class="table table-hover table-striped" id="studenttable">
                             <thead>
                                 <tr>
@@ -144,9 +153,6 @@
 </template>
 <script>
     import detailmodal from "../Homework/detail_evaluation_modal.vue";
-    import message from "../Alertmessage/message.vue";
-    import {Util} from '../../js/util';
-
     export default {
         components: {
             detailmodal
@@ -170,16 +176,6 @@
             },
             clickShowColumn(data){
                 clickShowAllColumn(data);
-            },
-
-            printme(table)
-            {
-                Util.printme(table);
-            },
-
-            downloadExcel(table, name, filename) 
-            {
-                Util.downloadExcel(table,name,filename);
             }
         }
     }

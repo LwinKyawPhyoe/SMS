@@ -317,3 +317,19 @@ Route::get('getClassSectionId/{arrayids}','ClassSectionController@getAssignSub_i
 Route::get('getClassSection/{id}', 'ClassSectionController@Theinindex');
 Route::get('searchExamSchadule/{arrayClassSectionExam}', 'ExamSchaduleController@index');
 // End Thei Htike Aung Section
+
+// Start Home work
+Route::get('homework', 'HomeworkController@index');
+Route::group(['prefix' => 'homework'], function() {
+    Route::post('save','HomeworkController@store');
+    Route::post('edit','HomeworkController@edit');
+    Route::get('delete/{id}','HomeworkController@destroy');
+});
+
+// Start Content
+Route::get('content', 'ContentController@index');
+Route::group(['prefix' => 'content'], function() {
+    Route::post('save','ContentController@store');
+    Route::post('show','ContentController@show');
+    Route::get('delete/{id}','ContentController@destroy');
+});

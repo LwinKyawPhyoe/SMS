@@ -56,20 +56,20 @@
 
                 <div class="sub-header">
                     <h6>Homework List</h6>
-                    <button class="add" data-toggle="modal" data-target="#AddHomework">Add</button>
+                    <button class="add" data-toggle="modal" data-target="#AddHomework" @click="openAddHomework()">Add</button>
                 </div>
                 <div class="card-body">
                     <input type="text" placeholder="Search..." class="searchText">
                     <div class="copyRows">
-                        <div class="row" id="copyRow">                
+                        <div class="row" id="copyRow">
                             <div class="col-3">
-                                <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Homework.xls')" title="Excel">
-                                    <i class="fa fa-file-excel-o"></i>
+                                <a href="#" title="Excel">
+                                <i class="fa fa-file-excel-o"></i>
                                 </a>
                             </div>
                             <div class="col-3">
-                                <a href="#" @click.prevent="printme('print')" title="Print">
-                                    <i class="fa fa-print"></i>
+                                <a href="#" title="Print">
+                                <i class="fa fa-print"></i>
                                 </a>
                             </div>
                             <div class="col-3">
@@ -78,7 +78,7 @@
                                 </a>
                                 
                                 <div id="columns" class="columns">
-                                    <div v-for="item in arrayTableColumns" :key="item.Id">
+                                    <div v-for="item in arrayTableColumns">
                                         <p @click="clickHideColumn(item)" :id="item.Id" class="tableLink">
                                             <span>{{item.Name}}</span>
                                         </p> 
@@ -93,9 +93,8 @@
                             </div>
                         </div>
                     </div>
-
-                    <div class="table-responsive" id="print">            
-                        <table class="table table-hover table-striped" id="studenttable">
+                    <div class="table-responsive">            
+                        <table class="table table-hover table-striped">
                             <thead>
                                 <tr>
                                     <th :class="arrayTableColumns[0].class" nowrap>Class</th>
@@ -109,21 +108,21 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="active">
+                                <tr class="active" v-for="data in homeworkList">
                                     <td :class="arrayTableColumns[0].class" nowrap>
-                                        Class 1
+                                       {{ data.class }}
                                     </td>
                                     <td :class="arrayTableColumns[1].class" nowrap>
-                                        Section 1
+                                        {{ data.section }}
                                     </td>
                                     <td :class="arrayTableColumns[2].class" nowrap>
-                                        Subject 1
+                                        {{ data.class }}
                                     </td>
                                     <td :class="arrayTableColumns[3].class" nowrap>
-                                        07/02/2018
+                                        {{ showDate(data.homework_date) }}
                                     </td>
                                     <td :class="arrayTableColumns[4].class" nowrap>
-                                        07/02/2018
+                                        {{ showDate(data.submission_date) }}
                                     </td>
                                     <td :class="arrayTableColumns[5].class" nowrap>
 
@@ -135,7 +134,7 @@
                                         <i class="fa fa-list pen"  data-toggle="modal" data-target="#EvaluateHomework">
                                             <span class="penLabel">Detail</span>
                                         </i>
-                                        <i class="fa fa-pencil pen" data-toggle="modal" data-target="#EditHomework">
+                                        <i class="fa fa-pencil pen" data-toggle="modal" data-target="#EditHomework" @click="openEditHomework(data)">
                                             <span class="penLabel">Edit</span>
                                         </i>
                                         <i class="fa fa-trash time">
@@ -171,9 +170,7 @@
 import addmodal from "../Homework/add_homework_modal.vue";
 import editmodal from "../Homework/edit_homework_modal.vue";
 import detailmodal from "../Homework/detail_homework_modal.vue";
-import message from "../Alertmessage/message.vue";
-import {Util} from '../../js/util';
-
+import { EventBus } from "../../js/event-bus.js";
 export default {
     components: {
         addmodal,
@@ -182,7 +179,6 @@ export default {
     },
     data() {
         return {
-            className: "data",
             arrayTableColumns: [
                 {"Name": "Class","Id": "ClassId", "class": "tbl_body_Class"},
                 {"Name": "Section","Id": "SectionId", "class": "tbl_body_Section"},
@@ -193,24 +189,38 @@ export default {
                 {"Name": "Created By","Id": "CreatedById", "class": "tbl_body_Created"},
                 {"Name": "Action","Id": "ActionId", "class": "tbl_body_Action"}
             ],
+            homeworkList : [],
         };
     },
+    created() {
+        this.getHomeworkList();
+        EventBus.$on("saveHomework", data => {
+            this.getHomeworkList();
+        });
+    },
     methods: {
+        getHomeworkList(){
+            this.axios.get('/api/homework').then(response => {
+                this.homeworkList = response.data;
+            });
+        },
         clickHideColumn(data){
             showTableHeader(data);
         },
         clickShowColumn(data){
             clickShowAllColumn(data);
         },
-
-        printme(table)
-        {
-            Util.printme(table);
+        openAddHomework(){
+            EventBus.$emit("openAddHomework", "open");
         },
-
-        downloadExcel(table, name, filename) 
-        {
-            Util.downloadExcel(table,name,filename);
+        openEditHomework(data){
+            EventBus.$emit("openEditHomework", data);
+        },
+        showDate(date) {
+            let day = date.substring(6, 8);
+            let month = date.substring(4, 6);
+            let year = date.substring(0, 4);
+            return day + "/" + month + "/" + year;
         }
     }
 };

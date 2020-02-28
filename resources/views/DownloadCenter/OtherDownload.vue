@@ -7,41 +7,36 @@
       </h4>
     </div>
     <hr />
+
+    <confirm :url="props"></confirm>
+
     <div class="card">
       <div class="card-header">
         <h6>Other Download List</h6>
       </div>
       <div class="card-body">
+      <message :alertmessage="deletemsg" />
         <input type="text" placeholder="Search..." class="searchText" />
         <div class="copyRows">
-          <div class="row" id="copyRow">
-            <div class="col-2">
-              <a href="#" title="Copy">
-                <i class="fa fa-copy"></i>
-              </a>
-            </div>
-            <div class="col-2">
-              <a href="#" title="Excel">
+          <div class="row" id="copyRow">                
+            <div class="col-3">
+              <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Upload_Content.xls')" title="Excel">
                 <i class="fa fa-file-excel-o"></i>
               </a>
             </div>
-            <div class="col-2">
-              <a href="#" title="PDF">
-                <i class="fa fa-file-pdf-o"></i>
-              </a>
-            </div>
-            <div class="col-2">
-              <a href="#" title="Print">
+            <div class="col-3">
+              <a href="#" @click.prevent="printme('print')" title="Print">
                 <i class="fa fa-print"></i>
               </a>
             </div>
-            <div class="col-2">
+            <div class="col-3">
               <a href="#" title="Columns">
                 <i class="fa fa-columns"></i>
               </a>
             </div>
           </div>
         </div>
+        
         <div class="table-responsive">
           <table class="table table-hover table-striped" id="studenttable">
             <thead>
@@ -50,44 +45,32 @@
                 <th class="all" nowrap>Type</th>
                 <th class="all" nowrap>Date</th>
                 <th class="all" nowrap>Available For</th>
+                <th class="all" nowrap>Class</th>
                 <th class="all" style="text-align:right;" nowrap>Action</th>
               </tr>
             </thead>
             <tbody>
-              <tr class="active">
+              <tr class="active" v-for="item in ContentList">
                 <td class="all" nowrap>
                   <p class="toolText">
-                    Syllabus for Class 1
+                    {{item.title}}
                     <span class="tooltipLabel">No Description</span>
                   </p>
                 </td>
-                <td class="all" nowrap>Other Download</td>
-                <td class="all" nowrap>07/02/2018</td>
-                <td class="all" nowrap>Super Admin</td>
-                <td style="text-align:right;">
-                  <i class="fa fa-download download">
-                    <span class="downloadLabel">Download</span>
-                  </i>
-                  <i class="fa fa-trash time">
-                    <span class="timeLabel">Delete</span>
-                  </i>
-                </td>
-              </tr>
-              <tr class="active">
+                <td class="all" nowrap>{{item.type}}</td>
+                <td class="all" nowrap>{{item.date}}</td>
                 <td class="all" nowrap>
-                  <p class="toolText">
-                    Syllabus for Class 1
-                    <span class="tooltipLabel">No Description</span>
-                  </p>
+                <p style="padding: 0;margin: 0;"
+                v-if="item.available_for == '1' || item.available_for == '1,2' || item.available_for == '2,1'">Super Admin</p>
+                <p style="padding: 0;margin: 0;"
+                v-if="item.available_for == '2' || item.available_for == '1,2' || item.available_for == '2,1'">Student</p>
                 </td>
-                <td class="all" nowrap>Other Download</td>
-                <td class="all" nowrap>07/02/2018</td>
-                <td class="all" nowrap>Super Admin</td>
-                <td style="text-align:right;">
-                  <i class="fa fa-download download">
+                <td class="all" nowrap>{{ReturnClass(item.class_section_id)}}</td>
+                <td class="all" nowrap style="text-align:right;">
+                  <i class="fa fa-download download" @click.prevent="downloadFile('Tran_Route.xls')">
                     <span class="downloadLabel">Download</span>
                   </i>
-                  <i class="fa fa-trash time">
+                  <i class="fa fa-trash time" @click="goDelete(item.id)" data-toggle="modal" data-target="#exampleModalCenter">
                     <span class="timeLabel">Delete</span>
                   </i>
                 </td>
@@ -99,3 +82,76 @@
     </div>
   </div>
 </template>
+<script>
+
+import message from "../Alertmessage/message.vue";
+import confirm from "../message/confirm.vue";
+import { EventBus } from "../../js/event-bus.js";
+
+export default 
+{
+  components: 
+  {
+    message,
+    confirm,
+  },
+  data(){
+    return {
+      props: {
+        url: "",
+        type: ""
+      },
+      deletemsg: {
+        text: "",
+        type: ""
+      },
+      ContentList: [],
+      ClassSessionList: [],
+    }
+  },
+  created() 
+  {
+    EventBus.$on("clicked", response => {
+      this.getContent();
+      this.deletemsg.text = response.text;
+      this.deletemsg.type = response.type;
+    });
+    this.getAllClass();
+    this.getContent();
+  },
+  methods: {
+    // Get Content
+      getContent(){
+      this.ContentList = [];
+      this.axios.post('/api/content/show',{'type':'Other Download'}).then(response => {
+        this.ContentList = response.data;
+      });
+    },
+    // Get Class And 
+    getAllClass(){
+      this.axios.get('/api/class').then(response => {
+        this.ClassSessionList = response.data;
+      });
+    },
+    // Return Class Name
+    ReturnClass(val){
+      var name = "";
+      if(val != null){
+        name = "ALL Classes"
+      }
+      for(let i = 0;i < this.ClassSessionList.length;i++){
+        if(this.ClassSessionList[i].class_session_id == val){
+          name = this.ClassSessionList[i].class;
+        }
+      }
+      return name;
+    },
+    //Delete Conteent
+    goDelete(aID){
+      var funName = "delete"; /**Delete function */
+      this.props.type = "get";
+      this.props.url = `content/${funName}/${aID}`;
+    },
+  }
+}
+</script>
