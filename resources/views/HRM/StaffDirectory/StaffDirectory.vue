@@ -9,7 +9,7 @@
     <hr />
     <br />
     <div class="card">
-      <div class="card-header">
+      <div class="stucard-header">
         <h6>Select Criteria</h6>
         <router-link to="/staffdirectory/add" class="add">Add Staff</router-link>
       </div>
@@ -32,7 +32,7 @@
                 <option :value="role.id" v-for="(role) in roles" :key="role.id">{{role.name}}</option>
               </select>
               <span id="search_rolemsg" class="error_message">Role is required</span>
-              <button type="submit" id="globalSearch" class="searchButton">Search</button>
+              <button type="submit" class="save">Search</button>
             </form>
           </div>
           <div class="textarea">
@@ -43,7 +43,7 @@
                 class="inputbox"
                 placeholder="Search By staff id,name,..etc."
               />
-              <button type="submit" id="globalSearch" class="searchButton">Search</button>
+              <button type="submit" class="save">Search</button>
             </form>
           </div>
         </div>
@@ -71,14 +71,14 @@
       <div class="stucard-body" v-if="view === true">
         <input type="text" placeholder="Search..." class="searchText" />
         <div class="copyRows">
-          <div class="row" id="copyRow">                
+          <div class="row" id="copyRow">
             <div class="col-3">
-              <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Staff_Directory.xls')" title="Excel">
+              <a href="#" title="Excel">
                 <i class="fa fa-file-excel-o"></i>
               </a>
             </div>
             <div class="col-3">
-              <a href="#" @click.prevent="printme('print')" title="Print">
+              <a href="#" title="Print">
                 <i class="fa fa-print"></i>
               </a>
             </div>
@@ -89,9 +89,8 @@
             </div>
           </div>
         </div>
-
-        <div class="table-responsive" id="print">
-          <table class="table table-hover table-striped" id="studenttable">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped">
             <thead>
               <tr class="active" nowrap>
                 <th nowrap>Staff ID</th>
@@ -112,7 +111,7 @@
                 <td nowrap>{{staff.designation.designation_name}}</td>
                 <td nowarp>{{staff.phone}}</td>
                 <td>
-                  <router-link to="#">
+                  <router-link  :to="{name: 'viewstaffdirectory', params: { id: staff.id }}">
                     <i class="fa fa-list"></i>
                   </router-link>
                   <router-link :to="{name: 'editstadirectory', params: { id: staff.id }}">
@@ -131,7 +130,6 @@
           class="alert alert-success"
           role="alert"
         >No Record Found</div>
-
         <div>
           <div class="row main">
             <div class="imgcard" v-for="(staff) in staffs" :key="staff.id">
@@ -186,20 +184,17 @@
   </div>
 </template>
 <script>
-import message from "../../Alertmessage/message.vue";
-import {Util} from '../../../js/util';
-
-export default {
-  data() {
-    return {
+  export default {
+   data() {
+     return {
       view: true,
       search_by_role: "",
       search_by_other: "",
       staffs: [],
       roles: [],
       isEmpty: false
-    };
-  },
+     };
+   },
   created() {
     this.getStaffs();
     this.getRoles();
@@ -258,12 +253,21 @@ export default {
      * FORM VALIDATION
      */
     onValidate(value, inputId, megId) {
-      Util.onValidate(value, inputId, megId);
+      if (value == "" || value == undefined)
+        document.getElementById(inputId).style.border = "solid 1px red";
+      else {
+        document.getElementById(inputId).style.border = "solid 1px #d2d6de";
+        document.getElementById(megId).style.display = "none";
+      }
     },
-    
+
+    onValidateMessage(inputId, megId) {
+      document.getElementById(inputId).style.border = "solid 1px red";
+      document.getElementById(megId).style.display = "block";
+    },
     checkValidate() {
       if (!this.search_by_role) {
-        Util.onValidateMessage("search_role_id", "search_rolemsg");
+        this.onValidateMessage("search_role_id", "search_rolemsg");
         return false;
       } else {
         return true;
@@ -272,17 +276,7 @@ export default {
     },
     goAlertClose() {
       $(".alert").css("display", "none");
-    },
-
-    printme(table)
-    {
-      Util.printme(table);
-    },
-
-    downloadExcel(table, name, filename) 
-    {
-      Util.downloadExcel(table,name,filename);
     }
   }
-};
+  };
 </script>

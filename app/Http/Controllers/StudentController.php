@@ -7,18 +7,14 @@ use Illuminate\Http\Request;
 use DB;
 class StudentController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
+
     public function index()
     {   
         
-        $allHostel = DB::select('select * from hostels where is_active="yes" and domain="TS" ');
+        $allHostel = DB::select('select * from hostels where is_active="Yes"');
         $allClass = DB::select('select * from classes where is_active="yes"  and domain="TS" and session_id="1" ');
-        
-        return ['class'=>$allClass,'hostel'=>$allHostel];
+        $route = DB::select('select * from routes where is_active="Yes"  and domain="TS" and session_id="1" ');
+        return ['class'=>$allClass,'hostel'=>$allHostel,'routes'=>$route];
     }
     public function upload(Request $req){
         echo $req->file('image')->store('public');
@@ -51,29 +47,32 @@ class StudentController extends Controller
         return $student;
     }
     public function selectHostel($id){
-        $rooms = DB::select('SELECT * FROM hostel_rooms WHERE admission_no=? and is_active="yes"',[$id]);
+        $rooms = DB::select('SELECT * FROM hostel_rooms WHERE hostel_id=?',[$id]);
         return $rooms;
     }
+    public function selectClassSection($id){
+        $classSection = DB::select('SELECT * FROM class_sections WHERE id = ?',[$id]);
+        $classes = DB::select('SELECT * FROM classes WHERE id = ?',[$classSection[0]->class_id]);
+        // print_r($classes);
+        $sections = DB::select('SELECT * FROM sections WHERE id = ?',[$classSection[0]->section_id]);
+        return ['classes'=>$classes,'sections'=>$sections];
+    }
+    
+    public function selecthostelroom()
+    {
+        $classSection = DB::select('SELECT * FROM class_sections WHERE id = ?',[$id]);
+    }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
     public function create()
     {
         //
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+
     public function store(Request $request)
     {
           $admision_no = DB::select('select * from students where admission_no =?',[$request->input('admission_no')]);
+
           $email = DB::select('select * from students where email =?',[$request->input('email')]);
           $phone = DB::select('select * from students where mobileno =?',[$request->input('mobileno')]);
           if($admision_no){
@@ -81,45 +80,100 @@ class StudentController extends Controller
           }else if($email){
             return response()->json("not");
           }
+          else if($phone){
+            return response()->json("not");
+          }
           else{
+            $data = DB::select('select * from students where admission_no =?',[$request->input('sibling_admission_no')]);
+            
             $fatherImageName='';
             $motherImageName='';
             $imageName='';
             $guardianImageName='';
             // student image
-
-            if($request->image){
-            $file1 = $request->image;
-            $ext1 = strtolower($file1->getClientOriginalExtension());
-            $imageName = time() . '.' . $ext1;
-            $request->image->move(public_path('stu_image'), $imageName);
-            }
+            
+            
+                if($request->input('sibling_admission_no')){
+                    if($data[0]->image != $request->image){
+                        $file1 = $request->image;
+                        $ext1 = strtolower($file1->getClientOriginalExtension());
+                        $imageName = time() . '.' . $ext1;
+                        $request->image->move(public_path('stu_image'), $imageName);
+                    }else if($request->image){
+                        $file1 = $request->image;
+                        $ext1 = strtolower($file1->getClientOriginalExtension());
+                        $imageName = time() . '.' . $ext1;
+                        $request->image->move(public_path('stu_image'), $imageName);
+                    }
+                }else if($request->image){
+                    $file1 = $request->image;
+                    $ext1 = strtolower($file1->getClientOriginalExtension());
+                    $imageName = time() . '.' . $ext1;
+                    $request->image->move(public_path('stu_image'), $imageName);
+                }
+            
             
             // father image
-            if($request->father_photo){
-            $file2 = $request->father_photo;
-            $ext2 = strtolower($file2->getClientOriginalExtension());
-            $fatherImageName = time() . '.' . $ext2;
-            $request->father_photo->move(public_path('father_image'), $fatherImageName);
+           
+            if($request->input('sibling_admission_no')){
+                if($data[0]->father_photo != $request->father_photo){
+                    $file2 = $request->father_photo;
+                    $ext2 = strtolower($file2->getClientOriginalExtension());
+                    $fatherImageName = time() . '.' . $ext2;
+                    $request->father_photo->move(public_path('father_image'), $fatherImageName);
+                }else if($request->father_photo){
+                    $file2 = $request->father_photo;
+                    $ext2 = strtolower($file2->getClientOriginalExtension());
+                    $fatherImageName = time() . '.' . $ext2;
+                    $request->father_photo->move(public_path('father_image'), $fatherImageName);
+                }
+            }else if($request->father_photo){
+                $file2 = $request->father_photo;
+                $ext2 = strtolower($file2->getClientOriginalExtension());
+                $fatherImageName = time() . '.' . $ext2;
+                $request->father_photo->move(public_path('father_image'), $fatherImageName);
             }
-            
 
             // mother image
-            if($request->mother_photo){
-            $file3 = $request->mother_photo;
-            $ext3 = strtolower($file3->getClientOriginalExtension());
-            $motherImageName = time() . '.' . $ext3;
-            $request->mother_photo->move(public_path('mother_image'), $motherImageName);
+           
+            if($request->input('sibling_admission_no')){
+                if($data[0]->mother_photo != $request->mother_photo){
+                    $file3 = $request->mother_photo;
+                    $ext3 = strtolower($file3->getClientOriginalExtension());
+                    $motherImageName = time() . '.' . $ext3;
+                    $request->mother_photo->move(public_path('mother_image'), $motherImageName);
+                }else if($request->mother_photo){
+                    $file3 = $request->mother_photo;
+                    $ext3 = strtolower($file3->getClientOriginalExtension());
+                    $motherImageName = time() . '.' . $ext3;
+                    $request->mother_photo->move(public_path('mother_image'), $motherImageName);
+                }
+            }else if($request->mother_photo){
+                $file3 = $request->mother_photo;
+                $ext3 = strtolower($file3->getClientOriginalExtension());
+                $motherImageName = time() . '.' . $ext3;
+                $request->mother_photo->move(public_path('mother_image'), $motherImageName);
             }
-            
             // guardian image
-            if($request->guardian_photo){
+            
+            if($request->input('sibling_admission_no')){
+                if($data[0]->guardian_photo != $request->guardian_photo){
+                    $file4 = $request->guardian_photo;
+                    $ext4 = strtolower($file4->getClientOriginalExtension());
+                    $guardianImageName = time() . '.' . $ext4;
+                    $request->guardian_photo->move(public_path('guardian_image'), $guardianImageName);
+                }else if($request->guardian_photo){
+                    $file4 = $request->guardian_photo;
+                    $ext4 = strtolower($file4->getClientOriginalExtension());
+                    $guardianImageName = time() . '.' . $ext4;
+                    $request->guardian_photo->move(public_path('guardian_image'), $guardianImageName);
+                }
+            }else if($request->guardian_photo){
                 $file4 = $request->guardian_photo;
                 $ext4 = strtolower($file4->getClientOriginalExtension());
                 $guardianImageName = time() . '.' . $ext4;
                 $request->guardian_photo->move(public_path('guardian_image'), $guardianImageName);
             }
-        
 
             $student = new student([
                 'admission_no'=>$request->admission_no,
@@ -170,53 +224,199 @@ class StudentController extends Controller
                 'is_active'=>$request->is_active,
                 'domain'=>$request->domain,
                 'session_id'=>$request->session_id,
+                'race'=>$request->race
             ]);
             $student->save();
             return response()->json("Save Success");
           }
         
     }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function show(student $student)
-    {
-        //
+    public function studentReport($class_id,$section_id,$gender){
+        $data =[];
+           $section= DB::select('SELECT * FROM class_sections WHERE class_id=? AND section_id=?',[$class_id,$section_id]);
+           $student = DB::select('SELECT * FROM students WHERE class_sections_id=? AND gender=?',[$section[0]->id,$gender]);
+           $class = DB::select('SELECT * FROM classes WHERE id=?',[$section[0]->class_id]);
+           $section = DB::select('SELECT * FROM sections WHERE id=?',[$section[0]->section_id]);
+           for($i=0;$i<count($student);$i++){
+               $data[$i]['name'] = $student[$i]->name;
+               $data[$i]['admission_no'] = $student[$i]->admission_no;
+               $data[$i]['class'] = $class[0]->class;
+               $data[$i]['section'] = $section[0]->section;
+               $data[$i]['father_name'] = $student[$i]->father_name;
+               $data[$i]['mother_name']=$student[$i]->mother_name;
+               $data[$i]['dob'] = $student[$i]->dob;
+               $data[$i]['gender'] = $student[$i]->gender;
+               $data[$i]['mobileno'] = $student[$i]->mobileno;
+               $data[$i]['guardian_name'] = $student[$i]->guardian_name;
+               $data[$i]['guardian_phone'] = $student[$i]->guardian_phone;
+           }
+           return $data;
+        
+    }
+    public function studentReport1($class_id,$section_id){
+        $data=[];
+        $section= DB::select('SELECT * FROM class_sections WHERE class_id=? AND section_id=?',[$class_id,$section_id]);
+        $student = DB::select('SELECT * FROM students WHERE class_sections_id=?',[$section[0]->id]);
+        for($i=0;$i<count($student);$i++){
+            $section1= DB::select('SELECT * FROM class_sections WHERE id=?',[$student[$i]->class_sections_id]);
+            $class = DB::select('SELECT * FROM classes WHERE id=?',[$section1[0]->class_id]);
+            $section = DB::select('SELECT * FROM sections WHERE id=?',[$section1[0]->section_id]);
+            $data[$i]['name'] = $student[$i]->name;
+            $data[$i]['admission_no'] = $student[$i]->admission_no;
+            $data[$i]['class'] = $class[0]->class;
+            $data[$i]['section'] = $section[0]->section;
+            $data[$i]['father_name'] = $student[$i]->father_name;
+            $data[$i]['mother_name']=$student[$i]->mother_name;
+            $data[$i]['dob'] = $student[$i]->dob;
+            $data[$i]['gender'] = $student[$i]->gender;
+            $data[$i]['mobileno'] = $student[$i]->mobileno;
+            $data[$i]['guardian_name'] = $student[$i]->guardian_name;
+            $data[$i]['guardian_phone'] = $student[$i]->guardian_phone;
+        }
+        return $data;
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
-     */
-    public function edit(student $student)
+    public function studentReport2($class_id,$gender){
+        $array=[];
+        $data=[];
+        $student=[];
+        $section= DB::select('SELECT * FROM class_sections WHERE class_id=?',[$class_id]);
+        for($i = 0;$i<count($section);$i++){
+            $students = DB::select('SELECT * FROM students WHERE class_sections_id=? AND gender=?',[$section[$i]->id,$gender]);
+            array_push($student,$students);
+        }
+        // $list = $student[0];
+        for($i=0;$i<count($student);$i++){
+            for($x =0;$x<count($student[$i]);$x++){
+                $section1= DB::select('SELECT * FROM class_sections WHERE id=?',[$student[$i][$x]->class_sections_id]);
+                $class = DB::select('SELECT * FROM classes WHERE id=?',[$section1[0]->class_id]);
+                $section = DB::select('SELECT * FROM sections WHERE id=?',[$section1[0]->section_id]);
+                $data[$x]['name'] = $student[$i][$x]->name;
+                $data[$x]['admission_no'] = $student[$i][$x]->admission_no;
+                $data[$x]['class'] = $class[0]->class;
+                $data[$x]['section'] = $section[0]->section;
+                $data[$x]['father_name'] = $student[$i][$x]->father_name;
+                $data[$x]['mother_name']=$student[$i][$x]->mother_name;
+                $data[$x]['dob'] = $student[$i][$x]->dob;
+                $data[$x]['gender'] = $student[$i][$x]->gender;
+                $data[$x]['mobileno'] = $student[$i][$x]->mobileno;
+                $data[$x]['guardian_name'] = $student[$i][$x]->guardian_name;
+                $data[$x]['guardian_phone'] = $student[$i][$x]->guardian_phone;
+                array_push($array,$data[$x]);
+            }
+            
+        }
+        // print_r(count($array));
+        return $array;
+    }
+    public function studentReport3($class_id){
+        $array=[];
+        $data=[];
+        $student=[];
+        $section= DB::select('SELECT * FROM class_sections WHERE class_id=?',[$class_id]);
+        for($i = 0;$i<count($section);$i++){
+            $students = DB::select('SELECT * FROM students WHERE class_sections_id=?',[$section[$i]->id]);
+            array_push($student,$students);
+        }
+        // $list = $student[0];
+        for($i=0;$i<count($student);$i++){
+            for($x =0;$x<count($student[$i]);$x++){
+                $section1= DB::select('SELECT * FROM class_sections WHERE id=?',[$student[$i][$x]->class_sections_id]);
+                $class = DB::select('SELECT * FROM classes WHERE id=?',[$section1[0]->class_id]);
+                $section = DB::select('SELECT * FROM sections WHERE id=?',[$section1[0]->section_id]);
+                $data[$x]['name'] = $student[$i][$x]->name;
+                $data[$x]['admission_no'] = $student[$i][$x]->admission_no;
+                $data[$x]['class'] = $class[0]->class;
+                $data[$x]['section'] = $section[0]->section;
+                $data[$x]['father_name'] = $student[$i][$x]->father_name;
+                $data[$x]['mother_name']=$student[$i][$x]->mother_name;
+                $data[$x]['dob'] = $student[$i][$x]->dob;
+                $data[$x]['gender'] = $student[$i][$x]->gender;
+                $data[$x]['mobileno'] = $student[$i][$x]->mobileno;
+                $data[$x]['guardian_name'] = $student[$i][$x]->guardian_name;
+                $data[$x]['guardian_phone'] = $student[$i][$x]->guardian_phone;
+                array_push($array,$data[$x]);
+            }
+            
+        }
+        // print_r(count($array));
+        return $array;
+    }
+    public function studentReport4($gender){
+        $array=[];
+        $data=[];
+        $student=[];
+        $student = DB::select('SELECT * FROM students WHERE gender=?',[$gender]);
+        // return $student;
+        // $list = $student[0];
+        for($i=0;$i<count($student);$i++){
+                $section1= DB::select('SELECT * FROM class_sections WHERE id=?',[$student[$i]->class_sections_id]);
+                $class = DB::select('SELECT * FROM classes WHERE id=?',[$section1[0]->class_id]);
+                $section = DB::select('SELECT * FROM sections WHERE id=?',[$section1[0]->section_id]);
+                $data[$i]['name'] = $student[$i]->name;
+                $data[$i]['admission_no'] = $student[$i]->admission_no;
+                $data[$i]['class'] = $class[0]->class;
+                $data[$i]['section'] = $section[0]->section;
+                $data[$i]['father_name'] = $student[$i]->father_name;
+                $data[$i]['mother_name']=$student[$i]->mother_name;
+                $data[$i]['dob'] = $student[$i]->dob;
+                $data[$i]['gender'] = $student[$i]->gender;
+                $data[$i]['mobileno'] = $student[$i]->mobileno;
+                $data[$i]['guardian_name'] = $student[$i]->guardian_name;
+                $data[$i]['guardian_phone'] = $student[$i]->guardian_phone;
+        }
+        // print_r(count($array));
+        return $data;
+    }
+    public function show()
     {
-        //
+        $array=[];
+        $data=[];
+        $student=[];
+        $student = DB::select('SELECT * FROM students',[]);
+        // return $student;
+        // $list = $student[0];
+        for($i=0;$i<count($student);$i++){
+                $section1= DB::select('SELECT * FROM class_sections WHERE id=?',[$student[$i]->class_sections_id]);
+                $class = DB::select('SELECT * FROM classes WHERE id=?',[$section1[0]->class_id]);
+                $section = DB::select('SELECT * FROM sections WHERE id=?',[$section1[0]->section_id]);
+                $data[$i]['name'] = $student[$i]->name;
+                $data[$i]['admission_no'] = $student[$i]->admission_no;
+                $data[$i]['class'] = $class[0]->class;
+                $data[$i]['section'] = $section[0]->section;
+                $data[$i]['father_name'] = $student[$i]->father_name;
+                $data[$i]['mother_name']=$student[$i]->mother_name;
+                $data[$i]['dob'] = $student[$i]->dob;
+                $data[$i]['gender'] = $student[$i]->gender;
+                $data[$i]['mobileno'] = $student[$i]->mobileno;
+                $data[$i]['guardian_name'] = $student[$i]->guardian_name;
+                $data[$i]['guardian_phone'] = $student[$i]->guardian_phone;
+        }
+        // print_r(count($array));
+        return $data;
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
-     */
+    public function edit($id)
+    {
+        // print_r($id);
+        $student = DB::select('select * from students where id =?',[$id]);
+        return $student;
+    }
+
+    public function selectByKeyword($keyword){
+        if($keyword != ''){
+            $students = DB::select('SELECT * FROM students WHERE name LIKE ? OR admission_no LIKE ? OR father_name LIKE ? OR roll_no LIKE ? OR gender LIKE ? OR religion LIKE ? OR mother_name LIKE ? OR race LIKE ? OR email LIKE ? OR blood_group LIKE ? OR height LIKE ? OR weight LIKE ? OR guardian_name LIKE ? OR mobileno LIKE ?',[$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword]);
+            return $students;
+        }
+    }
+
+
     public function update(Request $request, student $student)
     {
         //
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  \App\student  $student
-     * @return \Illuminate\Http\Response
-     */
+
     public function destroy(student $student)
     {
         //

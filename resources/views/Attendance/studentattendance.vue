@@ -43,7 +43,7 @@
             <input type="date" class="inputbox" v-model="date">
           </div>
           <div class="col-12">
-            <button class="searchButton" @click="search(date)" id="globalSearch">Search</button>
+            <button class="searchButton" @click="search(date)">Search</button>
           </div>
         </div>
       </div>

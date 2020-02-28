@@ -1,57 +1,58 @@
 #bar {
-  padding-bottom: 1rem;
-  margin-bottom: auto;
-  transition: all 0.5s;
+    padding-bottom: 1rem;
+    margin-bottom: auto;
+    transition: all 0.5s;
 }
 .form {
-  padding: 1rem;
-  // margin-top: 2rem;
-  z-index: 0;
-  // Top Link
-  .toplink {
-    margin: 0;
-    padding: 0;
-    .stuName {
-      font-size: 20px;
-      color: var(--primary);
+    padding: 1rem;
+    // margin-top: 2rem;
+    z-index: 0;
+    // Top Link 
+    .toplink {
+        margin: 0;
+        padding: 0;
+        .stuName {
+            font-size: 20px;
+            color: var(--primary);
+        }
+        .stuLink{
+            font-size: 15px;
+            color: black;
+            margin-top: 0.6rem;
+        }
     }
-    .stuLink {
-      font-size: 15px;
-      color: black;
-      margin-top: 0.6rem;
-    }
-  }
-  // Top Link
-  .card {
-    margin-top: 3rem;
-    .tips {
-      font-size: 13px;
-      margin-top: 8px;
-      .represent {
-        margin-right: 10px;
-        float: left;
-        margin-bottom: 0;
-      }
-    }
-    // Marks Grade
-    .end {
-      padding-bottom: 1rem;
-      border-bottom: 1px solid #0000003b;
-    }
-    // Marks Grade
-    .btn {
-      margin: 1rem 10px;
-      display: flex;
-      width: 135px;
-      font-size: 13px;
-      float: left;
-      align-items: center;
-      margin-bottom: 0;
-      justify-content: center;
-    }
-    #row {
-      padding: 1rem 0;
-      margin: 0px;
-    }
-  }
+    // Top Link 
+    .card {
+        background-color: khaki;
+        margin-top: 3rem;
+            .tips {
+                font-size: 13px;
+                margin-top: 8px;
+                .represent {
+                    margin-right: 10px;
+                    float: left;
+                    margin-bottom: 0;
+                }
+        }
+            // Marks Grade
+            .end {
+                padding-bottom: 1rem;
+                border-bottom: 1px solid #0000003b;
+            }
+            // Marks Grade
+            .btn {
+                margin: 1rem 10px;
+                display: flex;
+                width: 135px;
+                font-size: 13px;
+                float:left;
+                align-items: center;
+                margin-bottom: 0;
+                justify-content: center;
+            }
+            #row {
+                padding: 1rem 0;
+                margin: 0px;
+            }
+        }
 }

@@ -16,16 +16,6 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
-
-// Thein Gyi
-Route::get('ExamList', 'ExamsController@index');
-Route::group(['prefix' => 'exams'], function () {
-    Route::post('addexam', 'ExamsController@store');
-    Route::get('editexam/{id}', 'ExamsController@edit');
-    Route::get('deleteexam/{id}', 'ExamsController@destroy');
-});
-Route::get('activeacademicyr', 'AcademicYearController@activeAcademic');
-
 /***
  * Wai Yan Soe
  */
@@ -121,17 +111,47 @@ Route::group(['prefix' => 'staffdirectory'], function () {
     Route::get('search_by_other/{id}', 'StaffDirectoryController@search_by_other');
 });
 
+
+/**
+ * Staff Attendance
+ */
+Route::get('staffattendances', 'StaffAttendanceController@index');
+Route::group(['prefix' => 'staffattendance'], function () {
+    Route::get('show/{id}', 'StaffAttendanceController@show');
+    Route::post('store', 'StaffAttendanceController@store');
+    Route::get('edit/{id}', 'StaffAttendanceController@edit');
+    Route::post('update/{id}', 'StaffAttendanceController@update');
+    Route::delete('delete/{id}', 'StaffAttendanceController@delete');
+});
+
+
+/***
+ * Staff Attendance Date/Month Grid
+ */
+Route::get('months', "ActivityController@month");
+Route::get('searchDate/{id}/{year}', 'StaffAttendanceController@index');
+Route::get('attendance_types', 'AttendanceTypeController@getTypes');
+
+
 /**
  * Assign Permissions
  */
 Route::get('features', 'ActivityController@index');
+Route::group(['prefix' => 'assign'], function () {
+    Route::get('find/{id}', 'AssignPermissionController@find');
+    Route::post('store', 'StaffAttendanceController@store');
+    Route::get('edit/{id}', 'StaffAttendanceController@edit');
+    Route::post('update/{id}', 'StaffAttendanceController@update');
+    Route::delete('delete/{id}', 'StaffAttendanceController@delete');
+});
+
 
 /***
  * End Code of Wai Yan Soe
  */
 
 //  Wai Yan Moung
-// ---------------------------------------------- Wai Yan Moung ------------------------------------------------
+// ------------------------------- Wai Yan Moung ---------------------------
 Route::get('attendancetypes', 'AttendanceTypeController@index');
 Route::group(['prefix' => 'attendancetype'], function () {
     Route::post('add', 'AttendanceTypeController@store');
@@ -150,7 +170,7 @@ Route::group(['prefix' => 'studentattendance'], function () {
 Route::get('student','StudentController@index');
 Route::group(['prefix' => 'student'], function() {
     Route::post('add','StudentController@store');
-    Route::get('show/{para}','StudentController@show');
+    Route::get('show','StudentController@show');
     Route::get('edit/{id}','StudentController@edit');
     Route::post('update/{id}','StudentController@update');
     Route::delete('delete/{id}','StudentController@destroy');
@@ -159,6 +179,14 @@ Route::group(['prefix' => 'student'], function() {
     Route::get('sibling/{id}','StudentController@selectStudent');
     Route::get('siblings/{id}','StudentController@selectSibling');
     Route::get('rooms/{id}','StudentController@selectHostel');
+    Route::get('selectsection/{id}','StudentController@selectClassSection');
+    Route::get('hostelroom/{hostel_id}/{room_id}','StudentController@selecthostelroom');
+    Route::get('keyword/{keyword}','StudentController@selectByKeyword');
+    Route::get('studentReport/{class_id}/{section_id}/{gender}','StudentController@studentReport');
+    Route::get('studentReport1/{class_id}/{section_id}','StudentController@studentReport1');
+    Route::get('studentReport2/{class_id}/{gender}','StudentController@studentReport2');
+    Route::get('studentReport3/{class_id}','StudentController@studentReport3');
+    Route::get('studentReport4/{gender}','StudentController@studentReport4');
 });
 Route::get('studentsibling', 'StudentSiblingController@index');
 Route::group(['prefix' => 'studentsiblings'], function () {
@@ -167,6 +195,7 @@ Route::group(['prefix' => 'studentsiblings'], function () {
     Route::get('edit/{id}', 'StudentSiblingController@edit');
     Route::post('update/{id}', 'StudentSiblingController@update');
     Route::delete('delete/{id}', 'StudentSiblingController@destroy');
+    Route::get('/siblings/{id}','StudentSiblingController@selectStudentSiblings');
 });
 Route::get('session', 'StudentSessionController@index');
 Route::group(['prefix' => 'sessions'], function () {
@@ -184,7 +213,7 @@ Route::group(['prefix' => 'uploaddocuments'], function () {
     Route::post('update/{id}', 'StudentDocumentController@update');
     Route::delete('delete/{id}', 'StudentDocumentController@destroy');
 });
-// end of wai yan moung -------------------------------------------------------------------
+//---------------------------------- end of wai yan moung -----------------
 
 // Kyaw Soe Hein
 Route::get('tranRouteList', 'RouteController@index');
@@ -252,6 +281,11 @@ Route::group(['prefix' => 'ClassTeacher'], function() {
 //Lwin Kyaw Phyo
 
 //Thein Htike Aung
+Route::group(['prefix'=>'examResults'],function(){
+    Route::post('addExamResults','ExamResultsController@store');
+    Route::get('getExamResultData/{idsArray}','ExamResultsController@getExamResultData');
+    Route::post('editExamResult','ExamResultsController@update');
+});
 Route::get('ExamList','ExamsController@index');
 Route::get('ExamTest','ExamsController@getAcademicActiveId');
 Route::group(['prefix' => 'exams'], function() {
@@ -267,15 +301,15 @@ Route::group(['prefix' => 'examSchadules'], function() {
     Route::post('updateExamSchadule/{id}','ExamSchaduleController@update');
 
 });
-
 Route::group(['prefix' => 'marksGrade'], function() {
     Route::get('getMarksGrade','MarksGradeController@index');
     Route::post('addMarksGrade','MarksGradeController@store');
     Route::get('deleteMarksGrade/{id}','MarksGradeController@destroy');
     Route::get('editMarksGrade/{id}','MarksGradeController@edit');
     Route::get('getSearchData/{idsArray}','MarksGradeController@getSearchData');
+    Route::get('getExamSubject/{idsArray}','MarksGradeController@getExamSubject');
+    Route::get('getStudentExam/{idsArray}','MarksGradeController@GetStudentAndExam');
 });
-
 Route::get('activeacademicyr', 'AcademicYearController@activeAcademic');
 Route::get('getClasses', 'ClassesController@Theinindex');
 Route::get('getSections', 'SectionController@Theinindex');
@@ -283,12 +317,3 @@ Route::get('getClassSectionId/{arrayids}','ClassSectionController@getAssignSub_i
 Route::get('getClassSection/{id}', 'ClassSectionController@Theinindex');
 Route::get('searchExamSchadule/{arrayClassSectionExam}', 'ExamSchaduleController@index');
 // End Thei Htike Aung Section
-
-// Sai Kaung Htet General Setting
-Route::get('settings','GeneralController@index');
-Route::get('color','GeneralController@getColor');
-Route::group(['prefix' => 'setting'],function() {
-    Route::post('store/{id}', 'GeneralController@store');
-    Route::post('update/{color}', 'GeneralController@update');
-    Route::delete('delete/{id}', 'GeneralController@delete');
-});

@@ -22,10 +22,12 @@
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
+        <div class="modal-content"
+        style="background:none;border:none;width:100% !important;padding: 1rem;"
+        >
           <div class="card">
 
-            <div class="card-header">
+            <div class="stucard-header">
               <h6 style="width:100%">
                 Add Sibling
                 <i
@@ -45,8 +47,8 @@
                 @change="selectSiblingClass($event)"
                 >
                   <option selected disabled>Select class</option>
-              <option v-for="list in classList" :key="list.id" :value="list.id">
-                {{list.class}}
+              <option v-for="data in classList" :key="data.id" :value="data.id">
+                {{data.class}}
               </option>
                 </select>
               </div>
@@ -58,7 +60,7 @@
                 <select id="section" class="inputbox" v-model="sibling_section_id"
                 @change="selectSiblingSection($event)"
                 >
-                  <option selected>Select section</option>
+                  <option selected disabled>Select section</option>
                   <option v-for="list in siblingSectionList" :key="list.id" :value="list.id">
                     {{list.section}}
                   </option>
@@ -85,7 +87,7 @@
       </div>
     </div>
     <!-- ----------------------modal end --------------------------- -->
-      <div class="card-header">
+      <div class="stucard-header">
         <h6>Student Admission</h6>
       </div>
       <div class="stucard-body">
@@ -141,7 +143,7 @@
             v-on:blur="onValidate(section_id, 'stuSection', 'section_msg')"
             @change="selectSection($event)"
             >
-              <option selected="selected" disabled>Select section</option>
+              <option selected disabled>Select section</option>
               <option v-for="list in sectionList" :key="list.id" :value="list.id">
                 {{list.section}}
               </option>
@@ -168,8 +170,8 @@
             @keyup="onValidate(student.gender, 'stuGender', 'gender_msg')"
             v-on:blur="onValidate(student.gender, 'stuGender', 'gender_msg')"
             >
-              <option value="male">Male</option>
-              <option value="female">Female</option>
+              <option value="Male">Male</option>
+              <option value="Female">Female</option>
             </select>
             <span id="gender_msg" class="error_message">Gender is required</span>
           </div>
@@ -178,12 +180,29 @@
               Date Of Birth
               <strong>*</strong>
             </label>
+            <VueCtkDateTimePicker
+                v-model="student.dob"
+                 :only-date="true"
+              :color="'#1b5e20'"
+              :button-color="'#1b5e20'"
+              :auto-close="true"
+              :format="'DD-MM-YYYY'"
+              :formatted="'l'"
+              >
+              <input
+                  id="stubirthday"
+                  @keyup="onValidate(student.dob, 'stubirthday', 'dob_msg')"
+                  v-on:blur="onValidate(student.dob, 'stubirthday', 'dob_msg')"
+                  class="inputbox"
+                  autocomplete="off"
+                />
+                </VueCtkDateTimePicker>
             <!-- <date-picker class="inputbox" id="stubirthday"></date-picker> -->
             <!-- <input type="date" class="inputbox" id="stubirthday" v-model="student.dob" /> -->
-            <datepicker v-model="student.dob" id="stubirthday" name="birthday"
+            <!-- <datepicker v-model="student.dob" id="stubirthday" name="birthday"
             @keyup="onValidate(student.dob, 'stubirthday', 'dob_msg')"
             v-on:blur="onValidate(student.dob, 'stubirthday', 'dob_msg')"
-            ></datepicker>
+            ></datepicker> -->
             <span id="dob_msg" class="error_message">Date of birth is required.</span>
           </div>
           <div class="textbox">
@@ -205,19 +224,34 @@
           <div class="textbox">
             <label for="admDate">Admission Date</label>
             <!-- <input type="date" class="inputbox" id="admDate" v-model="student.admission_date"/> -->
-            <datepicker v-model="student.admission_date" id="admDate" name="admission_date"></datepicker>
+            <VueCtkDateTimePicker
+                v-model="student.admission_date"
+                 :only-date="true"
+              :color="'#1b5e20'"
+              :button-color="'#1b5e20'"
+              :auto-close="true"
+              :format="'DD-MM-YYYY'"
+              :formatted="'l'"
+              >
+              <input
+                  id="admDate"
+                  class="inputbox"
+                  autocomplete="off"
+                />
+                </VueCtkDateTimePicker>
+            <!-- <datepicker v-model="student.admission_date" id="admDate" name="admission_date"></datepicker> -->
           </div>
           <div class="textbox" id="photo">
             
             <label for="stuPhoto">Student Photo</label>
             
-              <input type="file" class="inputbox"   id="stuPhoto" @change="onFileChange($event,'student')" accept="image/*">
-              <!-- <div class="inputbox" v-else>
+              <input type="file" class="inputbox"   id="stuPhoto" @change="onFileChange($event,'student')" accept="image/*" v-if="!student.image">
+              <div class="inputbox" v-else>
                 <div style="width:100%;padding:0;">
-                <img :src="student.image" alt="error" style="height: 25px;width: auto;">
+                <img :src="student.student_image" alt="error" style="height: 25px;width: auto;">
                 <span @click="removeImage($event,'student')" class="span">X</span>
                 </div>
-              </div> -->
+              </div>
               
 
           </div>
@@ -245,7 +279,22 @@
           <div class="textbox">
             <label for="regDate">Register Date</label>
             <!-- <input type="date" class="inputbox" id="regDate" v-model="student.register_date"/> -->
-            <datepicker v-model="student.register_date" id="regDate" name="register_date"></datepicker>
+            <VueCtkDateTimePicker
+                v-model="student.register_date"
+                 :only-date="true"
+              :color="'#1b5e20'"
+              :button-color="'#1b5e20'"
+              :auto-close="true"
+              :format="'DD-MM-YYYY'"
+              :formatted="'l'"
+              >
+              <input
+                  id="regDate"
+                  class="inputbox"
+                  autocomplete="off"
+                />
+                </VueCtkDateTimePicker>
+            <!-- <datepicker v-model="student.register_date" id="regDate" name="register_date"></datepicker> -->
           </div>
           <div class="textbox">
             <label for="addSibling" style="visibility:hidden;">Add Sibling</label>
@@ -256,7 +305,7 @@
         </div>
       </div>
 
-      <div class="sub-header">
+      <div class="stusub-header">
         <h6>Parents Details</h6>
       </div>
       <div class="stucard-body">
@@ -279,13 +328,14 @@
           </div>
           <div class="textbox">
             <label for="faPhoto">Father Photo</label>
-            <input type="file" class="inputbox" @change="onFileChange($event,'father')"   id="faPhoto"  accept="image/*">
-              <!-- <div class="inputbox" v-else>
+            <input type="file" class="inputbox" @change="onFileChange($event,'father')"   id="faPhoto"  accept="image/*" v-if="!student.father_photo">
+              <div class="inputbox" v-else>
                 <div style="width:100%;padding:0;">
-                <img :src="student.father_photo" alt="error" style="height: 25px;width: auto;">
+                <img :src="student.father_image" alt="error" style="height: 25px;width: auto;" v-if="!sibling_id">
+                <img :src="'father_image/'+student.father_photo"  style="height: 25px;width: auto;" alt="" v-else>
                 <span @click="removeImage($event,'father')" class="span">X</span>
                 </div>
-              </div> -->
+              </div>
           </div>
         </div>
         <div class="row">
@@ -307,13 +357,14 @@
           </div>
           <div class="textbox">
             <label for="moPhoto">Mother Photo</label>
-            <input type="file" class="inputbox" @change="onFileChange($event,'mother')"   id="moPhoto"  accept="image/*">
-              <!-- <div class="inputbox" v-else>
+            <input type="file" class="inputbox" @change="onFileChange($event,'mother')"   id="moPhoto"  accept="image/*" v-if="!student.mother_photo">
+              <div class="inputbox" v-else>
                 <div style="width:100%;padding:0;">
-                <img :src="student.mother_photo" alt="error" style="height: 25px;width: auto;">
+                <img :src="student.mother_image" alt="error" style="height: 25px;width: auto;" v-if="!sibling_id">
+                <img :src="'mother_image/'+student.mother_photo" alt="error" style="height: 25px;width: auto;" v-else>
                 <span @click="removeImage($event,'mother')" class="span">X</span>
                 </div>
-              </div> -->
+              </div>
           </div>
           </div>
           <div class="row">
@@ -384,18 +435,19 @@
           </div>
           <div class="textbox">
             <label for="guPhoto">Guardian Photo</label>
-            <input type="file" class="inputbox" @change="onFileChange($event,'guardian')"   id="guPhoto"  accept="image/*">
-              <!-- <div class="inputbox" v-else id="showguPhoto">
+            <input type="file" class="inputbox" @change="onFileChange($event,'guardian')"   id="guPhoto"  accept="image/*" v-if="!student.guardian_photo">
+              <div class="inputbox" v-else id="showguPhoto">
                 <div style="width:100%;padding:0;">
-                <img :src="student.guardian_photo" alt="error" style="height: 25px;width: auto;">
+                <img :src="student.guardian_image" alt="error" style="height: 25px;width: auto;" v-if="!sibling_id">
+                <img :src="guardian_src+'/'+student.guardian_photo" alt="error" style="height: 25px;width: auto;" v-else>
                 <span @click="removeImage($event,'guardian')" class="span">X</span>
                 </div>
-              </div> -->
+              </div>
           </div>
         </div>
         </div>
         <div class="breakline"></div>
-      <div class="sub-header">
+      <div class="stusub-header">
         <h6>
           Add More Information
           <strong
@@ -416,11 +468,12 @@
       </div>
       <div class="stucard-body" style="padding-top: 15px;" id="addMore">
         <div class="card" style="margin: 15px;">
-          <div class="card-header">
+          <div class="stucard-header">
             <h6>Student Address Details</h6>
           </div>
           <div class="stucard-body">
             <div class="row">
+
               <div class="textarea">
                 <input type="checkbox" value="GuardianAddress" id="ifgurAdd"  @click="currentAddress"/>
                 <label for="ifgurAdd">If Guardian Address Is Current Address</label><br>
@@ -435,7 +488,7 @@
               </div>
             </div>
           </div>
-          <div class="sub-header">
+          <div class="stusub-header">
             <h6>Transport Details</h6>
           </div>
           <div class="stucard-body">
@@ -443,25 +496,15 @@
               <div class="textarea">
                 <label for="routelist">Route List</label>
                 <select id="routelist" class="inputbox" v-model="student.route_id">
-                  <optgroup label="Mogok">
-                    <option value="EastMogok(4)">EastMogok(4fdas)</option>
-                    <option value="EastMogok(2)">EastMogok(43453df)</option>
-                    <option value="EastMogok(6)">EastMogok(4dfa)</option>
-                    <option value="EastMogok(1)">EastMogok(4kujuj)</option>
-                    <option value="EastMogok(4)">EastMogok(4kuiloiu)</option>
-                  </optgroup>
-                  <optgroup label="Mandalay">
-                    <option value="mdy(4)">mdy1(4fdas)</option>
-                    <option value="mdy(2)">mdy2(43453df)</option>
-                    <option value="mdy(6)">mdy3(4dfa)</option>
-                    <option value="mdy(1)">mdy4(4kujuj)</option>
-                    <option value="mdy(4)">mdy5(4kuiloiu)</option>
-                  </optgroup>
+                    <option disabled selected>Select route</option>
+                    <option v-for="list in routeList" :key="list.id" :value="list.id" >
+                      {{list.route_title}}
+                    </option>
                 </select>
               </div>
             </div>
           </div>
-          <div class="sub-header">
+          <div class="stusub-header">
             <h6>Previous School Details</h6>
           </div>
           <div class="stucard-body">
@@ -476,7 +519,7 @@
               </div>
             </div>
           </div>
-          <div class="sub-header">
+          <div class="stusub-header">
             <h6>Hostel Details</h6>
           </div>
           <div class="stucard-body">
@@ -486,13 +529,13 @@
                 <select id="hostel" class="inputbox" v-model="hostel_id" @change="changeHostel($event)">
                   <option selected disabled>Select hostel</option>
                   <option v-for="hostel in hostelList" :key="hostel.id" :value="hostel.id">
-                    {{hostel.name}}
+                    {{hostel.hostel_name}}
                   </option>
                 </select>
               </div>
               <div class="textarea">
                 <label for="roomNum">Room Number</label>
-                <select class="inputbox" id="roomNum" v-model="room_id">
+                <select class="inputbox" id="roomNum" v-model="student.hostel_room_id">
                   <option selected disabled>Select room number</option>
                  <option v-for="room in rooms" :key="room.id" :value="room.id">
                    {{room.room_no}}
@@ -501,7 +544,7 @@
               </div>
             </div>
           </div>
-          <div class="sub-header">
+          <div class="stusub-header">
             <h6>Upload Document</h6>
           </div>
           <div class="stucard-body">
@@ -559,7 +602,7 @@
       </div>
 
       <div class="footer" id="footer">
-        <button type="submit" id="globalSave" style="margin-right: 1rem;" class="save">Save</button>
+        <button type="submit">Save</button>
       </div>
       </div>
 </form>
@@ -568,15 +611,21 @@
 </template>
 
 <script>
-import Datepicker from 'vuejs-datepicker'
+import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
+import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
 export default {
+  components: {
+    VueCtkDateTimePicker
+  },
   name:'app',
   success:'',
-  components: {
-    Datepicker,
-  },
   data() {
     return {
+      classesList:[],
+      num:0,
+      guardian_src:'',
+      routeList : [],
+      message:'',
       session:{},
       hostelList:[],
       rooms:[],
@@ -611,19 +660,28 @@ export default {
       room_id:'',
       class_id:'',
       section_id:'',
-      sibling:[],
+      sibling:{
+        'sibling_admission_no':'',
+          'admission_no':'',
+          'is_active': '', 
+          'domain': '',
+          'session_id':''
+      },
       siblings:[],
       student: {
+        student_image:'',
         image:'',
         father_name:'',
         father_phone:'',
         father_nrc:'',
         father_job:'',
+        father_image:'',
         father_photo:'',
         mother_name:'',
         mother_phone:'',
         mother_nrc:'',
         mother_job:'',
+        mother_image:'',
         mother_photo:'',
         guardian_photo:'',
         dob: new Date().toISOString().slice(0,10),
@@ -638,6 +696,8 @@ export default {
         session_start:'2020-2021',
         session_end:'',
         disable_at:'',
+        note:'',
+        previous_school:''
       },
       viladition: false,
       errors: {
@@ -668,9 +728,15 @@ export default {
           this.rooms = response.data;
         });
     },
+    // changeRoomNumber(e){
+    //   this.axios
+    //   .get(`/api/student/hostelroom/${this.hostel_id}/${e.target.value}`)
+    //   .then(response=>{
+    //     console.log(JSON.stringify(response));
+    //   })
+    // },
     
-    refresh(){
-      this.student = [];
+    refreshForm(){
       this.title1 ='';
       this.title2 ='';
       this.title3='';
@@ -683,6 +749,10 @@ export default {
       this.file2='';
       this.file3='';
       this.file4='';
+      this.image ='',
+      this.father_photo ='',
+      this.mother_photo ='',
+      this.guardian_photo ='',
       this.classList =[];
       this.sectionList=[];
       this.sibling_class_id='';
@@ -695,9 +765,16 @@ export default {
       this.room_id='';
       this.class_id='';
       this.section_id='';
-      this.sibling=[];
+      this.sibling={
+        'sibling_admission_no':'',
+          'admission_no':this.student.admission_no,
+          'is_active': this.student.is_active, 
+          'domain': this.student.domain,
+          'session_id':this.student.session_id,
+      };
+
       this.siblings=[];
-      student= {
+      this.student= {
         image:'',
         father_name:'',
         father_phone:'',
@@ -720,18 +797,35 @@ export default {
         is_active:'yes',
         session_id: '1',
       }
+        document.getElementById('faName').disabled = false;
+        document.getElementById('faPhone').disabled = false;
+        document.getElementById('faNrc').disabled = false;
+        document.getElementById('faJob').disabled = false;
+        document.getElementById('moName').disabled = false;
+        document.getElementById('moPhone').disabled = false;
+        document.getElementById('moNrc').disabled = false;
+        document.getElementById('moJob').disabled = false;
+        document.getElementById('guPhone').disabled = false;
+        document.getElementById('guNrc').disabled = false;
+        document.getElementById('guName').disabled = false;
+        document.getElementById('guReligion').disabled = false;
+        document.getElementById('guJob').disabled = false;
+        document.getElementById('permanentAddress').disabled = false;
+        document.getElementById('currentAddress').disabled = false;
+        document.getElementById('ifgurAdd').checked = false;
+        document.getElementById('ifparAdd').checked = false;
+        document.getElementById('other').checked = true;
     },
     saveSibling(){
-      this.sibling=[];
-      this.sibling =[
+      this.sibling={};
+      this.sibling =
         {
           'sibling_admission_no':this.sibling_id,
           'admission_no':this.student.admission_no,
           'is_active': this.student.is_active, 
           'domain': this.student.domain,
           'session_id':this.student.session_id,
-        }
-      ];
+        };
       var data=[];
       if(this.sibling_id){
         this.axios
@@ -744,7 +838,7 @@ export default {
         this.student.father_nrc = data[0].father_nrc;
         this.student.father_job = data[0].father_job;
         this.student.father_photo = data[0].father_photo;
-
+        // this.sibling.sibling_admission_no = data[0].admission_no;
         this.student.mother_name = data[0].mother_name;
         this.student.mother_phone = data[0].mother_phone;
         this.student.mother_nrc = data[0].mother_nrc;
@@ -769,8 +863,10 @@ export default {
       this.axios
         .get('/api/student')
         .then(response=>{
+          this.classesList = response.data.class;
           this.classList = response.data.class;
           this.hostelList = response.data.hostel;
+          this.routeList = response.data.routes;
         });
     },
     selectClass(e){
@@ -877,18 +973,21 @@ export default {
         if(type=="student"){
           reader.onload = (e) => {
         vm.student.image = file;
+        vm.student.student_image = e.target.result;
           }
       }else if(type=="father"){
          reader.onload = (e) => {
         vm.student.father_photo = file;
+        vm.student.father_image = e.target.result;
           }
       }else if(type=="mother"){
          reader.onload = (e) => {
-        // vm.student.mother_photo = e.target.result;
+        vm.student.mother_image = e.target.result;
         vm.student.mother_photo = file;
           }
       }else if(type=='guardian'){
          reader.onload = (e) => {
+           vm.student.guardian_image = e.target.result;
         vm.student.guardian_photo = file;
           }
       }else if(type=='one'){
@@ -943,14 +1042,15 @@ export default {
     },
     formViladition(){
       this.viladition = {};
-      this.viladition = false;
+      this.viladition = true;
       this.errors= {
       };
       
       if(!this.student.admission_no){
         this.onValidationMessage("admnumber", "admission_no_msg");
         this.viladition = false;
-      } if(!this.class_id){
+      } 
+      if(!this.class_id){
         this.onValidationMessage("stuclass", "stuclass_msg");
         this.viladition = false;
       }
@@ -982,9 +1082,6 @@ export default {
         this.onValidationMessage("guPhone", "guPhone_msg");
         this.viladition = false;
       }
-      else {
-        this.viladition = true;
-      }
     },
     clickOther(){
       this.student.guardian_name = '';
@@ -1008,6 +1105,8 @@ export default {
       this.student.guardian_nrc=this.student.mother_nrc;
       this.student.guardian_phone = this.student.mother_phone;
       this.student.guardian_photo_name = this.student.mother_photo_name;
+      this.student.guardian_image = this.student.mother_image;
+      this.guardian_src = 'mother_image';
       document.getElementById('guPhone').disabled = true;
       document.getElementById('guNrc').disabled = true;
       document.getElementById('guName').disabled = true;
@@ -1020,6 +1119,8 @@ export default {
       this.student.guardian_nrc=this.student.father_nrc;
       this.student.guardian_phone = this.student.father_phone;
       this.student.guardian_photo_name = this.student.father_photo_name;
+      this.student.guardian_image = this.student.father_image;
+      this.guardian_src = 'father_image';
       document.getElementById('guPhone').disabled = true;
       document.getElementById('guNrc').disabled = true;
       document.getElementById('guName').disabled = true;
@@ -1032,6 +1133,7 @@ export default {
         headers: { "content-type": "multipart/form-data" }
       };
       this.student.hostel_room_id = this.hostel_id;
+      this.student.sibling_admission_no = this.sibling_id;
       let formData = new FormData();
       formData.append('admission_no',this.student.admission_no);
       formData.append('name',this.student.name);
@@ -1083,6 +1185,8 @@ export default {
       formData.append('domain',this.student.domain);
       formData.append('is_active',this.student.is_active);
       formData.append('session_id',this.student.session_id);
+      formData.append('race',this.student.race);
+      formData.append('sibling_admission_no',this.student.sibling_admission_no);
       this.axios
           .post('/api/student/add', formData,config)
           .then(response=> {
@@ -1090,6 +1194,11 @@ export default {
               this.addSessions();
               this.addSibling();
               this.addDocument();
+              this.refreshForm();
+              this.allData();
+              this.message = "Saved successfully.";
+            }else{
+              this.message ="This data already exists."
             }
           })
           .catch(errors=>{
@@ -1099,32 +1208,35 @@ export default {
     addSibling(){
       this.sibling=[];
       if(this.sibling_id){
-        this.sibling =[
+        this.sibling =
         {
           'sibling_admission_no':this.sibling_id,
           'admission_no':this.student.admission_no,
           'is_active': this.student.is_active, 
           'domain': this.student.domain,
           'session_id':this.student.session_id,
-        }
-      ];
+        };
+      this.axios
+       .post('api/studentsiblings/add',this.sibling)
+       .then(response=>{
+       console.log(response.data);
+       }).catch(errors=>{
+         console.log(errors);
+      })
+      }else{
+        console.log("No sibling id");
       }
       
       
-      if(this.sibling){
-              this.axios
-            .post('api/studentsiblings/add',this.sibling)
-            .then(response=>{
-            }).catch(errors=>{
-            })
-          }
+              
+          
     },
     addSessions(){
       this.session = {
         'session_id':this.student.session_id,
         'admission_no':this.student.admission_no,
         'class_section_id':this.student.class_section_id,
-        'route_id':this.route_id,
+        'route_id':this.student.route_id,
         'hostel_room_id':this.student.hostel_room_id,
         'is_active':this.student.is_active,
         'domain':this.student.domain,
@@ -1193,7 +1305,8 @@ export default {
       let dataDocument2 = new FormData();
       let dataDocument3 = new FormData();
       let dataDocument4 = new FormData();
-      if(fileOne.admission_no){
+      if(this.title1||this.document1){
+        console.log("One");
         dataDocument1.append('admission_no',fileOne.admission_no);
         dataDocument1.append('document_title',fileOne.document_title);
         dataDocument1.append('document_name',fileOne.document_name);
@@ -1202,11 +1315,12 @@ export default {
         dataDocument1.append('file',fileOne.file);
         dataDocument1.append('session_id',fileOne.session_id);
         this.axios
-              .post('api/uploaddocuments/add',dataDocument1,config)
-              .then(response=>{
-              })
+          .post('api/uploaddocuments/add',dataDocument1,config)
+          .then(response=>{
+        })
       }
-      if(fileTwo.admission_no){
+      if(this.title2||this.document2){
+        console.log("Two");
         dataDocument2.append('admission_no',fileTwo.admission_no);
         dataDocument2.append('document_title',fileTwo.document_title);
         dataDocument2.append('document_name',fileTwo.document_name);
@@ -1219,7 +1333,8 @@ export default {
               .then(response=>{
               })
       }
-      if(fileThree.admission_no){
+      if(this.title3||this.document3){
+        console.log("Three");
         dataDocument3.append('admission_no',fileThree.admission_no);
         dataDocument3.append('document_title',fileThree.document_title);
         dataDocument3.append('document_name',fileThree.document_name);
@@ -1232,7 +1347,8 @@ export default {
               .then(response=>{
               })
       }
-      if(fileFour.admission_no){
+      if(this.title4||this.document4){
+        console.log("Four");
         dataDocument4.append('admission_no',fileFour.admission_no);
         dataDocument4.append('document_title',fileFour.document_title);
         dataDocument4.append('document_name',fileFour.document_name);
@@ -1241,15 +1357,16 @@ export default {
         dataDocument4.append('file',fileFour.file);
         dataDocument4.append('session_id',fileFour.session_id);
         this.axios
-              .post('api/uploaddocuments/add',dataDocument4,config)
-              .then(response=>{
-              })
+          .post('api/uploaddocuments/add',dataDocument4,config)
+          .then(response=>{
+        })
       }
     },
     save(){
       this.formViladition();
       if(this.viladition == true){
         this.addStudent();
+         
       }
       // this.addSibling();
       
@@ -1264,7 +1381,10 @@ export default {
       document.getElementById(inputId).style.border = "solid 1px red";
       document.getElementById(megId).style.display = "block";
     },
+    
    
   }
+
 };
+
 </script>

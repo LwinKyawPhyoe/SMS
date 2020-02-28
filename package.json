@@ -23,6 +23,7 @@
         "vue": "^2.6.11",
         "vue-axios": "^2.1.5",
         "vue-ctk-date-time-picker": "^2.4.0",
+        "vue-loading-overlay": "^3.3.0",
         "vue-router": "^3.1.5",
         "vue-wysiwyg": "^1.7.2",
         "vue2-datepicker": "^3.3.0",

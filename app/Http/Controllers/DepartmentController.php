@@ -15,7 +15,7 @@ class DepartmentController extends Controller
     public function index()
     {
         //
-        $departments = Department::orderBy('id', 'desc')
+        $departments = Department::where('is_active', 'Yes')->orderBy('id', 'desc')
             ->get()
             ->toArray();
         return array_reverse($departments);
@@ -44,7 +44,6 @@ class DepartmentController extends Controller
         ]);
         $department = new Department([
             "department_name" => $request->input('department_name'),
-            "is_active"       => "No"
         ]);
         $department->save();
         return response()->json(['text' => 'Department added successfully', 'type' => 'success']);
@@ -98,8 +97,9 @@ class DepartmentController extends Controller
     {
         //
         $department = Department::find($id);
-        $department->delete();
+        $department->update([
+            "is_active" => "No"
+        ]);
         return response()->json(['text' => 'Department deleted successfully', 'type' => 'success']);
-        return response()->json("The Department successfully deleted");
     }
 }

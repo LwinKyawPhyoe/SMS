@@ -35,7 +35,7 @@
                         </select>
                     </div>
                     <div class="col-12">
-                        <button id="globalSearch" class="searchButton" @click="Search">Search</button>
+                        <button class="searchButton" @click="Search">Search</button>
                     </div>
                 </div>
             </div>

@@ -14,7 +14,7 @@ class CreateAttendanceTypesTable extends Migration
     public function up()
     {
         Schema::create('attendance_types', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->string('type')->nullable();
             $table->string('key_value')->nullable();
             $table->string('is_active')->nullable();

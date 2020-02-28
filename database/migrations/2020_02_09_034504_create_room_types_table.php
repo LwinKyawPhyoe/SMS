@@ -17,7 +17,7 @@ class CreateRoomTypesTable extends Migration
             $table->increments('id');
             $table->string('room_type',200);
             $table->text('description')->nullable();
-            $table->string('is_active')->nullable();
+            $table->string('is_active')->default('Yes')->nullable();
             $table->string('domain')->nullable();
             $table->timestamps();
         });

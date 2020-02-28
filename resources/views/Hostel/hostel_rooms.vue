@@ -7,8 +7,8 @@
       </h4>
     </div>
     <hr />
-    <confirm :url="delurl"></confirm>
-    <div class="row" style="align-items: end !important;margin-left: 0px;">
+    <confirm :url="props"></confirm>
+    <div class="row" style="align-items: end !important;">
       <div class="col-lg-5 col-md-12" style="padding-left:2px;">
         <div class="card">
           <div class="card-header">
@@ -85,7 +85,7 @@
                   @keyup="onValidate(hostelroom.no_of_bed, 'nob_id', 'nobmsg')"
                   v-on:blur="onValidate(hostelroom.no_of_bed, 'nob_id', 'nobmsg')"
                   v-model="hostelroom.no_of_bed"
-                  type="text"
+                  type="number"
                   class="inputbox"
                 />
                 <span id="nobmsg" class="error_message">Number Of Bed is required</span>
@@ -100,18 +100,18 @@
                   @keyup="onValidate(hostelroom.cost_per_bed, 'cpb_id', 'cpbmsg')"
                   v-on:blur="onValidate(hostelroom.cost_per_bed, 'cpb_id', 'cpbmsg')"
                   v-model="hostelroom.cost_per_bed"
-                  type="text"
+                  type="number"
                   class="inputbox"
                 />
-                <span id="cpbmsg" class="error_message">Cost Per Bed is required</span>
+                <span id="cpbmsg" class="error_message">Number Of Bed is required</span>
               </div>
               <div class="col-12 end">
                 <label for="description">Description</label>
                 <textarea v-model="hostelroom.description" class="textareas" rows="3"></textarea>
               </div>
               <div class="col-12">
-                <button v-if="this.isEdit == false" id="globalSave" type="submit" class="save">Save</button>
-                <button v-else @click="updateHostelRoom()" id="globalSave" type="button" class="save">Save</button>
+                <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
+                <button v-else @click="updateHostelRoom()" type="button" class="save">Save</button>
               </div>
             </form>
           </div>
@@ -134,12 +134,12 @@
             <div class="copyRows">
               <div class="row" id="copyRow">
                 <div class="col-3">
-                  <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Hostel_Room.xls')" title="Excel">
+                  <a href="#" title="Excel">
                     <i class="fa fa-file-excel-o"></i>
                   </a>
                 </div>
                 <div class="col-3">
-                  <a href="#" @click.prevent="printme('print')" title="Print">
+                  <a href="#" title="Print">
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
@@ -150,8 +150,7 @@
                 </div>
               </div>
             </div>
-
-            <div class="table-responsive" id="print">
+            <div class="table-responsive">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
                   <tr>
@@ -207,7 +206,6 @@
  *  COMPONENTS
  */
 import message from "../Alertmessage/message.vue";
-import {Util} from '../../js/util';
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
 
@@ -218,9 +216,12 @@ export default {
   },
   data() {
     return {
+      props: {
+        url: "",
+        type: ""
+      },
       hostelroom: {},
       search: "",
-      delurl: "",
       hostelrooms: [],
       hostel_table: [],
       roomtypes: [],
@@ -297,7 +298,8 @@ export default {
     },
     deleteHostelRoom(id) {
       var funName = "delete"; /**Delete function */
-      this.delurl = `hostelroom/${funName}/${id}`;
+      this.props.type = "delete";
+      this.props.url = `hostelroom/${funName}/${id}`;
     },
     /***
      * Hostel
@@ -348,24 +350,38 @@ export default {
      * FORM VALIDATION
      */
     onValidate(value, inputId, megId) {
-      Util.onValidate(value, inputId, megId);
+      if (value == "" || value == undefined)
+        document.getElementById(inputId).style.border = "solid 1px red";
+      else {
+        document.getElementById(inputId).style.border = "solid 1px #d2d6de";
+        document.getElementById(megId).style.display = "none";
+      }
     },
 
+    onValidateMessage(inputId, megId) {
+      document.getElementById(inputId).style.border = "solid 1px red";
+      document.getElementById(megId).style.display = "block";
+    },
     checkValidate() {
       if (!this.hostelroom.room_no) {
-        Util.onValidateMessage("name_id", "namemsg");
+        this.onValidateMessage("name_id", "namemsg");
+        return false;
       }
       if (!this.hostelroom.hostel_id) {
-        Util.onValidateMessage("hostel_id", "hostelmsg");
+        this.onValidateMessage("hostel_id", "hostelmsg");
+        return false;
       }
       if (!this.hostelroom.room_type_id) {
-        Util.onValidateMessage("roomtype_id", "roomtypemsg");
+        this.onValidateMessage("roomtype_id", "roomtypemsg");
+        return false;
       }
       if (!this.hostelroom.no_of_bed) {
-        Util.onValidateMessage("nob_id", "nobmsg");
+        this.onValidateMessage("nob_id", "nobmsg");
+        return false;
       }
       if (!this.hostelroom.cost_per_bed) {
-        Util.onValidateMessage("cpb_id", "cpbmsg");
+        this.onValidateMessage("cpb_id", "cpbmsg");
+        return false;
       } else {
         return true;
       }
@@ -373,16 +389,6 @@ export default {
     },
     goAlertClose() {
       $(".alert").css("display", "none");
-    },
-
-    printme(table)
-    {
-      Util.printme(table);
-    },
-
-    downloadExcel(table, name, filename) 
-    {
-      Util.downloadExcel(table,name,filename);
     }
   }
 };

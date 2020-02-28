@@ -20,164 +20,195 @@
                         <label for="name">Exam Name
                             <strong>*</strong>
                         </label>
-                        <select class="inputbox" name="class">
-                            <option selected disabled>Select Test-Month</option>
-                            <option value="Unit Test-January">Unit Test-January</option>
-                            <option value="Unit Test-February">Unit Test-February</option>
-                            <option value="Unit Test-March">Unit Test-March</option>
+                        <select class="inputbox" name="class" @change="setExamId($event)">
+                            <option >Select</option>
+                            <option v-for="examNames in examNames" :key="examNames.id" :value="examNames.id">{{examNames.name}}</option>
                         </select>
                     </div>
                     <div class="col-lg-4 col-md-4 col-12 textbox">
                         <label for="name">Class
                             <strong>*</strong>
                         </label>
-                        <select class="inputbox" name="class">
-                            <option selected disabled>Select Class</option>
-                            <option value="Class A">Class A</option>
-                            <option value="Class B">Class B</option>
-                            <option value="Class C">Class C</option>
+                        <select class="inputbox" name="class" @change="getSection($event)">
+                            <option >Select</option>
+                            <option v-for="Classes in Classes" :key="Classes.id" :value="Classes.id">{{Classes.class}}</option>
                         </select>
                     </div>
                     <div class="col-lg-4 col-md-4 col-12 textbox">
                         <label for="name">Section</label>
-                        <select class="inputbox" name="class">
-                            <option selected disabled>Select Section</option>
-                            <option value="Section A">Section A</option>
-                            <option value="Section B">Section B</option>
-                            <option value="Section C">Section C</option>
+                        <select class="inputbox" @change="getSectionId($event)">
+                            <option >Select Section</option>
+                            <option v-for="Sections in Sections" :key="Sections.id" :value="Sections.id">{{Sections.section}}</option>
                         </select>
                     </div>
                     <div class="col-12">
-                        <button id="globalSearch" class="searchButton">Search</button>
+                        <button class="searchButton" @click="Search()">Search</button>
                     </div>
                 </div>
             </div>
 
-            <div class="sub-header">
+            <div class="sub-header" v-if="this.display == true">
                 <h6>Fill Marks</h6>
             </div>
-            <div class="card-body">
-                <div class="table-responsive">            
+            <div class="card-body" v-if="this.display == true">
+                <div v-if="this.data == false">
+                    <h1 class="NoData">No Data</h1>
+                </div>
+                <div class="table-responsive" v-if="this.data == true">            
                     <table class="table table-hover table-striped" style="display: block;overflow-y: auto;" id="studenttable">
                         <thead>
                             <tr style="font-size:14px;">
                                 <th class="all" nowrap>Adminission Number</th>
                                 <th class="all" nowrap>Roll Number</th>
                                 <th class="all" nowrap>Student</th>
-                                <th class="all" nowrap>Myanmar (TH:4/10)</th>
-                                <th class="all" nowrap>English (TH:8/15)</th>
-                                <th class="all" nowrap>Mathematics (TH:8/15)</th>
-                                <th class="all" nowrap>Chemistry (TH:8/15)</th>
-                                <th class="all" nowrap>Physics (TH:8/15)</th>
+                                <th class="all" nowrap v-for="tablehead in tableHead" :key="tablehead.id">{{tablehead.subject}} (TH:{{tablehead.passing_marks}}/{{tablehead.full_marks}})</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr class="active" style="border-bottom: 1px solid #ebebeb;">
-                                <td class="all" nowrap>18012</td>
-                                <td class="all" nowrap>113</td>
-                                <td class="all" nowrap>Gates</td>
-                                <td>
+                            <tr class="active" style="border-bottom: 1px solid #ebebeb;" v-for="(studentExam,index) in StudentExam" :key="studentExam.id">
+                                <td class="all" nowrap>{{studentExam.admission_no}}</td>
+                                <td class="all" nowrap>{{studentExam.roll_no}}</td>
+                                <td class="all" nowrap>{{studentExam.student_name}}</td>
+                                <td v-for="Subjects in studentExam.subjects" :key="Subjects.id">
                                     <div class="form-group">
-                                        <div class="checkbox">
-                                            <label class="checkLabel"><input type="checkbox" value="ABS" autocomplete="off">Abs</label>
+                                        <div class="checkbox" >
+                                            <label class="checkLabel">
+                                                <input v-if="Subjects.start_time == 'A'" :checked="true" type="checkbox" value="A" autocomplete="off" @click="checkA($event,Subjects)">
+                                                <input v-else type="checkbox" value="A" autocomplete="off" @click="checkA($event,Subjects)">
+                                            Abs</label>
                                         </div>
                                         <input type="hidden" name="subject_id" value="1">
-                                        <input type="text" class="inputbox" value="9.00" placeholder="Enter Marks" autocomplete="off">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label class="checkLabel"><input type="checkbox" value="ABS" autocomplete="off">Abs</label>
-                                        </div>
-                                        <input type="hidden" name="subject_id" value="1">
-                                        <input type="text" class="inputbox" value="12.00" placeholder="Enter Marks" autocomplete="off">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label class="checkLabel"><input type="checkbox" value="ABS" autocomplete="off">Abs</label>
-                                        </div>
-                                        <input type="hidden" name="subject_id" value="1">
-                                        <input type="text" class="inputbox" value="8.00" placeholder="Enter Marks" autocomplete="off">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label class="checkLabel"><input type="checkbox" value="ABS" autocomplete="off">Abs</label>
-                                        </div>
-                                        <input type="hidden" name="subject_id" value="1">
-                                        <input type="text" class="inputbox" value="11.00" placeholder="Enter Marks" autocomplete="off">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label class="checkLabel"><input type="checkbox" value="ABS" autocomplete="off">Abs</label>
-                                        </div>
-                                        <input type="hidden" name="subject_id" value="1">
-                                        <input type="text" class="inputbox" value="9.00" placeholder="Enter Marks" autocomplete="off">
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr class="active" style="border-bottom: 1px solid #ebebeb;">
-                                <td class="all" nowrap>18013</td>
-                                <td class="all" nowrap>114</td>
-                                <td class="all" nowrap>Din</td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label class="checkLabel"><input type="checkbox" value="ABS" autocomplete="off">Abs</label>
-                                        </div>
-                                        <input type="hidden" name="subject_id" value="1">
-                                        <input type="text" class="inputbox" value="9.00" placeholder="Enter Marks" autocomplete="off">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label class="checkLabel"><input type="checkbox" value="ABS" autocomplete="off">Abs</label>
-                                        </div>
-                                        <input type="hidden" name="subject_id" value="1">
-                                        <input type="text" class="inputbox" value="12.00" placeholder="Enter Marks" autocomplete="off">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label class="checkLabel"><input type="checkbox" value="ABS" autocomplete="off">Abs</label>
-                                        </div>
-                                        <input type="hidden" name="subject_id" value="1">
-                                        <input type="text" class="inputbox" value="8.00" placeholder="Enter Marks" autocomplete="off">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label class="checkLabel"><input type="checkbox" value="ABS" autocomplete="off">Abs</label>
-                                        </div>
-                                        <input type="hidden" name="subject_id" value="1">
-                                        <input type="text" class="inputbox" value="11.00" placeholder="Enter Marks" autocomplete="off">
-                                    </div>
-                                </td>
-                                <td>
-                                    <div class="form-group">
-                                        <div class="checkbox">
-                                            <label class="checkLabel"><input type="checkbox" value="ABS" autocomplete="off">Abs</label>
-                                        </div>
-                                        <input type="hidden" name="subject_id" value="1">
-                                        <input type="text" class="inputbox" value="9.00" placeholder="Enter Marks" autocomplete="off">
+                                        <input v-if="Subjects.start_time == 'A'" disabled type="text" class="inputbox" placeholder="Enter Marks" v-model="Subjects.note">
+                                        <input v-else type="number" class="inputbox" placeholder="Enter Marks" v-on:keyup="checkFullMarks($event,Subjects.full_marks,Subjects.id+index)" v-model="Subjects.note">
+                                        <span :id="Subjects.id+index" class="error_message">More than full marks.</span>
                                     </div>
                                 </td>
                             </tr>
                         </tbody>
                     </table>
-                    <button class="save" id="globalSave">Save</button>
+                    <button class="save" @click="SaveExamResults()">Save</button>
                 </div>
             </div>
         </div>
-
+        <!-- <button type="button" @click="Test()">TEST</button> -->
     </div>
 </template>
+<script>
+export default {
+    data(){
+        return{
+            examNames:[],
+            Classes:[],
+            Sections:[],
+            idsArray:[],
+            id1:'',
+            id2:'',
+            id3:'',
+            tableHead:[],
+            StudentExam:[],
+            display : false,
+            ExamResults : {examResults:[]},
+            data : false,
+            Absent : false,
+            oldValue : '0',
+            oldId: '',
+        }
+    },created(){
+        this.getExamNames();
+        this.getClass();
+    },methods:{
+        getExamNames(){
+            this.axios.get(`/api/ExamList`)
+            .then(respnonse=>{
+                this.examNames = respnonse.data;
+            })
+        },
+        setExamId(event){
+            this.id1 = event.target.value;
+            this.display = false;
+        },getClass(){
+        this.axios
+        .get(`/api/getClasses`)
+        .then(response => {            
+            this.Classes = response.data;
+        });
+        },getSection(event){
+        this.axios
+        .get(`/api/getClassSection/${event.target.value}`)
+        .then(response => {
+          this.Sections = response.data;
+          this.id2=event.target.value;
+          this.display = false;
+        });
+        },getSectionId(eventS){
+        this.display = false;
+        this.id3 = eventS.target.value;
+            
+        },getAllData(){
+            for(var i=0;i<this.StudentExam.length;i++){
+                for(var ii=0;ii<this.StudentExam[i].subjects.length;ii++){
+                    this.ExamResults.examResults.push({
+                        'attendence':this.StudentExam[i].subjects[ii].start_time,'exam_schadule_id':this.StudentExam[i].subjects[ii].id,
+                        'admission_no':this.StudentExam[i].admission_no,'get_marks':this.StudentExam[i].subjects[ii].note
+                    })
+                }
+                
+            }
+        },Search(){
+            this.idsArray.push(this.id1);
+            this.idsArray.push(this.id2);
+            this.idsArray.push(this.id3);
+            this.axios.get(`/api/marksGrade/getSearchData/${this.idsArray}`).then(response=>{
+                this.tableHead = response.data;
+            })
+            this.axios.get(`/api/marksGrade/getStudentExam/${this.idsArray}`)
+            .then(response=>{
+                if(response.data == 'no data'){
+                    this.data = false;
+                }else{
+                    this.data = true;
+                    this.StudentExam = response.data;
+                }
+            })
+            this.idsArray = [];
+            setTimeout(() => {
+                this.display = true
+            }, 1000);
+        },Test(){
+            
+        },SaveExamResults(){
+            this.getAllData();
+            this.axios.post(`/api/examResults/addExamResults`,this.ExamResults)
+            .then(response=>{
+                this.$router.push({name: 'MarkRegister'});
+            });
+        },checkA(event,Obj){
+            if(event.target.checked){
+                Obj.start_time = event.target.value;
+                this.oldValue = Obj.note;
+                Obj.note = '0';
+                this.oldId = Obj.id;
+            }else{
+                Obj.start_time = 'yes';
+                
+                if(Obj.id == this.oldId){
+                    Obj.note = this.oldValue;
+                }else{
+                    Obj.note = '0';
+                    this.oldId = Obj.id;
+                }
+
+            }
+        },checkFullMarks(event,full_marks,warm){
+
+            var getMarks = parseInt(event.target.value);
+            var fullMarks = parseInt(full_marks);
+            if(fullMarks < getMarks){
+                document.getElementById(warm).style.display = 'block';
+            }else{
+                document.getElementById(warm).style.display = 'none';
+            }
+        }
+    }
+}
+</script>

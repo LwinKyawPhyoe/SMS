@@ -1,112 +1,129 @@
 .StudentInformation,
-.StudentHistory {
-  .table {
-    td {
-      text-align: center;
+.StudentHistory
+{
+   
+    .table {
+        td {
+            text-align: center;
+        }
+    } 
+    .searchText {
+        margin: 1rem;
+        border: none;
+        outline: none;
+        border-bottom: 1px solid #ddd;
+        float: left;
     }
-  }
-  .searchText {
-    margin: 1rem;
-    border: none;
-    outline: none;
-    border-bottom: 1px solid #ddd;
-    float: left;
-  }
-  .searchText:focus {
-    border-bottom: 1px solid #1b5e20;
-  }
-  #copyRow {
-    float: right;
-    margin-top: 1rem;
-    margin-right: -8px;
-    .col-2 {
-      padding: 0;
-      padding-right: 5px;
-      background: whitesmoke;
-      padding-bottom: 2px;
-      border-bottom: 1px solid #dfdfdf;
-      a {
-        color: #000000a8;
-        padding: 1px 5px 5px;
-      }
-      a:hover {
-        background: #e7e7e7;
-        color: black;
-        border-bottom: 1px solid rgba(0, 0, 0, 0.8);
-      }
+    .searchText:focus {
+        border-bottom: 1px solid #1b5e20;
     }
-  }
-  .view {
-    ::-webkit-scrollbar {
-      width: 5px;
-    }
-    ::-webkit-scrollbar-track {
-      background: white;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #1b5e20;
-      border-radius: 10px;
-    }
-  }
-
-  .main {
-    width: 100%;
-    // border: solid green;
-    height: 150px;
-    overflow: auto;
-    .right {
-      width: 80%;
-    }
-    .side {
-      width: 15%;
-      height: 100%;
-      img {
-        border-radius: 5px;
-        border: 1px solid;
-        box-shadow: 1px 4px 7px #888888;
-        padding: 2px;
+    #copyRow {
+        float: right;
         margin-top: 1rem;
-        position: relative;
-      }
+        margin-right: -8px;
+        .col-2 {
+            padding: 0;
+            padding-right: 5px;
+            background: whitesmoke;
+            padding-bottom: 2px;
+            border-bottom: 1px solid #dfdfdf;
+            a {
+                color: #000000a8;
+                padding: 1px 5px 5px;
+            }
+            a:hover {
+                background: #e7e7e7;
+                color: black;
+                border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+            }
+        }
     }
-  }
-  .infoFooter {
-    width: 100%;
-    padding: 5px 0 5px 1rem;
-    float: right;
-    router-link {
-      color: #1b5e20;
-      text-decoration: none;
+    .view {
+         ::-webkit-scrollbar {
+            width: 5px;
+        }
+         ::-webkit-scrollbar-track {
+            background: white
+        }
+         ::-webkit-scrollbar-thumb {
+            background: #1b5e20;
+            border-radius: 10px;
+        }
     }
-    button {
-      color: #1b5e20;
-      font-size: 20px;
-      background-color: whitesmoke;
-      border: none;
-      outline: none;
-      border-radius: 3px;
+    
+    .search {
+        width: 80px;
+        float: right;
+        height: 30px;
+        margin-top: 10px;
+        background: #1b5e20;
+        color: white;
+        font-size: 13px;
+        border: none;
+        border-radius: 3px;
+        padding: 3px;
     }
-  }
-  .value {
-    color: gray;
-    font-size: 14px;
-  }
-  .divcontent {
-    width: 100%;
-  }
-  strong {
-    width: 100%;
-    font-size: 14px;
-  }
-  .key {
-    color: black;
-    font-size: 14px;
-  }
-  .center {
-    width: 45% !important;
-    float: left;
-  }
+    .main {
+        width: 100%;
+        // border: solid green;
+        height: 150px;
+        overflow: auto;
+        .right {
+            width: 80%;
+        }
+        .side {
+            width: 15%;
+            height: 100%;
+            img {
+                border-radius: 5px;
+                border: 1px solid;
+                box-shadow: 1px 4px 7px #888888;
+                padding: 2px;
+                margin-top: 1rem;
+                position: relative;
+                width: 100px;
+                height: 100px;
+            }
+        }
+    }
+    .infoFooter {
+        width: 100%;
+        padding: 5px 0 5px 1rem;
+        float: right;
+        router-link{
+            color: #1b5e20;
+            text-decoration: none;
+        }
+        button {
+            color: #1b5e20;
+            font-size: 20px;
+            background-color: whitesmoke;
+            border: none;
+            outline: none;
+            border-radius: 3px;
+            
+        }
+    }
+    .value {
+        color: gray;
+        font-size: 14px;
+    }
+    .divcontent {
+        width: 100%;
+    }
+    strong {
+        width: 100%;
+        font-size: 14px;
+    }
+    .key {
+        color: black;
+        font-size: 14px;
+    }
+    .center {
+        width: 45% !important;
+        float: left;
+    }
 }
-button:focus {
-  outline: none;
+button:focus{
+    outline: none;
 }

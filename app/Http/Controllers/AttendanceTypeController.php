@@ -18,6 +18,13 @@ class AttendanceTypeController extends Controller
         // print_r($attendance_type);
         return array_reverse($attendance_type);
     }
+    /**
+     * Displaty a listing of the staff attendance type  (P,L,A,HD,H) by wai yan soe
+     */
+    public function getTypes(){
+        $attendance_type = attendance_type::where('is_active', '<=', 'yes')->get()->toArray();
+        return array_reverse($attendance_type);
+    }
 
     /**
      * Show the form for creating a new resource.

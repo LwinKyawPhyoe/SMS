@@ -52,7 +52,7 @@
             </select>
           </div>
           <div class="col-12">
-            <button class="searchButton" id="globalSearch">Search</button>
+            <button class="searchButton">Search</button>
           </div>
         </div>
       </div>
@@ -202,7 +202,7 @@
           </table>
         </div>
         <div class="col-12">
-          <button class="save" id="globalSave" style="margin:-1rem 0 1rem;">Save</button>
+          <button class="save" style="margin:-1rem 0 1rem;">Save</button>
         </div>
       </div>
     </div>

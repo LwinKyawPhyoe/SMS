@@ -3,12 +3,14 @@
     <div class="toplink">
       <h2 class="stuName">Hostel</h2>
       <h4 class="stuLink">
-        <router-link to="/home" class="home">Home</router-link>> Room Type
+        <router-link to="/home" class="home">Home</router-link>> Room
+        Type
       </h4>
     </div>
     <hr />
-    <confirm :url="delurl"></confirm>
-    <div class="row" style="align-items: end !important;margin-left: 0px;">
+    <confirm :url="props"></confirm>
+    <Loading></Loading>
+    <div class="row" style="align-items: end !important;">
       <div class="col-lg-5 col-md-12" style="padding-left:2px;">
         <div class="card">
           <div class="card-header">
@@ -27,8 +29,20 @@
                   class="inputbox"
                   v-model="room.room_type"
                   id="sectionid"
-                  @keyup="onValidate(room.room_type, 'sectionid', 'sectionmsg')"
-                  v-on:blur="onValidate(room.room_type, 'sectionid', 'sectionmsg')"
+                  @keyup="
+                                        onValidate(
+                                            room.room_type,
+                                            'sectionid',
+                                            'sectionmsg'
+                                        )
+                                    "
+                  v-on:blur="
+                                        onValidate(
+                                            room.room_type,
+                                            'sectionid',
+                                            'sectionmsg'
+                                        )
+                                    "
                 />
                 <span id="sectionmsg" class="error_message">Room Type is required</span>
               </div>
@@ -38,14 +52,8 @@
               </div>
               <div class="col-12">
                 <!--- store -->
-                <button v-if="this.isEdit == false" id="globalSave" type="submit" class="save">Save</button>
-                <button
-                  v-else
-                  @click="updateRoomType()"
-                  id="globalSave"
-                  type="button"
-                  class="save"
-                >Save</button>
+                <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
+                <button v-else @click="updateRoomType()" type="button" class="save">Save</button>
               </div>
             </form>
           </div>
@@ -67,16 +75,12 @@
             <div class="copyRows">
               <div class="row" id="copyRow">
                 <div class="col-3">
-                  <a
-                    href="#"
-                    @click.prevent="downloadExcel('studenttable', 'name', 'Room_Type.xls')"
-                    title="Excel"
-                  >
+                  <a href="#" title="Excel">
                     <i class="fa fa-file-excel-o"></i>
                   </a>
                 </div>
                 <div class="col-3">
-                  <a href="#" @click.prevent="printme('print')" title="Print">
+                  <a href="#" title="Print">
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
@@ -87,8 +91,7 @@
                 </div>
               </div>
             </div>
-
-            <div class="table-responsive" id="print">
+            <div class="table-responsive">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
                   <tr>
@@ -97,14 +100,18 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(roomType) in roomtypes" v-bind:key="roomType.id" class="active">
+                  <tr v-for="roomType in roomtypes" v-bind:key="roomType.id" class="active">
                     <td class="all" nowrap>
                       <p class="toolText">
-                        {{roomType.room_type}}
+                        {{ roomType.room_type }}
                         <span
                           v-if="roomType.description"
                           class="tooltipLabel"
-                        >{{roomType.description}}</span>
+                        >
+                          {{
+                          roomType.description
+                          }}
+                        </span>
                         <span v-else class="tooltipLabel text-danger">No Description</span>
                       </p>
                     </td>
@@ -117,7 +124,9 @@
                         data-target="#exampleModalCenter"
                         class="fa fa-trash time"
                         data-id="hos"
-                        @click="deleteRoomType(roomType.id)"
+                        @click="
+                                                    deleteRoomType(roomType.id)
+                                                "
                       >
                         <span class="timeLabel">Delete</span>
                       </i>
@@ -137,21 +146,28 @@
  *  COMPONENTS
  */
 import message from "../Alertmessage/message.vue";
-import { Util } from "../../js/util";
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
+
+// Import component
+import Loading from "../LoadingController.vue";
+
 export default {
   components: {
     confirm,
-    message
+    message,
+    Loading
   },
   data() {
     return {
+      props: {
+        url: "",
+        type: ""
+      },
       search: "",
       room: {},
       roomtypes: [],
       isEdit: false,
-      delurl: "",
       msg: {
         text: "",
         type: ""
@@ -166,6 +182,7 @@ export default {
     this.getRoomTypes();
   },
   created() {
+    
     EventBus.$on("clicked", response => {
       this.getRoomTypes();
     });
@@ -180,8 +197,10 @@ export default {
         .then(response => (this.roomtypes = response.data));
     },
     addRoomType() {
+      // simulate AJAX
       console.log(JSON.stringify(this.room.room_type));
       if (this.checkValidate()) {
+        EventBus.$emit("clicked", this.roomtypes);
         this.axios
           .post("/api/roomtype/store", this.room)
           .then(response => {
@@ -234,7 +253,8 @@ export default {
     },
     deleteRoomType(id) {
       var funName = "delete"; /**Delete function */
-      this.delurl = `roomtype/${funName}/${id}`;
+      this.props.type = "delete";
+      this.props.url = `roomtype/${funName}/${id}`;
     },
     searchData() {
       if (this.search == "") {
@@ -253,12 +273,21 @@ export default {
      * FORM VALIDATIOn
      */
     onValidate(value, inputId, megId) {
-      Util.onValidate(value, inputId, megId);
+      if (value == "" || value == undefined)
+        document.getElementById(inputId).style.border = "solid 1px red";
+      else {
+        document.getElementById(inputId).style.border = "solid 1px #d2d6de";
+        document.getElementById(megId).style.display = "none";
+      }
     },
 
+    onValidateMessage(inputId, megId) {
+      document.getElementById(inputId).style.border = "solid 1px red";
+      document.getElementById(megId).style.display = "block";
+    },
     checkValidate() {
       if (!this.room.room_type) {
-        Util.onValidateMessage("sectionid", "sectionmsg");
+        this.onValidateMessage("sectionid", "sectionmsg");
         return false;
       } else {
         return true;
@@ -267,14 +296,6 @@ export default {
     },
     goAlertClose() {
       $(".alert").css("display", "none");
-    },
-
-    printme(table) {
-      Util.printme(table);
-    },
-
-    downloadExcel(table, name, filename) {
-      Util.downloadExcel(table, name, filename);
     }
   }
 };

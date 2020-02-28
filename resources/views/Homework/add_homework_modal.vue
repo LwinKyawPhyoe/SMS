@@ -61,7 +61,7 @@
             </div>
         </div>
         <div class="modal-footer" style="padding: 10px 15px;">
-            <button class="save" style="margin: 0px;" id="globalSave">Save</button>
+            <button class="save btn-dark" style="margin: 0px;">Save</button>
         </div>
     </div>
 </div>

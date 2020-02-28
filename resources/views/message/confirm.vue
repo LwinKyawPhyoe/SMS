@@ -1,4 +1,4 @@
- <template>
+<template>
   <div
     class="modal fade"
     id="exampleModalCenter"
@@ -19,7 +19,7 @@
           </div>
           <div class="modal-footer confirm-modal-footer">
             <button
-              @click="deleteData(url)"
+              @click="yes()"
               type="submit"
               class="confirmBtn"
               style="text-align:center;"
@@ -36,7 +36,12 @@
 import { EventBus } from "../../js/event-bus.js";
 export default {
   props: {
-    url: ""
+    params: {
+      url: "",
+      type: ""
+    },
+    url: "",
+    type: ""
   },
   data() {
     return {
@@ -51,19 +56,26 @@ export default {
     };
   },
   methods: {
-    deleteData() {
-      this.axios.delete(`/api/${this.url}`).then(response => {
-        this.response = response.data;
-        console.log("" + JSON.stringify(response.data));
-        setTimeout(() => {
-          EventBus.$emit("clicked", this.response);
-        }, 100);
-      });
+    yes() {
+      /***You can add More type */
+      if (this.url.type == "confirm") {
+        /**For Simple Confirm Box */
+        let val = { disabled: "1", check: "true" };
+        EventBus.$emit("clicked", val);
+        alert("confirm");
+      } else if (this.url.type == "delete") {
+        alert("delete");
+        /**For Delete Status */
+        this.axios.delete(`/api/${this.url.url}`).then(response => {
+          this.response = response.data;
+          console.log("" + JSON.stringify(response.data));
+          setTimeout(() => {
+            EventBus.$emit("clicked", this.response);
+          }, 100);
+        });
+        EventBus.$emit("clicked", this.response);
+      }
     }
   }
 };
 </script>
-
-
-
-

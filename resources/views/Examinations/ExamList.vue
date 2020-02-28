@@ -7,7 +7,7 @@
       </h4>
     </div>
     <hr />
-    <div class="row rowContainer" style="align-items: end !important;margin-left: 0px;">
+    <div class="row rowContainer" style="align-items: end !important;">
       <div class="col-lg-5 col-md-12" style="padding-left:2px;">
         <div class="card">
           <div class="card-header">
@@ -30,11 +30,11 @@
             <div class="col-12">
               <label for="note">Note</label><br>
               <textarea class="textareas" rows="3" v-model="saveexam.remark"></textarea>
-            </div>
+            </div><br>
 
             <label v-if="savebutton == true" style="margin-left:50px;">Please Activate Academic Year <strong>*</strong></label>
             <div class="col-12">
-              <button class="save" id="globalSave" @click="addExam(SessionList.id)" v-for="SessionList in SessionList" :key="SessionList.id">Save</button>
+              <button class="save" @click="addExam(SessionList.id)" v-for="SessionList in SessionList" :key="SessionList.id">Save</button>
             </div>
           </div>
         </div>
@@ -54,18 +54,28 @@
             </div>
             <input v-on:keyup="searchTable()" type="text" placeholder="Search..." class="searchText" id="myInput" />
             <div class="copyRows">
-              <div class="row" id="copyRow">                
-                <div class="col-3">
-                  <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Exam_List.xls')" title="Excel">
+              <div class="row" id="copyRow">
+                <div class="col-2">
+                  <a href="#" title="Copy">
+                    <i class="fa fa-copy"></i>
+                  </a>
+                </div>
+                <div class="col-2">
+                  <a href="#" title="Excel">
                     <i class="fa fa-file-excel-o"></i>
                   </a>
                 </div>
-                <div class="col-3">
-                  <a href="#" @click.prevent="printme('print')" title="Print">
-                      <i class="fa fa-print"></i>
+                <div class="col-2">
+                  <a href="#" title="PDF">
+                    <i class="fa fa-file-pdf-o"></i>
                   </a>
                 </div>
-                <div class="col-3">
+                <div class="col-2">
+                  <a href="#" title="Print">
+                    <i class="fa fa-print"></i>
+                  </a>
+                </div>
+                <div class="col-2">
                   <a onclick="showColumns()" title="Columns">
                     <i class="fa fa-columns"></i>
                   </a>
@@ -87,8 +97,7 @@
                 </div>
               </div>
             </div>
-
-            <div class="table-responsive" id="print">
+            <div class="table-responsive">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
                   <tr>
@@ -125,9 +134,6 @@
   </div>
 </template>
 <script>
-import message from "../Alertmessage/message.vue";
-import {Util} from '../../js/util';
-
     export default {
         data() {
             return {
@@ -236,14 +242,25 @@ import {Util} from '../../js/util';
       }
     },onValidate(value, inputId, megId)
     {
-        Util.onValidate(value, inputId, megId);
+        if(value == "" || value == undefined) document.getElementById(inputId).style.border = 'solid 1px red';
+        else 
+        {
+            document.getElementById(inputId).style.border = 'solid 1px #d2d6de';
+            document.getElementById(megId).style.display = 'none';
+        }
+    },
+
+    onValidateMessage(inputId, megId)
+    {
+        document.getElementById(inputId).style.border = 'solid 1px red';
+        document.getElementById(megId).style.display = 'block';
     },
 
     checkValidate()
     {
         if(this.saveexam.name == "" || this.saveexam.name == undefined)
         {
-            Util.onValidateMessage('nameid', 'namemsg');
+            this.onValidateMessage('nameid', 'namemsg');
             return false;
         }
         else
@@ -255,16 +272,6 @@ import {Util} from '../../js/util';
       this.axios.get(`/api/ExamList`).then(response=>{
         console.log(response.data);
       })
-    },
-
-    printme(table)
-    {
-        Util.printme(table);
-    },
-
-    downloadExcel(table, name, filename) 
-    {
-        Util.downloadExcel(table,name,filename);
     }
   }
   }

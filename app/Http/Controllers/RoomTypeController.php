@@ -15,7 +15,7 @@ class RoomTypeController extends Controller
     public function index()
     {
         //
-        $roomtypes = RoomType::orderBy('id', 'desc')
+        $roomtypes = RoomType::where('is_active', 'Yes')->orderBy('id', 'desc')
             ->get()
             ->toArray();
         return array_reverse($roomtypes);
@@ -74,12 +74,14 @@ class RoomTypeController extends Controller
     public function delete($id)
     {
         $roomtype = RoomType::find($id);
-        $roomtype->delete();
+        $roomtype->update([
+            "is_active" => "No"
+        ]);
         return response()->json(['text' => 'RoomType deleted successfully', 'type' => 'success']);
     }
 
     public function search($data)
-    {  
+    {
         $roomtypes = RoomType::where('room_type', 'like', '%' . $data . '%')
             ->orderBy('id', 'desc')
             ->get()->toArray();

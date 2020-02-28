@@ -33,8 +33,8 @@
               </div>
               <div class="col-12">
                 <!--- store -->
-                <button v-if="this.isEdit == false" type="submit" id="globalSave" class="save">Save</button>
-                <button v-else @click="updateRole()" type="button" id="globalSave" class="save">Save</button>
+                <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
+                <button v-else @click="updateRole()" type="button" class="save">Save</button>
               </div>
             </form>
           </div>
@@ -50,12 +50,12 @@
             <div class="copyRows">
               <div class="row" id="copyRow">
                 <div class="col-3">
-                  <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Role.xls')" title="Excel">
+                  <a href="#" title="Excel">
                     <i class="fa fa-file-excel-o"></i>
                   </a>
                 </div>
                 <div class="col-3">
-                  <a href="#" @click.prevent="printme('print')" title="Print">
+                  <a href="#" title="Print">
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
@@ -66,13 +66,12 @@
                 </div>
               </div>
             </div>
-
-            <div class="table-responsive" id="print">
+            <div class="table-responsive">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
                   <tr>
                     <th class="all" nowrap>Name</th>
-                    <th class="all" nowrap>Type</th>
+                    <th class="all">Type</th>
                     <th class="all" nowrap style="text-align: right;">Action</th>
                   </tr>
                 </thead>
@@ -80,9 +79,8 @@
                   <tr v-for="(rol) in roles" v-bind:key="rol.id" class="active">
                     <td class="all" nowrap>{{rol.name}}</td>
                     <td class="all" nowrap>{{rol.type}}</td>
-
                     <td style="text-align: right;">
-                      <router-link to="role/assign">
+                      <router-link :to="{name: 'assign', params: { id: rol.id }}">
                         <i class="fa fa-tag assign" aria-hidden="true">
                           <span class="assignLbl">Assign Permission</span>
                         </i>
@@ -110,16 +108,12 @@
     </div>
   </div>
 </template>
-
 <script>
 /**
  *  COMPONENTS
  */
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
-import message from "../Alertmessage/message.vue";
-import {Util} from '../../js/util';
-
 export default {
   components: {
     confirm
@@ -215,12 +209,20 @@ export default {
      * FORM VALIDATIOn
      */
     onValidate(value, inputId, megId) {
-      Util.onValidate(value, inputId, megId);
+      if (value == "" || value == undefined)
+        document.getElementById(inputId).style.border = "solid 1px red";
+      else {
+        document.getElementById(inputId).style.border = "solid 1px #d2d6de";
+        document.getElementById(megId).style.display = "none";
+      }
     },
-    
+    onValidateMessage(inputId, megId) {
+      document.getElementById(inputId).style.border = "solid 1px red";
+      document.getElementById(megId).style.display = "block";
+    },
     checkValidate() {
       if (!this.model.name) {
-        Util.onValidateMessage("name_id", "namemsg");
+        this.onValidateMessage("name_id", "namemsg");
         return false;
       } else {
         return true;
@@ -229,16 +231,6 @@ export default {
     },
     goAlertClose() {
       $(".alert").css("display", "none");
-    },
-
-    printme(table)
-    {
-      Util.printme(table);
-    },
-
-    downloadExcel(table, name, filename) 
-    {
-      Util.downloadExcel(table,name,filename);
     }
   }
 };

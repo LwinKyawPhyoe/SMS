@@ -8,7 +8,7 @@
         </div>
         <hr />
 
-        <div class="row" style="align-items: end !important;margin-left: 0px;">
+        <div class="row" style="align-items: end !important;">
             <div class="col-lg-5 col-md-12" style="padding-left:2px;">
                 <div class="card">
                     <div class="card-header">
@@ -34,7 +34,7 @@
                                 <span id="vehiclemsg" class="error_message">Vehicle is required</span>
                             </div>
                             <div class="col-12">
-                                <button type="submit" id="globalSave" class="save">Save</button>
+                                <button type="submit" class="save">Save</button>
                             </div>
                         </form>
                     </div>

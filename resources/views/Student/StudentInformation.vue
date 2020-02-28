@@ -9,7 +9,7 @@
     <hr />
     <br />
     <div class="card">
-      <div class="card-header">
+      <div class="stucard-header">
         <h6>Student Criteria</h6>
       </div>
       <div class="stucard-body">
@@ -19,33 +19,46 @@
               Class
               <strong>*</strong>
             </label>
-            <select id="class" class="inputbox">
-              <option value="one">Grade One</option>
-              <option value="two">Grade Two</option>
-              <option value="three">Grade Three</option>
+            <select id="class" class="inputbox"
+            @keyup="onValidate(class_id, 'class', 'class_msg')"
+            v-on:blur="onValidate(class_id, 'class', 'class_msg')"
+            @change="selectClass($event)"
+            v-model="class_id"
+            >
+              <option selected disabled>Select Class</option>
+              <option v-for="list in classList" :key="list.id" :value="list.id">
+                {{list.class}}
+              </option>
             </select>
+            <span id="class_msg" class="error_message">Class reqiruired.</span>
           </div>
           <div class="textbox" style="margin-top:-1px;">
             <label for="section">
               Section
               <strong>*</strong>
             </label>
-            <select id="section" class="inputbox">
-              <option value="A">A</option>
-              <option value="B">B</option>
+            <select id="section" class="inputbox" 
+            @keyup="onValidate(section_id, 'section', 'section_msg')"
+            v-on:blur="onValidate(section_id, 'section', 'section_msg')"
+            @change="selectSection($event)"
+            v-model="section_id">
+              <option disabled selected>Select section</option>
+              <option v-for="list in sectionList" :key="list.id" :value="list.id">{{list.section}}</option>
             </select>
-            <button class="searchButton" id="globalSearch">Search</button>
+            <span id="section_msg" class="error_message">Section required.</span>
+            <button class="search" @click="searchBySectionId()">Search</button>
           </div>
           <div class="textarea">
-            <label for="other">Search By Other Option</label>
-            <textarea id="other" class="inputbox" placeholder="Search By Name,Nrc,..etc."></textarea>
-            <button class="searchButton" id="globalSearch">Search</button>
+            <label for="other">Search By Keyword</label>
+            <textarea id="other" class="inputbox" placeholder="Search By Name,Nrc,..etc." v-model="keyword"></textarea>
+            <button class="search" @click="searchByKeyWord()">Search</button>
           </div>
         </div>
       </div>
-      <div class="sub-header" id="globalsubHeader">
+      <div v-if="search">
+      <div class="sub-header">
         <button
-          class="metaBtn tabTheme"
+          class="metaBtn"
           id="listView"
           onclick="changeMega('listView','detailsView')"
           @click="listView()"
@@ -54,7 +67,7 @@
           <i class="fa fa-list"></i> List View
         </button>
         <button
-          class="metaBtn tabTheme"
+          class="metaBtn"
           id="detailsView"
           onclick="changeMega('detailsView','listView')"
           @click="detailsView()"
@@ -66,27 +79,18 @@
         <input type="text" placeholder="Search..." class="searchText" />
         <div class="copyRows">
           <div class="row" id="copyRow">
-            <div class="col-2">
-              <a href="#" title="Copy">
-                <i class="fa fa-copy"></i>
-              </a>
-            </div>
-            <div class="col-2">
-              <a href="#" title="Excel">
-                <i class="fa fa-file-excel-o"></i>
-              </a>
-            </div>
-            <div class="col-2">
+            
+            <div class="col-3">
               <a href="#" title="PDF">
                 <i class="fa fa-file-pdf-o"></i>
               </a>
             </div>
-            <div class="col-2">
+            <div class="col-3">
               <a href="#" title="Print">
                 <i class="fa fa-print"></i>
               </a>
             </div>
-            <div class="col-2">
+            <div class="col-3">
               <a href="#" title="Columns">
                 <i class="fa fa-columns"></i>
               </a>
@@ -97,134 +101,148 @@
           <table
             class="table table-hover table-striped table-bordered table-sm"
             id="selectedColumn"
+            v-if="check"
           >
             <thead>
               <tr class="active" nowrap>
-                <th nowrap class="th-sm">No.</th>
-                <th nowrap class="th-sm">Name</th>
-                <th nowrap class="th-sm">Photo</th>
                 <th nowrap class="th-sm">Admission Number</th>
-                <th nowrap class="th-sm">Roll Number</th>
+                <th nowrap class="th-sm">image</th>
                 <th nowrap class="th-sm">Class</th>
-                <th nowrap class="th-sm">Section</th>
-                <th nowrap class="th-sm">Blood Group</th>
-                <th nowrap class="th-sm">Height</th>
-                <th nowrap class="th-sm">Weight</th>
-                <th nowrap class="th-sm">Register Date</th>
-                <th nowarp class="th-sm">AdmissionDate</th>
+                <th nowrap class="th-sm">Student Name</th>
+                <!-- <th nowrap class="th-sm">Class</th> -->
+                <th nowrap class="th-sm">Father Name</th>
+                <th nowrap class="th-sm">Mother Name</th>
+                <th nowrap class="th-sm">Guardian Name</th>
+                <th nowrap class="th-sm">Date Of Birth</th>
+                <th nowrap class="th-sm">Gender</th>
+                <th nowrap class="th-sm">Mobile Number</th>
                 <th nowrap class="th-sm">Action</th>
               </tr>
             </thead>
-            <tbody>
-              <tr class="active">
-                <td nowrap>0</td>
-                <td nowrap>Selena Gomez</td>
-                <td nowrap>
-                  <img
-                    src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRq2msisQfUdioeST-5wBrwuex4ZWEEjfGIZvxoSRLKrDk4UTGseg&s"
-                    alt="student photo"
-                  />
+            <tbody >
+              <tr  class="active" v-for="student in studentList" :key="student.id">
+                <td nowrap>{{student.admission_no}}</td>
+                <td nowrap v-if="student.image">
+                  <img :src="'stu_image/'+student.image" alt="no image">
                 </td>
-                <td nowrap>1</td>
-                <td nowrap>23</td>
-                <td nowrap>Grade One</td>
-                <td nowrap>Section A</td>
-                <td nowrap>O+</td>
-                <td nowrap>5ft</td>
-                <td nowrap>134p</td>
-                <td nowrap>09-09-2020</td>
-                <td nowarp>30-06-2019</td>
+                <td v-else>
+                  <img src="noimage.jpg" alt="no image">
+                </td>
+                <td nowrap>
+                  {{student.class}}
+                </td>
+                <td nowrap>{{student.name}}</td>
+                <!-- <td nowrap>
+                  {{student.class}}
+                </td> -->
+                <td nowrap>{{student.father_name}}</td>
+                <td nowrap>{{student.mother_name}}</td>
+                <td nowrap>{{student.guardian_name}}</td>
+                <td nowrap>{{student.dob}}</td>
+                <td nowrap>{{student.gender}}</td>
+                <td nowrap>{{student.mobileno}}</td>
                 <td>
-                  <router-link to="#">
+                  <router-link :to="{ name: 'viewstudent', params: { id: student.id }}">
                     <i class="fa fa-list"></i>
                   </router-link>
-                  <router-link to="#">
+                  <router-link :to="{ name: 'editstudent', params: { id: student.id }}" >
                     <i class="fa fa-pencil pen"></i>
                   </router-link>
                 </td>
               </tr>
             </tbody>
+            
+          </table>
+          <table  v-else class="table table-hover table-striped table-bordered table-sm">
+            <tbody>
+              <tr>
+                <td colspan="100" >No Data</td>
+              </tr>
+            </tbody>
           </table>
         </div>
       </div>
-      <div class="stucard-body view" v-else>
-        <div>
+      <div class="stucard-body view" v-else >
+        <div  v-if="check"  >
+          <div v-for="list in studentList" :key="list.id">
           <div class="infoFooter">
-            <router-link to="#">
-              <i class="fa fa-list-ul"></i>
-            </router-link>
-            <router-link to="#">
-              <i class="fa fa-pencil pen"></i>
-            </router-link>
-          </div>
+                <router-link :to="{ name: 'viewstudent', params: { id: list.id }}">
+                  <i class="fa fa-list-ul"></i>
+                </router-link>
+                <router-link :to="{ name: 'editstudent', params: { id: list.id }}">
+                  <i class="fa fa-pencil pen"></i>
+                </router-link>
+              </div>
           <div class="row main">
-            <div class="side">
-              <img src="https://qph.fs.quoracdn.net/main-qimg-d171a30624492d6041d5b23548136440" alt />
+            
+            <div class="side" v-if="list.image">
+              <img :src="'stu_image/'+list.image" />
+            </div>
+            <div class="side" v-else>
+              <img src="noimage.jpg" alt="noimage">
             </div>
             <div class="right">
               <div class="row center">
                 <div class="divcontent">
-                  <strong class="key">Name</strong>
-                  <strong class="value">: Gemine</strong>
-                </div>
-                <div class="divcontent">
-                  <strong class="key">Admission Number</strong>
-                  <strong class="value">: GR-0092</strong>
-                </div>
-                <div class="divcontent">
-                  <strong class="key">Roll Number</strong>
-                  <strong class="value">: EXF-20</strong>
+                  <h6>{{list.name}}</h6>
                 </div>
                 <div class="divcontent">
                   <strong class="key">Class</strong>
-                  <strong class="value">: Grade One</strong>
+                  <strong class="value">: {{list.class}}</strong>
                 </div>
                 <div class="divcontent">
-                  <strong class="key">Section</strong>
-                  <strong class="value">: Section A</strong>
+                  <strong class="key">Admission Number</strong>
+                  <strong class="value">: {{list.admission_no}}</strong>
                 </div>
                 <div class="divcontent">
-                  <strong class="key">Blood Group</strong>
-                  <strong class="value">: O+</strong>
-                </div>
-              </div>
-              <div class="row center">
-                <div class="divcontent">
-                  <strong class="key">Height</strong>
-                  <strong class="value">: 5'6"</strong>
-                </div>
-                <div class="divcontent">
-                  <strong class="key">Weight</strong>
-                  <strong class="value">: 150 LB</strong>
-                </div>
-                <div class="divcontent">
-                  <strong class="key">Register Date</strong>
-                  <strong class="value">: 09-09-2019</strong>
-                </div>
-                <div class="divcontent">
-                  <strong class="key">Admission Date</strong>
-                  <strong class="value">: 09-09-2020</strong>
+                  <strong class="key">Date Of Birth</strong>
+                  <strong class="value">: {{list.dob}}</strong>
                 </div>
                 <div class="divcontent">
                   <strong class="key">Gender</strong>
-                  <strong class="value">: Male</strong>
+                  <strong class="value">: {{list.gender}}</strong>
                 </div>
-                <div class="divcontent">
-                  <strong class="key">Birth Date</strong>
-                  <strong class="value">: 09-09-2000</strong>
-                </div>
-                <div class="divcontent">
-                  <strong class="key">Religion</strong>
-                  <strong class="value">: Buddish</strong>
-                </div>
-                <div class="divcontent">
-                  <strong class="key">Mobile Number</strong>
-                  <strong class="value">: 09779808035</strong>
-                </div>
+                
               </div>
+              <div class="row center">
+                <div class="divcontent">
+                  <strong class="key">Father Name</strong>
+                  <strong class="value">: {{list.father_name}}</strong>
+                </div>
+                <div class="divcontent">
+                  <strong class="key">Mother Name</strong>
+                  <strong class="value">: {{list.mother_name}}</strong>
+                </div>
+                <div class="divcontent">
+                  <strong class="key">Guardian Name</strong>
+                  <strong class="value">: {{list.guardian_name}}</strong>
+                </div>
+                <div class="divcontent">
+                  <strong class="key">Guardian Phone</strong>
+                  <strong class="value">: {{list.guardian_phone}}</strong>
+                </div>
+                <div class="divcontent">
+                  <strong class="key">Current Address</strong>
+                  <strong class="value">: {{list.current_address}}</strong>
+                </div>
+
+              </div>
+              
             </div>
+            
           </div>
         </div>
+        </div>
+        <div v-else class="table-responsive">
+            <table class="table table-hover table-striped table-bordered table-sm" style="margin-top:30px;">
+              <tbody>
+                <tr>
+                <td colspan="100">No Data</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
       </div>
     </div>
   </div>
@@ -234,17 +252,176 @@
 export default {
   data() {
     return {
+      viladition:true,
       view: true,
-      students: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10]
+      students: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
+      search:false,
+      classList:[],
+      sectionList:[],
+      section_id:'',
+      class_id:'',
+      class_section_id:'',
+      keyword:'',
+      studentList:[
+      ],
+      check:false,
     };
   },
+  created(){
+    this.allData();
+  },
+ 
+ 
   methods: {
+    
+    searchByKeyWord(){
+      if(this.keyword){
+        this.axios
+      .get(`/api/student/keyword/${this.keyword}`)
+      .then(response=>{
+        this.search = true;
+        var student =response.data;
+        console.log("-->" + JSON.stringify(student));
+        var studentArray =[];
+        if(student.length == 0){
+          this.check = false;
+        }else{
+          this.check = true;
+        }
+        
+        console.log("student array"+JSON.stringify(studentArray));
+        for(let i=0;i<student.length;i++){
+          this.axios
+        .get(`/api/student/selectsection/${student[i].class_sections_id}`)
+        .then(response1=>{
+          var classes = response1.data.classes[0].class +'('+ response1.data.sections[0].section +')';
+          studentArray.push(
+            {
+              'id':student[i].id,
+              'admission_no':student[i].admission_no,
+              'image':student[i].image,
+              'name':student[i].name,
+              'father_name':student[i].father_name,
+              'mother_name':student[i].mother_name,
+              'guardian_name':student[i].guardian_name,
+              'dob':student[i].dob,
+              'gender':student[i].gender,
+              'class':classes,
+              'mobileno':student[i].mobileno,
+              'guardian_phone':student[i].guardian_phone,
+              'current_address':student[i].current_address,
+            }
+          )          
+        })
+        this.studentList = studentArray;
+        }
+      })
+      }
+    },
+     selectClass(e){
+      this.sectionList =[];
+      this.section_id ='';
+      var id = e.target.value;
+      this.axios
+        .get(`/api/student/section/${id}`)
+        .then(response=>{
+          this.sectionList = response.data;
+        })
+    },
+    selectSection(e){
+      var id_section = e.target.value;
+      var id_class = this.class_id;
+      
+      var array =[];
+      this.axios
+      .get(`/api/student/class_section/${id_class}/${id_section}`)
+      .then(response=>{
+        array = response.data;
+        this.class_section_id = array[0].id;
+        console.log(this.class_section_id);
+      })
+    },
+    allData(){
+      this.axios
+        .get('/api/student')
+        .then(response=>{
+          this.classList = response.data.class;
+        });
+    },
+    searchBySectionId(){
+      this.formViladition();
+      if(this.viladition == true){
+        this.axios
+      .get(`/api/student/sibling/${this.class_section_id}`)
+      .then(response=>{
+        this.search = true;
+        var student = response.data;
+        
+        var studentArray =[];
+        
+        if(student.length == 0){
+          this.check = false;
+        }else{
+          this.check = true;
+        }
+        
+        console.log("student array"+JSON.stringify(studentArray));
+        for(let i=0;i<student.length;i++){
+          this.axios
+        .get(`/api/student/selectsection/${student[i].class_sections_id}`)
+        .then(response1=>{
+          var classes = response1.data.classes[0].class +'('+ response1.data.sections[0].section +')';
+          studentArray.push(
+            {
+              'id':student[i].id,
+              'admission_no':student[i].admission_no,
+              'image':student[i].image,
+              'name':student[i].name,
+              'father_name':student[i].father_name,
+              'mother_name':student[i].mother_name,
+              'guardian_name':student[i].guardian_name,
+              'dob':student[i].dob,
+              'gender':student[i].gender,
+              'class':classes,
+              'mobileno':student[i].mobileno,
+              'guardian_phone':student[i].guardian_phone,
+              'current_address':student[i].current_address,
+            }
+          )          
+        })
+        this.studentList = studentArray;
+        }
+      })
+      }
+      
+    },
     listView() {
       this.view = true;
     },
     detailsView() {
       this.view = false;
-    }
+    },
+    onValidate(value, inputId, megId) {
+      if (value == "" || value == undefined)
+        document.getElementById(inputId).style.border = "solid 1px red";
+      else document.getElementById(inputId).style.border = "solid 1px #d2d6de";
+      document.getElementById(megId).style.display = "none";
+    },
+    onValidationMessage(inputId, megId) {
+      document.getElementById(inputId).style.border = "solid 1px red";
+      document.getElementById(megId).style.display = "block";
+    },
+    formViladition(){
+      this.viladition = true;
+      if(!this.class_id){
+        this.onValidationMessage("class", "class_msg");
+        this.viladition = false;
+      }
+      if(!this.section_id){
+        this.onValidationMessage("section", "section_msg");
+        this.viladition = false;
+      }
+    },
   }
 };
 </script>

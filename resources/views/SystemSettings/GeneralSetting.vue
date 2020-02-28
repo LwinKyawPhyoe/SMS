@@ -23,17 +23,17 @@
           class="modal-content"
           style="background:none;border:none;width:100% !important;padding: 1rem;"
         >
-          <div class="modalCard" style="background:none;border:none;">
-            <div class="card-header" id="globalcardHeader">
+          <div class="modalCard card" style="background:none;border:none;">
+            <div class="card-header">
               <h6>System Settings</h6>
               <i
                 class="fa fa-close"
-                style="position:absolute;right: 45px;cursor:pointer;"
+                style="position:absolute;right: 25px;cursor:pointer;"
                 data-dismiss="modal"
                 id="close"
               ></i>
             </div>
-            <div class="card-body modal-bodys" id="globalcardBody">
+            <div class="card-body modal-bodys">
               <div class="row" id="row">
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12">
                   <div class="setting">
@@ -123,98 +123,48 @@
                 <div class="curTheme">
                   <b>Current Theme</b>
                 </div>
-                <form>
-                  <div class="row" id="ThemeColor">
-                    <div class="col-md-3 col-sm-6 col-xs-6 col-12">
-                      <div class="blockColor" @click="changeTheme('defaultColor')">
-                        <div class="backColor" id="default" style="background:#1b5e20;">
-                          <p class="default" id="defaultText">Default</p>
-                        </div>
+                <div class="row" id="ThemeColor">
+                  <div class="col-md-3 col-sm-6 col-xs-6 col-12">
+                    <div class="blockColor" @click="changeTheme('defaultColor')">
+                      <div class="backColor" id="default" style="background:#1b5e20;">
+                        <p class="default" id="defaultText">Default</p>
                       </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-6 col-12">
-                      <div class="blockColor" @click="changeTheme('redColor')">
-                        <div class="backColor" id="red" style="background:darkred;">
-                          <p class="default" id="redText">Red</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-6 col-12">
-                      <div class="blockColor" @click="changeTheme('blueColor')">
-                        <div class="backColor" id="blue" style="background:darkcyan;">
-                          <p class="default" id="blueText">Blue</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-6 col-12">
-                      <div class="blockColor" @click="changeTheme('darkColor')">
-                        <div class="backColor" id="dark" style="background:currentColor;">
-                          <p class="default" id="darkText">Dark</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-6 col-12">
-                      <div class="blockColor" @click="changeTheme('lightColor')">
-                        <div class="backColor" id="light" style="background:#edeeef;">
-                          <p class="default" id="lightText" style="color:black;">Light</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <button
-                        class="save"
-                        id="globalSave"
-                        @click="themeColor()"
-                        style="margin:5px 0 1rem 0;"
-                      >Save</button>
                     </div>
                   </div>
-                </form>
+                  <div class="col-md-3 col-sm-6 col-xs-6 col-12">
+                    <div class="blockColor" @click="changeTheme('redColor')">
+                      <div class="backColor" id="red" style="background:darkred;">
+                        <p class="default" id="redText">Red</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-sm-6 col-xs-6 col-12">
+                    <div class="blockColor" @click="changeTheme('blueColor')">
+                      <div class="backColor" id="blue" style="background:darkcyan;">
+                        <p class="default" id="blueText">Blue</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-sm-6 col-xs-6 col-12">
+                    <div class="blockColor" @click="changeTheme('darkColor')">
+                      <div class="backColor" id="dark" style="background:currentColor;">
+                        <p class="default" id="darkText">Dark</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-sm-6 col-xs-6 col-12">
+                    <div class="blockColor" @click="changeTheme('lightColor')">
+                      <div class="backColor" id="light" style="background:#edeeef;">
+                        <p class="default" id="lightText" style="color:black;">Light</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button class="save" style="margin:5px 0 1rem 0;">Save</button>
+                  </div>
+                </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div
-      class="modal fade"
-      id="profileModal"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="width:653px;">
-          <div class="modal-body" style="padding:0;">
-            <div class="card-header" id="globalcardHeader" style="width: 100%;margin-left: 0;">
-              <h6>Edit Logo</h6>
-              <i
-                class="fa fa-close"
-                data-dismiss="modal"
-                style="cursor: pointer;padding: 0 10px;position: absolute;right: 5px;"
-              ></i>
-            </div>
-            <div style="height: 250px;padding: 2rem;padding: 20px 4rem;">
-              <div
-                style="display: flex;justify-content: center;align-items: center;height: 100%;border: 1px dotted black;"
-              >
-                <!-- <h3
-                  style="font-size: 13pt;cursor: pointer;align-items: center;padding: 2rem;display: flex;"
-                >
-                  <i class="fa fa-image" style="margin-right: 5px;zoom: 5;margin-left: 4px;"></i>
-                  Pick Your Image
-                </h3>-->
-                <img
-                  src="https://www.tn8.tv/media/cache/f0/4a/f04a9afb32f7d049214a165e07245229.jpg"
-                  style="padding: 1rem;border-radius: 20px;cursor:pointer;height: 100%;"
-                />
-              </div>
-            </div>
-          </div>
-          <div class="modal-footer" style="padding-top: 0;">
-            <button type="button" id="globalSave" class="save">Save</button>
           </div>
         </div>
       </div>
@@ -223,11 +173,11 @@
 
     <div class="row rowContainer" style="align-items: end !important;">
       <div class="col-lg-4 col-12" style="padding-left:2px;">
-        <div class="card" id="globalCard">
-          <div class="card-header" id="globalcardHeader">
+        <div class="card">
+          <div class="card-header">
             <h6>Edit Logo</h6>
           </div>
-          <div class="card-body imgCard" style="padding:1rem;" id="globalcardBody">
+          <div class="card-body imgCard">
             <div class="col-12 img">
               <img
                 style="border-radius:5px;"
@@ -235,7 +185,7 @@
               />
             </div>
             <div class="col-12 button">
-              <button class="edit" data-toggle="modal" data-target="#profileModal" id="globalEdit">
+              <button class="edit">
                 <i class="fa fa-floppy-o editIcon" aria-hidden="true"></i>Edit Logo
               </button>
             </div>
@@ -244,17 +194,12 @@
       </div>
 
       <div class="col-lg-8 col-12" style="padding-left:0;">
-        <div class="card" id="globalCard">
-          <div class="card-header editCard" id="globalcardHeader">
+        <div class="card">
+          <div class="card-header editCard">
             <h6>General Setting</h6>
-            <button
-              class="editSm"
-              @click="getData()"
-              data-toggle="modal"
-              data-target="#exampleModalCenter"
-            >Edit</button>
+            <button class="edit" data-toggle="modal" data-target="#exampleModalCenter">Edit</button>
           </div>
-          <div class="card-body tableCard" id="globalcardBody">
+          <div class="card-body tableCard">
             <div class="table-responsive mailbox-messages">
               <table class="table table-hover">
                 <tbody>
@@ -310,7 +255,7 @@
                     <td class="all" nowrap>
                       <b>Current Theme</b>
                     </td>
-                    <td class="all row" nowrap>
+                    <td class="all row" style="margin:0px;padding:10px 0;" nowrap>
                       <span class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <input
                           disabled
@@ -353,15 +298,8 @@
 export default {
   data() {
     return {
-      color: "",
-      colors: [],
-      passColor: []
+      color: "null"
     };
-  },
-  created() {
-    this.axios.get("/api/color").then(response => {
-      this.colors = response.data;
-    });
   },
   methods: {
     changeTheme(id) {
@@ -431,88 +369,7 @@ export default {
         document.getElementById("blueText").style.filter = "opacity(0.5)";
         document.getElementById("darkText").style.filter = "opacity(0.5)";
       }
-    },
-    focusTheme() {
-      if (this.passColor.color == "defaultColor") {
-        document.getElementById("default").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("red").style.border = "none";
-        document.getElementById("blue").style.border = "none";
-        document.getElementById("dark").style.border = "none";
-        document.getElementById("light").style.border = "none";
-        document.getElementById("defaultText").style.filter = "opacity(1)";
-        document.getElementById("redText").style.filter = "opacity(0.5)";
-        document.getElementById("blueText").style.filter = "opacity(0.5)";
-        document.getElementById("darkText").style.filter = "opacity(0.5)";
-        document.getElementById("lightText").style.filter = "opacity(0.5)";
-      } else if (this.passColor.color == "redColor") {
-        document.getElementById("red").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("blue").style.border = "none";
-        document.getElementById("dark").style.border = "none";
-        document.getElementById("light").style.border = "none";
-        document.getElementById("default").style.border = "none";
-        document.getElementById("redText").style.filter = "opacity(1)";
-        document.getElementById("defaultText").style.filter = "opacity(0.5)";
-        document.getElementById("blueText").style.filter = "opacity(0.5)";
-        document.getElementById("darkText").style.filter = "opacity(0.5)";
-        document.getElementById("lightText").style.filter = "opacity(0.5)";
-      } else if (this.passColor.color == "blueColor") {
-        document.getElementById("blue").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("red").style.border = "none";
-        document.getElementById("default").style.border = "none";
-        document.getElementById("dark").style.border = "none";
-        document.getElementById("light").style.border = "none";
-        document.getElementById("blueText").style.filter = "opacity(1)";
-        document.getElementById("defaultText").style.filter = "opacity(0.5)";
-        document.getElementById("redText").style.filter = "opacity(0.5)";
-        document.getElementById("darkText").style.filter = "opacity(0.5)";
-        document.getElementById("lightText").style.filter = "opacity(0.5)";
-      } else if (this.passColor.color == "darkColor") {
-        document.getElementById("dark").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("default").style.border = "none";
-        document.getElementById("red").style.border = "none";
-        document.getElementById("light").style.border = "none";
-        document.getElementById("blue").style.border = "none";
-        document.getElementById("darkText").style.filter = "opacity(1)";
-        document.getElementById("defaultText").style.filter = "opacity(0.5)";
-        document.getElementById("redText").style.filter = "opacity(0.5)";
-        document.getElementById("blueText").style.filter = "opacity(0.5)";
-        document.getElementById("lightText").style.filter = "opacity(0.5)";
-      } else if (this.passColor.color == "lightColor") {
-        document.getElementById("light").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("dark").style.border = "none";
-        document.getElementById("default").style.border = "none";
-        document.getElementById("red").style.border = "none";
-        document.getElementById("blue").style.border = "none";
-        document.getElementById("lightText").style.filter = "opacity(1)";
-        document.getElementById("defaultText").style.filter = "opacity(0.5)";
-        document.getElementById("redText").style.filter = "opacity(0.5)";
-        document.getElementById("blueText").style.filter = "opacity(0.5)";
-        document.getElementById("darkText").style.filter = "opacity(0.5)";
-      }
-    },
-    getColors() {
-      this.axios.get("/api/color").then(response => {
-        this.colors = response.data;
-      });
-    },
-    themeColor() {
-      if (this.passColor.id == "1") {
-        this.axios.post(`api/setting/update/${this.color}`);
-      }
-    },
-    getData() {
-      for (var i = 0; i < this.colors.length; i++) {
-        this.getColors();
-        if (this.colors[i].id == "1") {
-          this.passColor = this.colors[i];
-          this.focusTheme();
-        }
-      }
+      console.log(this.color);
     }
   }
 };

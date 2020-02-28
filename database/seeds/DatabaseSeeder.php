@@ -58,38 +58,8 @@ class DatabaseSeeder extends Seeder
                 'session_id' => '1'
             ]
         ];
-        $roles = [
-            [
-                'name' => "Super Admin",
-                'is_active' => "No",
-                "domain"  => "sms"
-            ],
-            [
-                'name' => "Teacher",
-                'is_active' => "No",
-                "domain"  => "sms"
-            ],
-            [
-                'name' => "Student",
-                'is_active' => "No",
-                "domain"  => "sms"
-            ],
-        ];
-
-        foreach ($roles as $role) {
-            DB::table('roles')->insert([
-                'name' => $role['name'],
-                'type' => 'System',
-                'is_active' => $role['is_active'],
-                'domain' => $role['domain'],
-            ]);
-        }
-        DB::table('departments')->insert([
-            'department_name' => "Arts"
-        ]);
-        DB::table('designations')->insert([
-            'designation_name' => "Teacher"
-        ]);
+        
+    
 
         foreach ($items as $item) {
             DB::table('attendance_types')->insert([
@@ -100,8 +70,48 @@ class DatabaseSeeder extends Seeder
                 'session_id' => $item['session_id']
             ]);
         }
-        DB::table('generals')->insert([
-            'color'=> 'defaultColor'
+        $this->call([
+            StudentsTableSeeder::class,
         ]);
+
+
+
+
+        /***By Wai Yan Soe */
+        $roles = [
+            [
+                'name' => "Admin",
+                'is_active' => "No",
+                "domain"  => "sms"
+            ],
+            [
+                'name' => "Teacher",
+                'is_active' => "No",
+                "domain"  => "sms"
+            ],
+            [
+                'name' => "Parent",
+                'is_active' => "No",
+                "domain"  => "sms"
+            ],
+        ];
+
+       
+        foreach ($roles as $item) {
+            DB::table('roles')->insert([
+                'name' => $item['name'],
+                'type' => 'System',
+                'is_active' => $item['is_active'],
+                'domain' => $item['domain'],
+            ]);
+        }
+
+        DB::table('departments')->insert([
+            'department_name' => "Arts"
+        ]);
+        DB::table('designations')->insert([
+            'designation_name' => "Teacher"
+        ]);
+        /***end code of Wai Yan Soe */
     }
 }

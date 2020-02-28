@@ -8,16 +8,7 @@
       </h6>
     </div>
     <hr />
-    <!-- <div class="progress">
-      <div
-        class="progress-bar"
-        role="progressbar"
-        style="width: {{percentage }}%"
-        aria-valuenow="25"
-        aria-valuemin="0"
-        aria-valuemax="100"
-      ></div>
-    </div> -->
+    <Loading></Loading>
     <div class="row" id="row">
       <div class="col-lg-4 col-md-12">
         <div class="card" id="globalCard">
@@ -77,7 +68,7 @@
                       <b>Date Of Joining</b>
                     </td>
                     <td class="all" nowrap>
-                      <p class="data">02/9/2013</p>
+                      <input readonly class="input_readonly" v-model="staffs.date_of_joining" />
                     </td>
                   </tr>
                 </tbody>
@@ -238,44 +229,22 @@
               </div>
             </div>
           </div>
+          <!-- Staff Attendance -->
           <div class="card-body attendanceBody" id="globalcardBody" v-if="attendance === true">
             <div class="attendance">
               <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
+                <div class="col-lg-4 col-md-4 col-sm-6 col-12" v-for="(data) in count_attendances">
                   <div class="attendanceCard">
-                    <h4 class="day">Total Present</h4>
-                    <h6 class="number">3</h6>
-                  </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                  <div class="attendanceCard">
-                    <h4 class="day">Total Late</h4>
-                    <h6 class="number">0</h6>
-                  </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                  <div class="attendanceCard">
-                    <h4 class="day">Total Absent</h4>
-                    <h6 class="number">2</h6>
-                  </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                  <div class="attendanceCard">
-                    <h4 class="day">Total Half Day</h4>
-                    <h6 class="number">3</h6>
-                  </div>
-                </div>
-                <div class="col-lg-4 col-md-4 col-sm-6 col-12">
-                  <div class="attendanceCard">
-                    <h4 class="day">Total Holiday</h4>
-                    <h6 class="number">2</h6>
+                    <h4 class="day">Total {{data.name}}</h4>
+                    <b class="number" v-if="data.name == 'Late'" style="color: red;">{{data.data}}</b>
+                    <b v-else class="number">{{data.data}}</b>
                   </div>
                 </div>
               </div>
               <div class="row" style="margin-top:1rem;">
                 <div class="col-lg-4 col-12 year">
                   <label for="year">Year</label>
-                  <select class="inputbox">
+                  <select v-model="search_by_year" class="inputbox">
                     <option selected disabled>Select Year</option>
                     <option value="2018">2018</option>
                     <option value="2019">2019</option>
@@ -283,29 +252,18 @@
                   </select>
                 </div>
                 <div class="col-lg-8 col-12 text">
-                  <label for="present">Present : P</label>
-                  <label for="present">Late : L</label>
-                  <label for="present">Absent : A</label>
-                  <label for="present">Half Day : F</label>
-                  <label for="present">Holiday : H</label>
+                  <label for="present" v-for="(type) in attendance_type" :key="type.id">
+                    {{type.type}} :
+                    <b v-html="type.key_value"></b>
+                  </label>
                 </div>
               </div>
             </div>
             <div class="copyRows">
               <div class="row" id="copyRow" style="margin-bottom:1rem;margin-top:0px;">
                 <div class="col-2">
-                  <a href="#" title="Copy">
-                    <i class="fa fa-copy"></i>
-                  </a>
-                </div>
-                <div class="col-2">
                   <a href="#" title="Excel">
                     <i class="fa fa-file-excel-o"></i>
-                  </a>
-                </div>
-                <div class="col-2">
-                  <a href="#" title="PDF">
-                    <i class="fa fa-file-pdf-o"></i>
                   </a>
                 </div>
                 <div class="col-2">
@@ -320,12 +278,72 @@
                 </div>
               </div>
             </div>
+            <div class="table-responsive" style="height: 70vh;padding: 0;">
+              <table class="table table-hover table-striped">
+                <thead>
+                  <tr nowrap class="active">
+                    <th nowrap>Month | Date</th>
+                    <th class="table_header" nowrap v-for="(day) in days">{{day.day}}</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr
+                    style="height: 40px;"
+                    class="active"
+                    v-for="(month ,month_index) in months"
+                    :key="month_index"
+                  >
+                    <td class="table_right" nowrap>{{month.month}}</td>
+                    <td
+                      style="width: 50px;text-align:center;"
+                      nowrap
+                      v-for="(day, day_index) in days"
+                    >
+                      <span v-for="(type) in ary">
+                        <span v-if="type.month == month.month && type.date == day.day">
+                          <b v-html="type.data" :title="type.note"></b>
+                        </span>
+                      </span>
+                    </td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
           </div>
-
           <div class="card-body documentbody" id="globalcardBody" v-if="document === true">
-            <h2 class="noLists">No Documents Found</h2>
+            <div class="document">
+              <div class="row">
+                <p v-if="documentempty == true">No Data</p>
+                <div v-if="staffs.resume" class="col-lg-4 col-md-4 col-sm-6 col-12">
+                  <div class="attendanceCard">
+                    <h4 class="day">{{staffs.resume}}</h4>
+                    <b class="number">
+                      <i class="fa fa-download download"></i>
+                      <i class="fa fa-trash time text-danger"></i>
+                    </b>
+                  </div>
+                </div>
+                <div v-if="staffs.joining_letter" class="col-lg-4 col-md-4 col-sm-6 col-12">
+                  <div class="attendanceCard">
+                    <h4 class="day">{{staffs.joining_letter}}</h4>
+                    <b class="number">
+                      <i class="fa fa-download download"></i>
+                      <i class="fa fa-trash time text-danger"></i>
+                    </b>
+                  </div>
+                </div>
+                <div v-if="staffs.other_document" class="col-lg-4 col-md-4 col-sm-6 col-12">
+                  <div class="attendanceCard">
+                    <h4 class="day">{{staffs.other_document}}</h4>
+                    <b class="number">
+                      <i class="fa fa-download download"></i>
+                      <i class="fa fa-trash time text-danger"></i>
+                    </b>
+                  </div>
+                </div>
+              </div>
+            </div>
           </div>
-
           <div class="card-body timelinebody" id="globalcardBody" v-if="timeline === true">
             <button class="add">Add</button>
             <div class="TimeLine">
@@ -357,23 +375,54 @@
   </div>
 </template>
 <script>
+import moment from "moment";
+import Loading from "../../LoadingController.vue";
+import { EventBus } from "../../../js/event-bus.js";
 export default {
+  components: {
+    Loading
+  },
   data() {
     return {
-      percentage: "",
-      countcomment:"",
+      countcomment: "",
+      search_by_year: "",
       profile: true,
       attendance: false,
       document: false,
       timeline: false,
-      colors: [],
+      documentempty: false,
+      count_attendances: [],
+      attendance_type: [],
+      months: [],
+      days: [],
+      documents: [],
       staffs: {},
       image: "",
-      name: ""
+      name: "",
+      present: 0,
+      late: 0,
+      absent: 0,
+      halfday: 0,
+      holiday: 0,
+      countDown: { data: [] },
+      ary: [],
+      ary_types: []
     };
   },
   created() {
     this.getProfile();
+    this.countAttendance();
+    this.getMonth();
+    this.axios.get("/api/attendance_types").then(response => {
+      this.attendance_type = response.data;
+      console.log("Attendance" + JSON.stringify(this.attendance_type));
+    });
+    this.axios
+      .get(`/api/searchDate/${this.$route.params.id}/2020`)
+      .then(response => {
+        console.log("->" + JSON.stringify(response.data));
+        this.ary_types = response.data;
+      });
   },
   methods: {
     showForm(name) {
@@ -383,6 +432,7 @@ export default {
         this.document = false;
         this.timeline = false;
       } else if (name == "attendance") {
+        this.searchAttendanceByDate();
         this.profile = false;
         this.attendance = true;
         this.document = false;
@@ -399,6 +449,29 @@ export default {
         this.timeline = true;
       }
     },
+    searchAttendanceByDate() {
+      EventBus.$emit("clicked", this.getProfile());
+      this.ary = [];
+      for (var t = 0; t < this.ary_types.length; t++) {
+        for (var tt = 0; tt < this.attendance_type.length; tt++) {
+          var month = moment(this.ary_types[t].date).format("MMM");
+          var date = moment(this.ary_types[t].date).format("D");
+          if (
+            this.ary_types[t].staff_attendance_type_id == this.attendance_type[tt].id
+          ){
+            this.ary.push({
+              id: this.ary_types[t].id,
+              data: this.attendance_type[tt].key_value,
+              note: this.ary_types[t].note,
+              month: month,
+              date: date
+            });
+            console.log("log=>" + JSON.stringify(this.ary_types[t]));
+          }
+        }
+      }
+      console.log("Ary" + JSON.stringify(this.ary));
+    },
     /***
      * FETCH DATA
      */
@@ -406,10 +479,36 @@ export default {
       this.axios
         .get(`/api/staffdirectory/show/${this.$route.params.id}`)
         .then(response => {
+          this.documents = response.data;
           this.staffs = response.data;
           this.image = response.data.image;
           this.name = response.data.name;
-          console.log("Staff" + JSON.stringify(response));
+
+          if (
+            !this.staffs.resume &&
+            !this.staffs.joining_letter &&
+            !this.staffs.other_document
+          ) {
+            this.documentempty = true;
+          }
+        });
+    },
+    getMonth() {
+      this.axios.get("/api/months").then(response => {
+        this.months = response.data;
+        console.log(JSON.stringify(response));
+        for (var i = 1; i < 32; i++) {
+          this.days.push({ day: i });
+        }
+        console.log(this.days);
+      });
+    },
+    countAttendance() {
+      this.axios
+        .get(`/api/staffattendance/show/${this.$route.params.id}`)
+        .then(response => {
+          console.log("-->" + JSON.stringify(response.data));
+          this.count_attendances = response.data;
         });
     }
   }

@@ -15,7 +15,7 @@ class DesignationController extends Controller
     public function index()
     {
         //
-        $designations = Designation::orderBy('id', 'desc')
+        $designations = Designation::where('is_active','Yes')->orderBy('id', 'desc')
             ->get()
             ->toArray();
         return array_reverse($designations);
@@ -41,7 +41,6 @@ class DesignationController extends Controller
     {
         $designation = new Designation([
             'designation_name' => $request->input('designation_name'),
-            'is_active' => "No"
         ]);
         $designation->save();
         return response()->json('The Designation successfully added');
@@ -93,7 +92,9 @@ class DesignationController extends Controller
     public function delete($id)
     {
         $designation = Designation::find($id);
-        $designation->delete();
+        $designation->update([
+            "is_active" => "No"
+        ]);
         return response()->json('The Designation successfully deleted');
     }
 }

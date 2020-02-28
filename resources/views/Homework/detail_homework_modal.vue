@@ -112,7 +112,7 @@
                         <div class="col-lg-1">
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg" style="padding: 0;">
-                            <button class="save" id="globalSave" style="margin-top: 10px;">Save</button>
+                            <button class="save btn-dark" style="margin-top: 10px;">Save</button>
                         </div> 
                     </div>
                 </div>

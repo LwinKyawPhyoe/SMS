@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\student_document;
-
+use DB;
 class StudentDocumentController extends Controller
 {
     /**
@@ -39,7 +39,7 @@ class StudentDocumentController extends Controller
         if($request->file){
             $file = $request->file;
             $ext = strtolower($file->getClientOriginalExtension());
-            $imageName = $request->document_name . time() . '.' . $file;
+            $imageName = time() . '.' . $ext;
             $request->file->move(public_path('stu_document'), $imageName);
         }
         $document = new student_document([
@@ -62,7 +62,8 @@ class StudentDocumentController extends Controller
      */
     public function show($id)
     {
-        //
+        $documents = DB::select('SELECT * FROM student_documents WHERE admission_no=?',[$id]);
+        return $documents;
     }
 
     /**

@@ -17,7 +17,7 @@ class StaffDirectoryController extends Controller
     public function index()
     {
         //
-        $staffs = StaffDirectory::with('role', 'department', 'designation')->orderBy('id', 'desc')->get()->toArray();
+        $staffs = StaffDirectory::where('is_active', 'Yes')->with('role', 'department', 'designation')->orderBy('id', 'desc')->get()->toArray();
         return array_reverse($staffs);
     }
 
@@ -42,7 +42,7 @@ class StaffDirectoryController extends Controller
          * Random Password
          */
         $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
-        $password = substr($random, 0, 10);
+        $password = substr($random, 0, 8);
         echo $password;
         /**
          * COUNT DATA
@@ -50,7 +50,6 @@ class StaffDirectoryController extends Controller
         $check_staff_id = StaffDirectory::where('staff_id', $request->staff_id)->count();
         $check_email    = StaffDirectory::where('email', $request->email)->count();
         $check_phone    = StaffDirectory::where('phone', $request->phone)->count();
-
 
         if ($check_staff_id > 0) {
             return response()->json('Staff ID already exists!');
@@ -66,6 +65,12 @@ class StaffDirectoryController extends Controller
              */
             $imageName = time() . '.' . $request->image->getClientOriginalExtension();
             $request->image->move(public_path('staff_images'), $imageName);
+            /**
+             * Name OF File
+             */
+            $request->resume->move(public_path('staff_images'), 'Resume');
+            $request->joining_letter->move(public_path('staff_images'), 'Joining Letter');
+            $request->other_document->move(public_path('staff_images'), 'Ohter Documents');
             $staffDirectory = new StaffDirectory([
                 "staff_id"         => $request->staff_id,
                 "role_id"          => $request->role_id,
@@ -103,11 +108,11 @@ class StaffDirectoryController extends Controller
                 "twitter"   => $request->twitter,
                 "instagram"   => $request->instagram,
                 "linkedin"   => $request->linkedin,
-                "resume"   => "",
-                "joining_letter"   => "",
-                "other_document"   => ".",
-                "date_of_joining"   => $request->date_of_joining,
-                "is_active"   => "No",
+                "resume"   => "Resume",
+                "joining_letter"   => "Joining Letter",
+                "other_document"   => "Other Documents",
+                "date_of_joining"   => $request->doj,
+                "is_active"   => "Yes",
                 "domain"   => "Three Stars",
             ]);
             $staffDirectory->save();
@@ -197,8 +202,7 @@ class StaffDirectoryController extends Controller
                 "resume"   => "",
                 "joining_letter"   => "",
                 "other_document"   => ".",
-                "date_of_joining"   => $request->date_of_joining,
-                "is_active"   => "No",
+                "date_of_joining"   => $request->doj,
                 "domain"   => "Three Stars"
             ]);
         } else {
@@ -245,8 +249,8 @@ class StaffDirectoryController extends Controller
                 "resume"   => "",
                 "joining_letter"   => "",
                 "other_document"   => ".",
-                "date_of_joining"   => $request->date_of_joining,
-                "is_active"   => "No",
+                "date_of_joining"   => $request->doj,
+                "is_active"   => "Yes",
                 "domain"   => "Three Stars"
             ]);
         }

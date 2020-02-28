@@ -28,19 +28,29 @@
               </thead>
               <tbody>
                 <tr v-for="(val) in features">
-                  <td>{{val.module}}</td>
-                  <td >{{val.feature}}</td>
+                  <td v-html="val.module"></td>
+                  <td>{{val.feature}}</td>
                   <td>
-                    <input type="checkbox" @click="say(val.id,val.feature,val.checked,'view')" v-model="val.checked" v-if="val.checked == val.checked"/>
+                    <input v-if="val.can_view != false" type="checkbox" v-model="val.view" />
                   </td>
                   <td>
-                    <input type="checkbox"   @click="say(val.id,val.feature,'add')"/>
+                    <input v-if="val.can_add != false" type="checkbox" v-model="val.add" />
                   </td>
                   <td>
-                    <input type="checkbox" value="1"  @click="say(val.id,val.feature,'edit')"/>
+                    <input
+                      v-if="val.can_edit != false"
+                      type="checkbox"
+                      value="1"
+                      v-model="val.edit"
+                    />
                   </td>
                   <td>
-                    <input type="checkbox" value="1"  @click="say(val.id,val.feature,'delete')" />
+                    <input
+                      v-if="val.can_delete != false"
+                      type="checkbox"
+                      value="1"
+                      v-model="val.delete"
+                    />
                   </td>
                 </tr>
               </tbody>
@@ -48,6 +58,7 @@
           </div>
         </div>
       </div>
+      <button @click="save()" type="button" class="save">Save</button>
     </div>
   </div>
 </template>
@@ -61,25 +72,51 @@ export default {
       selectedMembers: [],
       addMore: false,
       guardianRelation: "",
-      count:0,
-      pseudo: {},
+      count: 0,
+      pseudo: {}
     };
   },
   created() {
+    this.findUser();
     this.axios.get("/api/features").then(response => {
       this.features = response.data;
-      console.log(JSON.stringify(this.features));
+
+      // console.log(JSON.stringify(this.features));
     });
   },
   methods: {
-    say(id,feature,checked,type) {
-      if(checked == true){
-        alert("true");
+    findUser() {
+      this.axios
+        .get(`/api/assign/find/${this.$route.params.id}`)
+        .then(response => {
+          console.log("-->" + JSON.stringify(response));
+          if (response.data == 0) {
+            this.$router.push({ name: "role" });
+          } else {
+          }
+        });
+    },
+    say(id, feature, checked, type) {
+      alert(this.$route.param);
+      if (checked != true) {
+        alert("checked");
+      } else {
+        alert("");
       }
-      else{
-        alert("false");
-      }
-      console.log("Id ==>" , id + "===>" +  "Feature ==>" + feature + "," + "Checked ==>" + checked + "," + "Type == > " + type);
+      console.log(
+        "Id ==>",
+        id +
+          "===>" +
+          "Feature ==>" +
+          feature +
+          "," +
+          "Checked ==>" +
+          checked +
+          "," +
+          "Type == > " +
+          type
+      );
+      console.log("Features==>" + JSON.stringify(this.features));
     },
     openClose() {
       if (this.addMore == false) {
@@ -93,7 +130,11 @@ export default {
       }
       console.log(this.addMore);
     },
-    save() {},
+    save() {
+      alert(this.$route.params.id);
+      // this.axios.post(`/api/assign/store/${this.$route.param}`);
+      console.log(JSON.stringify(this.features));
+    },
     checkGuardian(type) {
       if (type == "other") {
         this.guardianRelation = "";

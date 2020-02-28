@@ -19,7 +19,7 @@ class HostelRoomController extends Controller
         //
         // $hostelrooms = HostelRoom::all()->toArray();
         // return array_reverse($hostelrooms);
-        $hostelrooms = HostelRoom::with('roomType', 'hostel')->orderBy('id', 'desc')->get()->toArray();
+        $hostelrooms = HostelRoom::where('is_active','Yes')->with('roomType', 'hostel')->orderBy('id', 'desc')->get()->toArray();
         return array_reverse($hostelrooms);
     }
 
@@ -47,7 +47,6 @@ class HostelRoomController extends Controller
             "no_of_bed" => $request->input("no_of_bed"),
             "cost_per_bed" => $request->input("cost_per_bed"),
             "description" => $request->input("description"),
-            "is_active"   => "No"
         ]);
         $hostelroom->save();
         return response()->json('The HostelRoom successfully added');
@@ -99,7 +98,9 @@ class HostelRoomController extends Controller
     public function delete($id)
     {
         $hostelroom = HostelRoom::find($id);
-        $hostelroom->delete();
+        $hostelroom->update([
+            "is_active" => "No"
+        ]);
         return response()->json('The HostelRoom successfully deleted');
     }
 

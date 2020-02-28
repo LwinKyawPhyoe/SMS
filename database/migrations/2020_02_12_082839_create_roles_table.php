@@ -16,14 +16,14 @@ class CreateRolesTable extends Migration
         Schema::create('roles', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name', 200);
-            $table->string('type',100);
-            $table->string('is_active', 25)->nullable();
+            $table->string('type', 200);
+            $table->string('is_active', 25)->default('Yes')->nullable();
             $table->text('domain')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
+    /**i
      * Reverse the migrations.
      *
      * @return void

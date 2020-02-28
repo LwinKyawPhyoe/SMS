@@ -15,6 +15,7 @@ import StudentInformation from '../views/Student/StudentInformation.vue';
 import AddStudent from '../views/Student/AddStudent.vue';
 import StudentHistory from '../views/Student/StudentHistory.vue';
 import ViewStudent from '../views/Student/ViewStudent.vue';
+import UpdateStudent from '../views/Student/UpdateStudent.vue';
 
 
 //Academic 
@@ -275,8 +276,13 @@ export const routes = [
     },
     {
         name: 'viewstudent',
-        path: '/viewstudent',
+        path: '/viewstudent:id',
         component: ViewStudent
+    },
+{
+        name:'editstudent',
+        path:'/editstudent:id',
+        component: UpdateStudent
     },
     {
         name: 'stureport',

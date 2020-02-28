@@ -20,7 +20,7 @@ class CreateHostelsTable extends Migration
             $table->text('address')->nullable();
             $table->integer('intake')->nullable();
             $table->text('description')->nullable();
-            $table->string('is_active')->nullable();
+            $table->string('is_active')->default('Yes')->nullable();
             $table->string('domain')->nullable();
             $table->timestamps();
         });

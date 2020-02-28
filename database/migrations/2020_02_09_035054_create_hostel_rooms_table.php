@@ -21,7 +21,7 @@ class CreateHostelRoomsTable extends Migration
             $table->integer('no_of_bed');
             $table->string('cost_per_bed');
             $table->text('description')->nullable();
-            $table->string('is_active')->nullable();
+            $table->string('is_active')->default('Yes')->nullable();
             $table->string('domain')->nullable();
             $table->foreign('hostel_id')->references('id')->on('hostels')->onDelete('cascade');
             $table->foreign('room_type_id')->references('id')->on('room_types')->onDelete('cascade');

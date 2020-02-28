@@ -16,7 +16,7 @@ class CreateDesignationsTable extends Migration
         Schema::create('designations', function (Blueprint $table) {
             $table->increments('id');
             $table->string('designation_name',200);
-            $table->string('is_active',25)->nullable();
+            $table->string('is_active',25)->default('Yes')->nullable();
             $table->text('domain')->nullable();
             $table->timestamps();
         });

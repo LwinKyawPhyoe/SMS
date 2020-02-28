@@ -65,7 +65,7 @@
             </select>
           </div>
           <div class="col-12">
-            <button class="searchButton" id="globalSearch" style="margin-top: 1rem !important;">Search</button>
+            <button class="searchButton" style="margin-top: 1.8rem !important;">Search</button>
           </div>
         </div>
       </div>

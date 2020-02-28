@@ -12,7 +12,7 @@
       }
     }
     #ThemeColor {
-      padding: 0 1rem;
+      margin: 0px;
       .col-xs-6 {
         width: 50%;
       }
@@ -27,7 +27,6 @@
           height: 6rem;
           display: flex;
           justify-content: center;
-          transition: all 0.6s;
           align-items: center;
           .default {
             margin: 0px;
@@ -37,13 +36,13 @@
             text-align: center;
           }
         }
-        .backColor:hover {
-          border: 35px solid #adadad38 !important;
-          p {
-            filter: opacity(1) !important;
-            color: white;
-          }
-        }
+        // .backColor:hover {
+        //   cursor: pointer;
+        //   border: 3px solid rgb(105, 105, 105);
+        //   p {
+        //     filter: opacity(1);
+        //   }
+        // }
       }
     }
   }
@@ -63,20 +62,30 @@
           margin: 1rem auto;
           margin-bottom: 0;
           display: block;
-          transition: all 0.5s;
           width: 150px;
+          background: #1b5e20;
           border: none;
           font-weight: bold;
           border-radius: 5px;
           font-size: 14px;
-          position: relative;
-          overflow: hidden;
           outline: none;
           color: white;
           height: 35px;
           .editIcon {
             margin-right: 10px;
           }
+        }
+        .edit {
+          background-position: center;
+          transition: background 0.6s;
+        }
+        .edit:hover {
+          background: #1b5e20 radial-gradient(circle, transparent 1%, #1b5e20 1%) center/15000%;
+        }
+        .edit:active {
+          background-color: rgba(44, 92, 51, 0.623);
+          background-size: 100%;
+          transition: background 0s;
         }
       }
     }
@@ -136,8 +145,8 @@
               border-radius: 0px !important;
               top: -2px;
               left: -1px;
+              border: 0.1px solid rgba(0, 0, 0, 0.452);
               position: relative;
-              border: 0.1px solid black;
               content: "";
               display: inline-block;
               visibility: visible;
@@ -168,16 +177,29 @@
       }
     }
     .editCard {
-      .editSm {
+      .edit {
         width: 40px;
         font-size: 11px;
         position: absolute;
         outline: none;
         right: 25px;
+        color: #1b5e20;
         font-weight: bold;
         height: 20px;
         border: none;
         border-radius: 3px;
+      }
+      .edit {
+        background-position: center;
+        transition: background 0.6s;
+      }
+      .edit:hover {
+        background: #ffffff radial-gradient(circle, transparent 1%, #ffffff 1%) center/15000%;
+      }
+      .edit:active {
+        background-color: rgba(255, 255, 255, 0.623);
+        background-size: 100%;
+        transition: background 0s;
       }
     }
   }

@@ -56,7 +56,7 @@ class CreateStaffDirectoriesTable extends Migration
             $table->string('other_document', 200)->nullable();
             $table->string('date_of_joining', 20)->nullable();
             $table->string('date_of_leaving', 20)->nullable();
-            $table->string('is_active', 25)->nullable();
+            $table->string('is_active', 25)->default('Yes')->nullable();
             $table->string('domain', 100)->nullable();
             $table->foreign('role_id')->references('id')->on('roles')->onDelete('cascade');
             $table->foreign('designation_id')->references('id')->on('designations')->onDelete('cascade');

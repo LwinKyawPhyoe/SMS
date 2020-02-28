@@ -145,30 +145,39 @@
                 v-model="model.dob"
               ></datepicker>-->
               <VueCtkDateTimePicker
-                style="background: blue;"
                 v-model="model.dob"
-                only-date="true"
-                color="#1b5e20"
-                input-size="sm"
-                button-color="#1b5e20"
-                label="Select Date"
-                auto-close="true"
-                format="DD-MM-YYYY"
-                formatted="l"
+                :only-date="true"
+                :color="'#1b5e20'"
+                :button-color="'#1b5e20'"
+                :auto-close="true"
+                :format="'DD-MM-YYYY'"
+                :formatted="'l'"
               >
                 <input
+                  v-model="model.dob"
                   id="dob_id"
                   @keyup="onValidate(model.dob, 'dob_id', 'dobmsg')"
-                  v-on:blur="onValidate(model.dob, 'staff_id', 'dobmsg')"
+                  v-on:blur="onValidate(model.dob, 'dob_id', 'dobmsg')"
                   class="inputbox"
-                  type="text"
+                  autocomplete="off"
                 />
               </VueCtkDateTimePicker>
               <span id="dobmsg" class="error_message">Date Of Birth is required</span>
             </div>
             <div class="textbox">
               <label for="Emergency">Date Of Joining</label>
-              <input v-model="model.date_of_joining" type="text" class="inputbox" />
+
+              <VueCtkDateTimePicker
+                v-model="model.doj"
+                :only-date="true"
+                :color="'#1b5e20'"
+                :button-color="'#1b5e20'"
+                :auto-close="true"
+                :format="'DD-MM-YYYY'"
+                :formatted="'l'"
+              >
+                <input id="dob_id" class="inputbox" autocomplete="off" :value="model.doj" />
+              </VueCtkDateTimePicker>
             </div>
             <div class="textbox">
               <label for="Phone">Phone</label>
@@ -416,16 +425,14 @@
             </div>
           </div>
         </div>
-        <button v-if="checkroute == false" type="submit" id="globalSave" style="margin-right:1rem;" class="save">Save</button>
-        <button v-else @click="updateStaffDirectory()" type="button" style="margin-right:1rem;" id="globalSave" class="save">Save</button>
+        <button v-if="checkroute == false" type="submit" class="save">Save</button>
+        <button v-else @click="updateStaffDirectory()" type="button" class="save">Save</button>
       </form>
       <br />
     </div>
   </div>
 </template>
 <script>
-import message from "../../Alertmessage/message.vue";
-import {Util} from '../../../js/util';
 // import Datepicker from "vuejs-datepicker";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
@@ -556,12 +563,13 @@ export default {
         formData.append("joining_letter", this.model.joining_letter);
         formData.append("other_document", this.model.other_document);
         formData.append("location", this.model.location);
-        formData.append("date_of_joining", this.model.date_of_joining);
+        formData.append("date_of_joining", this.model.doj);
         this.axios
           .post("/api/staffdirectory/store", formData, config)
           .then(response => {
             this.getStaffDirectory();
             if (response.data) {
+              alert(JSON.stringify(response.data));
             } else {
               this.model = {};
             }
@@ -621,7 +629,7 @@ export default {
         formData.append("joining_letter", this.model.joining_letter);
         formData.append("other_document", this.model.other_document);
         formData.append("location", this.model.location);
-        formData.append("date_of_joining", this.model.date_of_joining);
+        formData.append("date_of_joining", this.model.doj);
         this.axios
           .post(
             `/api/staffdirectory/update/${this.$route.params.id}`,
@@ -639,36 +647,45 @@ export default {
      * FORM VALIDATION
      */
     onValidate(value, inputId, megId) {
-      Util.onValidate(value, inputId, megId);
+      if (value == "" || value == undefined)
+        document.getElementById(inputId).style.border = "solid 1px red";
+      else {
+        document.getElementById(inputId).style.border = "solid 1px #d2d6de";
+        document.getElementById(megId).style.display = "none";
+      }
     },
-    
+
+    onValidateMessage(inputId, megId) {
+      document.getElementById(inputId).style.border = "solid 1px red";
+      document.getElementById(megId).style.display = "block";
+    },
     checkValidate() {
       if (!this.model.staff_id) {
-        Util.onValidateMessage("staff_id", "staff_idmsg");
+        this.onValidateMessage("staff_id", "staff_idmsg");
         return false;
       }
       if (!this.model.role_id) {
-        Util.onValidateMessage("role_id", "role_idmsg");
+        this.onValidateMessage("role_id", "role_idmsg");
         return false;
       }
       if (!this.model.name) {
-        Util.onValidateMessage("name_id", "namemsg");
+        this.onValidateMessage("name_id", "namemsg");
         return false;
       }
       if (!this.model.email) {
-        Util.onValidateMessage("email_id", "emailmsg");
+        this.onValidateMessage("email_id", "emailmsg");
         return false;
       }
       if (!this.model.gender) {
-        Util.onValidateMessage("gender_id", "gendermsg");
+        this.onValidateMessage("gender_id", "gendermsg");
         return false;
       }
       if (!this.model.dob) {
-        Util.onValidateMessage("dob_id", "dobmsg");
+        this.onValidateMessage("dob_id", "dobmsg");
         return false;
       }
       if (!this.model.image) {
-        Util.onValidateMessage("image_id", "imagemsg");
+        this.onValidateMessage("image_id", "imagemsg");
         return false;
       } else {
         return true;

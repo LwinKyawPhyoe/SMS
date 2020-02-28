@@ -60,6 +60,7 @@ class CreateStudentsTable extends Migration
             $table->string('domain')->nullable();/* 44*/
             $table->string('is_active')->nullable();/*45 */
             $table->string('session_id')->nullable();/* 46 */
+            $table->string('race')->nullable();
             $table->timestamps();
         });
     }
