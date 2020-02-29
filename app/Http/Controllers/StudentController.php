@@ -3,24 +3,18 @@
 namespace App\Http\Controllers;
 
 use App\student;
+use App\AcademicYear;
 use Illuminate\Http\Request;
 use DB;
 class StudentController extends Controller
 {
-
     public function index()
     {   
-        
-        $allHostel = DB::select('select * from hostels where is_active="Yes"');
-        $allClass = DB::select('select * from classes where is_active="yes"  and domain="TS" and session_id="1" ');
-        $route = DB::select('select * from routes where is_active="Yes"  and domain="TS" and session_id="1" ');
+        $sessionid = DB::select('select * from academic_years where is_active="yes"',[]);
+        $allHostel = DB::select('select * from hostels where is_active="Yes"',[]);
+        $allClass = DB::select('select * from classes where is_active="yes"  and domain="TS" and session_id=? ', [$sessionid[0]->id]);
+        $route = DB::select('select * from routes where is_active="Yes"  and domain="TS" and session_id=? ',[$sessionid[0]->id]);
         return ['class'=>$allClass,'hostel'=>$allHostel,'routes'=>$route];
-    }
-    public function upload(Request $req){
-        echo $req->file('image')->store('public');
-        echo $req->file('father_photo')->store('public');
-        echo $req->file('mother_photo')->store('public');
-        echo $req->file('guardian_photo')->store('public');
     }
 
     public function section($id){
