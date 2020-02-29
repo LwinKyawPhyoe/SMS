@@ -8,4 +8,9 @@ class RoomType extends Model
 {
     //
     protected $guarded = [];
+
+    public function session()
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
 }

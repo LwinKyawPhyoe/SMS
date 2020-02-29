@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AcademicYear;
 use App\RoomType;
 use Illuminate\Http\Request;
 
@@ -14,13 +15,13 @@ class RoomTypeController extends Controller
      */
     public function index()
     {
-        //
-        $roomtypes = RoomType::where('is_active', 'Yes')->orderBy('id', 'desc')
-            ->get()
-            ->toArray();
+        $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
+        $roomtypes = RoomType::where('is_active', 'yes')
+            ->where('domain', 'TS')
+            ->where('session_id', $sessionid[0]->id)
+            ->orderBy('id', 'DESC')->get()->toArray();
         return array_reverse($roomtypes);
     }
-
     /**
      * Show the form for creating a new resource.
      *
@@ -32,12 +33,17 @@ class RoomTypeController extends Controller
     }
     public function store(Request $request)
     {
-        $roomtype = new RoomType([
-            'room_type' => $request->input('room_type'),
-            'description' => $request->input('description'),
-        ]);
-        $roomtype->save();
-        return response()->json(['text' => 'RoomType added successfully', 'type' => 'success']);
+        $session = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get();
+        for ($i = 0; $i < count($session); $i++) {
+            $roomtype = new RoomType([
+                'room_type' => $request->input('room_type'),
+                'description' => $request->input('description'),
+                'session_id'  => $session[$i]['id'],
+                'domain'  => 'TS'
+            ]);
+            $roomtype->save();
+            return response()->json(['text' => 'RoomType added successfully', 'type' => 'success']);
+        }
     }
     /**
      * Show the form for editing the specified resource.
@@ -75,7 +81,7 @@ class RoomTypeController extends Controller
     {
         $roomtype = RoomType::find($id);
         $roomtype->update([
-            "is_active" => "No"
+            "is_active" => "no"
         ]);
         return response()->json(['text' => 'RoomType deleted successfully', 'type' => 'success']);
     }

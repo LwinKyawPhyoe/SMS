@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AcademicYear;
 use App\Designation;
 use Illuminate\Http\Request;
 
@@ -15,9 +16,11 @@ class DesignationController extends Controller
     public function index()
     {
         //
-        $designations = Designation::where('is_active','Yes')->orderBy('id', 'desc')
-            ->get()
-            ->toArray();
+        $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
+        $designations = Designation::where('is_active', 'yes')
+            ->where('domain', 'TS')
+            ->where('session_id', $sessionid[0]->id)
+            ->orderBy('id', 'DESC')->get()->toArray();
         return array_reverse($designations);
     }
 
@@ -39,11 +42,16 @@ class DesignationController extends Controller
      */
     public function store(Request $request)
     {
-        $designation = new Designation([
-            'designation_name' => $request->input('designation_name'),
-        ]);
-        $designation->save();
-        return response()->json('The Designation successfully added');
+        $session = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get();
+        for ($i = 0; $i < count($session); $i++) {
+            $designation = new Designation([
+                'designation_name' => $request->input('designation_name'),
+                'session_id'  => $session[$i]['id'],
+                'domain'  => 'TS'
+            ]);
+            $designation->save();
+            return response()->json('The Designation successfully added');
+        }
     }
 
     /**
@@ -93,7 +101,7 @@ class DesignationController extends Controller
     {
         $designation = Designation::find($id);
         $designation->update([
-            "is_active" => "No"
+            "is_active" => "no"
         ]);
         return response()->json('The Designation successfully deleted');
     }

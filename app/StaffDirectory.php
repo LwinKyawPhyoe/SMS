@@ -22,4 +22,9 @@ class StaffDirectory extends Model
         return $this->belongsTo(Designation::class);
     }
 
+    public function sessions()
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
+
 }

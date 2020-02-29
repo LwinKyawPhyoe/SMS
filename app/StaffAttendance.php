@@ -18,4 +18,9 @@ class StaffAttendance extends Model
        {
            return $this->belongsTo(attendance_type::class);
        }
+
+       public function sessions()
+       {
+           return $this->belongsTo(AcademicYear::class);
+       }
 }

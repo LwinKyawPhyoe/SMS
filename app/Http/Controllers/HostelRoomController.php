@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AcademicYear;
 use App\Hostel;
 use App\HostelRoom;
 use Illuminate\Http\Request;
@@ -17,9 +18,12 @@ class HostelRoomController extends Controller
     public function index()
     {
         //
-        // $hostelrooms = HostelRoom::all()->toArray();
-        // return array_reverse($hostelrooms);
-        $hostelrooms = HostelRoom::where('is_active','Yes')->with('roomType', 'hostel')->orderBy('id', 'desc')->get()->toArray();
+        $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
+        $hostelrooms = HostelRoom::with('roomType', 'hostel')
+            ->where('is_active', 'yes')
+            ->where('domain', 'TS')
+            ->where('session_id', $sessionid[0]->id)
+            ->orderBy('id', 'DESC')->get()->toArray();
         return array_reverse($hostelrooms);
     }
 
@@ -40,16 +44,21 @@ class HostelRoomController extends Controller
     public function store(Request $request)
     {
         //
-        $hostelroom = new HostelRoom([
-            "room_no" => $request->input("room_no"),
-            "hostel_id" =>  $request->input("hostel_id"),
-            "room_type_id" => $request->input("room_type_id"),
-            "no_of_bed" => $request->input("no_of_bed"),
-            "cost_per_bed" => $request->input("cost_per_bed"),
-            "description" => $request->input("description"),
-        ]);
-        $hostelroom->save();
-        return response()->json('The HostelRoom successfully added');
+        $session = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get();
+        for ($i = 0; $i < count($session); $i++) {
+            $hostelroom = new HostelRoom([
+                "room_no" => $request->input("room_no"),
+                "hostel_id" =>  $request->input("hostel_id"),
+                "room_type_id" => $request->input("room_type_id"),
+                "no_of_bed" => $request->input("no_of_bed"),
+                "cost_per_bed" => $request->input("cost_per_bed"),
+                "description" => $request->input("description"),
+                'session_id'  => $session[$i]['id'],
+                'domain'  => 'TS'
+            ]);
+            $hostelroom->save();
+            return response()->json('The HostelRoom successfully added');
+        }
     }
 
     /**

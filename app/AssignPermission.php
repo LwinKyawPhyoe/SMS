@@ -13,4 +13,9 @@ class AssignPermission extends Model
     {
         return $this->belongsTo(Role::class);
     }
+
+    public function sessions()
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
 }

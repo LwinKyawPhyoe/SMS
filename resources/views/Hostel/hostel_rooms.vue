@@ -8,8 +8,9 @@
     </div>
     <hr />
     <confirm :url="props"></confirm>
-    <div class="row" style="align-items: end !important;margin:0;">
-      <div class="col-lg-5 col-md-12" style="padding:0px;">
+    <Loading></Loading>
+    <div class="row" style="align-items: end !important;">
+      <div class="col-lg-5 col-md-12" style="padding-left:2px;">
         <div class="card">
           <div class="card-header">
             <h6>Add Hostel Room</h6>
@@ -85,7 +86,7 @@
                   @keyup="onValidate(hostelroom.no_of_bed, 'nob_id', 'nobmsg')"
                   v-on:blur="onValidate(hostelroom.no_of_bed, 'nob_id', 'nobmsg')"
                   v-model="hostelroom.no_of_bed"
-                  type="number"
+                  type="text"
                   class="inputbox"
                 />
                 <span id="nobmsg" class="error_message">Number Of Bed is required</span>
@@ -100,31 +101,25 @@
                   @keyup="onValidate(hostelroom.cost_per_bed, 'cpb_id', 'cpbmsg')"
                   v-on:blur="onValidate(hostelroom.cost_per_bed, 'cpb_id', 'cpbmsg')"
                   v-model="hostelroom.cost_per_bed"
-                  type="number"
+                  type="text"
                   class="inputbox"
                 />
-                <span id="cpbmsg" class="error_message">Number Of Bed is required</span>
+                <span id="cpbmsg" class="error_message">Cost Per Bed is required</span>
               </div>
               <div class="col-12 end">
                 <label for="description">Description</label>
                 <textarea v-model="hostelroom.description" class="textareas" rows="3"></textarea>
               </div>
-              <div class="col-12 column-12">
-                <button v-if="this.isEdit == false" id="globalSave" type="submit" class="save">Save</button>
-                <button
-                  v-else
-                  @click="updateHostelRoom()"
-                  id="globalSave"
-                  type="button"
-                  class="save"
-                >Save</button>
+              <div class="col-12">
+                <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
+                <button v-else @click="updateHostelRoom()" type="button" class="save">Save</button>
               </div>
             </form>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-7 col-md-12" style="padding:0;">
+      <div class="col-lg-7 col-md-12" style="padding-left:0;">
         <div class="card">
           <div class="card-header">
             <h6>Hostel Room List</h6>
@@ -140,12 +135,16 @@
             <div class="copyRows">
               <div class="row" id="copyRow">
                 <div class="col-3">
-                  <a href="#" title="Excel">
+                  <a
+                    href="#"
+                    @click.prevent="downloadExcel('studenttable', 'name', 'Hostel_Room.xls')"
+                    title="Excel"
+                  >
                     <i class="fa fa-file-excel-o"></i>
                   </a>
                 </div>
                 <div class="col-3">
-                  <a href="#" title="Print">
+                  <a href="#" @click.prevent="printme('print')" title="Print">
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
@@ -156,7 +155,8 @@
                 </div>
               </div>
             </div>
-            <div class="table-responsive">
+
+            <div class="table-responsive" id="print">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
                   <tr>
@@ -212,13 +212,17 @@
  *  COMPONENTS
  */
 import message from "../Alertmessage/message.vue";
+import { Util } from "../../js/util";
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
+
+import Loading from "../LoadingController.vue";
 
 export default {
   components: {
     confirm,
-    message
+    message,
+    Loading
   },
   data() {
     return {
@@ -241,7 +245,6 @@ export default {
     this.getHostelRooms();
   },
   created() {
-    EventBus.$emit("clicked");
     EventBus.$on("clicked", clickCount => {
       this.getHostels();
       this.getRoomTypes();
@@ -263,6 +266,7 @@ export default {
     },
     addHostelRooms() {
       if (this.checkValidate()) {
+        EventBus.$emit("onLoad", "1");
         console.log("-->" + JSON.stringify(this.hostelroom));
         this.axios
           .post("/api/hostelroom/store", this.hostelroom)
@@ -280,9 +284,7 @@ export default {
         left: 0,
         behavior: "smooth"
       });
-      this.moveToDown = !this.moveToDown;
       this.hostelroom = {};
-      this.moveToDown = !this.moveToDown;
       this.hostelroom.id = hos.id;
       this.hostelroom.hostel_id = hos.hostel_id;
       this.hostelroom.room_type_id = hos.room_type_id;
@@ -293,15 +295,18 @@ export default {
       this.isEdit = true;
     },
     updateHostelRoom() {
-      console.log("Model --->" + JSON.stringify(this.hostelroom));
-      this.axios
-        .post(`/api/hostelroom/update/${this.hostelroom.id}`, this.hostelroom)
-        .then(res => {
-          this.getHostelRooms();
-          this.isEdit = false;
-          this.hostelroom = "";
-          console.log(JSON.stringify(res));
-        });
+      if (this.checkValidate()) {
+        console.log("Model --->" + JSON.stringify(this.hostelroom));
+        EventBus.$emit("onLoad", "1");
+        this.axios
+          .post(`/api/hostelroom/update/${this.hostelroom.id}`, this.hostelroom)
+          .then(res => {
+            this.getHostelRooms();
+            this.isEdit = false;
+            this.hostelroom = "";
+            console.log(JSON.stringify(res));
+          });
+      }
     },
     deleteHostelRoom(id) {
       var funName = "delete"; /**Delete function */
@@ -357,38 +362,24 @@ export default {
      * FORM VALIDATION
      */
     onValidate(value, inputId, megId) {
-      if (value == "" || value == undefined)
-        document.getElementById(inputId).style.border = "solid 1px red";
-      else {
-        document.getElementById(inputId).style.border = "solid 1px #d2d6de";
-        document.getElementById(megId).style.display = "none";
-      }
+      Util.onValidate(value, inputId, megId);
     },
 
-    onValidateMessage(inputId, megId) {
-      document.getElementById(inputId).style.border = "solid 1px red";
-      document.getElementById(megId).style.display = "block";
-    },
     checkValidate() {
       if (!this.hostelroom.room_no) {
-        this.onValidateMessage("name_id", "namemsg");
-        return false;
+        Util.onValidateMessage("name_id", "namemsg");
       }
       if (!this.hostelroom.hostel_id) {
-        this.onValidateMessage("hostel_id", "hostelmsg");
-        return false;
+        Util.onValidateMessage("hostel_id", "hostelmsg");
       }
       if (!this.hostelroom.room_type_id) {
-        this.onValidateMessage("roomtype_id", "roomtypemsg");
-        return false;
+        Util.onValidateMessage("roomtype_id", "roomtypemsg");
       }
       if (!this.hostelroom.no_of_bed) {
-        this.onValidateMessage("nob_id", "nobmsg");
-        return false;
+        Util.onValidateMessage("nob_id", "nobmsg");
       }
       if (!this.hostelroom.cost_per_bed) {
-        this.onValidateMessage("cpb_id", "cpbmsg");
-        return false;
+        Util.onValidateMessage("cpb_id", "cpbmsg");
       } else {
         return true;
       }
@@ -396,6 +387,14 @@ export default {
     },
     goAlertClose() {
       $(".alert").css("display", "none");
+    },
+
+    printme(table) {
+      Util.printme(table);
+    },
+
+    downloadExcel(table, name, filename) {
+      Util.downloadExcel(table, name, filename);
     }
   }
 };

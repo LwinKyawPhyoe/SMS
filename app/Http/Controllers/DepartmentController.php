@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AcademicYear;
 use App\Department;
 use Illuminate\Http\Request;
 
@@ -15,9 +16,11 @@ class DepartmentController extends Controller
     public function index()
     {
         //
-        $departments = Department::where('is_active', 'Yes')->orderBy('id', 'desc')
-            ->get()
-            ->toArray();
+        $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
+        $departments = Department::where('is_active', 'yes')
+            ->where('domain', 'TS')
+            ->where('session_id', $sessionid[0]->id)
+            ->orderBy('id', 'DESC')->get()->toArray();
         return array_reverse($departments);
     }
 
@@ -39,15 +42,16 @@ class DepartmentController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'department_name' => 'required'
-        ]);
-        $department = new Department([
-            "department_name" => $request->input('department_name'),
-        ]);
-        $department->save();
-        return response()->json(['text' => 'Department added successfully', 'type' => 'success']);
-        return response()->json("The Designation successfully added");
+        $session = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get();
+        for ($i = 0; $i < count($session); $i++) {
+            $department = new Department([
+                "department_name" => $request->input('department_name'),
+                'session_id'  => $session[$i]['id'],
+                'domain'  => 'TS'
+            ]);
+            $department->save();
+            return response()->json(['text' => 'Department added successfully', 'type' => 'success']);
+        }
     }
 
     /**
@@ -98,7 +102,7 @@ class DepartmentController extends Controller
         //
         $department = Department::find($id);
         $department->update([
-            "is_active" => "No"
+            "is_active" => "no"
         ]);
         return response()->json(['text' => 'Department deleted successfully', 'type' => 'success']);
     }

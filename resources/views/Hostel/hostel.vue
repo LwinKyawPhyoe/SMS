@@ -7,9 +7,10 @@
       </h4>
     </div>
     <hr />
+    <Loading></Loading>
     <confirm :url="props"></confirm>
-    <div class="row" style="align-items: end !important;margin:0;">
-      <div class="col-lg-5 col-md-12" style="padding:0px;">
+    <div class="row" style="align-items: end !important;">
+      <div class="col-lg-5 col-md-12" style="padding-left:2px;">
         <div class="card">
           <div class="card-header">
             <h6>Add Hostel</h6>
@@ -63,28 +64,21 @@
                 <label for="description">Description</label>
                 <textarea class="textareas" v-model="hostel.description" rows="3"></textarea>
               </div>
-              <div class="col-12 column-12">
+              <div class="col-12">
                 <!--- store -->
                 <button
                   v-if="this.isEdit == false"
                   @click="addHostel()"
                   type="button"
-                  id="globalSave"
                   class="save"
                 >Save</button>
-                <button
-                  v-else
-                  @click="updateHostel()"
-                  id="globalSave"
-                  type="button"
-                  class="save"
-                >Save</button>
+                <button v-else @click="updateHostel()" type="button" class="save">Save</button>
               </div>
             </form>
           </div>
         </div>
       </div>
-      <div class="col-lg-7 col-md-12" style="padding:0;">
+      <div class="col-lg-7 col-md-12" style="padding-left:0;">
         <div class="card">
           <div class="card-header">
             <h6>Hostel List</h6>
@@ -100,12 +94,16 @@
             <div class="copyRows">
               <div class="row" id="copyRow">
                 <div class="col-3">
-                  <a href="#" title="Excel">
+                  <a
+                    href="#"
+                    @click.prevent="downloadExcel('studenttable', 'name', 'Hostel.xls')"
+                    title="Excel"
+                  >
                     <i class="fa fa-file-excel-o"></i>
                   </a>
                 </div>
                 <div class="col-3">
-                  <a href="#" title="Print">
+                  <a href="#" @click.prevent="printme('print')" title="Print">
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
@@ -116,7 +114,7 @@
                 </div>
               </div>
             </div>
-            <div class="table-responsive">
+            <div class="table-responsive" id="print">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
                   <tr>
@@ -190,13 +188,16 @@
  *  COMPONENTS
  */
 import message from "../Alertmessage/message.vue";
+import { Util } from "../../js/util";
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
+import Loading from "../LoadingController.vue";
 
 export default {
   components: {
     confirm,
-    message
+    message,
+    Loading
   },
   data() {
     return {
@@ -211,7 +212,7 @@ export default {
       id: "",
       isEdit: false,
       noMatch: false,
-
+      delurl: "",
       msg: {
         text: "",
         type: ""
@@ -226,13 +227,10 @@ export default {
     this.getHostels();
   },
   created() {
-    EventBus.$emit("clicked");
     EventBus.$on("clicked", clickCount => {
       this.getHostels();
     });
-    this.axios
-      .get("/api/hostels")
-      .then(response => (this.hostels = response.data));
+    this.getHostels();
   },
   methods: {
     /**
@@ -248,6 +246,8 @@ export default {
      */
     addHostel() {
       if (this.checkValidate()) {
+        EventBus.$emit("onLoad", "1");
+
         console.log("-->" + JSON.stringify(this.hostel));
         this.axios
           .post("/api/hostel/store", this.hostel)
@@ -285,14 +285,17 @@ export default {
      * UPDATE
      */
     updateHostel() {
-      this.axios
-        .post(`/api/hostel/update/${this.hostel.id}`, this.hostel)
-        .then(res => {
-          this.getHostels();
-          this.isEdit = false;
-          this.hostel = "";
-          console.log(JSON.stringify(res));
-        });
+      if (this.checkValidate()) {
+        EventBus.$emit("onLoad", "1");
+        this.axios
+          .post(`/api/hostel/update/${this.hostel.id}`, this.hostel)
+          .then(res => {
+            this.getHostels();
+            this.isEdit = false;
+            this.hostel = "";
+            console.log(JSON.stringify(res));
+          });
+      }
     },
     deleteHostel(id) {
       var funName = "delete"; /**Delete function */
@@ -326,24 +329,15 @@ export default {
      * FORM VALIDATION
      */
     onValidate(value, inputId, megId) {
-      if (value == "" || value == undefined)
-        document.getElementById(inputId).style.border = "solid 1px red";
-      else {
-        document.getElementById(inputId).style.border = "solid 1px #d2d6de";
-        document.getElementById(megId).style.display = "none";
-      }
+      Util.onValidate(value, inputId, megId);
     },
 
-    onValidateMessage(inputId, megId) {
-      document.getElementById(inputId).style.border = "solid 1px red";
-      document.getElementById(megId).style.display = "block";
-    },
     checkValidate() {
       if (!this.hostel.hostel_name) {
-        this.onValidateMessage("sectionid", "sectionmsg");
+        Util.onValidateMessage("sectionid", "sectionmsg");
         return false;
       } else if (!this.hostel.type) {
-        this.onValidateMessage("typeid", "typemsg");
+        Util.onValidateMessage("typeid", "typemsg");
         return false;
       } else {
         return true;
@@ -352,6 +346,14 @@ export default {
     },
     goAlertClose() {
       $(".alert").css("display", "none");
+    },
+
+    printme(table) {
+      Util.printme(table);
+    },
+
+    downloadExcel(table, name, filename) {
+      Util.downloadExcel(table, name, filename);
     }
   }
 };

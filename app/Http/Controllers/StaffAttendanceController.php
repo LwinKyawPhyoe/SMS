@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\AcademicYear;
 use App\StaffAttendance;
 use App\Http\Controllers\Controller;
 use App\StaffDirectory;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
@@ -18,8 +20,6 @@ class StaffAttendanceController extends Controller
     public function index($id, $year)
     {
         //
-
-
         // $data = DB::table("student_attendances")->select(
         //     'attendance_management.*',
         //     DB::raw('group_concat(attendance ORDER BY date) as atten'),
@@ -27,12 +27,31 @@ class StaffAttendanceController extends Controller
         //     ->get();
         // echo $year;
 
-        $data =  StaffAttendance::where('staff_id', $id)
+        $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
+        $data = StaffAttendance::where('staff_id', $id)
             ->whereYear('date', '=', $year)
-            ->get();
-        return response()->json($data);
-    }
+            ->where('is_active', 'yes')
+            ->where('domain', 'TS')
+            ->where('session_id', $sessionid[0]->id)
+            ->orderBy('id', 'DESC')->get()->toArray();
+        return array_reverse($data);
 
+
+
+        // $data =  StaffAttendance::where('staff_id', $id)
+        //     ->whereYear('date', '=', $year)
+        //     ->get();
+        // return response()->json($data);
+    }
+    public function getYears()
+    {
+
+        // $years = StaffAttendance::distinct('created_at')->get('created_at')
+        //     ->groupBy(function ($val) {
+        //         return  Carbon::parse($val->created_at)->format('YYYY');
+        //     });
+        // return response()->json($years);
+    }
     /**
      * Show the form for creating a new resource.
      *
@@ -41,6 +60,7 @@ class StaffAttendanceController extends Controller
     public function create()
     {
         //
+
     }
 
     /**
@@ -53,12 +73,17 @@ class StaffAttendanceController extends Controller
     {
         $formData = $request->data;
         for ($i = 0; $i < count($formData); $i++) {
-            $staffAttendance = new StaffAttendance([
-                'date'         => $formData[$i]['date'],
-                'staff_id'     => $formData[$i]['staff_id'],
-                'staff_attendance_type_id'     => $formData[$i]['staff_attendance_type_id'],
-                'note'        => $formData[$i]['note']
-            ]);
+            $session = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get();
+            for ($ii = 0; $ii < count($session); $ii++) {
+                $staffAttendance = new StaffAttendance([
+                    'date'         => $formData[$i]['date'],
+                    'staff_id'     => $formData[$i]['staff_id'],
+                    'staff_attendance_type_id'     => $formData[$i]['staff_attendance_type_id'],
+                    'note'        => $formData[$i]['note'],
+                    'session_id'  => $session[$ii]['id'],
+                    'domain'  => 'TS'
+                ]);
+            }
             $staffAttendance->save();
         }
         return response()->json($request->data);
@@ -74,7 +99,7 @@ class StaffAttendanceController extends Controller
     {
         //
         // $staffAttendances = StaffAttendance::where('staff_id', $id)->get();
-        $attendance =  StaffAttendance::where("staff_id",$id)->get();
+        $attendance =  StaffAttendance::where("staff_id", $id)->get();
         $present = $attendance->where('staff_attendance_type_id', 1)->count();
         $late    = $attendance->where('staff_attendance_type_id', 2)->count();
         $absent    = $attendance->where('staff_attendance_type_id', 3)->count();

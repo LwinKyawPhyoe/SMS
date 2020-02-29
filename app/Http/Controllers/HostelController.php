@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\AcademicYear;
 use App\Hostel;
 use Illuminate\Http\Request;
 
@@ -15,10 +16,13 @@ class HostelController extends Controller
     public function index()
     {
         //
-        $hostels = Hostel::where('is_active','Yes')->orderBy('id', 'desc')
-            ->get()
-            ->toArray();
+        $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
+        $hostels = Hostel::where('is_active', 'yes')
+            ->where('domain', 'TS')
+            ->where('session_id', $sessionid[0]->id)
+            ->orderBy('id', 'DESC')->get()->toArray();
         return array_reverse($hostels);
+      
     }
 
     /**
@@ -39,21 +43,22 @@ class HostelController extends Controller
      */
     public function store(Request $request)
     {
-        //
-        // if ($request->input('hostel_name') == "") {
-        // } else {
-        $request->validate([
-            'hostel_name' => 'required'
-        ]);
-        $hostel = new Hostel([
-            'hostel_name' => $request->input('hostel_name'),
-            'type'        => $request->input('type'),
-            'address'     => $request->input('address'),
-            'intake'      => $request->input('intake'),
-            'description' => $request->input('description'),
-        ]);
-        $hostel->save();
-        return response()->json(['text' => 'Hostel added successfully', 'type' => 'success']);
+
+        $session = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get();
+        for ($i = 0; $i < count($session); $i++) {
+            $hostel = new Hostel([
+                'hostel_name' => $request->input('hostel_name'),
+                'type'        => $request->input('type'),
+                'address'     => $request->input('address'),
+                'intake'      => $request->input('intake'),
+                'description' => $request->input('description'),
+                'session_id'  => $session[$i]['id'],
+                'domain'  => 'TS'
+            ]);
+            $hostel->save();
+            return response()->json(['text' => 'Hostel added successfully', 'type' => 'success']);
+        }
+
         // }
     }
 
@@ -114,9 +119,9 @@ class HostelController extends Controller
     public function search($data)
     {
         $hostel = Hostel::where('hostel_name', 'like', '%' . $data . '%')
-            ->orWhere('type' , 'like' , '%' . $data . '%')
-            ->orWhere('address' , 'like' , '%' . $data . '%')
-            ->orWhere('intake' , 'like' , '%' . $data . '%')
+            ->orWhere('type', 'like', '%' . $data . '%')
+            ->orWhere('address', 'like', '%' . $data . '%')
+            ->orWhere('intake', 'like', '%' . $data . '%')
             ->orderBy('id', 'desc')
             ->get()->toArray();
         return array_reverse($hostel);

@@ -8,4 +8,9 @@ class Department extends Model
 {
     //
     protected $guarded = [];
+
+    public function sessions()
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
 }

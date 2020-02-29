@@ -17,4 +17,9 @@ class HostelRoom extends Model
     {
         return $this->belongsTo(Hostel::class);
     }
+
+    public function sessions()
+    {
+        return $this->belongsTo(AcademicYear::class);
+    }
 }
