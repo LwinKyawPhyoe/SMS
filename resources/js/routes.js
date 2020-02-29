@@ -24,6 +24,7 @@ import ViewTimetable from '../views/Academics/viewclasstimetable.vue';
 import Teacher from '../views/Academics/assignclassteacher.vue';
 import AssSubjects from '../views/Academics/assignsubjects.vue';
 import ViewAssSubjects from '../views/Academics/viewassignsubjects.vue';
+import EditAssSubjects from '../views/Academics/editassignsubjects.vue';
 import ProStudents from '../views/Academics/promotestudents.vue';
 import Subjects from '../views/Academics/subjects.vue';
 import Class from '../views/Academics/class.vue';
@@ -162,6 +163,11 @@ export const routes = [
         name: 'viewasssubjects',
         path: '/viewasssubjects',
         component: ViewAssSubjects
+    },
+    {
+        name: 'editassSubjects',
+        path: '/editsearch/:id',
+        component: EditAssSubjects
     },
     {
         name: 'prostudents',

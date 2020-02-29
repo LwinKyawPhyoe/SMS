@@ -72,9 +72,8 @@ class DatabaseSeeder extends Seeder
         }
         $this->call([
             StudentsTableSeeder::class,
+            AcademicsMenuSeeder::class,
         ]);
-
-
 
 
         /***By Wai Yan Soe */

@@ -99,7 +99,7 @@ class SubjectController extends Controller
         }
     }
 
-    public function edit(subject $id)
+    public function edit($id)
     {
         $sub = subject::find($id);
         return response()->json($sub);

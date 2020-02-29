@@ -10,6 +10,7 @@
         </div>
         <hr>
 
+        <confirm :url="props"></confirm>
         <div class="row" style="align-items: end !important;">
             <div class="col-lg-5 col-md-12" style="padding-left:2px;">
                 <div class="card">
@@ -17,7 +18,7 @@
                         <h6>Add Section</h6>
                     </div>
                     <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
-                        <message :alertmessage="msg"/>
+                        <message :alertmessage="msg" id="alertmsg"/>
                         <form @submit.prevent="goSave">
                             <div class="col-12">
                                 <label for="section">Section Name<strong>*</strong></label>
@@ -27,7 +28,7 @@
                                 <span id="sectionmsg" class="error_message">Section Name is required</span>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="save">Save</button>
+                                <button type="submit" id="globalSave" class="save">Save</button>
                             </div>
                         </form>
                     </div>
@@ -40,7 +41,7 @@
                         <h6>Section List</h6>
                     </div>
                     <div class="card-body">
-                        <message :alertmessage="deletemsg"/>                        
+                        <message :alertmessage="deletemsg" id="delalertmsg"/>
                         <input
                             v-on:keyup="searchTable()"
                             id="myInput"
@@ -80,7 +81,7 @@
                                         <td class="all" nowrap>{{section.section}}</td>
                                         <td style="text-align: right;">
                                             <i @click="goEdit(section.id)" class="fa fa-pencil pen"></i>
-                                            <i @click="goDelete(section.id)" class="fa fa-trash time"></i>
+                                            <i @click="goDelete(section.id)" data-toggle="modal" data-target="#exampleModalCenter" class="fa fa-trash time"></i>
                                         </td>
                                     </tr>                                    
                                 </tbody>
@@ -95,14 +96,22 @@
 
 <script>
 import message from '../Alertmessage/message.vue';
+import confirm from "../message/confirm.vue";
+import { EventBus } from "../../js/event-bus.js";
+
 export default {
     components: {
+        confirm,
         message    
     },
     data() {
         return {
             SectionObj: {},
             SectionList: [],
+            props: {
+                url: "",
+                type: ""
+            },
             msg: {
                 text: "",
                 type: ""
@@ -114,6 +123,16 @@ export default {
         };
     },
     created() {
+        EventBus.$on("clicked", response => {
+            this.deletemsg.text = response.text,
+            this.deletemsg.type = response.type
+            this.workAlert('#delalertmsg');
+            this.getAllSection();
+        });
+        EventBus.$on("SessionSaved", response => {            
+            console.log(JSON.stringify(response));
+            this.getAllSection();
+        });
         this.getAllSection();
     },
     methods: {
@@ -143,16 +162,13 @@ export default {
 
         checkValidate()
         {
+            var returnValue = true;
             if(this.SectionObj.section == "" || this.SectionObj.section == undefined)
             {
                 this.onValidateMessage('sectionid', 'sectionmsg');
-                return false;
-            }
-            else
-            {
-                return true;
-            }
-            return false;
+                returnValue = false;
+            }        
+            return returnValue;
         },
 
         goSave() {
@@ -160,41 +176,40 @@ export default {
             {
                 this.axios
                     .post('/api/Section/save', this.SectionObj)
-                    .then(response => (                        
-                        this.SectionObj = {"id":"","section":"","created_at":"","updated_at":""},
-                        this.getAllSection(),
-                        this.msg.text = response.data.text,
-                        this.msg.type = response.data.type
-                    ))
+                    .then(response => {
+                        this.SectionObj = {"id":"","section":"","created_at":"","updated_at":""};
+                        this.getAllSection();
+                        this.msg.text = response.data.text;
+                        this.msg.type = response.data.type;
+                        this.workAlert('#alertmsg');
+                    })
                     .catch(error => {            
                     console.log("err->" + JSON.stringify(this.error.response))
                     });
             }      
         },
 
-        goAlertClose(){
-            $('.alert').css('display', 'none')
+        workAlert(id){
+            $(id).css('display', 'block');
+
+            setTimeout(()=> {
+                $(id).css('display', 'none');
+            }, 3000);
         },
 
-        goEdit(aId){      
+        goEdit(aId){
+            alert(aId);
             this.axios
                 .get(`/api/Section/edit/${aId}`)
                 .then(response => {                        
-                    this.SectionObj = response.data[0];
-                    console.log("---->" + JSON.stringify(this.SectionObj))
+                    this.SectionObj = response.data;                    
                 });
         },
 
         goDelete(aID){
-            this.axios
-                .get(`/api/Section/delete/${aID}`)
-                .then(response => {            
-                    console.log("-->" + JSON.stringify(response.data));
-                    let i = this.SectionList.map(item => item.id).indexOf(aID);
-                    this.SectionList.splice(i, 1),            
-                    this.deletemsg.text = response.data.text,
-                    this.deletemsg.type = response.data.type
-                });
+            var funName = "delete"; /**Delete function */
+            this.props.type = "get";
+            this.props.url = `Section/${funName}/${aID}`;            
         },
 
         searchTable() {

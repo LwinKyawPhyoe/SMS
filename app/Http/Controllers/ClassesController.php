@@ -2,36 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use App\classes;
+use App\Classes;
 use App\class_section;
 use App\Section;
-use App\AcademicYear;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\AcademicYear;
 
 class ClassesController extends Controller
 {
     public function index()
     {
         $sessionid = AcademicYear::where('is_active','yes')->where('domain','TS')->get('id');
-        $classList = DB::select("SELECT c.id AS classid, c.class, s.id AS sectionid, s.section FROM class_sections cs INNER JOIN classes c ON cs.class_id = c.id INNER JOIN Sections s ON cs.section_id = s.id WHERE cs.is_active='yes' AND c.is_active='yes' AND cs.domain='TS' AND c.domain='TS' AND c.session_id=? AND cs.session_id=? ORDER BY cs.class_id", [$sessionid[0]->id,$sessionid[0]->id]);
+        $query ="SELECT
+                    c.id AS classid,
+                    c.class,
+                    s.id AS sectionid,
+                    s.section
+                FROM
+                    class_sections cs
+                INNER JOIN classes c ON
+                    cs.class_id = c.id
+                INNER JOIN Sections s ON
+                    cs.section_id = s.id
+                WHERE
+                    cs.is_active = 'yes' AND c.is_active = 'yes' AND s.is_active = 'yes' AND 
+                    cs.domain = 'TS' AND c.domain = 'TS' AND s.domain = 'TS' AND
+                    cs.session_id = ? AND c.session_id = ? AND s.session_id = ?
+                ORDER BY
+                    cs.class_id";
+        $classList = DB::select($query, [$sessionid[0]->id,$sessionid[0]->id,$sessionid[0]->id]);
         return $classList;
     }
 
-    public function Theinindex()
-    {   $academicYearId=$this->getAcademicActiveId();
-        $classes = classes::where('session_id',$academicYearId)->where('is_active','yes')->where('domain','TS')->get();
-        return response($classes);
-    }
-    public function getAcademicActiveId(){
-        $academicYear = AcademicYear::where('is_active','yes')->where('domain','TS')->get();
-        $academicYearId ;
-        foreach($academicYear as $academicYear1){
-            $academicYearId = $academicYear1->id;
-        }
-        return $academicYearId;
-    }
-    
     public function store(Request $request)
     {
         if($request->input('id') == "")
@@ -57,7 +60,7 @@ class ClassesController extends Controller
         {
             $checkActive = Classes::where('class', $request->input('class'))
                                     ->where('domain', 'TS')
-                                    ->where('session_id', $sessionid[0]->id)->get();                
+                                    ->where('session_id', $sessionid[0]->id)->get();
             if($checkActive[0]->is_active == 'delete')
             {
                 $checkActive[0]->class = $request->input('class');
@@ -162,7 +165,7 @@ class ClassesController extends Controller
 
     public function destroy($id)
     {
-        $Classes = Classes::find($id);        
+        $Classes = Classes::find($id);       
         $Classes->is_active = "delete";
         $Classes->save();
 

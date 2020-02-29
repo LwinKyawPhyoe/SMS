@@ -9,20 +9,6 @@ use App\AcademicYear;
 class SectionController extends Controller
 {
 
-    public function Theinindex()
-    {   $academicYearId = $this->getAcademicActiveId();
-        $section = Section::where('is_active', 'yes')->where('domain', 'TS')->where('session_id',$academicYearId)->get();
-        return response($section);
-    }
-    public function getAcademicActiveId(){
-        $academicYear = AcademicYear::where('is_active','yes')->where('domain','TS')->get();
-        $academicYearId ;
-        foreach($academicYear as $academicYear1){
-            $academicYearId = $academicYear1->id;
-        }
-        return $academicYearId;
-    }
-
     public function index()
     {        
         $sessionid = AcademicYear::where('is_active','yes')->where('domain','TS')->get('id');
@@ -108,8 +94,8 @@ class SectionController extends Controller
         }
     }
 
-    public function edit(Section $id)
-    {
+    public function edit($id)
+    {        
         $section = Section::find($id);
         return response()->json($section);
     }

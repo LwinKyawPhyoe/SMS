@@ -15,9 +15,9 @@ class CreateSubjectsTable extends Migration
     {
         Schema::create('subjects', function (Blueprint $table) {
             $table->bigIncrements('id', 11);
-            $table->char('name', 100);
-            $table->char('code', 100)->nullable();
+            $table->char('name', 100);            
             $table->char('type', 100);
+            $table->char('code', 100)->nullable();
             $table->char('is_active', 25)->default('yes');
             $table->char('domain', 100);
             $table->integer('session_id')->unsigned();

@@ -6,10 +6,7 @@
                 'alert errorAlert': alertmessage.type === 'error',
                 'alert successAlert': alertmessage.type === 'success'
             }" role="alert">
-            <span>{{alertmessage.text}}</span>            
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                <span aria-hidden="true">&times;</span>                
-            </button>
+            <span>{{alertmessage.text}}</span>
         </div>
     </div>
 
@@ -35,15 +32,6 @@ export default {
     name: "Message",
     props: [
         'alertmessage'
-    ],
-    data() {
-        return {        
-        };
-    },
-    methods: {
-        // goAlertClose(){
-        //     $('#alertbox').css("display", "none")
-        // }
-    }
+    ]       
 };
 </script>
