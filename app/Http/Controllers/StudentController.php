@@ -231,6 +231,132 @@ class StudentController extends Controller
           }
         
     }
+    public function update(Request $request, $id)
+    {
+        $viladition="";
+        $admision_no = DB::select('select * from students where admission_no =?',[$request->input('admission_no')]);
+        if($admision_no[0]->email == $request->email){
+            $viladition="";
+        }
+        if($admision_no[0]->mobileno == $request->mobileno){
+            $viladition="";
+        }
+        
+        if($admision_no[0]->email != $request->email){
+          $email = DB::select('select * from students where email =?',[$request->input('email')]);
+          if($email){
+              $viladition = "This Email Already Exists";
+          }
+        }
+        if($admision_no[0]->mobileno != $request->mobileno){
+          $phone = DB::select('select * from students where mobileno =?',[$request->input('mobileno')]);
+          if($phone){
+            $viladition = "This Phone Already Exists";
+          }
+        }
+        if($viladition){
+            return $viladition;
+        }else{
+            $data = DB::select('select * from students where admission_no =?',[$request->input('admission_no')]);
+            $fatherImageName='';
+            $motherImageName='';
+            $imageName='';
+            $guardianImageName='';
+            $imageName = $request->image;
+            $fatherImageName = $request->father_photo;
+            $motherImageName = $request->mother_photo;
+            $guardianImageName = $request->guardian_photo;
+            // student image
+                    if($data[0]->image != $request->image){
+                        $file1 = $request->image;
+                        $ext1 = strtolower($file1->getClientOriginalExtension());
+                        $imageName = time() . '.' . $ext1;
+                        $request->image->move(public_path('stu_image'), $imageName);
+                    }else{
+                        $imageName = $request->image;
+                    }
+            // father image
+                if($data[0]->father_photo != $request->father_photo){
+                    $file2 = $request->father_photo;
+                    $ext2 = strtolower($file2->getClientOriginalExtension());
+                    $fatherImageName = time() . '.' . $ext2;
+                    $request->father_photo->move(public_path('father_image'), $fatherImageName);
+                }else{
+                    $fatherImageName = $request->father_photo;
+                }
+            // mother image
+                if($data[0]->mother_photo != $request->mother_photo){
+                    $file3 = $request->mother_photo;
+                    $ext3 = strtolower($file3->getClientOriginalExtension());
+                    $motherImageName = time() . '.' . $ext3;
+                    $request->mother_photo->move(public_path('mother_image'), $motherImageName);
+                }else{
+                    $motherImageName = $request->mother_photo;
+                }
+            // guardian image
+                if($data[0]->guardian_photo != $request->guardian_photo){
+                    $file4 = $request->guardian_photo;
+                    $ext4 = strtolower($file4->getClientOriginalExtension());
+                    $guardianImageName = time() . '.' . $ext4;
+                    $request->guardian_photo->move(public_path('guardian_image'), $guardianImageName);
+                }else{
+                    $guardianImageName = $request->guardian_photo;
+                }
+                $student = student::find($id);
+                $student->update([
+                'name'=>$request->name,
+                'image'=>$imageName,
+                'mobileno'=>$request->mobileno,
+                'email'=>$request->email,
+                'gender'=>$request->gender,
+                'dob'=>$request->dob,
+                'religion'=>$request->religion,
+                'blood_group'=>$request->blood_group,
+                'height'=>$request->height,
+                'weight'=>$request->weight,
+  
+                'roll_no'=>$request->roll_no,
+                'class_sections_id'=>$request->class_sections_id,
+                'admission_date'=>$request->admission_date,
+                'register_date'=>$request->register_date,
+                'father_name'=>$request->father_name,
+                'father_phone'=>$request->father_phone,
+                'father_nrc'=>$request->father_nrc,
+                'father_job'=>$request->father_job,
+                'father_photo'=>$fatherImageName,
+  
+                'mother_name'=>$request->mother_name,
+                'mother_phone'=>$request->mother_phone,
+                'mother_nrc'=>$request->mother_nrc,
+                'mother_job'=>$request->mother_job,
+                'mother_photo'=>$motherImageName,
+  
+                'guardian_name'=>$request->guardian_name,
+                'guardian_nrc'=>$request->guardian_nrc,
+                'guardian_phone'=>$request->guardian_phone,
+                'guardian_job'=>$request->guardian_job,
+                'guardian_relation'=>$request->guardian_relation,
+                'guardian_email'=>$request->guardian_email,
+                'guardian_photo'=>$guardianImageName,
+                'guardian_address'=>$request->guardian_address,
+                'current_address'=>$request->current_address,
+                'permanent_address'=>$request->permanent_address,
+                'previous_school'=>$request->previous_school,
+                'route_id'=>$request->route_id,
+                'hostel_room_id'=>$request->hostel_room_id,
+                'session_start'=>$request->session_start,
+                'session_end'=>$request->session_end,
+                'note'=>$request->note,
+                'disable_at'=>$request->disable_at,
+                'is_active'=>$request->is_active,
+                'domain'=>$request->domain,
+                'session_id'=>$request->session_id,
+                'race'=>$request->race
+                ]);
+                return response()->json('Successfully updated');
+        }
+
+    }
     public function studentReport($class_id,$section_id,$gender){
         $data =[];
            $section= DB::select('SELECT * FROM class_sections WHERE class_id=? AND section_id=?',[$class_id,$section_id]);
@@ -408,12 +534,6 @@ class StudentController extends Controller
             $students = DB::select('SELECT * FROM students WHERE name LIKE ? OR admission_no LIKE ? OR father_name LIKE ? OR roll_no LIKE ? OR gender LIKE ? OR religion LIKE ? OR mother_name LIKE ? OR race LIKE ? OR email LIKE ? OR blood_group LIKE ? OR height LIKE ? OR weight LIKE ? OR guardian_name LIKE ? OR mobileno LIKE ?',[$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword]);
             return $students;
         }
-    }
-
-
-    public function update(Request $request, student $student)
-    {
-        //
     }
 
 

@@ -181,6 +181,7 @@
               <strong>*</strong>
             </label>
             <VueCtkDateTimePicker
+            label="Select date Range"
                 v-model="student.dob"
                  :only-date="true"
               :color="'#1b5e20'"
@@ -225,8 +226,8 @@
             <label for="admDate">Admission Date</label>
             <!-- <input type="date" class="inputbox" id="admDate" v-model="student.admission_date"/> -->
             <VueCtkDateTimePicker
-                v-model="student.admission_date"
-                 :only-date="true"
+              v-model="student.admission_date"
+              :only-date="true"
               :color="'#1b5e20'"
               :button-color="'#1b5e20'"
               :auto-close="true"
@@ -669,6 +670,7 @@ export default {
       },
       siblings:[],
       student: {
+        route_id:'',
         student_image:'',
         image:'',
         father_name:'',
@@ -684,9 +686,12 @@ export default {
         mother_image:'',
         mother_photo:'',
         guardian_photo:'',
-        dob: new Date().toISOString().slice(0,10),
-        admission_date: new Date().toISOString().slice(0,10),
-        register_date: new Date().toISOString().slice(0,10),
+        // dob: new Date(),
+        // admission_date: new Date(),
+        // register_date: new Date(),
+        dob:'',
+        admission_date:'',
+        register_date:'',
         current_address:'',
         permanent_address:'',
         class_section_id:'',
