@@ -8,6 +8,7 @@
         </div>
         <hr />
 
+        <confirm :url="props"></confirm>
         <div class="row" style="align-items: end !important;">
             <div class="col-lg-5 col-md-12" style="padding-left:2px;">
                 <div class="card">
@@ -15,7 +16,7 @@
                         <h6>Create Route</h6>
                     </div>
                     <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
-                        <message :alertmessage="msg" />
+                        <message :alertmessage="msg" id="alertmsg"/>
 
                         <form @submit.prevent="goSave">
                             <div class="col-12">
@@ -44,10 +45,10 @@
                     <div class="card-header">
                         <h6>Route List</h6>
                     </div>
-                    <div class="card-body">
-                        <message :alertmessage="deletemsg" />
-
-                        <input type="text" placeholder="Search..." class="searchText" />
+                    <div class="card-body">                        
+                        <message :alertmessage="deletemsg" id="delalertmsg"/>
+                        
+                        <input v-on:keyup="searchTable()" id="myInput" type="text" placeholder="Search..." class="searchText"/>
                         <div class="copyRows">
                             <div class="row" id="copyRow">                
                                 <div class="col-3">
@@ -76,13 +77,17 @@
                                         <th class="all" style="text-align:right;" nowrap>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="myTable">
                                     <tr v-for="route in routeList" :key="route.id" class="active">
                                         <td class="all" nowrap>{{route.route_title}}</td>
                                         <td class="all" nowrap>{{route.fare}} MMK</td>
                                         <td style="text-align:right;">
-                                            <i @click="goEdit(route.id)" class="fa fa-pencil pen"><span class="penLabel">Edit</span></i>
-                                            <i @click="goDelete(route.id)" class="fa fa-times time"><span class="timeLabel">Delete</span></i>
+                                            <i @click="goEdit(route.id)" class="fa fa-pencil pen">
+                                                <span class="penLabel">Edit</span>
+                                            </i>
+                                            <i @click="goDelete(route.id)" data-toggle="modal" data-target="#exampleModalCenter" class="fa fa-trash time">
+                                                <span class="timeLabel">Delete</span>
+                                            </i>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -97,10 +102,13 @@
 
 <script>
 import message from "../Alertmessage/message.vue";
+import confirm from "../message/confirm.vue";
+import { EventBus } from "../../js/event-bus.js"
 import {Util} from '../../js/util';
 
 export default {
     components: {
+        confirm,
         message
     },
     data() 
@@ -108,6 +116,10 @@ export default {
         return {
             tranRoute: {"id":"","route_title":"","fare":""},
             routeList: [],
+            props: {
+                url: "",
+                type: ""
+            },
             msg: {
                 text: "",
                 type: ""
@@ -121,6 +133,16 @@ export default {
 
     created() 
     {
+        EventBus.$on("clicked", response => {            
+            this.deletemsg.text = response.text;
+            this.deletemsg.type = response.type;
+            Util.workAlert('#delalertmsg');
+            this.getRouteList();
+        });
+        EventBus.$on("SessionSaved", response => {            
+            console.log(JSON.stringify(response));
+            this.getRouteList();
+        });
         this.getRouteList();
     },
 
@@ -128,6 +150,7 @@ export default {
     {
         getRouteList()
         {
+            this.routeList = [];
             this.axios.get('/api/tranRouteList').then(response => {            
                 this.routeList = response.data;
             });
@@ -137,12 +160,13 @@ export default {
         {
             if(this.checkValidate())
             {
-                this.axios.post('/api/TranRoute/save', this.tranRoute).then(response => (              
+                this.axios.post('/api/TranRoute/save', this.tranRoute).then(response => {              
                     this.tranRoute = {"id":"","route_title":"","fare":""},
-                    this.getRouteList(),
-                    (this.msg.text = response.data.text),
-                    (this.msg.type = response.data.type)
-                ))
+                    this.getRouteList();
+                    this.msg.text = response.data.text;
+                    this.msg.type = response.data.type;
+                    Util.workAlert('#alertmsg');
+                })
                 .catch(error => {            
                     console.log("err->" + JSON.stringify(this.error.response))
                 });
@@ -158,12 +182,9 @@ export default {
 
         goDelete(aID)
         {
-            this.axios.get(`/api/TranRoute/delete/${aID}`).then(response => { 
-                let i = this.routeList.map(item => item.id).indexOf(aID);
-                this.routeList.splice(i, 1);
-                (this.deletemsg.text = response.data.text),
-                (this.deletemsg.type = response.data.type);
-            });
+            var funName = "delete"; /**Delete function */
+            this.props.type = "delete";
+            this.props.url = `TranRoute/${funName}/${aID}`;
         },
 
         onValidate(value, inputId, megId)
@@ -217,6 +238,28 @@ export default {
         downloadExcel(table, name, filename) 
         {
             Util.downloadExcel(table,name,filename);
+        },
+
+        searchTable() {
+            var input, filter, found, table, tr, td, i, j;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    tr[i].style.display = "";
+                    found = false;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
         }
     }
 };

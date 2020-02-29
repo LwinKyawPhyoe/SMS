@@ -8,6 +8,7 @@
         </div>
 
         <confirm :url="props"></confirm>
+        <Loading></Loading>
         <div class="row" style="align-items: end !important;">
             <div class="col-lg-5 col-md-12" style="padding-left:2px;">
                 <div class="card">
@@ -108,10 +109,14 @@
 <script>
 import message from "../Alertmessage/message.vue";
 import confirm from "../message/confirm.vue";
+import Loading from "../LoadingController.vue";
+
 import { EventBus } from "../../js/event-bus.js";
+import {Util} from '../../js/util';
 
 export default {
     components: {
+        Loading,
         confirm,
         message
     },
@@ -137,7 +142,7 @@ export default {
         EventBus.$on("clicked", response => {            
             this.deletemsg.text = response.text;
             this.deletemsg.type = response.type;
-            this.workAlert('#delalertmsg');
+            Util.workAlert('#delalertmsg');
             this.getAllSession();
         });
         EventBus.$on("SessionSaved", response => {            
@@ -146,8 +151,11 @@ export default {
         });
         this.getAllSession();
     },
+    mounted() {
+        EventBus.$emit("onLoad", "start");
+    },
     methods: {
-        getAllSession() {
+        getAllSession() {            
             this.axios.get("/api/academicyr").then(response => {
                 this.SessionList = response.data;
             });
@@ -155,26 +163,15 @@ export default {
 
         onValidate(value, inputId, megId)
         {
-            if(value == "" || value == undefined) document.getElementById(inputId).style.border = 'solid 1px red';
-            else 
-            {
-                document.getElementById(inputId).style.border = 'solid 1px #d2d6de';
-                document.getElementById(megId).style.display = 'none';
-            }
+            Util.onValidate(value, inputId, megId);            
         },
-
-        onValidateMessage(inputId, megId)
-        {
-            document.getElementById(inputId).style.border = 'solid 1px red';
-            document.getElementById(megId).style.display = 'block';
-        },
-
+        
         checkValidate()
         {
             var returnValue = true;
             if(this.AcademicYr.session == "" || this.AcademicYr.session == undefined)
             {
-                this.onValidateMessage('sessionid', 'sessionmsg');
+                Util.onValidateMessage('sessionid', 'sessionmsg');
                 returnValue = false;
             }            
             return returnValue;
@@ -190,20 +187,12 @@ export default {
                     this.getAllSession();
                     this.msg.text = response.data.text;
                     this.msg.type = response.data.type;
-                    this.workAlert('#alertmsg');
+                    Util.workAlert('#alertmsg');
                 })
                 .catch(error => {
                     console.log("err->" + JSON.stringify(this.error.response));
                 });
             }
-        },
-
-        workAlert(id){
-            $(id).css('display', 'block');
-
-            setTimeout(()=> {
-                $(id).css('display', 'none');
-            }, 3000);
         },
 
         goAlertClose(aVal) {
@@ -221,7 +210,7 @@ export default {
             if(aCheckActive != "yes")
             {
                 var funName = "delete"; /**Delete function */
-                this.props.type = "get";
+                this.props.type = "delete";
                 this.props.url = `AcademicYear/${funName}/${aID}`;                
             }               
         },

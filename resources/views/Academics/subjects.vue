@@ -113,6 +113,7 @@
 import message from '../Alertmessage/message.vue';
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
+import {Util} from '../../js/util';
 
 export default {
     components: {
@@ -142,7 +143,7 @@ export default {
         EventBus.$on("clicked", response => {            
             this.deletemsg.text = response.text;
             this.deletemsg.type = response.type;
-            this.workAlert('#delalertmsg');
+            Util.workAlert('#delalertmsg');
             this.getAllSubject();
         });
         EventBus.$on("SessionSaved", response => {            
@@ -163,18 +164,7 @@ export default {
 
         onValidate(value, inputId, megId)
         {
-            if(value == "" || value == undefined) document.getElementById(inputId).style.border = 'solid 1px red';
-            else 
-            {
-                document.getElementById(inputId).style.border = 'solid 1px #d2d6de';
-                document.getElementById(megId).style.display = 'none';
-            }
-        },
-
-        onValidateMessage(inputId, megId)
-        {
-            document.getElementById(inputId).style.border = 'solid 1px red';
-            document.getElementById(megId).style.display = 'block';
+            Util.onValidate(value, inputId, megId);
         },
 
         checkValidate()
@@ -182,7 +172,7 @@ export default {
             var returnValue = true;
             if(this.subjectObj.name == "" || this.subjectObj.name == undefined)
             {
-                this.onValidateMessage('subjectid', 'subjectmsg');
+                Util.onValidateMessage('subjectid', 'subjectmsg');
                 returnValue = false;
             }            
             return returnValue;
@@ -199,20 +189,12 @@ export default {
                         this.subjectObj = {"id":"","name":"","code":"","type":"theory"};
                         this.msg.text = response.data.text;
                         this.msg.type = response.data.type;
-                        this.workAlert('#alertmsg');
+                        Util.workAlert('#alertmsg');
                     })
                     .catch(error => {            
                         console.log("err->" + JSON.stringify(this.error.response))
                     });
             }
-        },
-
-        workAlert(id){
-            $(id).css('display', 'block');
-
-            setTimeout(()=> {
-                $(id).css('display', 'none');
-            }, 3000);
         },
 
         goEdit(aId){      
@@ -227,17 +209,8 @@ export default {
 
         goDelete(aID){
             var funName = "delete"; /**Delete function */
-            this.props.type = "get";
+            this.props.type = "delete";
             this.props.url = `Subject/${funName}/${aID}`;
-            // this.axios
-            //     .get(`/api/Subject/delete/${aID}`)
-            //     .then(response => {            
-            //         console.log("-->" + JSON.stringify(response.data));
-            //         let i = this.SubjectList.map(item => item.id).indexOf(aID);
-            //         this.SubjectList.splice(i, 1),            
-            //         this.deletemsg.text = response.data.text,
-            //         this.deletemsg.type = response.data.type
-            //     });
         },
 
         searchTable() {

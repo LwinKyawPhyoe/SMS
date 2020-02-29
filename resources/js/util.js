@@ -113,4 +113,12 @@ export const Util = {
         link.href = uri + base64(format(template, ctx));
         link.click();
     },
+
+    workAlert(id){
+        $(id).css('display', 'block');
+
+        setTimeout(()=> {
+            $(id).css('display', 'none');
+        }, 3000);
+    }
 };

@@ -220,22 +220,21 @@ Route::get('tranRouteList', 'RouteController@index');
 Route::group(['prefix' => 'TranRoute'], function () {
     Route::post('save', 'RouteController@store');
     Route::get('edit/{id}', 'RouteController@edit');
-    Route::get('delete/{id}', 'RouteController@destroy');
+    Route::delete('delete/{id}', 'RouteController@destroy');
 });
 
 Route::get('tranVehicleList', 'VehicleController@index');
 Route::group(['prefix' => 'TranVehicle'], function () {
     Route::post('save', 'VehicleController@store');
     Route::get('edit/{id}', 'VehicleController@edit');
-    Route::get('delete/{id}', 'VehicleController@destroy');
+    Route::delete('delete/{id}', 'VehicleController@destroy');
 });
 
-//Vehicle Route  Route
 Route::get('vehicleroute', 'VehicleRoutesController@index');
 Route::group(['prefix' => 'VehicleRoute'], function() {
     Route::post('save','VehicleRoutesController@store');
     Route::get('edit/{id}','VehicleRoutesController@edit');
-    Route::get('delete/{id}','VehicleRoutesController@destroy');
+    Route::delete('delete/{id}','VehicleRoutesController@destroy');
 });
 
 //Thein Htike Aung
@@ -300,7 +299,7 @@ Route::group(['prefix' => 'AcademicYear'], function() {
     Route::post('save','AcademicYearController@store');
     Route::post('update','AcademicYearController@update');
     Route::get('edit/{id}','AcademicYearController@edit');
-    Route::get('delete/{id}','AcademicYearController@destroy');
+    Route::delete('delete/{id}','AcademicYearController@destroy');
 });
 
 //Section Route
@@ -308,7 +307,7 @@ Route::get('section', 'SectionController@index');
 Route::group(['prefix' => 'Section'], function() {
     Route::post('save','SectionController@store');
     Route::get('edit/{id}','SectionController@edit');
-    Route::get('delete/{id}','SectionController@destroy');
+    Route::delete('delete/{id}','SectionController@destroy');
 });
 
 //Class Route
@@ -316,7 +315,7 @@ Route::get('class', 'ClassesController@index');
 Route::group(['prefix' => 'Class'], function() {
     Route::post('save','ClassesController@store');
     Route::get('edit/{id}','ClassesController@edit');
-    Route::get('delete/{id}','ClassesController@destroy');
+    Route::delete('delete/{id}','ClassesController@destroy');
 });
 
 //Subject Route
@@ -324,7 +323,7 @@ Route::get('subject', 'SubjectController@index');
 Route::group(['prefix' => 'Subject'], function() {
     Route::post('save','SubjectController@store');
     Route::get('edit/{id}','SubjectController@edit');
-    Route::get('delete/{id}','SubjectController@destroy');
+    Route::delete('delete/{id}','SubjectController@destroy');
 });
 
 //Assign Class Teacher Route
@@ -332,7 +331,7 @@ Route::get('classTeacher', 'AssignclassteacherController@index');
 Route::group(['prefix' => 'ClassTeacher'], function() {
     Route::post('save','AssignclassteacherController@store');
     Route::get('edit/{id}','AssignclassteacherController@edit');
-    Route::get('delete/{id}','AssignclassteacherController@destroy');
+    Route::delete('delete/{id}','AssignclassteacherController@destroy');
 });
 
 //Assign Subject Route
@@ -342,7 +341,7 @@ Route::group(['prefix' => 'AssSubject'], function() {
     Route::post('search','AssignSubjectController@search');
     Route::post('edit','AssignSubjectController@edit');
     Route::get('editsearch/{id}','AssignSubjectController@editsearch');    
-    Route::get('delete/{id}','AssignSubjectController@destroy');
+    Route::delete('delete/{id}','AssignSubjectController@destroy');
 });
 
 //Class Time Table Route
@@ -352,6 +351,6 @@ Route::group(['prefix' => 'ClassTimeTable'], function() {
     Route::post('search','ClassTimetableController@search');
     Route::post('viewsearch','ClassTimetableController@viewsearch');
     Route::get('edit/{id}','ClassTimetableController@edit');
-    Route::get('delete/{id}','ClassTimetableController@destroy');
+    Route::delete('delete/{id}','ClassTimetableController@destroy');
 });
 //Lwin Kyaw Phyo

@@ -30,7 +30,7 @@ export default {
   },
   methods: {
     clickBus() {
-      EventBus.$on("clicked", response => {
+      EventBus.$on("onLoad", response => {
         console.log("-->" + JSON.stringify(response));
         this.presentLoading();
       });

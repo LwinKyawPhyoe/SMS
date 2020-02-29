@@ -12,8 +12,9 @@ class RouteController extends Controller
     {
         $sessionid = AcademicYear::where('is_active','yes')->where('domain','TS')->get('id');
         $route = Route::where('is_active', 'Yes')
-                        ->where('domain', 'TS')->get()
-                        ->where('session_id', $sessionid[0]->id)->toArray();
+                        ->where('domain', 'TS')
+                        ->where('session_id', $sessionid[0]->id)
+                        ->orderBy('id', 'DESC')->get()->toArray();
         return array_reverse($route);
     }
 
@@ -37,7 +38,17 @@ class RouteController extends Controller
                         ->where('session_id', $sessionid[0]->id)->count(); 
         if ($check > 0)
         {
-            return response()->json('Route already exists!');
+            $checkActive = Route::where('route_title', $request->input('route_title'))
+                                    ->where('domain', 'TS')
+                                    ->where('session_id', $sessionid[0]->id)->get();
+            if($checkActive[0]->is_active == 'delete')
+            {
+                $checkActive[0]->fare = $request->input('fare');
+                $checkActive[0]->is_active = 'Yes';
+                $checkActive[0]->save();                
+                return response()->json(['text' => 'Route added successfully', 'type' => 'success']);
+            }
+            else        return response()->json(['text' => 'Route already exists!', 'type' => 'error']);
         }
         else
         {
@@ -49,7 +60,7 @@ class RouteController extends Controller
             ]);
 
             $route->save();
-            return response()->json('Route added successfully');
+            return response()->json(['text' => 'Route added successfully', 'type' => 'success']);
         }
     }
 
@@ -61,24 +72,25 @@ class RouteController extends Controller
                         ->where('session_id', $sessionid[0]->id)->count(); 
         if ($check > 0)
         {
-            $checkId = Route::where('route_title', $request->input('route_title'))
+            $checkActive = Route::where('route_title', $request->input('route_title'))
                             ->where('domain', 'TS')
-                            ->where('session_id', $sessionid[0]->id)->get(); 
-            if($checkId[0]->id == $request->input('id'))
-            {
-                $route = Route::find($request->input('id'));            
-                $route->update($request->all());
-
-                return response()->json('Route updated successfully');
-            }
-            return response()->json('Route already exists!');
+                            ->where('session_id', $sessionid[0]->id)->get();
+            $Route = Route::where('id', $request->input('id'))->get();
+            if($checkActive[0]->is_active == 'delete' || $Route[0]->route_title == $request->input('route_title'))
+            {                
+                $Route[0]->route_title = $request->input('route_title');
+                $Route[0]->fare = $request->input('fare');
+                $Route[0]->save();
+                return response()->json(['text' => 'Route updated successfully', 'type' => 'success']);
+            }            
+            else        return response()->json(['text' => 'Route already exists!', 'type' => 'error']);
         }
         else
         { 
             $route = Route::find($request->input('id'));            
             $route->update($request->all());
 
-            return response()->json('Route updated successfully');
+            return response()->json(['text' => 'Route updated successfully', 'type' => 'success']);
         }
     }
 
@@ -93,7 +105,7 @@ class RouteController extends Controller
         $route = Route::find($id);
         $route->is_active = 'delete';
         $route->save();       
-
-        return response()->json('Session deleted successfully');
+        
+        return response()->json(['text' => 'Route deleted successfully', 'type' => 'success']);
     }
 }

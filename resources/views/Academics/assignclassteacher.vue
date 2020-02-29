@@ -125,6 +125,7 @@
 import message from "../Alertmessage/message.vue";
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
+import {Util} from '../../js/util';
 
 export default {
     components: {
@@ -158,7 +159,7 @@ export default {
         EventBus.$on("clicked", response => {            
             this.deletemsg.text = response.text;
             this.deletemsg.type = response.type;
-            this.workAlert('#delalertmsg');
+            Util.workAlert('#delalertmsg');
             this.getAssClassTeacher();
         });
         EventBus.$on("SessionSaved", response => {            
@@ -340,7 +341,7 @@ export default {
                         this.ClassTeacher = {"class_id": "", "section_id": "", "Teacher": ""};
                         this.msg.text = response.data.text;
                         this.msg.type = response.data.type;
-                        this.workAlert('#alertmsg');
+                        Util.workAlert('#alertmsg');
                         for(let i=0; i<this.TeacherList.length; i++){
                             this.TeacherList[i].checked = false;
                         }
@@ -349,14 +350,6 @@ export default {
                         console.log("err->" + JSON.stringify(this.error.response));
                     });
             }
-        },
-
-        workAlert(id){
-            $(id).css('display', 'block');
-
-            setTimeout(()=> {
-                $(id).css('display', 'none');
-            }, 3000);
         },
 
         goEdit(aObj)
@@ -386,15 +379,8 @@ export default {
         goDelete(aID)
         {
             var funName = "delete"; /**Delete function */
-            this.props.type = "get";
+            this.props.type = "delete";
             this.props.url = `ClassTeacher/${funName}/${aID}`;
-            // console.log(JSON.stringify(aObj));
-            // this.axios.get(`/api/ClassTeacher/delete/${aObj.id}`).then(response => {          
-            //     let i = this.AssClassTeacherList.map(item => item.id).indexOf(aObj.id);
-            //     this.AssClassTeacherList.splice(i, 1);
-            //     this.deletemsg.text = response.data.text;
-            //     this.deletemsg.type = response.data.type;
-            // });
         },
 
         searchTable() {

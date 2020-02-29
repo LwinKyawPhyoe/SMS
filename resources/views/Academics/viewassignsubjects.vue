@@ -177,6 +177,7 @@ import message from "../Alertmessage/message.vue";
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
 import store from "store2";
+import { Util } from '../../js/util';
 
 export default {
     components: {
@@ -224,7 +225,7 @@ export default {
         EventBus.$on("clicked", response => {            
             this.deletemsg.text = response.text;
             this.deletemsg.type = response.type;
-            this.workAlert('#delalertmsg');
+            Util.workAlert('#delalertmsg');
             this.getAllClass();
             this.getAllSubject();
             this.ShowAll();
@@ -248,7 +249,7 @@ export default {
                 this.msg.text = "Assign Subject updated successfully";
                 this.msg.type = "success";            
             }
-            this.workAlert('#alertmsg');
+            Util.workAlert('#alertmsg');
         }        
         store.clearAll();
         this.getAllClass();
@@ -299,14 +300,6 @@ export default {
             }
             this.AssSubject.class_id = this.ClassList[0].id;
             this.AssSubject.section_id = this.SectionList[0].id;
-        },
-
-        workAlert(id){
-            $(id).css('display', 'block');
-
-            setTimeout(()=> {
-                $(id).css('display', 'none');
-            }, 3000);
         },
 
         getSubjectName(aName, aType){
@@ -434,7 +427,7 @@ export default {
         goDelete(aObj){            
             var aID = aObj[0].id;
             var funName = "delete"; /**Delete function */
-            this.props.type = "get";
+            this.props.type = "delete";
             this.props.url = `AssSubject/${funName}/${aID}`;
         }
     }

@@ -15,6 +15,7 @@ class ClassesController extends Controller
     {
         $sessionid = AcademicYear::where('is_active','yes')->where('domain','TS')->get('id');
         $query ="SELECT
+                    cs.id AS class_section_id,
                     c.id AS classid,
                     c.class,
                     s.id AS sectionid,

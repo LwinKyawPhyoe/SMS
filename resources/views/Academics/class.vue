@@ -114,6 +114,7 @@
 import message from "../Alertmessage/message.vue";
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
+import {Util} from '../../js/util';
 
 export default {
     components: {
@@ -143,7 +144,7 @@ export default {
         EventBus.$on("clicked", response => {            
             this.deletemsg.text = response.text;
             this.deletemsg.type = response.type;
-            this.workAlert('#delalertmsg');
+            Util.workAlert('#delalertmsg');
             this.getAllClass();
         });
         EventBus.$on("SessionSaved", response => {            
@@ -219,18 +220,7 @@ export default {
 
         onValidate(value, inputId, megId)
         {
-            if(value == "" || value == undefined) document.getElementById(inputId).style.border = 'solid 1px red';
-            else 
-            {
-                document.getElementById(inputId).style.border = 'solid 1px #d2d6de';
-                document.getElementById(megId).style.display = 'none';
-            }
-        },
-
-        onValidateMessage(inputId, megId)
-        {
-            document.getElementById(inputId).style.border = 'solid 1px red';
-            document.getElementById(megId).style.display = 'block';        
+            Util.onValidate(value, inputId, megId);            
         },
 
         checkValidate()
@@ -238,7 +228,7 @@ export default {
             var returnValue = true;
             if(this.ClassObj.class == "" || this.ClassObj.class == undefined)
             {
-                this.onValidateMessage('classid', 'classmsg');
+                Util.onValidateMessage('classid', 'classmsg');
                 returnValue = false;
             }
             if(this.ClassObj.section == []|| this.ClassObj.section.length == 0 || this.ClassObj.section == undefined)
@@ -260,7 +250,7 @@ export default {
                         this.ClassObj.section = [];
                         this.msg.text = response.data.text;
                         this.msg.type = response.data.type;
-                        this.workAlert('#alertmsg');
+                        Util.workAlert('#alertmsg');
                         for(let i=0; i<this.SectionList.length; i++){
                             this.SectionList[i].checked = false;
                         }
@@ -269,14 +259,6 @@ export default {
                         console.log("err->" + JSON.stringify(this.error.response));
                     });
             }
-        },
-
-        workAlert(id){
-            $(id).css('display', 'block');
-
-            setTimeout(()=> {
-                $(id).css('display', 'none');
-            }, 3000);
         },
 
         goEdit(aObj){
@@ -304,16 +286,8 @@ export default {
 
         goDelete(aID){
             var funName = "delete"; /**Delete function */
-            this.props.type = "get";
+            this.props.type = "delete";
             this.props.url = `Class/${funName}/${aID}`;
-            // this.axios
-            //     .get(`/api/Class/delete/${aId}`)
-            //     .then(response => {          
-            //     let i = this.ClassList.map(item => item.id).indexOf(aId);
-            //     this.ClassList.splice(i, 1);        
-            //     (this.deletemsg.text = response.data.text),
-            //     (this.deletemsg.type = response.data.type);
-            // });
         },
 
         searchTable() {

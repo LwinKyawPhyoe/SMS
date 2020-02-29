@@ -102,6 +102,8 @@
 import message from "../Alertmessage/message.vue";
 import { EventBus } from "../../js/event-bus.js";
 import store from "store2";
+import { Util } from '../../js/util';
+
 export default {
     components: {        
         message
@@ -132,7 +134,7 @@ export default {
         if(message != null){                         
             this.msg.text = message;
             this.msg.type = "success";
-            this.workAlert('#alertmsg');
+            Util.workAlert('#alertmsg');
         }
         store.clearAll();
 
@@ -255,14 +257,6 @@ export default {
             if(timefrom == "" || timeto == "" || roomno == "" || timefrom == null || timeto == null || roomno == null)  return "Scheduled";
             else if(roomno == "" || roomno == null)     return "Room Number :";
             else        return "Room Number :"+ roomno;
-        },
-
-        workAlert(id){
-            $(id).css('display', 'block');
-
-            setTimeout(()=> {
-                $(id).css('display', 'none');
-            }, 3000);
         },
 
         sortClassTimeTblList(aList){

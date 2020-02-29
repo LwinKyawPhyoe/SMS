@@ -17,26 +17,23 @@
             <div class="card-body">
                 <div class="row" id="row" style="margin: 0px;">
                     <div class="col-lg-6 col-md-6 col-12 textbox">
-                        <label for="name" class="title">Class
+                        <label for="name" class="title">
+                            Class
                             <strong>*</strong>
                         </label>
-                        <select class="inputbox" name="class">
-                            <option selected disabled>Select Class</option>
-                            <option value="Class A">Class A</option>
-                            <option value="Class B">Class B</option>
-                            <option value="Class C">Class C</option>
+                        <select id="classid" @change="changeClass(PromoteStudObj.class_id)" class="inputbox" name="class" v-model="PromoteStudObj.class_id">                              
+                            <option v-for="Classes in ClassList" :key="Classes.id" :value="Classes.id">{{Classes.class}}</option>                
                         </select>
+                        <span id="classmsg" class="error_message">Class is required</span>
                     </div>
                     <div class="col-lg-6 col-md-6 col-12 textbox">
                         <label for="name" class="title">Section
                             <strong>*</strong>
                         </label>
-                        <select class="inputbox" name="class">
-                            <option selected disabled>Select Section</option>
-                            <option value="Section A">Section A</option>
-                            <option value="Section B">Section B</option>
-                            <option value="Section C">Section C</option>
+                        <select id="sectionid" @change="changeSection(PromoteStudObj.section_id)" class="inputbox" name="class" v-model="PromoteStudObj.section_id">
+                            <option v-for="Section in SectionList" :key="Section.id" :value="Section.id">{{Section.section}}</option>
                         </select>
+                        <span id="sectionmsg" class="error_message">Section is required</span>
                     </div>
                     <div class="col-12">
                         <button class="searchButton" id="globalSearch">Search</button>
@@ -163,3 +160,89 @@
         </div>
     </div>
 </template>
+
+<script>
+export default {
+    data() {
+        return {
+            PromoteStudObj: { "class_id": "", "section_id": ""},
+            ClassList: [{"id":0,"class":"Select Class","section":[{"id": 0, "section":"Class Section"}]}],
+            SectionList: [{"id":0,"section":"Class Section"}],
+        }
+    },
+    created() {
+        this.getAllClass();
+    },
+    methods: {
+        getAllClass() {
+            this.axios.get("/api/class").then(response => {        
+                this.sortList(response.data);        
+            });
+        },
+
+        sortList(aList){       
+            for(let i=0; i < aList.length; i++){
+                if(this.ClassList == [] || this.ClassList.length == 0){
+                    let obj = [];
+                    obj.push({"id": aList[i].sectionid, "section": aList[i].section});
+                    this.ClassList.push({"id": aList[i].classid,"class": aList[i].class, "section": obj});
+                }
+                else{
+                    let check = 0;
+                    for(let a=0; a < this.ClassList.length; a++){
+                        if(this.ClassList[a].class == aList[i].class){              
+                            this.ClassList[a].section.push({"id": aList[i].sectionid, "section": aList[i].section});
+                            check = 1;
+                        }
+                    }
+
+                    if(check == 0)
+                    {
+                        let obj1 = [];
+                        obj1.push({"id": aList[i].sectionid, "section": aList[i].section});
+                        this.ClassList.push({"id": aList[i].classid,"class": aList[i].class, "section": obj1});
+                    }
+                }
+            }
+            this.PromoteStudObj.class_id = this.ClassList[0].id;
+            this.PromoteStudObj.section_id = this.SectionList[0].id;
+        },
+
+        changeClass(aId){
+            this.SectionList = [];
+            this.SectionList = [{"id":0,"section":"Class Section"}];
+            if(aId != 0)
+            {
+                for(let i=0; i<this.ClassList.length;i++){
+                    if(this.ClassList[i].id == aId){
+                        for(let a=0; a<this.ClassList[i].section.length; a++){
+                            this.SectionList.push(this.ClassList[i].section[a]);
+                        }
+                        break;
+                    }
+                }
+            }
+            this.PromoteStudObj.section_id = this.SectionList[0].id;
+            if(this.PromoteStudObj.class_id == 0)
+            {
+                $('#classid').css('border', '1px solid red');
+            }
+            else
+            {
+                $('#classmsg').css('display', 'none');
+                $('#classid').css('border', '1px solid #d2d6de');
+            }
+        },
+
+        changeSection(aId)
+        {            
+            if(aId == 0)   $('#sectionid').css('border', '1px solid red');
+            else
+            {
+                $('#sectionmsg').css('display', 'none');        
+                $('#sectionid').css('border', '1px solid #d2d6de');
+            }
+        },
+    }
+}
+</script>

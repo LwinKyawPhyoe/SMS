@@ -14,7 +14,7 @@ class VehicleController extends Controller
         $vehicle = Vehicle::where('is_active', 'Yes')
                             ->where('domain', 'TS')
                             ->where('session_id', $sessionid[0]->id)
-                            ->get()->toArray();
+                            ->orderBy('id', 'DESC')->get()->toArray();
         return array_reverse($vehicle);
     }
 
@@ -37,8 +37,18 @@ class VehicleController extends Controller
                         ->where('domain', 'TS')
                         ->where('session_id', $sessionid[0]->id)->count(); 
         if ($check > 0)
-        {
-            return response()->json('Vehicle already exists!');
+        {           
+            $checkActive = Vehicle::where('vehicle_no', $request->input('vehicle_no'))
+                                    ->where('domain', 'TS')
+                                    ->where('session_id', $sessionid[0]->id)->get();
+            if($checkActive[0]->is_active == 'delete')
+            {
+                $checkActive[0]->fare = $request->input('fare');
+                $checkActive[0]->is_active = 'Yes';
+                $checkActive[0]->save();                
+                return response()->json(['text' => 'Vehicle added successfully', 'type' => 'success']);
+            }
+            else        return response()->json(['text' => 'Vehicle already exists!', 'type' => 'error']);
         }
         else
         {
@@ -52,9 +62,8 @@ class VehicleController extends Controller
                 'domain' => 'TS',
                 'session_id' => $sessionid[0]->id
             ]);
-
-            $vehicle->save();
-            return response()->json('Vehicle added successfully');
+            $vehicle->save();            
+            return response()->json(['text' => 'Vehicle added successfully', 'type' => 'success']);
         }
     }
 
@@ -66,24 +75,29 @@ class VehicleController extends Controller
                         ->where('session_id', $sessionid[0]->id)->count(); 
         if ($check > 0)
         {
-            $checkId = Vehicle::where('vehicle_no', $request->input('vehicle_no'))
-                                ->where('domain', 'TS')
-                                ->where('session_id', $sessionid[0]->id)->get(); 
-            if($checkId[0]->id == $request->input('id'))
+            $checkActive = Vehicle::where('vehicle_no', $request->input('vehicle_no'))
+                            ->where('domain', 'TS')
+                            ->where('session_id', $sessionid[0]->id)->get();
+            $Vehicle = Vehicle::where('id', $request->input('id'))->get();
+            if($checkActive[0]->is_active == 'delete' || $Vehicle[0]->vehicle_no == $request->input('vehicle_no'))
             {
-                $vehicle = Vehicle::find($request->input('id'));            
-                $vehicle->update($request->all());
-
-                return response()->json('Vehicle updated successfully');
-            }
-            return response()->json('Vehicle already exists!');
+                $Vehicle[0]->vehicle_no = $request->input('vehicle_no');
+                $Vehicle[0]->vehicle_model = $request->input('vehicle_model');
+                $Vehicle[0]->driver_name = $request->input('driver_name');
+                $Vehicle[0]->driver_licence = $request->input('driver_licence');
+                $Vehicle[0]->driver_contact = $request->input('driver_contact');
+                $Vehicle[0]->note = $request->input('note');
+                $Vehicle[0]->save();
+                return response()->json(['text' => 'Vehicle updated successfully', 'type' => 'success']);
+            }            
+            else        return response()->json(['text' => 'Vehicle already exists!', 'type' => 'error']);
         }
         else
         { 
             $vehicle = Vehicle::find($request->input('id'));            
             $vehicle->update($request->all());
-
-            return response()->json('Vehicle updated successfully');
+            
+            return response()->json(['text' => 'Vehicle updated successfully', 'type' => 'success']);
         }
     }
 
@@ -98,7 +112,7 @@ class VehicleController extends Controller
         $vehicle = Vehicle::find($id);
         $vehicle->is_active = 'delete';
         $vehicle->save();  
-
-        return response()->json('Vehicle deleted successfully');
+        
+        return response()->json(['text' => 'Vehicle deleted successfully', 'type' => 'success']);
     }
 }

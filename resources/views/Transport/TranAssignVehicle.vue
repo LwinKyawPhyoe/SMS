@@ -8,6 +8,7 @@
         </div>
         <hr />
 
+        <confirm :url="props"></confirm>
         <div class="row" style="align-items: end !important;">
             <div class="col-lg-5 col-md-12" style="padding-left:2px;">
                 <div class="card">
@@ -15,7 +16,7 @@
                         <h6>Assign Vehicle On Route</h6>
                     </div>
                     <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
-                        <message :alertmessage="msg" />
+                        <message :alertmessage="msg" id="alertmsg"/>
                         <form @submit.prevent="goSave">
                             <div class="col-12">
                                 <label for="class">Route<strong>*</strong></label>
@@ -47,8 +48,8 @@
                         <h6>Class List</h6>
                     </div>
                     <div class="card-body">
-                        <message :alertmessage="deletemsg" />
-                        <input type="text" placeholder="Search..." class="searchText" />
+                        <message :alertmessage="deletemsg" id="delalertmsg"/>                        
+                        <input v-on:keyup="searchTable()" id="myInput" type="text" placeholder="Search..." class="searchText"/>
                         <div class="copyRows">
                             <div class="row" id="copyRow">                
                                 <div class="col-3">
@@ -77,7 +78,7 @@
                                         <th class="all" style="text-align:right;" nowrap>Action</th>
                                     </tr>
                                 </thead>
-                                <tbody>
+                                <tbody id="myTable">
                                     <tr v-for="obj in AssVehicleList" :key="obj.id" class="active">
                                         <td class="all" nowrap style="vertical-align:top;">{{getRouteTitle(obj.route_id)}}</td>
                                         <td class="all" nowrap style="vertical-align:top;">
@@ -87,7 +88,7 @@
                                             <i @click="goEdit(obj)" class="fa fa-pencil pen">
                                                 <span class="penLabel">Edit</span>
                                             </i>
-                                            <i @click="goDelete(obj.id)" class="fa fa-trash time">
+                                            <i @click="goDelete(obj.id)" data-toggle="modal" data-target="#exampleModalCenter" class="fa fa-trash time">
                                                 <span class="timeLabel">Delete</span>
                                             </i>
                                         </td>
@@ -104,10 +105,13 @@
 
 <script>
 import message from "../Alertmessage/message.vue";
+import confirm from "../message/confirm.vue";
+import { EventBus } from "../../js/event-bus.js"
 import {Util} from '../../js/util';
 
 export default {
     components: {
+        confirm,
         message
     },
     data() 
@@ -118,6 +122,10 @@ export default {
             routeList: [{'id':0,'route_title':'Select Route'}],
             vehicleList: [],
             AssVehicleList: [],
+            props: {
+                url: "",
+                type: ""
+            },
             msg: {
                 text: "",
                 type: ""
@@ -130,6 +138,23 @@ export default {
     },
     created() 
     {
+        EventBus.$on("clicked", response => {            
+            this.deletemsg.text = response.text;
+            this.deletemsg.type = response.type;
+            Util.workAlert('#delalertmsg');
+            this.routeList = [{'id':0,'route_title':'Select Route'}];
+            this.vehicleList = [];
+            this.getRouteList();
+            this.getVehicleList();
+            this.getAssVehicleList();
+        });
+        EventBus.$on("SessionSaved", response => {            
+            console.log(JSON.stringify(response));
+            this.getRouteList();
+            this.getVehicleList();
+            this.getAssVehicleList();
+        });
+
         this.getRouteList();
         this.getVehicleList();
         this.getAssVehicleList();
@@ -167,6 +192,7 @@ export default {
 
         getVehicleList()
         {
+            this.vehicleList = [];
             this.axios.get('/api/tranVehicleList').then(response => {                                                    
                 for(let i=0; i < response.data.length; i++){
                     this.vehicleList.push({"id": response.data[i].id,"vehicle_no": response.data[i].vehicle_no, "checked": false});
@@ -176,6 +202,7 @@ export default {
 
         getRouteList()
         {
+            this.routeList = [{'id':0,'route_title':'Select Route'}];
             let list = [];
             this.axios.get('/api/tranRouteList').then(response => {            
                 list  = response.data;
@@ -242,13 +269,14 @@ export default {
                 this.vehicalRoute.vehicleno = this.Vehicle.toString();                
                 this.axios
                     .post('/api/VehicleRoute/save', this.vehicalRoute)
-                    .then(response => (
-                        this.getAssVehicleList(),
-                        this.vehicalRoute = {"id": "","routeid": 0, "vehicleno": ""},
-                        this.Vehicle = [],
-                        this.msg.text = response.data.text,
-                        this.msg.type = response.data.type
-                    ))
+                    .then(response => {
+                        this.getAssVehicleList();
+                        this.vehicalRoute = {"id": "","routeid": 0, "vehicleno": ""};
+                        this.Vehicle = [];
+                        this.msg.text = response.data.text;
+                        this.msg.type = response.data.type;
+                        Util.workAlert('#alertmsg');
+                    })
                     .catch(error => {            
                         console.log("err->" + JSON.stringify(this.error.response))
                     });
@@ -272,13 +300,9 @@ export default {
 
         goDelete(aID)
         {
-            this.axios.get(`/api/VehicleRoute/delete/${aID}`).then(response => { 
-                console.log(JSON.stringify(response.data));
-                let i = this.AssVehicleList.map(item => item.id).indexOf(aID);
-                this.AssVehicleList.splice(i, 1);
-                (this.deletemsg.text = response.data.text),
-                (this.deletemsg.type = response.data.type);
-            });
+            var funName = "delete"; /**Delete function */
+            this.props.type = "delete";
+            this.props.url = `VehicleRoute/${funName}/${aID}`;
         },
 
         printme(table)
@@ -289,6 +313,28 @@ export default {
         downloadExcel(table, name, filename) 
         {
             Util.downloadExcel(table,name,filename);
+        },
+
+        searchTable() {
+            var input, filter, found, table, tr, td, i, j;
+            input = document.getElementById("myInput");
+            filter = input.value.toUpperCase();
+            table = document.getElementById("myTable");
+            tr = table.getElementsByTagName("tr");
+            for (i = 0; i < tr.length; i++) {
+                td = tr[i].getElementsByTagName("td");
+                for (j = 0; j < td.length; j++) {
+                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
+                        found = true;
+                    }
+                }
+                if (found) {
+                    tr[i].style.display = "";
+                    found = false;
+                } else {
+                    tr[i].style.display = "none";
+                }
+            }
         }
     }
 };
