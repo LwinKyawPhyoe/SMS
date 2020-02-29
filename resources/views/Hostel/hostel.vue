@@ -8,8 +8,8 @@
     </div>
     <hr />
     <confirm :url="props"></confirm>
-    <div class="row" style="align-items: end !important;">
-      <div class="col-lg-5 col-md-12" style="padding-left:2px;">
+    <div class="row" style="align-items: end !important;margin:0;">
+      <div class="col-lg-5 col-md-12" style="padding:0px;">
         <div class="card">
           <div class="card-header">
             <h6>Add Hostel</h6>
@@ -63,21 +63,28 @@
                 <label for="description">Description</label>
                 <textarea class="textareas" v-model="hostel.description" rows="3"></textarea>
               </div>
-              <div class="col-12">
+              <div class="col-12 column-12">
                 <!--- store -->
                 <button
                   v-if="this.isEdit == false"
                   @click="addHostel()"
                   type="button"
+                  id="globalSave"
                   class="save"
                 >Save</button>
-                <button v-else @click="updateHostel()" type="button" class="save">Save</button>
+                <button
+                  v-else
+                  @click="updateHostel()"
+                  id="globalSave"
+                  type="button"
+                  class="save"
+                >Save</button>
               </div>
             </form>
           </div>
         </div>
       </div>
-      <div class="col-lg-7 col-md-12" style="padding-left:0;">
+      <div class="col-lg-7 col-md-12" style="padding:0;">
         <div class="card">
           <div class="card-header">
             <h6>Hostel List</h6>
@@ -219,6 +226,7 @@ export default {
     this.getHostels();
   },
   created() {
+    EventBus.$emit("clicked");
     EventBus.$on("clicked", clickCount => {
       this.getHostels();
     });

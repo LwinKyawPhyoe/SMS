@@ -12,7 +12,7 @@
       }
     }
     #ThemeColor {
-      margin: 0px;
+      padding: 0 1rem;
       .col-xs-6 {
         width: 50%;
       }
@@ -27,6 +27,7 @@
           height: 6rem;
           display: flex;
           justify-content: center;
+          transition: all 0.6s;
           align-items: center;
           .default {
             margin: 0px;
@@ -36,13 +37,13 @@
             text-align: center;
           }
         }
-        // .backColor:hover {
-        //   cursor: pointer;
-        //   border: 3px solid rgb(105, 105, 105);
-        //   p {
-        //     filter: opacity(1);
-        //   }
-        // }
+        .backColor:hover {
+          border: 35px solid #adadad38 !important;
+          p {
+            filter: opacity(1) !important;
+            color: white;
+          }
+        }
       }
     }
   }
@@ -54,7 +55,7 @@
       .img {
         border: 1px solid var(--success);
         border-radius: 5px;
-        padding: 10px;
+        padding: 5px;
       }
       .button {
         .edit {
@@ -62,30 +63,20 @@
           margin: 1rem auto;
           margin-bottom: 0;
           display: block;
+          transition: all 0.5s;
           width: 150px;
-          background: #1b5e20;
           border: none;
           font-weight: bold;
           border-radius: 5px;
           font-size: 14px;
+          position: relative;
+          overflow: hidden;
           outline: none;
           color: white;
           height: 35px;
           .editIcon {
             margin-right: 10px;
           }
-        }
-        .edit {
-          background-position: center;
-          transition: background 0.6s;
-        }
-        .edit:hover {
-          background: #1b5e20 radial-gradient(circle, transparent 1%, #1b5e20 1%) center/15000%;
-        }
-        .edit:active {
-          background-color: rgba(44, 92, 51, 0.623);
-          background-size: 100%;
-          transition: background 0s;
         }
       }
     }
@@ -99,107 +90,32 @@
           border: none;
           span {
             display: flex;
+            margin-bottom: 3px;
             align-items: center;
-            .rd:after {
-              background: #1b5e20;
-            }
-            .rd:checked:after {
-              background: #1b5e20;
-              border: 2px solid grey;
-            }
-            .rd1:after {
-              background: darkred;
-            }
-            .rd1:checked:after {
-              background: darkred;
-              border: 2px solid grey;
-            }
-            .rd2:after {
-              background: darkcyan;
-            }
-            .rd2:checked:after {
-              background: darkcyan;
-              border: 2px solid grey;
-            }
-            .rd3:after {
-              background: currentColor;
-            }
-            .rd3:checked:after {
-              background: currentColor;
-              border: 2px solid grey;
-            }
-            .rd4:after {
-              background: #edeeef;
-            }
-            .rd4:checked:after {
-              background: #edeeef;
-              border: 2px solid grey;
-            }
-            .rd:after,
-            .rd1:after,
-            .rd2:after,
-            .rd3:after,
-            .rd4:after {
+            .themeBlock {
               width: 15px;
               height: 15px;
-              border-radius: 0px !important;
-              top: -2px;
-              left: -1px;
-              border: 0.1px solid rgba(0, 0, 0, 0.452);
-              position: relative;
-              content: "";
-              display: inline-block;
-              visibility: visible;
-            }
-            .rd:checked:after,
-            .rd1:checked:after,
-            .rd2:checked:after,
-            .rd3:checked:after,
-            .rd4:checked:after {
-              width: 15px;
-              height: 15px;
-              border-radius: 15px;
-              top: -2px;
-              left: -1px;
-              position: relative;
-              content: "";
-              display: inline-block;
-              visibility: visible;
-            }
-            .radio {
-              margin-right: 8px;
+              border: 0.5px solid black;
             }
             label {
-              margin-bottom: 0.2rem;
+              margin-bottom: 0px;
+              margin-left: 5px;
             }
           }
         }
       }
     }
     .editCard {
-      .edit {
+      .editSm {
         width: 40px;
         font-size: 11px;
         position: absolute;
         outline: none;
         right: 25px;
-        color: #1b5e20;
         font-weight: bold;
         height: 20px;
         border: none;
         border-radius: 3px;
-      }
-      .edit {
-        background-position: center;
-        transition: background 0.6s;
-      }
-      .edit:hover {
-        background: #ffffff radial-gradient(circle, transparent 1%, #ffffff 1%) center/15000%;
-      }
-      .edit:active {
-        background-color: rgba(255, 255, 255, 0.623);
-        background-size: 100%;
-        transition: background 0s;
       }
     }
   }

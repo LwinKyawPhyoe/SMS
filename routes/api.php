@@ -354,3 +354,21 @@ Route::group(['prefix' => 'ClassTimeTable'], function() {
     Route::delete('delete/{id}','ClassTimetableController@destroy');
 });
 //Lwin Kyaw Phyo
+
+// Sai Kaung Htet General Setting
+Route::get('settings','GeneralController@index');
+Route::get('color','GeneralController@getColor');
+Route::group(['prefix' => 'setting'],function() {
+    Route::post('store/{id}', 'GeneralController@store');
+    Route::post('update/{color}', 'GeneralController@update');
+    Route::delete('delete/{id}', 'GeneralController@delete');
+});
+
+// General Setting -> School Detials
+Route::get('schools','SchoolDetailController@index');
+Route::group(['prefix'=>'school'],function(){
+    Route::post('store','SchoolDetailController@store');
+    Route::post('update/{id}','SchoolDetailController@update');
+    Route::delete('delete/{id}','SchoolDetailController@delete');
+    Route::post('updatePhoto/{image}','SchoolDetailController@updatePhoto');
+});

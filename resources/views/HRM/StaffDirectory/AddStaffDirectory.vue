@@ -425,8 +425,8 @@
             </div>
           </div>
         </div>
-        <button v-if="checkroute == false" type="submit" class="save">Save</button>
-        <button v-else @click="updateStaffDirectory()" type="button" class="save">Save</button>
+        <button v-if="checkroute == false" id="globalSave" type="submit" class="save">Save</button>
+        <button v-else @click="updateStaffDirectory()" id="globalSave" type="button" class="save">Save</button>
       </form>
       <br />
     </div>
@@ -454,6 +454,7 @@ export default {
   },
   mounted() {},
   created() {
+    EventBus.$emit("clicked");
     console.log(this.$route.path);
     if (this.$route.path == "/stadirectory/edit") {
       this.checkroute = true;

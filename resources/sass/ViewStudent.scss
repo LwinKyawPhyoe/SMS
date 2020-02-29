@@ -9,7 +9,6 @@
     padding-top: 1rem;
   }
   .search {
-    // width: 80px;
     float: right;
     height: 30px;
     margin-top: 10px;
@@ -120,25 +119,6 @@
       }
     }
   }
-}
-.metaBtn {
-  margin-top: 1px;
-  color: white;
-  background-color: #1b5e20;
-  border: none;
-  padding: 5px;
-  width: 100px;
-  height: 34px;
-  text-align: center;
-  font-size: 14px;
-}
-.metaBtn:active {
-  border: none;
-  outline: none;
-}
-.metaBtn:focus {
-  border: none;
-  outline: none;
 }
 .textbox {
   h6 {

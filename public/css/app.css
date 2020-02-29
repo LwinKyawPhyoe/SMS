@@ -10,16 +10,22 @@
 .sidebar .expandsidebar {
   float: left;
   z-index: 2;
+  height: 100%;
   position: fixed;
-  width: 245px;
-  background-color: #1b5e20;
+  box-shadow: 0px 7px 15px #888888;
+  width: 255px;
 }
 
 .sidebar .sidebar_header {
   color: white;
   height: 100%;
+  display: -webkit-box;
+  display: flex;
   margin: 0px;
   border-bottom: 1px solid whitesmoke;
+  text-align: center;
+  -webkit-box-align: center;
+          align-items: center;
 }
 
 .sidebar .treeview-custom {
@@ -33,8 +39,8 @@
 
 .header .body_content {
   height: 90.1vh;
+  cursor: pointer;
   margin: 0px;
-  background: #1b5e20;
   overflow-y: auto;
 }
 
@@ -42,17 +48,12 @@
   color: #ffffffa8;
 }
 
+.header .body_content .additional-menu .navList:hover {
+  background: #1a1a1aa8;
+}
+
 .header .body_content .additional-menu .navList:hover .routerLink {
   color: white;
-}
-
-.header .body_content .active > a {
-  color: white;
-  background: #113511;
-}
-
-.header .body_content .dropdownForm {
-  background: #044604;
 }
 
 .header .body_content .navList {
@@ -61,8 +62,9 @@
   position: relative;
   display: -webkit-box;
   display: flex;
-  -webkit-transition: all 0.2s;
-  transition: all 0.2s;
+  overflow: hidden;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
   -webkit-box-align: center;
           align-items: center;
   border-bottom: 1px solid rgba(245, 245, 245, 0.24);
@@ -85,7 +87,6 @@
 .header .body_content #body_content > .nav-item:focus,
 .header .body_content .nav-item:hover {
   background-color: #666;
-  color: white;
 }
 
 .header .body_content .link {
@@ -95,13 +96,11 @@
   margin: 0;
 }
 
-.header .body_content .link .nav-list:hover {
-  color: white;
-}
-
 .header .body_content .link .nav-list {
   text-decoration: none;
   font-size: 14px;
+  -webkit-transition: all 0.4s;
+  transition: all 0.4s;
   display: -webkit-box;
   display: flex;
   -webkit-box-align: center;
@@ -109,12 +108,18 @@
   width: 100%;
   height: 40px;
   outline: none;
+  position: relative;
+  overflow: hidden;
   border: none;
+}
+
+.header .body_content .link .nav-list .nav-list:hover {
+  color: white;
+  background: #1a1a1aa8;
 }
 
 .header .body_content .link .nav-list .listItem {
   float: left;
-  color: white;
   margin: 0 10px 0 3rem;
 }
 
@@ -124,6 +129,7 @@ body {
 
 .content {
   width: 100%;
+  background: #1b5e20;
 }
 
 .content .content_header {
@@ -164,7 +170,6 @@ body {
 
 .content .content_header .profile .user {
   zoom: 2.5;
-  height: 22px;
   width: 33px;
   padding: 0 5px;
   display: -webkit-box;
@@ -229,9 +234,9 @@ body {
 
 .content .content_header #list {
   position: absolute;
-  left: 150px;
+  left: 175px;
   zoom: 1.5;
-  padding: 0.8rem 2rem;
+  padding: 0.8rem 1rem;
   cursor: pointer;
   color: #000000b3;
 }
@@ -247,8 +252,7 @@ body {
 #bar {
   padding-bottom: 1rem;
   margin-bottom: auto;
-  -webkit-transition: all 0.5s;
-  transition: all 0.5s;
+  background-color: whitesmoke;
 }
 
 .form {
@@ -273,7 +277,6 @@ body {
 }
 
 .form .card {
-  background-color: khaki;
   margin-top: 3rem;
 }
 
@@ -286,11 +289,6 @@ body {
   margin-right: 10px;
   float: left;
   margin-bottom: 0;
-}
-
-.form .card .end {
-  padding-bottom: 1rem;
-  border-bottom: 1px solid #0000003b;
 }
 
 .form .card .btn {
@@ -308,16 +306,18 @@ body {
 }
 
 .form .card #row {
-  padding: 1rem 0;
+  padding: 1rem;
   margin: 0px;
+}
+
+.form .card #row .column-12 {
+  padding: 0 5px;
 }
 
 .smallView {
   position: absolute;
   z-index: 100;
   display: none;
-  -webkit-transition: all 0.5s;
-  transition: all 0.5s;
 }
 
 .smallView .exit .bigView {
@@ -329,7 +329,6 @@ body {
   font-weight: 500;
   border-bottom: 1px solid;
   color: #f5f5f5d1;
-  background: #1b5e20;
 }
 
 .smallView .exit .bigView:hover {
@@ -337,8 +336,6 @@ body {
 }
 
 .smallView .smallBar {
-  height: 165vh;
-  background: #1b5e20;
   display: block;
   cursor: pointer;
 }
@@ -351,11 +348,15 @@ body {
   list-style: none;
   margin-top: 3.9rem;
   margin-bottom: 0;
+  height: 160vh;
 }
 
 .smallView .smallBar .Links .link:hover {
-  background: #023502;
-  color: white;
+  background: #0d0e0da6;
+}
+
+.smallView .smallBar .Links .link:hover .smallIcon {
+  color: white !important;
 }
 
 .smallView .smallBar .Links .link {
@@ -388,8 +389,7 @@ body {
 .smallView .smallBar .Links .link .smallLists .smallLink .smLink {
   margin-left: -2.5rem;
   padding: 10px 1rem;
-  background: #044604;
-  font-size: 15px;
+  font-size: 11pt;
 }
 
 .smallView .smallBar .Links .link .smallLists .smallLink .smLink .smIcon {
@@ -397,8 +397,7 @@ body {
 }
 
 .smallView .smallBar .Links .link .smallLists .smallLink .smLink:hover {
-  background: #023502;
-  color: white;
+  color: white !important;
 }
 
 .smallView .smallBar .Links .link li .smallIcon {
@@ -412,595 +411,6 @@ body {
 
 strong {
   font-weight: 600;
-}
-
-.page {
-  width: 100%;
-  height: 100vh;
-  font-weight: 600;
-  letter-spacing: 0.03em;
-  color: #212121;
-}
-
-header {
-  display: -webkit-box;
-  display: flex;
-  position: fixed;
-  width: 100%;
-  height: 60px;
-  z-index: 1;
-  background: #044604;
-  color: #fff;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  text-align: center;
-}
-
-header h5 {
-  margin-top: 15px;
-}
-
-main {
-  padding: 60px 20px 0;
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-          flex-direction: column;
-  height: 100%;
-}
-
-main > div {
-  margin: auto;
-  max-width: 600px;
-}
-
-main h2 span {
-  color: #BF7497;
-}
-
-main p {
-  line-height: 1.5;
-  font-weight: 200;
-  margin: 20px 0;
-}
-
-main small {
-  font-weight: 300;
-  color: #888;
-}
-
-#nav-container {
-  position: fixed;
-  height: 100vh;
-  width: 100%;
-  z-index: 1;
-  pointer-events: none;
-}
-
-#nav-container .bg {
-  position: absolute;
-  top: 60px;
-  left: 0;
-  width: 100%;
-  height: calc(100% - 60px);
-  visibility: hidden;
-  opacity: 0;
-  -webkit-transition: 0.3s;
-  transition: 0.3s;
-  background: #000;
-}
-
-#nav-container:focus-within .bg {
-  visibility: visible;
-  opacity: 0.6;
-}
-
-#nav-container * {
-  visibility: visible;
-}
-
-.menuIcon {
-  position: relative;
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  flex-direction: column;
-  -webkit-box-pack: center;
-  justify-content: center;
-  z-index: 1;
-  -webkit-appearance: none;
-  border: 0;
-  background: transparent;
-  border-radius: 0;
-  height: 15px;
-  margin-top: 1.3rem;
-  width: 22px;
-  cursor: pointer;
-  pointer-events: auto;
-  margin-left: 25px;
-  touch-action: manipulation;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-}
-
-.icon-bar {
-  display: block;
-  width: 100%;
-  height: 3px;
-  background: rgba(255, 255, 255, 0.801);
-}
-
-.icon-bar + .icon-bar {
-  margin-top: 5px;
-}
-
-#nav-container:focus-within .menuIcon {
-  pointer-events: none;
-}
-
-#nav-content {
-  margin-top: 60px;
-  padding: 20px;
-  width: 90%;
-  max-width: 300px;
-  position: absolute;
-  top: 0;
-  left: 0;
-  height: calc(100% - 60px);
-  background: white;
-  pointer-events: auto;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  -webkit-transform: translateX(-100%);
-          transform: translateX(-100%);
-  -webkit-transition: -webkit-transform 0.3s;
-  transition: -webkit-transform 0.3s;
-  transition: transform 0.3s;
-  transition: transform 0.3s, -webkit-transform 0.3s;
-  will-change: transform;
-  contain: paint;
-  overflow: scroll;
-}
-
-#nav-content #easyschool {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.287);
-  padding: 15px;
-  margin-top: -15px;
-  background-color: rgba(0, 0, 0, 0.082);
-}
-
-#nav-content #easyschool #container {
-  margin-left: 15px;
-}
-
-#nav-content #easyschool h3 {
-  font-weight: bold;
-}
-
-#nav-content .body {
-  position: relative;
-}
-
-#nav-content .body .item2 {
-  padding: 0px;
-  border-radius: 5px;
-  margin-top: 5px;
-}
-
-#nav-content .body .item2 #systemC {
-  padding: 0;
-  -webkit-transition: height 0.3s;
-  transition: height 0.3s;
-  height: 0;
-}
-
-#nav-content .body .item2 #systemC #citem36,
-#nav-content .body .item2 #systemC #citem37,
-#nav-content .body .item2 #systemC #citem38,
-#nav-content .body .item2 #systemC #citem39,
-#nav-content .body .item2 #systemC #citem43 {
-  display: none;
-}
-
-#nav-content .body .item2 #systemC #citem36 #route,
-#nav-content .body .item2 #systemC #citem37 #route,
-#nav-content .body .item2 #systemC #citem38 #route,
-#nav-content .body .item2 #systemC #citem39 #route,
-#nav-content .body .item2 #systemC #citem43 #route {
-  margin-left: 30px;
-}
-
-#nav-content .body .item2 #systemC #citem36 #route label,
-#nav-content .body .item2 #systemC #citem37 #route label,
-#nav-content .body .item2 #systemC #citem38 #route label,
-#nav-content .body .item2 #systemC #citem39 #route label,
-#nav-content .body .item2 #systemC #citem43 #route label {
-  color: #044604;
-}
-
-#nav-content .body .item2 #systemC #citem36 #route label i,
-#nav-content .body .item2 #systemC #citem37 #route label i,
-#nav-content .body .item2 #systemC #citem38 #route label i,
-#nav-content .body .item2 #systemC #citem39 #route label i,
-#nav-content .body .item2 #systemC #citem43 #route label i {
-  margin-right: 30px;
-}
-
-#nav-content .body .item2 #reportC {
-  padding: 0;
-  -webkit-transition: height 0.3s;
-  transition: height 0.3s;
-  height: 0;
-}
-
-#nav-content .body .item2 #reportC #citem28,
-#nav-content .body .item2 #reportC #citem29,
-#nav-content .body .item2 #reportC #citem30,
-#nav-content .body .item2 #reportC #citem31,
-#nav-content .body .item2 #reportC #citem32 {
-  display: none;
-}
-
-#nav-content .body .item2 #reportC #citem28 #route,
-#nav-content .body .item2 #reportC #citem29 #route,
-#nav-content .body .item2 #reportC #citem30 #route,
-#nav-content .body .item2 #reportC #citem31 #route,
-#nav-content .body .item2 #reportC #citem32 #route {
-  margin-left: 30px;
-}
-
-#nav-content .body .item2 #reportC #citem28 #route label,
-#nav-content .body .item2 #reportC #citem29 #route label,
-#nav-content .body .item2 #reportC #citem30 #route label,
-#nav-content .body .item2 #reportC #citem31 #route label,
-#nav-content .body .item2 #reportC #citem32 #route label {
-  color: #044604;
-}
-
-#nav-content .body .item2 #reportC #citem28 #route label i,
-#nav-content .body .item2 #reportC #citem29 #route label i,
-#nav-content .body .item2 #reportC #citem30 #route label i,
-#nav-content .body .item2 #reportC #citem31 #route label i,
-#nav-content .body .item2 #reportC #citem32 #route label i {
-  margin-right: 30px;
-}
-
-#nav-content .body .item2 #downloadC {
-  padding: 0;
-  -webkit-transition: height 0.3s;
-  transition: height 0.3s;
-  height: 0;
-}
-
-#nav-content .body .item2 #downloadC #citem26,
-#nav-content .body .item2 #downloadC #citem27,
-#nav-content .body .item2 #downloadC #citem40,
-#nav-content .body .item2 #downloadC #citem41,
-#nav-content .body .item2 #downloadC #citem42 {
-  display: none;
-}
-
-#nav-content .body .item2 #downloadC #citem26 #route,
-#nav-content .body .item2 #downloadC #citem27 #route,
-#nav-content .body .item2 #downloadC #citem40 #route,
-#nav-content .body .item2 #downloadC #citem41 #route,
-#nav-content .body .item2 #downloadC #citem42 #route {
-  margin-left: 30px;
-}
-
-#nav-content .body .item2 #downloadC #citem26 #route label,
-#nav-content .body .item2 #downloadC #citem27 #route label,
-#nav-content .body .item2 #downloadC #citem40 #route label,
-#nav-content .body .item2 #downloadC #citem41 #route label,
-#nav-content .body .item2 #downloadC #citem42 #route label {
-  color: #044604;
-}
-
-#nav-content .body .item2 #downloadC #citem26 #route label i,
-#nav-content .body .item2 #downloadC #citem27 #route label i,
-#nav-content .body .item2 #downloadC #citem40 #route label i,
-#nav-content .body .item2 #downloadC #citem41 #route label i,
-#nav-content .body .item2 #downloadC #citem42 #route label i {
-  margin-right: 30px;
-}
-
-#nav-content .body .item2 #admsC {
-  padding: 0;
-  -webkit-transition: height 0.3s;
-  transition: height 0.3s;
-  height: 0;
-}
-
-#nav-content .body .item2 #admsC #citem24,
-#nav-content .body .item2 #admsC #citem25 {
-  display: none;
-}
-
-#nav-content .body .item2 #admsC #citem24 #route,
-#nav-content .body .item2 #admsC #citem25 #route {
-  margin-left: 30px;
-}
-
-#nav-content .body .item2 #admsC #citem24 #route label,
-#nav-content .body .item2 #admsC #citem25 #route label {
-  color: #044604;
-}
-
-#nav-content .body .item2 #admsC #citem24 #route label i,
-#nav-content .body .item2 #admsC #citem25 #route label i {
-  margin-right: 30px;
-}
-
-#nav-content .body .item2 #hrmC {
-  padding: 0;
-  -webkit-transition: height 0.3s;
-  transition: height 0.3s;
-  height: 0;
-}
-
-#nav-content .body .item2 #hrmC #citem19,
-#nav-content .body .item2 #hrmC #citem23,
-#nav-content .body .item2 #hrmC #citem22,
-#nav-content .body .item2 #hrmC #citem21,
-#nav-content .body .item2 #hrmC #citem20 {
-  display: none;
-}
-
-#nav-content .body .item2 #hrmC #citem19 #route,
-#nav-content .body .item2 #hrmC #citem23 #route,
-#nav-content .body .item2 #hrmC #citem22 #route,
-#nav-content .body .item2 #hrmC #citem21 #route,
-#nav-content .body .item2 #hrmC #citem20 #route {
-  margin-left: 30px;
-}
-
-#nav-content .body .item2 #hrmC #citem19 #route label,
-#nav-content .body .item2 #hrmC #citem23 #route label,
-#nav-content .body .item2 #hrmC #citem22 #route label,
-#nav-content .body .item2 #hrmC #citem21 #route label,
-#nav-content .body .item2 #hrmC #citem20 #route label {
-  color: #044604;
-}
-
-#nav-content .body .item2 #hrmC #citem19 #route label i,
-#nav-content .body .item2 #hrmC #citem23 #route label i,
-#nav-content .body .item2 #hrmC #citem22 #route label i,
-#nav-content .body .item2 #hrmC #citem21 #route label i,
-#nav-content .body .item2 #hrmC #citem20 #route label i {
-  margin-right: 30px;
-}
-
-#nav-content .body .item2 #examinationC {
-  padding: 0;
-  -webkit-transition: height 0.3s;
-  transition: height 0.3s;
-  height: 0;
-}
-
-#nav-content .body .item2 #examinationC #citem16,
-#nav-content .body .item2 #examinationC #citem18,
-#nav-content .body .item2 #examinationC #citem17,
-#nav-content .body .item2 #examinationC #citem15 {
-  display: none;
-}
-
-#nav-content .body .item2 #examinationC #citem16 #route,
-#nav-content .body .item2 #examinationC #citem18 #route,
-#nav-content .body .item2 #examinationC #citem17 #route,
-#nav-content .body .item2 #examinationC #citem15 #route {
-  margin-left: 30px;
-}
-
-#nav-content .body .item2 #examinationC #citem16 #route label,
-#nav-content .body .item2 #examinationC #citem18 #route label,
-#nav-content .body .item2 #examinationC #citem17 #route label,
-#nav-content .body .item2 #examinationC #citem15 #route label {
-  color: #044604;
-}
-
-#nav-content .body .item2 #examinationC #citem16 #route label i,
-#nav-content .body .item2 #examinationC #citem18 #route label i,
-#nav-content .body .item2 #examinationC #citem17 #route label i,
-#nav-content .body .item2 #examinationC #citem15 #route label i {
-  margin-right: 30px;
-}
-
-#nav-content .body .item2 #attendenceC {
-  padding: 0;
-  -webkit-transition: height 0.3s;
-  transition: height 0.3s;
-  height: 0;
-}
-
-#nav-content .body .item2 #attendenceC #citem12,
-#nav-content .body .item2 #attendenceC #citem13,
-#nav-content .body .item2 #attendenceC #citem14 {
-  display: none;
-}
-
-#nav-content .body .item2 #attendenceC #citem12 #route,
-#nav-content .body .item2 #attendenceC #citem13 #route,
-#nav-content .body .item2 #attendenceC #citem14 #route {
-  margin-left: 30px;
-}
-
-#nav-content .body .item2 #attendenceC #citem12 #route label,
-#nav-content .body .item2 #attendenceC #citem13 #route label,
-#nav-content .body .item2 #attendenceC #citem14 #route label {
-  color: #044604;
-}
-
-#nav-content .body .item2 #attendenceC #citem12 #route label i,
-#nav-content .body .item2 #attendenceC #citem13 #route label i,
-#nav-content .body .item2 #attendenceC #citem14 #route label i {
-  margin-right: 30px;
-}
-
-#nav-content .body .item2 #studentC {
-  padding: 0;
-  -webkit-transition: height 0.3s;
-  transition: height 0.3s;
-  height: 0;
-}
-
-#nav-content .body .item2 #studentC #citem,
-#nav-content .body .item2 #studentC #citem2,
-#nav-content .body .item2 #studentC #citem3 {
-  display: none;
-}
-
-#nav-content .body .item2 #studentC #citem #route,
-#nav-content .body .item2 #studentC #citem2 #route,
-#nav-content .body .item2 #studentC #citem3 #route {
-  margin-left: 30px;
-}
-
-#nav-content .body .item2 #studentC #citem #route label,
-#nav-content .body .item2 #studentC #citem2 #route label,
-#nav-content .body .item2 #studentC #citem3 #route label {
-  color: #044604;
-}
-
-#nav-content .body .item2 #studentC #citem #route label i,
-#nav-content .body .item2 #studentC #citem2 #route label i,
-#nav-content .body .item2 #studentC #citem3 #route label i {
-  margin-right: 30px;
-}
-
-#nav-content .body .item2 #academicC {
-  padding: 0;
-  -webkit-transition: height 0.3s;
-  transition: height 0.3s;
-  height: 0;
-}
-
-#nav-content .body .item2 #academicC #citem4,
-#nav-content .body .item2 #academicC #citem11,
-#nav-content .body .item2 #academicC #citem5,
-#nav-content .body .item2 #academicC #citem6,
-#nav-content .body .item2 #academicC #citem7,
-#nav-content .body .item2 #academicC #citem8,
-#nav-content .body .item2 #academicC #citem9,
-#nav-content .body .item2 #academicC #citem10 {
-  display: none;
-}
-
-#nav-content .body .item2 #academicC #citem4 #route,
-#nav-content .body .item2 #academicC #citem11 #route,
-#nav-content .body .item2 #academicC #citem5 #route,
-#nav-content .body .item2 #academicC #citem6 #route,
-#nav-content .body .item2 #academicC #citem7 #route,
-#nav-content .body .item2 #academicC #citem8 #route,
-#nav-content .body .item2 #academicC #citem9 #route,
-#nav-content .body .item2 #academicC #citem10 #route {
-  margin-left: 30px;
-}
-
-#nav-content .body .item2 #academicC #citem4 #route label,
-#nav-content .body .item2 #academicC #citem11 #route label,
-#nav-content .body .item2 #academicC #citem5 #route label,
-#nav-content .body .item2 #academicC #citem6 #route label,
-#nav-content .body .item2 #academicC #citem7 #route label,
-#nav-content .body .item2 #academicC #citem8 #route label,
-#nav-content .body .item2 #academicC #citem9 #route label,
-#nav-content .body .item2 #academicC #citem10 #route label {
-  color: #044604;
-}
-
-#nav-content .body .item2 #academicC #citem4 #route label i,
-#nav-content .body .item2 #academicC #citem11 #route label i,
-#nav-content .body .item2 #academicC #citem5 #route label i,
-#nav-content .body .item2 #academicC #citem6 #route label i,
-#nav-content .body .item2 #academicC #citem7 #route label i,
-#nav-content .body .item2 #academicC #citem8 #route label i,
-#nav-content .body .item2 #academicC #citem9 #route label i,
-#nav-content .body .item2 #academicC #citem10 #route label i {
-  margin-right: 30px;
-}
-
-#nav-content .body .item2 i,
-#nav-content .body .item2 label {
-  color: #044604;
-  margin-top: 5px;
-}
-
-#nav-content .body .item2 #ii {
-  float: right;
-  margin-top: 8px;
-}
-
-#nav-content .body .item2:hover {
-  box-shadow: 1px 0px 5px rgba(1, 133, 1, 0.424);
-}
-
-#nav-content .body .item2:hover .col {
-  border-top: 1px solid rgba(1, 133, 1, 0.424);
-}
-
-#nav-content .body .item {
-  padding: 0px;
-  border-radius: 5px;
-  margin-top: 5px;
-}
-
-#nav-content .body .item i,
-#nav-content .body .item label {
-  color: #044604;
-  margin-top: 5px;
-}
-
-#nav-content .body .item #ii {
-  float: right;
-  margin-top: 8px;
-}
-
-#nav-content .body .item:hover {
-  box-shadow: 1px 0px 5px rgba(1, 133, 1, 0.424);
-}
-
-#nav-content ul {
-  height: 100%;
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-          flex-direction: column;
-}
-
-#nav-content li a {
-  padding: 10px 5px;
-  display: block;
-  text-transform: uppercase;
-  -webkit-transition: color 0.1s;
-  transition: color 0.1s;
-}
-
-#nav-content li a:hover {
-  color: #BF7497;
-}
-
-#nav-content li:not(.small) + .small {
-  margin-top: auto;
-}
-
-.small {
-  display: -webkit-box;
-  display: flex;
-  align-self: center;
-}
-
-.small a {
-  font-size: 12px;
-  font-weight: 400;
-  color: #888;
-}
-
-.small a + a {
-  margin-left: 15px;
-}
-
-#nav-container:focus-within #nav-content {
-  -webkit-transform: none;
-          transform: none;
 }
 
 * {
@@ -1054,176 +464,116 @@ img {
   margin: 2.5px;
 }
 
+.navbar {
+  position: fixed;
+  width: 100%;
+  height: 52px;
+  z-index: 1;
+  text-align: center;
+}
+
+.navbar h3 {
+  color: white;
+  margin-right: 24%;
+}
+
+.navbar .btnsidebar {
+  margin-top: 10px;
+  width: 35px;
+}
+
+.navbar .btnsidebar .line {
+  background-color: white;
+  margin-top: 5px;
+  width: 30px;
+  height: 2px;
+}
+
+.sidebarM {
+  position: fixed;
+  height: 100%;
+  z-index: 2;
+  width: 300px;
+  background-color: white;
+  margin-left: -300px;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
+  overflow: auto;
+}
+
+.sidebarM .top-section {
+  position: fixed;
+  background: white;
+  width: 300px;
+  box-shadow: -9px 0px 9px black;
+}
+
+.sidebarM .top-section .academic {
+  padding: 10px 10px 10px 43px;
+}
+
+.sidebarM .top-section .profile {
+  margin: 10px 20px;
+  border: solid #1b5e20 1px;
+  padding: 10px;
+  background: #f5f3f3;
+}
+
+.sidebarM .top-section .profile .image {
+  width: 84px;
+}
+
+.sidebarM .top-section .profile .aboutAdmin {
+  margin-top: 22px;
+}
+
+.sidebarM .nav-content {
+  margin-top: 205px;
+}
+
+.sidebarM .nav-content .item {
+  padding: 15px;
+  margin: 10px 30px;
+  border-radius: 10px;
+  font-weight: 600;
+}
+
+.sidebarM .nav-content .item #Icons {
+  margin-right: 10px;
+}
+
+.sidebarM .nav-content .item .item-body {
+  border-top: solid #1b5e20 1px;
+  padding: 0px 20px;
+  margin-top: 13px;
+  display: none;
+}
+
+.sidebarM .nav-content .item .item-body .item-content {
+  padding: 2px 0px;
+  font-size: 14px;
+}
+
+.sidebarM .nav-content .item .item-body .item-content .double-right {
+  margin-right: 10px;
+}
+
+.shadow {
+  position: fixed;
+  height: 100%;
+  width: 100%;
+  z-index: 1;
+  background-color: rgba(0, 0, 0, 0.24);
+  display: none;
+}
+
 .Student,
 .StaffInformation,
 .StudentInformation,
 .StudentHistory,
 .ViewStudent {
-  margin-top: 5rem !important;
-  padding: 0 1rem;
-  background-color: whitesmoke;
   z-index: 0;
   margin-bottom: 10px;
-}
-
-.Student .sibling,
-.StaffInformation .sibling,
-.StudentInformation .sibling,
-.StudentHistory .sibling,
-.ViewStudent .sibling {
-  border-radius: 8px;
-  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.11);
-  border: 1px solid #d7dfe3;
-  padding: 10px;
-  height: 100%;
-}
-
-.Student .sibling .img,
-.StaffInformation .sibling .img,
-.StudentInformation .sibling .img,
-.StudentHistory .sibling .img,
-.ViewStudent .sibling .img {
-  width: 25%;
-  float: left;
-}
-
-.Student .sibling .img img,
-.StaffInformation .sibling .img img,
-.StudentInformation .sibling .img img,
-.StudentHistory .sibling .img img,
-.ViewStudent .sibling .img img {
-  border-radius: 20px;
-  border: 2px solid #c2c1c1;
-  width: 100%;
-}
-
-.Student .sibling .right,
-.StaffInformation .sibling .right,
-.StudentInformation .sibling .right,
-.StudentHistory .sibling .right,
-.ViewStudent .sibling .right {
-  padding-left: 10px;
-  width: 75%;
-  float: right;
-}
-
-.Student .sibling .right .divcontent strong,
-.StaffInformation .sibling .right .divcontent strong,
-.StudentInformation .sibling .right .divcontent strong,
-.StudentHistory .sibling .right .divcontent strong,
-.ViewStudent .sibling .right .divcontent strong {
-  width: 100%;
-  font-size: 14px;
-  color: var(--primary);
-}
-
-.Student .sibling .right .divcontent .key,
-.StaffInformation .sibling .right .divcontent .key,
-.StudentInformation .sibling .right .divcontent .key,
-.StudentHistory .sibling .right .divcontent .key,
-.ViewStudent .sibling .right .divcontent .key {
-  color: black;
-  font-size: 14px;
-}
-
-.Student .textbox input::-webkit-outer-spin-button,
-.Student .textbox input::-webkit-inner-spin-button,
-.StaffInformation .textbox input::-webkit-outer-spin-button,
-.StaffInformation .textbox input::-webkit-inner-spin-button,
-.StudentInformation .textbox input::-webkit-outer-spin-button,
-.StudentInformation .textbox input::-webkit-inner-spin-button,
-.StudentHistory .textbox input::-webkit-outer-spin-button,
-.StudentHistory .textbox input::-webkit-inner-spin-button,
-.ViewStudent .textbox input::-webkit-outer-spin-button,
-.ViewStudent .textbox input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
-}
-
-.Student .textbox input,
-.StaffInformation .textbox input,
-.StudentInformation .textbox input,
-.StudentHistory .textbox input,
-.ViewStudent .textbox input {
-  width: 100%;
-  outline: none;
-}
-
-.Student .textbox .vdp-datepicker__calendar,
-.StaffInformation .textbox .vdp-datepicker__calendar,
-.StudentInformation .textbox .vdp-datepicker__calendar,
-.StudentHistory .textbox .vdp-datepicker__calendar,
-.ViewStudent .textbox .vdp-datepicker__calendar {
-  position: absolute;
-  z-index: 100;
-  background: white;
-  width: -webkit-fit-content;
-  width: -moz-fit-content;
-  width: fit-content;
-  border: 1px solid #ccc;
-}
-
-.Student .textbox header,
-.StaffInformation .textbox header,
-.StudentInformation .textbox header,
-.StudentHistory .textbox header,
-.ViewStudent .textbox header {
-  display: -webkit-box !important;
-  display: flex !important;
-  position: absolute;
-  width: 100%;
-  height: auto;
-  z-index: 1;
-  background: #044604;
-  color: #fff;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  text-align: center;
-  margin-left: 0px;
-}
-
-.Student .textbox header .up:not(.disabled):hover,
-.StaffInformation .textbox header .up:not(.disabled):hover,
-.StudentInformation .textbox header .up:not(.disabled):hover,
-.StudentHistory .textbox header .up:not(.disabled):hover,
-.ViewStudent .textbox header .up:not(.disabled):hover {
-  background-color: #1b5e20;
-}
-
-.Student .textbox header .next:after,
-.StaffInformation .textbox header .next:after,
-.StudentInformation .textbox header .next:after,
-.StudentHistory .textbox header .next:after,
-.ViewStudent .textbox header .next:after {
-  border-left: 10px solid white;
-}
-
-.Student .textbox header .next:hover,
-.Student .textbox header .prev:hover,
-.StaffInformation .textbox header .next:hover,
-.StaffInformation .textbox header .prev:hover,
-.StudentInformation .textbox header .next:hover,
-.StudentInformation .textbox header .prev:hover,
-.StudentHistory .textbox header .next:hover,
-.StudentHistory .textbox header .prev:hover,
-.ViewStudent .textbox header .next:hover,
-.ViewStudent .textbox header .prev:hover {
-  background-color: #1b5e20 !important;
-}
-
-.Student .textbox header .prev:after,
-.StaffInformation .textbox header .prev:after,
-.StudentInformation .textbox header .prev:after,
-.StudentHistory .textbox header .prev:after,
-.ViewStudent .textbox header .prev:after {
-  border-right: 10px solid white;
-}
-
-.Student #addMore,
-.StaffInformation #addMore,
-.StudentInformation #addMore,
-.StudentHistory #addMore,
-.ViewStudent #addMore {
-  display: none;
 }
 
 .Student .modalbtn,
@@ -1315,14 +665,6 @@ img {
   padding: 0 5px;
 }
 
-.Student .card,
-.StaffInformation .card,
-.StudentInformation .card,
-.StudentHistory .card,
-.ViewStudent .card {
-  background-color: khaki;
-}
-
 .Student .card .footer,
 .StaffInformation .card .footer,
 .StudentInformation .card .footer,
@@ -1347,63 +689,6 @@ img {
   font-size: 15px;
   color: white;
   padding: 5px;
-}
-
-.Student .card .stucard-header,
-.StaffInformation .card .stucard-header,
-.StudentInformation .card .stucard-header,
-.StudentHistory .card .stucard-header,
-.ViewStudent .card .stucard-header {
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-align: center;
-          align-items: center;
-  height: 34px;
-  background-color: #1b5e20;
-  margin: -20px 15px 0px 15px;
-  padding: 0;
-  padding-left: 20px;
-  color: white;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-}
-
-.Student .card .stucard-header h6,
-.StaffInformation .card .stucard-header h6,
-.StudentInformation .card .stucard-header h6,
-.StudentHistory .card .stucard-header h6,
-.ViewStudent .card .stucard-header h6 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.Student .card .stusub-header,
-.StaffInformation .card .stusub-header,
-.StudentInformation .card .stusub-header,
-.StudentHistory .card .stusub-header,
-.ViewStudent .card .stusub-header {
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-align: center;
-          align-items: center;
-  height: 34px;
-  background-color: #1b5e20;
-  margin: 0 15px 0px 15px;
-  padding: 0;
-  padding-left: 20px;
-  color: white;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-}
-
-.Student .card .stusub-header h6,
-.StaffInformation .card .stusub-header h6,
-.StudentInformation .card .stusub-header h6,
-.StudentHistory .card .stusub-header h6,
-.ViewStudent .card .stusub-header h6 {
-  margin: 0;
-  font-size: 16px;
-  width: 100%;
 }
 
 .Student .card .stucard-body,
@@ -1432,39 +717,6 @@ img {
 .ViewStudent .card .stucard-body .row .textbox {
   width: 25%;
   padding: 5px;
-}
-
-.Student .card .stucard-body .row .textbox p,
-.StaffInformation .card .stucard-body .row .textbox p,
-.StudentInformation .card .stucard-body .row .textbox p,
-.StudentHistory .card .stucard-body .row .textbox p,
-.ViewStudent .card .stucard-body .row .textbox p {
-  margin: 0;
-  padding: 0;
-}
-
-.Student .card .stucard-body .row .textbox .span,
-.StaffInformation .card .stucard-body .row .textbox .span,
-.StudentInformation .card .stucard-body .row .textbox .span,
-.StudentHistory .card .stucard-body .row .textbox .span,
-.ViewStudent .card .stucard-body .row .textbox .span {
-  margin: 4px 5px 0px 0;
-  float: right;
-  padding: 0 7px;
-  cursor: pointer;
-  background-color: #1b5e20;
-  color: white;
-  border-radius: 3px;
-}
-
-.Student .card .stucard-body .row .textbox img,
-.StaffInformation .card .stucard-body .row .textbox img,
-.StudentInformation .card .stucard-body .row .textbox img,
-.StudentHistory .card .stucard-body .row .textbox img,
-.ViewStudent .card .stucard-body .row .textbox img {
-  margin: 0 50px;
-  margin: 0;
-  text-align: center;
 }
 
 .Student .card .stucard-body .row .textbox label,
@@ -1519,6 +771,11 @@ img {
           filter: drop-shadow(0 0 7px rgba(90, 90, 88, 0.7));
 }
 
+.tabTheme {
+  position: relative;
+  overflow: hidden;
+}
+
 .inputbox {
   padding-left: 5px;
   font-size: 9.5pt;
@@ -1554,7 +811,6 @@ label {
   -webkit-box-align: center;
           align-items: center;
   height: 34px;
-  background-color: #1b5e20;
   margin: -20px 15px 0px 15px;
   padding: 0;
   padding-left: 20px;
@@ -1581,7 +837,6 @@ label {
   -webkit-box-align: center;
           align-items: center;
   height: 34px;
-  background-color: #1b5e20;
   margin: 0 15px 0px 15px;
   padding: 0;
   padding-left: 20px;
@@ -1609,6 +864,7 @@ label {
 .textareas {
   width: 100%;
   padding: 5px;
+  font-size: 11pt;
   outline: none;
   border: 1px solid #d2d6de;
 }
@@ -1653,6 +909,29 @@ label {
   background: #e7e7e7;
   color: black;
   border-bottom: 1px solid rgba(0, 0, 0, 0.8);
+}
+
+.metaBtn {
+  color: white;
+  border: none;
+  padding: 5px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  font-size: 14px;
+  background: none;
+  width: 150px;
+  height: 34px;
+}
+
+.metaBtn:active {
+  border: none;
+  outline: none;
+}
+
+.metaBtn:focus {
+  border: none;
+  outline: none;
 }
 
 strong {
@@ -1882,56 +1161,18 @@ input[type=file] {
   visibility: visible;
 }
 
-.searchButton {
+#globalSearch,
+#globalSave {
   float: right;
   width: 80px !important;
   height: 30px;
   font-size: 13px;
+  position: relative;
+  overflow: hidden;
   margin: 1rem 0 0 1rem;
   border: none;
   color: White;
-  background-color: #1b5e20;
   border-radius: 3px;
-}
-
-.save {
-  margin: 1rem;
-  width: 100px;
-  font-size: 14px;
-  margin-right: 0px;
-  margin-bottom: 0;
-  float: right;
-  outline: none;
-  color: white;
-  height: 30px;
-  background: #1b5e20;
-  border: none;
-  border-radius: 5px;
-}
-
-/**
-  Wai Yan Soe
-**/
-
-.metaBtn {
-  color: white;
-  background-color: #1b5e20;
-  border: none;
-  padding: 5px;
-  text-align: center;
-  font-size: 14px;
-  width: 150px;
-  height: 34px;
-}
-
-.metaBtn:active {
-  border: none;
-  outline: none;
-}
-
-.metaBtn:focus {
-  border: none;
-  outline: none;
 }
 
 .confirmBtn {
@@ -2011,44 +1252,57 @@ input[type=file] {
   End of Wai Yan Soe
 **/
 
-.viewButton {
+.viewButton,
+#globalView {
   padding: 3px 0.5rem;
   font-size: 10px;
+  -webkit-transition-duration: 0.4s;
+          transition-duration: 0.4s;
+  position: relative;
   line-height: 1.5;
-  background: #1b5e20;
   border-radius: 0.2rem;
   border: none;
+  overflow: hidden;
   color: white;
   margin-right: 5px;
 }
 
-.save,
-.searchButton,
-.tableLink,
-.tableLinks {
-  background-position: center;
-  -webkit-transition: background 0.6s;
-  transition: background 0.6s;
+#globalView:after,
+#globalSearch:after,
+#globalSave:after,
+#globalEdit:after,
+.tabTheme:after,
+.navList:after,
+#nav-list:after,
+.tableLink:after,
+.tableLinks:after {
+  content: "";
+  background: #9494947c;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  -webkit-transition: all 0.8s;
+  transition: all 0.8s;
 }
 
-.save:hover,
-.searchButton:hover,
-.tableLink:hover {
-  background: #1b5e20 radial-gradient(circle, transparent 1%, #1b5e20 1%) center/15000%;
-}
-
-.tableLinks:hover {
-  background: whitesmoke radial-gradient(circle, transparent 1%, whitesmoke 1%) center/15000%;
-}
-
-.save:active,
-.searchButton:active,
-.tableLink:active,
-.tableLinks:active {
-  background-color: rgba(44, 92, 51, 0.623);
-  background-size: 100%;
-  -webkit-transition: background 0s;
-  transition: background 0s;
+#globalView:active:after,
+#globalSearch:active:after,
+#globalSave:active:after,
+#globalEdit:active:after,
+.tabTheme:active:after,
+.navList:active:after,
+#nav-list:active:after,
+.tableLink:active:after,
+.tableLinks:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  -webkit-transition: 0s;
+  transition: 0s;
 }
 
 .pen,
@@ -2082,6 +1336,8 @@ input[type=file] {
 .columns .tableLink,
 .columns .tableLinkActive {
   border: none;
+  position: relative;
+  overflow: hidden;
   display: block;
   font-weight: bolder;
   padding: 5px 0 5px 1rem;
@@ -2860,28 +2116,6 @@ button:focus {
   border-bottom-left-radius: 3px;
 }
 
-.ViewStudent .metaBtn {
-  margin-top: 1px;
-  color: white;
-  background-color: #1b5e20;
-  border: none;
-  padding: 5px;
-  width: 100px;
-  height: 34px;
-  text-align: center;
-  font-size: 14px;
-}
-
-.ViewStudent .metaBtn:active {
-  border: none;
-  outline: none;
-}
-
-.ViewStudent .metaBtn:focus {
-  border: none;
-  outline: none;
-}
-
 .ViewStudent .textbox h6 {
   font-weight: bold;
   text-align: center;
@@ -3037,7 +2271,7 @@ button:focus {
 }
 
 .systemsetting .modal-bodys #ThemeColor {
-  margin: 0px;
+  padding: 0 1rem;
 }
 
 .systemsetting .modal-bodys #ThemeColor .col-xs-6 {
@@ -3059,6 +2293,8 @@ button:focus {
   display: flex;
   -webkit-box-pack: center;
           justify-content: center;
+  -webkit-transition: all 0.6s;
+  transition: all 0.6s;
   -webkit-box-align: center;
           align-items: center;
 }
@@ -3072,6 +2308,16 @@ button:focus {
   text-align: center;
 }
 
+.systemsetting .modal-bodys #ThemeColor .blockColor .backColor:hover {
+  border: 35px solid #adadad38 !important;
+}
+
+.systemsetting .modal-bodys #ThemeColor .blockColor .backColor:hover p {
+  -webkit-filter: opacity(1) !important;
+          filter: opacity(1) !important;
+  color: white;
+}
+
 .systemsetting .rowContainer {
   margin-left: 0;
 }
@@ -3083,7 +2329,7 @@ button:focus {
 .systemsetting .rowContainer .imgCard .img {
   border: 1px solid var(--success);
   border-radius: 5px;
-  padding: 10px;
+  padding: 5px;
 }
 
 .systemsetting .rowContainer .imgCard .button .edit {
@@ -3091,12 +2337,15 @@ button:focus {
   margin: 1rem auto;
   margin-bottom: 0;
   display: block;
+  -webkit-transition: all 0.5s;
+  transition: all 0.5s;
   width: 150px;
-  background: #1b5e20;
   border: none;
   font-weight: bold;
   border-radius: 5px;
   font-size: 14px;
+  position: relative;
+  overflow: hidden;
   outline: none;
   color: white;
   height: 35px;
@@ -3104,23 +2353,6 @@ button:focus {
 
 .systemsetting .rowContainer .imgCard .button .edit .editIcon {
   margin-right: 10px;
-}
-
-.systemsetting .rowContainer .imgCard .button .edit {
-  background-position: center;
-  -webkit-transition: background 0.6s;
-  transition: background 0.6s;
-}
-
-.systemsetting .rowContainer .imgCard .button .edit:hover {
-  background: #1b5e20 radial-gradient(circle, transparent 1%, #1b5e20 1%) center/15000%;
-}
-
-.systemsetting .rowContainer .imgCard .button .edit:active {
-  background-color: rgba(44, 92, 51, 0.623);
-  background-size: 100%;
-  -webkit-transition: background 0s;
-  transition: background 0s;
 }
 
 .systemsetting .rowContainer .tableCard {
@@ -3140,124 +2372,32 @@ button:focus {
 .systemsetting .rowContainer .tableCard .table-responsive td span {
   display: -webkit-box;
   display: flex;
+  margin-bottom: 3px;
   -webkit-box-align: center;
           align-items: center;
 }
 
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd:after {
-  background: #1b5e20;
-}
-
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd:checked:after {
-  background: #1b5e20;
-  border: 2px solid grey;
-}
-
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd1:after {
-  background: darkred;
-}
-
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd1:checked:after {
-  background: darkred;
-  border: 2px solid grey;
-}
-
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd2:after {
-  background: darkcyan;
-}
-
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd2:checked:after {
-  background: darkcyan;
-  border: 2px solid grey;
-}
-
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd3:after {
-  background: currentColor;
-}
-
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd3:checked:after {
-  background: currentColor;
-  border: 2px solid grey;
-}
-
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd4:after {
-  background: #edeeef;
-}
-
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd4:checked:after {
-  background: #edeeef;
-  border: 2px solid grey;
-}
-
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd:after,
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd1:after,
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd2:after,
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd3:after,
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd4:after {
+.systemsetting .rowContainer .tableCard .table-responsive td span .themeBlock {
   width: 15px;
   height: 15px;
-  border-radius: 0px !important;
-  top: -2px;
-  left: -1px;
-  border: 0.1px solid rgba(0, 0, 0, 0.452);
-  position: relative;
-  content: "";
-  display: inline-block;
-  visibility: visible;
-}
-
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd:checked:after,
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd1:checked:after,
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd2:checked:after,
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd3:checked:after,
-.systemsetting .rowContainer .tableCard .table-responsive td span .rd4:checked:after {
-  width: 15px;
-  height: 15px;
-  border-radius: 15px;
-  top: -2px;
-  left: -1px;
-  position: relative;
-  content: "";
-  display: inline-block;
-  visibility: visible;
-}
-
-.systemsetting .rowContainer .tableCard .table-responsive td span .radio {
-  margin-right: 8px;
+  border: 0.5px solid black;
 }
 
 .systemsetting .rowContainer .tableCard .table-responsive td span label {
-  margin-bottom: 0.2rem;
+  margin-bottom: 0px;
+  margin-left: 5px;
 }
 
-.systemsetting .rowContainer .editCard .edit {
+.systemsetting .rowContainer .editCard .editSm {
   width: 40px;
   font-size: 11px;
   position: absolute;
   outline: none;
   right: 25px;
-  color: #1b5e20;
   font-weight: bold;
   height: 20px;
   border: none;
   border-radius: 3px;
-}
-
-.systemsetting .rowContainer .editCard .edit {
-  background-position: center;
-  -webkit-transition: background 0.6s;
-  transition: background 0.6s;
-}
-
-.systemsetting .rowContainer .editCard .edit:hover {
-  background: #ffffff radial-gradient(circle, transparent 1%, #ffffff 1%) center/15000%;
-}
-
-.systemsetting .rowContainer .editCard .edit:active {
-  background-color: rgba(255, 255, 255, 0.623);
-  background-size: 100%;
-  -webkit-transition: background 0s;
-  transition: background 0s;
 }
 
 .ViewStaffDirectory {
@@ -3710,24 +2850,28 @@ body {
 /* Track */
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 
 /* Handle */
 
 ::-webkit-scrollbar-thumb {
-  background: grey;
+  background: rgba(0, 0, 0, 0.15);
 }
 
 /* Handle on hover */
 
-::-webkit-scrollbar-thumb:hover {
-  background: #4e733acf;
-}
-
 @media (max-width: 767.9px) {
+  .content_header {
+    display: none;
+  }
+
   .page,
   header {
+    display: block;
+  }
+
+  .mobile {
     display: block;
   }
 
@@ -3738,7 +2882,7 @@ body {
   #bar,
   .ViewStudent {
     margin-left: 0 !important;
-    margin-top: -94vh !important;
+    margin-top: 1rem !important;
     z-index: 0;
   }
 
@@ -3750,7 +2894,7 @@ body {
   .StudentInformation,
   .StaffInformation,
   .StudentHistory {
-    margin-top: -94vh !important;
+    margin-top: 0px !important;
   }
 }
 
@@ -3759,8 +2903,17 @@ body {
     width: 80% !important;
   }
 
+  .content_header {
+    display: block;
+  }
+
   .page,
   header {
+    display: none;
+  }
+
+  .mobile,
+  .shadow {
     display: none;
   }
 
@@ -3769,12 +2922,8 @@ body {
   }
 
   #bar {
-    margin-left: 15.5rem;
+    margin-left: 16rem;
     margin-top: 2rem;
-  }
-
-  .Student {
-    margin-top: 4.3rem !important;
   }
 }
 
@@ -3972,39 +3121,8 @@ body {
   }
 }
 
-@media (max-width: 790px) and (min-width: 530px) {
-  .modal-content {
-    width: 510px !important;
-  }
-}
-
-@media (max-width: 530px) and (min-width: 411px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-
-@media (max-width: 411px) and (min-width: 375px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-
-@media (max-width: 375px) and (min-width: 360px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-
-@media (max-width: 360px) and (min-width: 320px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-
-@media (max-width: 320px) and (min-width: 0px) {
-  .modal-content {
-    width: 98% !important;
-  }
+.active > a {
+  background: #1a1a1aa8;
+  color: white !important;
 }
 

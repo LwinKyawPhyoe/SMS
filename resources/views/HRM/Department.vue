@@ -8,8 +8,8 @@
     </div>
     <hr />
     <confirm :url="delurl"></confirm>
-    <div class="row rowContainer" style="align-items: end !important;">
-      <div class="col-lg-5 col-md-12" style="padding-left:2px;">
+    <div class="row rowContainer" style="align-items: end !important;margin:0;">
+      <div class="col-lg-5 col-md-12" style="padding:0px;">
         <div class="card">
           <div class="card-header">
             <h6>Add Department</h6>
@@ -32,21 +32,23 @@
                 />
                 <span id="sessionmsg" class="error_message">Name is required</span>
               </div>
-              <div class="col-12">
+              <div class="col-12 column-12">
                 <!--- store -->
+                <button v-if="this.isEdit == false" id="globalSave" type="submit" class="save">Save</button>
                 <button
-                  v-if="this.isEdit == false"
-                  type="submit"
+                  v-else
+                  @click="updateDepartment()"
+                  id="globalSave"
+                  type="button"
                   class="save"
                 >Save</button>
-                <button v-else @click="updateDepartment()" type="button" class="save">Save</button>
               </div>
             </form>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-7 col-md-12" style="padding-left:0;">
+      <div class="col-lg-7 col-md-12" style="padding:0;">
         <div class="card">
           <div class="card-header">
             <h6>Department List</h6>
@@ -135,13 +137,14 @@ export default {
     this.getDepartments();
   },
   created() {
+    EventBus.$emit("clicked");
     EventBus.$on("clicked", response => {
       this.getDepartments();
       (this.msg.text = response.text), (this.msg.type = response.type);
     });
     this.getDepartments();
   },
-  methods:{
+  methods: {
     getDepartments() {
       this.axios
         .get("/api/departments")
@@ -212,8 +215,7 @@ export default {
       }
     },
 
-
-     /***
+    /***
      *
      * Form Validation
      *
@@ -239,7 +241,7 @@ export default {
         return true;
       }
       return false;
-    },
+    }
 
     /***
      *

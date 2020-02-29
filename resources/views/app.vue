@@ -1,428 +1,415 @@
 <template>
   <div>
-    <div class="page">
-      <div id="."></div>
-      <header tabindex="0">
-        <h5 style="font-family: 'Encode Sans Condensed', sans-serif;">School management</h5>
-      </header>
-      <div id="nav-container">
-        <div class="bg"></div>
-        <div class="menuIcon" tabindex="0">
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
-          <span class="icon-bar"></span>
+    <div class="navbar mobile colour" @click="openSidebar()">
+      <div class="btnsidebar">
+        <div class="line"></div>
+        <div class="line"></div>
+        <div class="line"></div>
+      </div>
+      <!-- <h3>School Name</h3> -->
+      <!-- <span>Haha</span> -->
+    </div>
+
+    <div class="shadow" id="shadow" @click="closeSidebar()"></div>
+    <div class="sidebarM" id="sidebar">
+      <div class="top-section">
+        <div class="academic mobile">
+          <label
+            for
+            class="fontColour"
+            style="font-size:16px;color:white"
+          >Current Section: 2020_2021</label>
+          <i class="fa fa-pencil pen fontColour" style="margin-left:10px;color:white"></i>
         </div>
-        <div id="nav-content" tabindex="0">
-          <div class="row" id="easyschool">
-            <div class="row" id="container">
-              <img src="/profile.png" style="width:60px;" alt />
-              <div style="margin-left:20px;">
-                <h5
-                  style="font-weight:bold;font-family: 'Encode Sans Condensed', sans-serif;"
-                >Admin name</h5>
-                <label style="font-family: 'Encode Sans Condensed', sans-serif;">Admin @email.com</label>
-              </div>
-            </div>
-            <label
-              for
-              style="margin-top:15px;font-family: 'Encode Sans Condensed', sans-serif;"
-            >* easily manage your school</label>
+        <div class="row profile">
+          <img src="/account.jpg" alt class="image" />
+          <div class="aboutAdmin">
+            <label for>Admin name</label>
+            <br />
+            <label for>Gmail@.com</label>
           </div>
-          <div class="body" onclick="showForm()">
-            <div class="item">
-              <router-link to class="nav-item nav-link">
-                <i class="fa fa-credit-card"></i>
-                <label for style="margin-left:10px;">Dashboard</label>
+        </div>
+      </div>
+      <div class="nav-content">
+        <div class="item" @click="closeSidebar()">
+          <router-link to="dashboard">
+            <i class="fa fa-credit-card" id="Icons"></i>Dashboard
+          </router-link>
+        </div>
+        <div class="item" id="StudentItem">
+          <div @click="openDropDown('Student','StudentItem')">
+            <router-link to class="router">
+              <i class="fa fa-users" id="Icons"></i>Student
+            </router-link>
+          </div>
+          <div class="item-body" id="Student">
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="StudentInformation">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Student Details
               </router-link>
             </div>
-            <div
-              class="item2"
-              onclick="openAcademicC('studentC','citem','citem2','citem3','.','.','.','.','.',70,'120px','height 0.3s','height 0.3s')"
-            >
-              <router-link to class="nav-item nav-link">
-                <i class="fa fa-user-circle"></i>
-                <label for style="margin-left:10px;">Student</label>
-                <i class="fa fa-angle-right" id="ii"></i>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="AddStudent">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Student Admission
               </router-link>
-              <div id="studentC" class="col">
-                <div id="citem">
-                  <router-link to="/StudentInformation" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Student details
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem2">
-                  <router-link to="/AddStudent" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Student Admission
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem3">
-                  <router-link to="/studenthistory" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Student History
-                    </label>
-                  </router-link>
-                </div>
-              </div>
-            </div>
-            <div
-              class="item2"
-              onclick="openAcademicC('attendenceC','citem12','citem13','citem14','.','.','.','.','.',70,'120px','height 0.3s','height 0.3s')"
-            >
-              <router-link to class="nav-item nav-link">
-                <i class="fa fa-calendar"></i>
-                <label for style="margin-left:10px;">Attendence</label>
-                <i class="fa fa-angle-right" id="ii"></i>
-              </router-link>
-              <div id="attendenceC" class="col">
-                <div id="citem12">
-                  <router-link to="/stuattendance" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Student Attendance
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem13">
-                  <router-link to="/attendancedate" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i>Attendance By Date
-                    </label>
-                  </router-link>
-                </div>
-              </div>
-            </div>
-            <div
-              class="item2"
-              onclick="openAcademicC('examinationC','citem15','citem16','citem17','citem18','.','.','.','.',70,'160px','height 0.3s','height 0.2s')"
-            >
-              <router-link to="/examlist" class="nav-item nav-link">
-                <i class="fa fa-clipboard"></i>
-                <label for style="margin-left:10px;">Examinations</label>
-                <i class="fa fa-angle-right" id="ii"></i>
-              </router-link>
-              <div id="examinationC" class="col">
-                <div id="citem15">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Exam List
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem16">
-                  <router-link to="/examschadule" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Exam Schadule
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem17">
-                  <router-link to="/markgrade" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Marks Grade
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem18">
-                  <router-link to="/MarkRegister" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Marks Register
-                    </label>
-                  </router-link>
-                </div>
-              </div>
-            </div>
-            <div
-              class="item2"
-              onclick="openAcademicC('academicC','citem4','citem5','citem6','citem7','citem8','citem9','citem10','citem11',70,'280px','height 0.4s','height 0.2s')"
-            >
-              <router-link to="/examlist" class="nav-item nav-link">
-                <i class="fa fa-graduation-cap"></i>
-                <label for style="margin-left:10px;">Academics</label>
-                <i class="fa fa-angle-right" id="ii"></i>
-              </router-link>
-              <div id="academicC" class="col">
-                <div id="citem4">
-                  <router-link to="/viewtimetable" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Class Timetable
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem5">
-                  <router-link to="/classteacher" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i>Assign Class Teacher
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem6">
-                  <router-link to="/viewasssubjects" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i>Assign Subject
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem7">
-                  <router-link to="/prostudents" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i>Ptomote Student
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem8">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i>Subjects
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem9">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i>Class
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem10">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i>Section
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem11">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i>Academic Year
-                    </label>
-                  </router-link>
-                </div>
-              </div>
-            </div>
-            <div
-              class="item2"
-              onclick="openAcademicC('hrmC','citem19','citem20','citem21','citem22','.','.','.','.',70,'140px','height 0.3s','height 0.2s')"
-            >
-              <router-link to="/examlist" class="nav-item nav-link">
-                <i class="fa fa-street-view"></i>
-                <label for style="margin-left:10px;">HRM</label>
-                <i class="fa fa-angle-right" id="ii"></i>
-              </router-link>
-              <div id="hrmC" class="col">
-                <div id="citem19">
-                  <router-link to="/stadirectory" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Staff Directory
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem20">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Staff Attendance
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem21">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Department
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem22">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Designation
-                    </label>
-                  </router-link>
-                </div>
-              </div>
-            </div>
-            <div
-              class="item2"
-              onclick="openAcademicC('downloadC','citem26','citem27','citem40','citem41','citem42','.','.','.',70,'170px','height 0.3s','height 0.3s')"
-            >
-              <router-link to="/examlist" class="nav-item nav-link">
-                <i class="fa fa-download"></i>
-                <label for style="margin-left:10px;">Download Center</label>
-                <i class="fa fa-angle-right" id="ii"></i>
-              </router-link>
-              <div id="downloadC" class="col">
-                <div id="citem26">
-                  <router-link to="/StudentInformation" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Upload Content
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem27">
-                  <router-link to="/assignment" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Assignments
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem40">
-                  <router-link to="/stumaterial" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Study Material
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem41">
-                  <router-link to="/syllabus" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Syllabus
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem42">
-                  <router-link to="/othdownload" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Other Downloads
-                    </label>
-                  </router-link>
-                </div>
-              </div>
-            </div>
-            <div
-              class="item2"
-              onclick="openAcademicC('reportC','citem28','citem29','citem30','citem31','citem32','.','.','.',70,'170px','height 0.4s','height 0.2s')"
-            >
-              <router-link to="/examlist" class="nav-item nav-link">
-                <i class="fa fa-bar-chart"></i>
-                <label for style="margin-left:10px;">Report</label>
-                <i class="fa fa-angle-right" id="ii"></i>
-              </router-link>
-              <div id="reportC" class="col">
-                <div id="citem28">
-                  <router-link to="/studenthistory" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Student Histroy
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem29">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Transaction Report
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem30">
-                  <router-link to="/attendancereport" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Attendance Report
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem31">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Exam Marks Reports
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem32">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Staff Attendance Reports
-                    </label>
-                  </router-link>
-                </div>
-              </div>
-            </div>
-            <div
-              class="item2"
-              onclick="openAcademicC('systemC','citem36','citem37','citem38','citem39','citem43','.','.','.',70,'170px','height 0.3s','height 0.2s')"
-            >
-              <router-link to="/examlist" class="nav-item nav-link">
-                <i class="fa fa-sliders"></i>
-                <label for style="margin-left:10px;">System Setting</label>
-                <i class="fa fa-angle-right" id="ii"></i>
-              </router-link>
-              <div id="systemC" class="col">
-                <div id="citem36">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> General Setting
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem37">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Session Setting
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem38">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Roles Permission
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem39">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Languages
-                    </label>
-                  </router-link>
-                </div>
-                <div id="citem43">
-                  <router-link to="#" id="route">
-                    <label for style="margin-left:10px;">
-                      <i class="fa fa-angle-double-right"></i> Users
-                    </label>
-                  </router-link>
-                </div>
-              </div>
             </div>
           </div>
         </div>
+
+        <div class="item" id="AttendenceItem">
+          <div @click="openDropDown('Attendance','AttendenceItem')">
+            <router-link to class="router">
+              <i class="fa fa-calendar" id="Icons"></i>Attendance
+            </router-link>
+          </div>
+          <div class="item-body" id="Attendance">
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="stuattendance">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Student Attendance
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="attendancedate">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Attendance By Date
+              </router-link>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" id="ExaminationItem">
+          <div @click="openDropDown('Examination','ExaminationItem')">
+            <router-link to class="router">
+              <i class="fa fa-clipboard" id="Icons"></i>Examination
+            </router-link>
+          </div>
+          <div class="item-body" id="Examination">
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="ExamList">
+                <i class="fa fa-angle-double-right" id="Icons"></i>ExamList
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="examschadule">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Exam Schadule
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="markgrade">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Marks Grade
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="MarkRegister">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Marks Register
+              </router-link>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" id="AcademicsItem">
+          <div @click="openDropDown('Academics','AcademicsItem')">
+            <router-link to class="router">
+              <i class="fa fa-graduation-cap" id="Icons"></i>Academics
+            </router-link>
+          </div>
+          <div class="item-body" id="Academics">
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="viewtimetable">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Class TimeTable
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="classteacher">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Assign Class Teacher
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="viewasssubjects">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Assign Subjects
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="prostudents">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Promote Student
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="subjects">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Subjects
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="class">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Class
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="sections">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Sections
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="academicyear">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Academic Year
+              </router-link>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" id="HRMItem">
+          <div @click="openDropDown('HRM','HRMItem')">
+            <router-link to class="router">
+              <i class="fa fa-street-view" id="Icons"></i>HRM
+            </router-link>
+          </div>
+          <div class="item-body" id="HRM">
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="staffdirectory">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Staff Directory
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="staattendance">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Staff Attendence
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="department">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Department
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="designation">
+                <i class="fa fa-angle-double-right" id="Icons"></i> Designation
+              </router-link>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" id="DownloadItem">
+          <div @click="openDropDown('Download','DownloadItem')">
+            <router-link to class="router">
+              <i class="fa fa-download" id="Icons"></i>Download Center
+            </router-link>
+          </div>
+          <div class="item-body" id="Download">
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="uploadcontent">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Upload Content
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="assignment">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Assignments
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="stumaterial">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Study Material
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="syllabus">
+                <i class="fa fa-angle-double-right" id="Icons"></i> Syllabus
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="othdownload">
+                <i class="fa fa-angle-double-right" id="Icons"></i> Other Downloads
+              </router-link>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" id="HomeWorkItem">
+          <div @click="openDropDown('HomeWork','HomeWorkItem')">
+            <router-link to class="router">
+              <i class="fa fa-flask" id="Icons"></i> HomeWork
+            </router-link>
+          </div>
+          <div class="item-body" id="HomeWork">
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="homework">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Add HomeWork
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="evaluation_report">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Evaluation Report
+              </router-link>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" id="TransportItem">
+          <div @click="openDropDown('Transport','TransportItem')">
+            <router-link to class="router">
+              <i class="fa fa-bus" id="Icons"></i> Transport
+            </router-link>
+          </div>
+          <div class="item-body" id="Transport">
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="routes">
+                <i class="fa fa-angle-double-right" id="Icons"></i> Routes
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="vehicle">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Vehicles
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="assvehicle">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Assign Vehicles
+              </router-link>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" id="HostelItem">
+          <div @click="openDropDown('Hostel','HostelItem')">
+            <router-link to class="router">
+              <i class="fa fa-building" id="Icons"></i> Hostel
+            </router-link>
+          </div>
+          <div class="item-body" id="Hostel">
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="hostelroom">
+                <i class="fa fa-angle-double-right" id="Icons"></i> Hostel Rooms
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="roomtype">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Room Types
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="hostel">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Hostel
+              </router-link>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" id="ReportsItem">
+          <div @click="openDropDown('Reports','ReportsItem')">
+            <router-link to class="router">
+              <i class="fa fa-bar-chart" id="Icons"></i> Reports
+            </router-link>
+          </div>
+          <div class="item-body" id="Reports">
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="stureport">
+                <i class="fa fa-angle-double-right" id="Icons"></i> Student Reports
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to>
+                <i class="fa fa-angle-double-right" id="Icons"></i>Student Guardians
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="studenthistory">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Student History
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="attendancereport">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Attendence Reports
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="MarkRegister">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Exam Marks Reports
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to>
+                <i class="fa fa-angle-double-right" id="Icons"></i>Close Academic
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="staattreport">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Stuff Attendence Report
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="stutransportreport">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Student Transport Report
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="stuhostelreport">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Student Hostel Reports
+              </router-link>
+            </div>
+          </div>
+        </div>
+
+        <div class="item" id="SystemSettingItem">
+          <div @click="openDropDown('SystemSetting','SystemSettingItem')">
+            <router-link to class="router">
+              <i class="fa fa-sliders" id="Icons"></i> System Setting
+            </router-link>
+          </div>
+          <div class="item-body" id="SystemSetting">
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="gensetting">
+                <i class="fa fa-angle-double-right" id="Icons"></i> General Setting
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="role">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Roles Permissions
+              </router-link>
+            </div>
+            <div class="item-content" @click="closeSidebar()">
+              <router-link to="users">
+                <i class="fa fa-angle-double-right" id="Icons"></i>Users
+              </router-link>
+            </div>
+          </div>
+        </div>
+
+        <div id="."></div>
       </div>
     </div>
 
     <div class="pc" style="padding:0px;margin:0px;">
       <div class="sidebar" id="bigBar">
-        <div class="expandsidebar">
+        <div class="expandsidebar" id="schoolName">
           <div class="header">
             <div class="row sidebar_header">
               <div class="col-12">
-                <h3 style="text-align: center;padding-top: 10px;">SSMS</h3>
+                <h5 style="font-size: 18pt;" class="projectName">{{this.school.school_name}}</h5>
               </div>
             </div>
 
             <div class="body_content" id="body_content">
               <ul class="additional-menu">
                 <li>
-                  <a class="navList">
-                    <router-link class="routerLink" to>
+                  <a class="navList" id="globalList">
+                    <router-link class="routerLink" id="globalLink" to>
                       <i class="fa fa-credit-card" id="sidebarIcon"></i>Dashboard
                     </router-link>
                   </a>
                 </li>
                 <li>
-                  <a @click="dropdown('link','dropIcon')" class="navList">
-                    <router-link class="routerLink" to>
+                  <a @click="dropdown('link','dropIcon')" class="navList" id="globalList">
+                    <router-link class="routerLink" id="globalLink" to>
                       <i class="fa fa-users" id="sidebarIcon"></i>Students
                       <i class="fa fa-angle-right dropIcon" id="dropIcon"></i>
                     </router-link>
                   </a>
-                  <div class="dropdownForm">
+                  <div class="dropdownForm" id="dropdownForm">
                     <ul class="link" id="link">
                       <li class="nav-list">
-                        <router-link class="nav-list" to="/StudentInformation">
+                        <router-link class="nav-list" id="nav-list" to="/StudentInformation">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Student Details
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/AddStudent" class="nav-list">
+                        <router-link to="/AddStudent" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Student Admission
                         </router-link>
                       </li>
@@ -430,21 +417,21 @@
                   </div>
                 </li>
                 <li>
-                  <a @click="dropdown('link1','dropIcon1')" class="navList">
-                    <router-link class="routerLink" to>
+                  <a @click="dropdown('link1','dropIcon1')" class="navList" id="globalList">
+                    <router-link class="routerLink" id="globalLink" to>
                       <i class="fa fa-calendar" id="sidebarIcon"></i>Attendance
                       <i class="fa fa-angle-right dropIcon" id="dropIcon1"></i>
                     </router-link>
                   </a>
-                  <div class="dropdownForm">
+                  <div class="dropdownForm" id="dropdownForm">
                     <ul class="link" id="link1">
                       <li class="nav-list">
-                        <router-link class="nav-list" to="/stuattendance">
+                        <router-link class="nav-list" id="nav-list" to="/stuattendance">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Student Attendance
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/attendancedate" class="nav-list">
+                        <router-link to="/attendancedate" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Attendance By Date
                         </router-link>
                       </li>
@@ -452,31 +439,31 @@
                   </div>
                 </li>
                 <li>
-                  <a @click="dropdown('link2','dropIcon2')" class="navList">
-                    <router-link class="routerLink" to>
+                  <a @click="dropdown('link2','dropIcon2')" class="navList" id="globalList">
+                    <router-link class="routerLink" id="globalLink" to>
                       <i class="fa fa-clipboard" id="sidebarIcon"></i>Examinations
                       <i class="fa fa-angle-right dropIcon" id="dropIcon2"></i>
                     </router-link>
                   </a>
-                  <div class="dropdownForm">
+                  <div class="dropdownForm" id="dropdownForm">
                     <ul class="link" id="link2">
                       <li class="nav-list">
-                        <router-link class="nav-list" to="/ExamList">
+                        <router-link class="nav-list" id="nav-list" to="/ExamList">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Exam List
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/examschadule" class="nav-list">
+                        <router-link to="/examschadule" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Exam Schedule
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/markgrade" class="nav-list">
+                        <router-link to="/markgrade" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Marks Grade
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/MarkRegister" class="nav-list">
+                        <router-link to="/MarkRegister" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Marks Register
                         </router-link>
                       </li>
@@ -484,8 +471,8 @@
                   </div>
                 </li>
                 <li>
-                  <a @click="dropdown('link3','dropIcon3')" class="navList">
-                    <router-link class="routerLink" to>
+                  <a @click="dropdown('link3','dropIcon3')" class="navList" id="globalList">
+                    <router-link class="routerLink" id="globalLink" to>
                       <i
                         class="fa fa-graduation-cap"
                         style="margin:0 1.3rem !important;"
@@ -494,45 +481,45 @@
                       <i class="fa fa-angle-right dropIcon" id="dropIcon3"></i>
                     </router-link>
                   </a>
-                  <div class="dropdownForm">
+                  <div class="dropdownForm" id="dropdownForm">
                     <ul class="link" id="link3">
                       <li class="nav-list">
-                        <router-link class="nav-list" to="/viewtimetable">
+                        <router-link class="nav-list" id="nav-list" to="/viewtimetable">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Class Timetable
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/classteacher" class="nav-list">
+                        <router-link to="/classteacher" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Assign Class Teacher
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/viewasssubjects" class="nav-list">
+                        <router-link to="/viewasssubjects" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Assign Subjects
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/prostudents" class="nav-list">
+                        <router-link to="/prostudents" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Promote Students
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/subjects" class="nav-list">
+                        <router-link to="/subjects" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Subjects
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/class" class="nav-list">
+                        <router-link to="/class" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Class
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/sections" class="nav-list">
+                        <router-link to="/sections" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Sections
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/academicyear" class="nav-list">
+                        <router-link to="/academicyear" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Academic-Year
                         </router-link>
                       </li>
@@ -540,31 +527,31 @@
                   </div>
                 </li>
                 <li>
-                  <a @click="dropdown('link4','dropIcon4')" class="navList">
-                    <router-link class="routerLink" to>
+                  <a @click="dropdown('link4','dropIcon4')" class="navList" id="globalList">
+                    <router-link class="routerLink" id="globalLink" to>
                       <i class="fa fa-street-view" id="sidebarIcon"></i>HRM
                       <i class="fa fa-angle-right dropIcon" id="dropIcon4"></i>
                     </router-link>
                   </a>
-                  <div class="dropdownForm">
+                  <div class="dropdownForm" id="dropdownForm">
                     <ul class="link" id="link4">
                       <li class="nav-list">
-                        <router-link class="nav-list" to="/staffdirectory">
+                        <router-link class="nav-list" id="nav-list" to="/staffdirectory">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Staff Directory
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/staattendance" class="nav-list">
+                        <router-link to="/staattendance" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Staff Attendance
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/department" class="nav-list">
+                        <router-link to="/department" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Department
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/designation" class="nav-list">
+                        <router-link to="/designation" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Designation
                         </router-link>
                       </li>
@@ -572,36 +559,36 @@
                   </div>
                 </li>
                 <li>
-                  <a @click="dropdown('link5','dropIcon5')" class="navList">
-                    <router-link class="routerLink" to>
+                  <a @click="dropdown('link5','dropIcon5')" class="navList" id="globalList">
+                    <router-link class="routerLink" id="globalLink" to>
                       <i class="fa fa-download" id="sidebarIcon"></i>Download Center
                       <i class="fa fa-angle-right dropIcon" id="dropIcon5"></i>
                     </router-link>
                   </a>
-                  <div class="dropdownForm">
+                  <div class="dropdownForm" id="dropdownForm">
                     <ul class="link" id="link5">
                       <li class="nav-list">
-                        <router-link class="nav-list" to="/uploadcontent">
+                        <router-link class="nav-list" id="nav-list" to="/uploadcontent">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Upload Content
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/assignment" class="nav-list">
+                        <router-link to="/assignment" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Assignments
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/stumaterial" class="nav-list">
+                        <router-link to="/stumaterial" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Study Material
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/syllabus" class="nav-list">
+                        <router-link to="/syllabus" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Syllabus
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/othdownload" class="nav-list">
+                        <router-link to="/othdownload" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Other Downloads
                         </router-link>
                       </li>
@@ -609,21 +596,21 @@
                   </div>
                 </li>
                 <li>
-                  <a @click="dropdown('link6','dropIcon6')" class="navList">
-                    <router-link class="routerLink" to>
+                  <a @click="dropdown('link6','dropIcon6')" class="navList" id="globalList">
+                    <router-link class="routerLink" id="globalLink" to>
                       <i class="fa fa-flask" id="sidebarIcon"></i>Homework
                       <i class="fa fa-angle-right dropIcon" id="dropIcon6"></i>
                     </router-link>
                   </a>
-                  <div class="dropdownForm">
+                  <div class="dropdownForm" id="dropdownForm">
                     <ul class="link" id="link6">
                       <li class="nav-list">
-                        <router-link class="nav-list" to="/homework">
+                        <router-link class="nav-list" id="nav-list" to>
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Add Homework
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/evaluation_report" class="nav-list">
+                        <router-link to class="nav-list" id="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Evaluation Report
                         </router-link>
                       </li>
@@ -631,26 +618,26 @@
                   </div>
                 </li>
                 <li>
-                  <a @click="dropdown('link7','dropIcon7')" class="navList">
-                    <router-link class="routerLink" to>
+                  <a @click="dropdown('link7','dropIcon7')" class="navList" id="globalList">
+                    <router-link class="routerLink" id="globalLink" to>
                       <i class="fa fa-bus" id="sidebarIcon"></i>Transport
                       <i class="fa fa-angle-right dropIcon" id="dropIcon7"></i>
                     </router-link>
                   </a>
-                  <div class="dropdownForm">
+                  <div class="dropdownForm" id="dropdownForm">
                     <ul class="link" id="link7">
                       <li class="nav-list">
-                        <router-link class="nav-list" to="/routes">
+                        <router-link class="nav-list" id="nav-list" to="/routes">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Routes
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/vehicle" class="nav-list">
+                        <router-link to="/vehicle" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Vehicles
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/assvehicle" class="nav-list">
+                        <router-link to="/assvehicle" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Assign Vehicle
                         </router-link>
                       </li>
@@ -658,26 +645,26 @@
                   </div>
                 </li>
                 <li>
-                  <a @click="dropdown('link8','dropIcon8')" class="navList">
-                    <router-link class="routerLink" to>
+                  <a @click="dropdown('link8','dropIcon8')" class="navList" id="globalList">
+                    <router-link class="routerLink" id="globalLink" to>
                       <i class="fa fa-building" id="sidebarIcon"></i>Hostel
                       <i class="fa fa-angle-right dropIcon" id="dropIcon8"></i>
                     </router-link>
                   </a>
-                  <div class="dropdownForm">
+                  <div class="dropdownForm" id="dropdownForm">
                     <ul class="link" id="link8">
                       <li class="nav-list">
-                        <router-link class="nav-list" to="/hostelroom">
+                        <router-link class="nav-list" id="nav-list" to="/hostelroom">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Hostel Rooms
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/roomtype" class="nav-list">
+                        <router-link to="/roomtype" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Room Type
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/hostel" class="nav-list">
+                        <router-link to="/hostel" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Hostel
                         </router-link>
                       </li>
@@ -685,8 +672,8 @@
                   </div>
                 </li>
                 <li>
-                  <a @click="dropdown('link9','dropIcon9')" class="navList">
-                    <router-link class="routerLink" to>
+                  <a @click="dropdown('link9','dropIcon9')" class="navList" id="globalList">
+                    <router-link class="routerLink" id="globalLink" to>
                       <i
                         class="fa fa-bar-chart"
                         style="margin:0 1.3rem !important;"
@@ -695,45 +682,50 @@
                       <i class="fa fa-angle-right dropIcon" id="dropIcon9"></i>
                     </router-link>
                   </a>
-                  <div class="dropdownForm">
+                  <div class="dropdownForm" id="dropdownForm">
                     <ul class="link" id="link9">
                       <li class="nav-list">
-                        <router-link class="nav-list" to="/stureport">
+                        <router-link class="nav-list" id="nav-list" to="/stureport">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Student Report
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link class="nav-list" to>
+                        <router-link class="nav-list" id="nav-list" to>
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Student Guardian
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/studenthistory" class="nav-list">
+                        <router-link to="/studenthistory" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Student History
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/attendancereport" class="nav-list">
+                        <router-link to="/attendancereport" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Attendance Report
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/MarkRegister" class="nav-list">
+                        <router-link to="/MarkRegister" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Exam Marks Report
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/staattreport" class="nav-list">
+                        <router-link class="nav-list" id="nav-list" to>
+                          <i class="fa fa-angle-double-right listItem" id="listItem"></i>Close Academics
+                        </router-link>
+                      </li>
+                      <li class="nav-list">
+                        <router-link to="/staattreport" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Staff Attendance Report
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/stutransportreport" class="nav-list">
+                        <router-link to="/stutransportreport" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Student Transport Report
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/stuhostelreport" class="nav-list">
+                        <router-link to="/stuhostelreport" id="nav-list" class="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Student Hostel Report
                         </router-link>
                       </li>
@@ -741,26 +733,26 @@
                   </div>
                 </li>
                 <li>
-                  <a @click="dropdown('link10','dropIcon10')" class="navList">
-                    <router-link class="routerLink" to>
+                  <a @click="dropdown('link10','dropIcon10')" class="navList" id="globalList">
+                    <router-link class="routerLink" id="globalLink" to>
                       <i class="fa fa-sliders" id="sidebarIcon"></i>System Settings
                       <i class="fa fa-angle-right dropIcon" id="dropIcon10"></i>
                     </router-link>
                   </a>
-                  <div class="dropdownForm">
+                  <div class="dropdownForm" id="dropdownForm">
                     <ul class="link" id="link10">
                       <li class="nav-list">
-                        <router-link class="nav-list" to="/gensetting">
+                        <router-link class="nav-list" id="nav-list" to="/gensetting">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>General Setting
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="role" class="nav-list">
+                        <router-link to class="nav-list" id="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Roles Permissions
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/users" class="nav-list">
+                        <router-link to="/users" class="nav-list" id="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Users
                         </router-link>
                       </li>
@@ -775,11 +767,11 @@
 
       <div class="smallView" id="smallBar">
         <div class="exit">
-          <label class="bigView" onclick="changeBar()">X</label>
+          <label class="bigView" id="bigView" onclick="changeBar()">X</label>
         </div>
 
         <div class="smallBar" id="smBar">
-          <ul class="Links" onclick="showForm()">
+          <ul class="Links" id="Links" onclick="showForm()">
             <a class="link">
               <li>
                 <i class="fa fa-credit-card smallIcon"></i>
@@ -981,13 +973,13 @@
               <li>
                 <i class="fa fa-flask smallIcon" style="zoom:1.3 !important;"></i>
                 <ul class="smallLists">
-                  <router-link to="/homework" class="smallLink">
+                  <router-link to class="smallLink">
                     <li class="smLink">
                       <i class="fa fa-angle-double-right smIcon"></i>
                       Add Homework
                     </li>
                   </router-link>
-                  <router-link to="/evaluation_report" class="smallLink">
+                  <router-link to class="smallLink">
                     <li class="smLink">
                       <i class="fa fa-angle-double-right smIcon"></i>
                       Evaluation Report
@@ -1080,6 +1072,12 @@
                       Exam Marks Report
                     </li>
                   </router-link>
+                  <router-link to class="smallLink">
+                    <li class="smLink">
+                      <i class="fa fa-angle-double-right smIcon"></i>
+                      Close Academics
+                    </li>
+                  </router-link>
                   <router-link to="/staattreport" class="smallLink">
                     <li class="smLink">
                       <i class="fa fa-angle-double-right smIcon"></i>
@@ -1131,8 +1129,43 @@
       </div>
     </div>
 
+    <div
+      class="modal fade"
+      id="exampleModalCenter1"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="width:653px;">
+          <div class="modal-body" style="padding:0;">
+            <div class="card-header" id="globalcardHeader" style="width: 100%;margin-left: 0;">
+              <h6>Session</h6>
+              <i
+                class="fa fa-close"
+                data-dismiss="modal"
+                style="cursor: pointer;padding: 0 10px;position: absolute;right: 5px;"
+              ></i>
+            </div>
+            <div class="textbox" style="width: 100% !important;padding: 1rem 1rem;">
+              <label>Session</label>
+              <select class="inputbox">
+                <option value="2017-2018">2017-2018</option>
+                <option value="2018-2019">2018-2019</option>
+                <option value="2019-2020">2019-2020</option>
+              </select>
+            </div>
+          </div>
+          <div class="modal-footer" style="padding: 0px;">
+            <button type="button" id="globalSave" style="margin: 1rem;" class="save">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
     <div class="content">
-      <div class="content_header">
+      <div class="content_header pc">
         <i class="fa fa-bars" id="list" onclick="changeBar()"></i>
         <div class="Items">
           <div class="userTitle">
@@ -1141,7 +1174,7 @@
           </div>
         </div>
         <div class="profile">
-          <img src="/account.jpg" class="user">
+          <img src="/account.jpg" class="user" />
           <!-- <i class="fa fa-user-circle user"></i> -->
         </div>
         <div class="notific">
@@ -1164,7 +1197,25 @@
 </template>
 
 <script>
+import { EventBus } from "../js/event-bus.js";
 export default {
+  data() {
+    return {
+      colors: [],
+      school: {},
+      oldElemtnt: ".",
+      oldItemId: "."
+    };
+  },
+  created() {
+    EventBus.$on("clicked", response => {
+      this.getColor();
+    });
+    this.getColor();
+    this.axios.get("/api/schools").then(response => {
+      this.school = response.data;
+    });
+  },
   methods: {
     dropdown(id, icon) {
       if (document.getElementById(id).style.display == "block") {
@@ -1174,6 +1225,576 @@ export default {
         document.getElementById(id).style.display = "block";
         document.getElementById(icon).style.transform = "rotate(90deg)";
       }
+    },
+    openSidebar() {
+      document.getElementById("sidebar").style.marginLeft = "0";
+      document.getElementById("sidebar").style.boxShadow = "0px 0px 10px black";
+      document.getElementById("shadow").style.display = "block";
+    },
+    closeSidebar() {
+      document.getElementById("sidebar").style.marginLeft = "-300px";
+      document.getElementById("sidebar").style.boxShadow = "none";
+      document.getElementById("shadow").style.display = "none";
+    },
+    openDropDown(contentID, ItemID) {
+      var boxShhadow = "";
+      if (this.colors.color == "defaultColor") {
+        boxShhadow = "1px 1px 5px #1b5e20";
+      } else if (this.colors.color == "redColor") {
+        boxShhadow = "1px 1px 5px darkred";
+      } else if (this.colors.color == "blueColor") {
+        boxShhadow = "1px 1px 5px darkcyan";
+      } else if (this.colors.color == "darkColor") {
+        boxShhadow = "1px 1px 5px currentColor";
+      } else if (this.colors.color == "lightColor") {
+        boxShhadow = "1px 1px 5px rgb(156, 158, 156)";
+      }
+
+      if (document.getElementById(contentID).style.display == "block") {
+        document.getElementById(contentID).style.display = "none";
+        document.getElementById(ItemID).style.boxShadow = boxShhadow;
+      } else {
+        document.getElementById(contentID).style.display = "block";
+        document.getElementById(ItemID).style.boxShadow = boxShhadow;
+      }
+      if (this.oldElemtnt != contentID) {
+        if (document.getElementById(this.oldElemtnt).style.display == "block") {
+          document.getElementById(this.oldElemtnt).style.display = "none";
+        }
+      }
+      if (this.oldItemId != ItemID) {
+        document.getElementById(this.oldItemId).style.boxShadow = "none";
+      }
+      this.oldElemtnt = contentID;
+      this.oldItemId = ItemID;
+    },
+    getColor() {
+      this.axios.get("/api/settings").then(response => {
+        this.colors = response.data;
+        if (this.colors.color == "defaultColor") {
+          document.getElementById("schoolName").style.background = "#1b5e20";
+          var dark = document.getElementsByClassName("dropdownForm");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#044604";
+          }
+          var dark = document.getElementsByClassName("item-body");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.borderTop = "solid #1b5e20 1px";
+          }
+          var dark = document.getElementsByClassName("item");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("router");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("mobile");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("block1");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+          }
+          var dark = document.getElementsByClassName("content");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("card");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "khaki";
+          }
+          var dark = document.getElementsByClassName("card-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("sub-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("save");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("searchButton");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("viewButton");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("edit");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("editSm");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#d8d8d8";
+          }
+          var dark = document.getElementsByClassName("bigView");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("Links");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("smLink");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+          }
+        } else if (this.colors.color == "redColor") {
+          var dark = document.getElementsByClassName("block2");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+          }
+          var dark = document.getElementsByClassName("item-body");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.borderTop = "solid darkred 1px";
+          }
+          var dark = document.getElementsByClassName("router");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "darkred";
+          }
+          var dark = document.getElementsByClassName("mobile");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkred";
+          }
+          var dark = document.getElementsByClassName("item");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "darkred";
+          }
+          var dark = document.getElementsByClassName("content");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkred";
+          }
+          document.getElementById("schoolName").style.background = "darkred";
+          var dark = document.getElementsByClassName("dropdownForm");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#670404";
+          }
+          var dark = document.getElementsByClassName("card");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkgrey";
+          }
+          var dark = document.getElementsByClassName("card-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#5e1b1b";
+          }
+          var dark = document.getElementsByClassName("sub-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#5e1b1b";
+          }
+          var dark = document.getElementsByClassName("save");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#5e1b1b";
+          }
+          var dark = document.getElementsByClassName("searchButton");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#5e1b1b";
+          }
+          var dark = document.getElementsByClassName("viewButton");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#5e1b1b";
+          }
+          var dark = document.getElementsByClassName("edit");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#5e1b1b";
+          }
+          var dark = document.getElementsByClassName("editSm");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#d8d8d8";
+          }
+          var dark = document.getElementsByClassName("bigView");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "rgb(139, 0, 0)";
+          }
+          var dark = document.getElementsByClassName("Links");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "rgb(139, 0, 0)";
+          }
+          var dark = document.getElementsByClassName("smLink");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#5e1b1b";
+          }
+        } else if (this.colors.color == "blueColor") {
+          var dark = document.getElementsByClassName("block3");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+          }
+          var dark = document.getElementsByClassName("item-body");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.borderTop = "solid darkcyan 1px";
+          }
+          var dark = document.getElementsByClassName("router");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "darkcyan";
+          }
+          var dark = document.getElementsByClassName("mobile");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkcyan";
+          }
+          var dark = document.getElementsByClassName("item");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "darkcyan";
+          }
+          var dark = document.getElementsByClassName("content");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkcyan";
+          }
+          document.getElementById("schoolName").style.background = "darkcyan";
+          var dark = document.getElementsByClassName("dropdownForm");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#016868";
+          }
+          var dark = document.getElementsByClassName("card");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "powderblue";
+          }
+          var dark = document.getElementsByClassName("card-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e5e";
+          }
+          var dark = document.getElementsByClassName("sub-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e5e";
+          }
+          var dark = document.getElementsByClassName("save");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e5e";
+          }
+          var dark = document.getElementsByClassName("searchButton");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e5e";
+          }
+          var dark = document.getElementsByClassName("viewButton");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e5e";
+          }
+          var dark = document.getElementsByClassName("edit");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e5e";
+          }
+          var dark = document.getElementsByClassName("editSm");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#d8d8d8";
+          }
+          var dark = document.getElementsByClassName("bigView");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkcyan";
+          }
+          var dark = document.getElementsByClassName("Links");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkcyan";
+          }
+          var dark = document.getElementsByClassName("smLink");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e5e";
+          }
+        } else if (this.colors.color == "darkColor") {
+          var dark = document.getElementsByClassName("block4");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+          }
+          var dark = document.getElementsByClassName("item-body");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.borderTop = "solid currentColor 1px";
+          }
+          var dark = document.getElementsByClassName("router");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "currentColor";
+          }
+          var dark = document.getElementsByClassName("item");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "currentColor";
+          }
+          var dark = document.getElementsByClassName("mobile");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "currentColor";
+          }
+          var dark = document.getElementsByClassName("content");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "currentColor";
+          }
+          document.getElementById("schoolName").style.background =
+            "currentColor";
+          var dark = document.getElementsByClassName("dropdownForm");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#383c40";
+          }
+          var dark = document.getElementsByClassName("card");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "gainsboro";
+          }
+          var dark = document.getElementsByClassName("card-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "black";
+          }
+          var dark = document.getElementsByClassName("sub-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "black";
+          }
+          var dark = document.getElementsByClassName("save");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "black";
+          }
+          var dark = document.getElementsByClassName("searchButton");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "black";
+          }
+          var dark = document.getElementsByClassName("viewButton");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "black";
+          }
+          var dark = document.getElementsByClassName("edit");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "black";
+          }
+          var dark = document.getElementsByClassName("editSm");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#d8d8d8";
+          }
+          var dark = document.getElementsByClassName("bigView");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#212529";
+          }
+          var dark = document.getElementsByClassName("Links");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#212529";
+          }
+          var dark = document.getElementsByClassName("smLink");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "black";
+          }
+        } else if (this.colors.color == "lightColor") {
+          var dark = document.getElementsByClassName("block5");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+          }
+          var dark = document.getElementsByClassName("router");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("item-body");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.borderTop = "solid black 1px";
+          }
+          var dark = document.getElementsByClassName("item");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("line");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "black";
+          }
+          var dark = document.getElementsByClassName("mobile");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.backgroundColor = "#dee3de";
+          }
+          var dark = document.getElementsByClassName("fontColour");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("moreInformation");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("content");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "white";
+          }
+          var dark = document.getElementsByClassName("tabTheme");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("sidebar_header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "black";
+            dark[color].style.background = "white";
+            dark[color].style.borderBottom = "1px solid #656565";
+          }
+          var dark = document.getElementsByClassName("smallIcon");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("expandsidebar");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "white";
+          }
+          var dark = document.getElementsByClassName("dropdownForm");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#dee3de";
+          }
+          var dark = document.getElementsByClassName("card");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#eef1ea";
+          }
+          var dark = document.getElementsByClassName("card-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#dee3de";
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("sub-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#dee3de";
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("save");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#dee3de";
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("searchButton");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#dee3de";
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("viewButton");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#dee3de";
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("edit");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "black";
+            dark[color].style.background = "#dee3de";
+          }
+          var dark = document.getElementsByClassName("editSm");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "black";
+            dark[color].style.background = "white";
+          }
+          var dark = document.getElementsByClassName("bigView");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "white";
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("Links");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "white";
+          }
+          var dark = document.getElementsByClassName("smLink");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#dee3de";
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("navList");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.borderBottom =
+              "1px solid rgba(199, 199, 199, 0.75)";
+          }
+          var dark = document.getElementsByClassName("additional-menu");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "#000000d4";
+          }
+          var dark = document.getElementsByClassName("link");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "#000000d4";
+          }
+        }
+      });
     }
   }
 };

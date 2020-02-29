@@ -42,8 +42,8 @@
             <label for="name">Attendance Date</label>
             <input type="date" class="inputbox" />
           </div>
-          <div class="col-12">
-            <button class="searchButton">Search</button>
+          <div class="col-12 column-12">
+            <button class="searchButton" id="globalSearch">Search</button>
           </div>
         </div>
       </div>
@@ -168,11 +168,15 @@
   </div>
 </template>
 <script>
+import { EventBus } from "../../js/event-bus.js";
 export default {
   data() {
     return {
       show: null
     };
+  },
+  created() {
+    EventBus.$emit("clicked");
   },
   methods: {
     allTableHeader(id, id1, id2, id3) {

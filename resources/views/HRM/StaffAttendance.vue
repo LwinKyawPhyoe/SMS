@@ -68,8 +68,8 @@
             </vue-ctk-date-time-picker>
             <span id="datemsg" class="error_message">Attendance Date is required</span>
           </div>
-          <div class="col-12">
-            <button @click="searchByRole()" class="searchButton">Search</button>
+          <div class="col-12 column-12">
+            <button @click="searchByRole()" id="globalSearch" class="searchButton">Search</button>
           </div>
         </div>
       </div>
@@ -190,6 +190,7 @@ export default {
     };
   },
   created() {
+    EventBus.$emit("clicked");
     EventBus.$on("clicked", response => {
       console.log("-->" + JSON.stringify(response.check));
       this.makeAsHoliCheck = response.check;

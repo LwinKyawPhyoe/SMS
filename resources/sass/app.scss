@@ -57,25 +57,23 @@ body {
 /* Track */
 
 ::-webkit-scrollbar-track {
-  background: #f1f1f1;
+  background: transparent;
 }
 /* Handle */
 
 ::-webkit-scrollbar-thumb {
-  background: grey;
+  background: rgba(0, 0, 0, 0.15);
 }
 /* Handle on hover */
-
-::-webkit-scrollbar-thumb:hover {
-  background: #4e733acf;
-}
-
 @media (max-width: 767.9px) {
-  // .content {
-  //   height: 0;
-  // }
+  .content_header {
+    display: none;
+  }
   .page,
   header {
+    display: block;
+  }
+  .mobile {
     display: block;
   }
   .pc {
@@ -84,7 +82,7 @@ body {
   #bar,
   .ViewStudent {
     margin-left: 0 !important;
-    margin-top: -94vh !important;
+    margin-top: 1rem !important;
     z-index: 0;
   }
   .saveexamschadule {
@@ -100,7 +98,7 @@ body {
   .StudentInformation,
   .StaffInformation,
   .StudentHistory {
-    margin-top: -94vh !important;
+    margin-top: 0px !important;
   }
 }
 @media (min-width: 768px) {
@@ -111,21 +109,26 @@ body {
   .settingModal {
     width: 80% !important;
   }
+  .content_header {
+    display: block;
+  }
   .page,
   header {
+    display: none;
+  }
+  .mobile,
+  .shadow {
     display: none;
   }
   .pc {
     display: block;
   }
   #bar {
-    margin-left: 15.5rem;
+    margin-left: 16rem;
     margin-top: 2rem;
   }
-  .Student {
-    margin-top: 4.3rem !important;
-  }
 }
+
 @media (max-height: 460px) {
   .body_content {
     padding-bottom: 1rem;
@@ -306,38 +309,8 @@ body {
     padding-bottom: 1rem;
   }
 }
-//Modal Section Media
 
-@media (max-width: 790px) and (min-width: 530px) {
-  .modal-content {
-    width: 510px !important;
-  }
+.active > a {
+  background: #1a1a1aa8;
+  color: white !important;
 }
-@media (max-width: 530px) and (min-width: 411px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-@media (max-width: 411px) and (min-width: 375px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-@media (max-width: 375px) and (min-width: 360px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-
-@media (max-width: 360px) and (min-width: 320px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-@media (max-width: 320px) and (min-width: 0px) {
-  .modal-content {
-    width: 98% !important;
-  }
-}
-
-//End modal section css.

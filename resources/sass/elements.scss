@@ -1,3 +1,7 @@
+.tabTheme {
+  position: relative;
+  overflow: hidden;
+}
 // All Text Box & Select Box
 .inputbox {
   padding-left: 5px;
@@ -37,7 +41,6 @@ label {
   display: flex;
   align-items: center;
   height: 34px;
-  background-color: #1b5e20;
   margin: -20px 15px 0px 15px;
   padding: 0;
   padding-left: 20px;
@@ -62,7 +65,6 @@ label {
   display: flex;
   align-items: center;
   height: 34px;
-  background-color: #1b5e20;
   margin: 0 15px 0px 15px;
   padding: 0;
   padding-left: 20px;
@@ -91,6 +93,7 @@ label {
 .textareas {
   width: 100%;
   padding: 5px;
+  font-size: 11pt;
   outline: none;
   border: 1px solid #d2d6de;
 }
@@ -135,6 +138,27 @@ label {
   }
 }
 // Search Bar & PDF Print
+
+.metaBtn {  
+  color: white;
+  border: none;
+  padding: 5px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  font-size: 14px;
+  background: none;
+  width: 150px;
+  height: 34px;
+}
+.metaBtn:active {
+  border: none;
+  outline: none;
+}
+.metaBtn:focus {
+  border: none;
+  outline: none;
+}
 
 // ** Assign Elements
 strong {
@@ -368,53 +392,18 @@ input[type="file"] {
 }
 
 // Search Button & Save Button
-.searchButton {
+#globalSearch,
+#globalSave {
   float: right;
   width: 80px !important;
   height: 30px;
   font-size: 13px;
+  position: relative;
+  overflow: hidden;
   margin: 1rem 0 0 1rem;
   border: none;
   color: White;
-  background-color: #1b5e20;
   border-radius: 3px;
-}
-.save {
-  margin: 1rem;
-  width: 100px;
-  font-size: 14px;
-  margin-right: 0px;
-  margin-bottom: 0;
-  float: right;
-  outline: none;
-  color: white;
-  height: 30px;
-  background: #1b5e20;
-  border: none;
-  border-radius: 5px;
-}
-
-/**
-  Wai Yan Soe
-**/
-
-.metaBtn {
-  color: white;
-  background-color: #1b5e20;
-  border: none;
-  padding: 5px;
-  text-align: center;
-  font-size: 14px;
-  width: 150px;
-  height: 34px;
-}
-.metaBtn:active {
-  border: none;
-  outline: none;
-}
-.metaBtn:focus {
-  border: none;
-  outline: none;
 }
 
 .confirmBtn {
@@ -480,40 +469,54 @@ input[type="file"] {
   End of Wai Yan Soe
 **/
 // View Button
-.viewButton {
+.viewButton,
+#globalView {
   padding: 3px 0.5rem;
   font-size: 10px;
+  transition-duration: 0.4s;
+  position: relative;
   line-height: 1.5;
-  background: #1b5e20;
   border-radius: 0.2rem;
   border: none;
+  overflow: hidden;
   color: white;
   margin-right: 5px;
 }
 
 // All Button Ripple Effect
-.save,
-.searchButton,
-.tableLink,
-.tableLinks {
-  background-position: center;
-  transition: background 0.6s;
+#globalView:after,
+#globalSearch:after,
+#globalSave:after,
+#globalEdit:after,
+.tabTheme:after,
+.navList:after,
+#nav-list:after,
+.tableLink:after,
+.tableLinks:after {
+  content: "";
+  background: #9494947c;
+  display: block;
+  position: absolute;
+  padding-top: 300%;
+  padding-left: 350%;
+  margin-left: -20px !important;
+  margin-top: -120%;
+  opacity: 0;
+  transition: all 0.8s;
 }
-.save:hover,
-.searchButton:hover,
-.tableLink:hover {
-  background: #1b5e20 radial-gradient(circle, transparent 1%, #1b5e20 1%) center/15000%;
-}
-.tableLinks:hover {
-  background: whitesmoke radial-gradient(circle, transparent 1%, whitesmoke 1%) center/15000%;
-}
-.save:active,
-.searchButton:active,
-.tableLink:active,
-.tableLinks:active {
-  background-color: rgba(44, 92, 51, 0.623);
-  background-size: 100%;
-  transition: background 0s;
+#globalView:active:after,
+#globalSearch:active:after,
+#globalSave:active:after,
+#globalEdit:active:after,
+.tabTheme:active:after,
+.navList:active:after,
+#nav-list:active:after,
+.tableLink:active:after,
+.tableLinks:active:after {
+  padding: 0;
+  margin: 0;
+  opacity: 1;
+  transition: 0s;
 }
 
 // Save & Edit & Delete Table Icon
@@ -546,6 +549,8 @@ input[type="file"] {
   .tableLink,
   .tableLinkActive {
     border: none;
+    position: relative;
+    overflow: hidden;
     display: block;
     font-weight: bolder;
     padding: 5px 0 5px 1rem;
@@ -575,116 +580,113 @@ input[type="file"] {
   display: none;
 }
 
-
-
-.textbox{
+.textbox {
   input::-webkit-outer-spin-button,
   input::-webkit-inner-spin-button {
-  -webkit-appearance: none;
-  margin: 0;
+    -webkit-appearance: none;
+    margin: 0;
   }
-.vdp-datepicker{
-  input{
-  padding-left: 5px;
-  font-size: 9.5pt;
-  display: block;
-  width: 100%;
-  height: calc(2.25rem + 2px);
-  height: 28px !important;
-  line-height: 1.5;
-  color: black;
-  border-radius: 0rem;
-  border: 1px solid #d2d6de;
-}
-input:hover {
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  outline: gray;
-}
-input:focus {
-  -webkit-box-shadow: none;
-  box-shadow: none;
-  outline: gray;
-  border: 0.5px solid green;
-}
-}
- 
+  .vdp-datepicker {
+    input {
+      padding-left: 5px;
+      font-size: 9.5pt;
+      display: block;
+      width: 100%;
+      height: calc(2.25rem + 2px);
+      height: 28px !important;
+      line-height: 1.5;
+      color: black;
+      border-radius: 0rem;
+      border: 1px solid #d2d6de;
+    }
+    input:hover {
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      outline: gray;
+    }
+    input:focus {
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      outline: gray;
+      border: 0.5px solid green;
+    }
+  }
+
   .vdp-datepicker__calendar {
-      position: absolute;
-      z-index: 100;
-      background: white;
-      width: 250px;
-      border: 1px solid #ccc;
-      
+    position: absolute;
+    z-index: 100;
+    background: white;
+    width: 250px;
+    border: 1px solid #ccc;
   }
-header{
-  display: -webkit-box !important;
-  display: flex !important;
-  position: absolute;
-  width: 250px;
-  height: auto;
-  z-index: 1;
-  background: #044604;
-  color: #fff;
-  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-  text-align: center;
-  margin-left: 0px;
-  .up:not(.disabled):hover{
+  header {
+    display: -webkit-box !important;
+    display: flex !important;
+    position: absolute;
+    width: 250px;
+    height: auto;
+    z-index: 1;
+    background: #044604;
+    color: #fff;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    text-align: center;
+    margin-left: 0px;
+    .up:not(.disabled):hover {
       background-color: #1b5e20 !important;
-  }
-  .next:after{
+    }
+    .next:after {
       border-left: 10px solid white !important;
-  }
-  .next:hover,.prev:hover{
+    }
+    .next:hover,
+    .prev:hover {
       background-color: #1b5e20 !important;
-  }
-  .prev:after{
+    }
+    .prev:after {
       border-right: 10px solid white !important;
+    }
   }
-  
-}
 }
 .row {
-margin: 10px;
-.textbox {
+  margin: 10px;
+  .textbox {
     width: 25%;
     padding: 5px;
-    p{
-        margin: 0;
-        padding: 0;
+    p {
+      margin: 0;
+      padding: 0;
     }
-    .span{
-        margin: 4px 5px 0px 0;
-        float:right;
-        padding:0 7px;
-        cursor: pointer;
-        background-color: #1b5e20;
-        color: white;
-        border-radius: 3px;
+    .span {
+      margin: 4px 5px 0px 0;
+      float: right;
+      padding: 0 7px;
+      cursor: pointer;
+      background-color: #1b5e20;
+      color: white;
+      border-radius: 3px;
     }
-    img{
-        margin: 0 50px;
-        margin: 0;
-        text-align: center;
+    img {
+      margin: 0 50px;
+      margin: 0;
+      text-align: center;
     }
 
     label {
-        font-size: 13px;
+      font-size: 13px;
     }
     i {
-        font-weight: lighter;
-        font-size: 20px;
-        margin-right: 5px;
+      font-weight: lighter;
+      font-size: 20px;
+      margin-right: 5px;
     }
-}
-.textarea{
-    span{
-        input{
-            margin-left: 10px;
-        }
+  }
+  .textarea {
+    span {
+      input {
+        margin-left: 10px;
+      }
     }
-}
-textarea.form-control {
+  }
+  textarea.form-control {
     height: 180px;
-}
+  }
 }

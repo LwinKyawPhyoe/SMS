@@ -1,5 +1,5 @@
 <template>
-  <div class="StaffInformation" id="bar">
+  <div class="StaffInformation form" id="bar">
     <div class="toplink">
       <h4 style="color:var(--primary);margin-bottom:5px;">HRM</h4>
       <h6>
@@ -7,9 +7,8 @@
       </h6>
     </div>
     <hr />
-    <br />
     <div class="card">
-      <div class="stucard-header">
+      <div class="card-header">
         <h6>Select Criteria</h6>
         <router-link to="/staffdirectory/add" class="add">Add Staff</router-link>
       </div>
@@ -32,7 +31,7 @@
                 <option :value="role.id" v-for="(role) in roles" :key="role.id">{{role.name}}</option>
               </select>
               <span id="search_rolemsg" class="error_message">Role is required</span>
-              <button type="submit" class="save">Search</button>
+              <button type="submit" id="globalSearch" class="search">Search</button>
             </form>
           </div>
           <div class="textarea">
@@ -43,23 +42,22 @@
                 class="inputbox"
                 placeholder="Search By staff id,name,..etc."
               />
-              <button type="submit" class="save">Search</button>
+              <button type="submit" id="globalSearch" class="searchButton">Search</button>
             </form>
           </div>
         </div>
       </div>
-      <div class="sub-header">
+      <div class="sub-header" style="padding: 0;">
         <button
-          class="metaBtn"
+          class="metaBtn tabTheme"
           id="listView"
           onclick="changeMega('listView','detailsView')"
           @click="listView()"
-          style="margin-left:-20px;border-top-left-radius:3px;color:black;background:white;"
         >
           <i class="fa fa-list"></i> List View
         </button>
         <button
-          class="metaBtn"
+          class="metaBtn tabTheme"
           id="detailsView"
           onclick="changeMega('detailsView','listView')"
           @click="detailsView()"
@@ -111,7 +109,7 @@
                 <td nowrap>{{staff.designation.designation_name}}</td>
                 <td nowarp>{{staff.phone}}</td>
                 <td>
-                  <router-link  :to="{name: 'viewstaffdirectory', params: { id: staff.id }}">
+                  <router-link :to="{name: 'viewstaffdirectory', params: { id: staff.id }}">
                     <i class="fa fa-list"></i>
                   </router-link>
                   <router-link :to="{name: 'editstadirectory', params: { id: staff.id }}">
@@ -184,18 +182,20 @@
   </div>
 </template>
 <script>
-  export default {
-   data() {
-     return {
+// import { EventBus } from "../../js/event-bus.js";
+export default {
+  data() {
+    return {
       view: true,
       search_by_role: "",
       search_by_other: "",
       staffs: [],
       roles: [],
       isEmpty: false
-     };
-   },
+    };
+  },
   created() {
+    EventBus.$emit("clicked");
     this.getStaffs();
     this.getRoles();
   },
@@ -278,5 +278,5 @@
       $(".alert").css("display", "none");
     }
   }
-  };
+};
 </script>

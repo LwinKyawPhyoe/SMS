@@ -78,7 +78,7 @@
           </div>
         </div>
         <hr />
-        <div class="col-12">
+        <div class="col-12 column-12">
           <button @click="goSave()" id="globalSave" class="save" style="margin:0 0 1rem;">Save</button>
         </div>
       </div>
@@ -87,6 +87,7 @@
 </template>
 
 <script>
+import { EventBus } from "../../js/event-bus.js";
 import message from "../Alertmessage/message.vue";
 import store from "store2";
 export default {
@@ -135,7 +136,8 @@ export default {
       },
     };
   },
-  created() {    
+  created() {   
+    EventBus.$emit("clicked"); 
     this.getAllClass();
     this.getAllSubject();    
   }, 

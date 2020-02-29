@@ -1,5 +1,5 @@
 <template>
-  <div class="ViewStudent" id="bar">
+  <div class="ViewStudent form" id="bar">
     <div class="toplink">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
@@ -7,7 +7,6 @@
       </h6>
     </div>
     <hr />
-    <br />
     <div
       class="modal fade"
       id="exampleModalCenter"
@@ -17,40 +16,50 @@
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content"
-        style="background:none;border:none;width:100% !important;padding: 1rem;"
+        <div
+          class="modal-content"
+          style="background:none;border:none;width:100% !important;padding: 1rem;"
         >
-            <div class="card-header">
-              <h6 style="width:100%;vertical-align: middle;">
-                Upload Document
-                <i
-                  class="fa fa-times"
-                  style="float:right;margin-right:10px;cursor:pointer;padding:5px;"
-                  data-dismiss="modal"
-                ></i>
-              </h6>
-            </div>
-            <div class="card-body">
-              <div class="row">
+          <div class="card-header">
+            <h6 style="width:100%;vertical-align: middle;">
+              Upload Document
+              <i
+                class="fa fa-times"
+                style="float:right;margin-right:10px;cursor:pointer;padding:5px;"
+                data-dismiss="modal"
+              ></i>
+            </h6>
+          </div>
+          <div class="card-body">
+            <div class="row">
               <div class="modalinput">
-                <label for="class">
-                  Title
-                </label>
-                <input type="text" class="inputbox" id="class" v-model="documentData.document_title"/>
+                <label for="class">Title</label>
+                <input
+                  type="text"
+                  class="inputbox"
+                  id="class"
+                  v-model="documentData.document_title"
+                />
               </div>
               <div class="modalinput">
                 <input type="file" id="section" class="inputbox" @change="onFileChange($event)" />
               </div>
               <div style="width:100%;">
-                <button class="modalbtn" style="text-align:center;" @click="addDocument()" id="btnsave" data-dismiss="modal">Save</button>
+                <button
+                  class="modalbtn"
+                  style="text-align:center;"
+                  @click="addDocument()"
+                  id="btnsave"
+                  data-dismiss="modal"
+                >Save</button>
               </div>
             </div>
-              </div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="row">
-      <div class="col-lg-4 col-12">
+    <div class="row" style="margin:0;">
+      <div class="col-lg-4 col-12" style="padding:0;">
         <div class="card" style="height:fit-content;">
           <div class="card-header">
             <h6>Student Profile</h6>
@@ -58,37 +67,47 @@
           <div class="card-body">
             <div class="student">
               <div class="container">
-                <img v-if="student.image" :src="'stu_image/'+student.image"/>
-                <img src="noimage.jpg" v-else>
+                <img v-if="student.image" :src="'stu_image/'+student.image" />
+                <img src="noimage.jpg" v-else />
               </div>
               <h4>{{student.name}}</h4>
               <div class="table-responsive mailbox-messages">
-              <table class="table table-hover table-sm">
-                <tbody>
-                  <tr>
-                    <td class="all" nowrap><b>Admission Number</b></td>
-                    <td class="all" nowrap>{{student.admission_no}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Roll Number</b></td>
-                    <td class="all" nowrap>{{student.roll_no}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Class</b></td>
-                    <td class="all" nowrap>{{class_id}}</td>
-                  </tr>
+                <table class="table table-hover table-sm">
+                  <tbody>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Admission Number</b>
+                      </td>
+                      <td class="all" nowrap>{{student.admission_no}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Roll Number</b>
+                      </td>
+                      <td class="all" nowrap>{{student.roll_no}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Class</b>
+                      </td>
+                      <td class="all" nowrap>{{class_id}}</td>
+                    </tr>
 
-                  <tr>
-                    <td class="all" nowrap><b>Section</b></td>
-                    <td class="all" nowrap>{{section_id}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Gender</b></td>
-                    <td class="all" nowrap>{{student.gender}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Section</b>
+                      </td>
+                      <td class="all" nowrap>{{section_id}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Gender</b>
+                      </td>
+                      <td class="all" nowrap>{{student.gender}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
           <div class="sub-header" v-if="sibling">
@@ -97,106 +116,118 @@
           <div class="card-body" v-if="sibling">
             <div class="sibling">
               <div class="container">
-                <img :src="'stu_image/'+sibling.image" v-if="sibling.image"/>
-                <img src="noimage.jpg" v-else>
+                <img :src="'stu_image/'+sibling.image" v-if="sibling.image" />
+                <img src="noimage.jpg" v-else />
                 <h4>{{sibling.name}}</h4>
               </div>
               <div class="table-responsive mailbox-messages">
-              <table class="table table-hover table-sm">
-                <tbody>
-                  <tr>
-                    <td class="all" nowrap><b>Admission Number</b></td>
-                    <td class="all" nowrap>{{sibling.admission_no}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Class</b></td>
-                    <td class="all" nowrap>{{sibling_class_id}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Section</b></td>
-                    <td class="all" nowrap>{{sibling_section_id}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Gender</b></td>
-                    <td class="all" nowrap>{{sibling.gender}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+                <table class="table table-hover table-sm">
+                  <tbody>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Admission Number</b>
+                      </td>
+                      <td class="all" nowrap>{{sibling.admission_no}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Class</b>
+                      </td>
+                      <td class="all" nowrap>{{sibling_class_id}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Section</b>
+                      </td>
+                      <td class="all" nowrap>{{sibling_section_id}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Gender</b>
+                      </td>
+                      <td class="all" nowrap>{{sibling.gender}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      <div class="col-lg-8 col-12">
+      <div class="col-lg-8 col-12" style="padding:0;">
         <div class="card remains">
           <div class="card-header">
             <button
-              class="metaBtn"
+              class="metaBtn tabTheme"
               id="profile"
               onclick="toggleBtn('profile','exam','document','timeline')"
               @click="showData('profile')"
               style="margin-left:-20px;border-top-left-radius:3px;background-color: white;color: black;"
-            >
-               Profile
-            </button>
+            >Profile</button>
             <button
-              class="metaBtn"
+              class="metaBtn tabTheme"
               id="exam"
               onclick="toggleBtn('exam','profile','document','timeline')"
               @click="showData('exam')"
-            >
-              Exam
-            </button>
+            >Exam</button>
             <button
-              class="metaBtn"
+              class="metaBtn tabTheme"
               id="document"
               onclick="toggleBtn('document','exam','profile','timeline')"
               @click="showData('document')"
-            >
-              Document
-            </button>
+            >Document</button>
             <button
-              class="metaBtn"
+              class="metaBtn tabTheme"
               id="timeline"
               onclick="toggleBtn('timeline','exam','profile','document')"
               @click="showData('timeline')"
-            >
-              Timeline
-            </button>
+            >Timeline</button>
           </div>
           <div class="card-body profile" v-if="profile===true">
             <div class="card-body" style="margin-top:10px;">
-            <div class="table-responsive mailbox-messages">
-              <table class="table table-hover table-sm">
-                <tbody>
-                  <tr>
-                    <td class="all" nowrap><b>Admission Date</b></td>
-                    <td class="all" nowrap>{{student.admission_date}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Date of Birth</b></td>
-                    <td class="all" nowrap>{{student.dob}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Mobile Number</b></td>
-                    <td class="all" nowrap>{{student.mobileno}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Religion</b></td>
-                    <td class="all" nowrap>{{student.religion}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Race</b></td>
-                    <td class="all" nowrap>{{student.race}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Student Email</b></td>
-                    <td class="all" nowrap>{{student.email}}</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
+              <div class="table-responsive mailbox-messages">
+                <table class="table table-hover table-sm">
+                  <tbody>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Admission Date</b>
+                      </td>
+                      <td class="all" nowrap>{{student.admission_date}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Date of Birth</b>
+                      </td>
+                      <td class="all" nowrap>{{student.dob}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Mobile Number</b>
+                      </td>
+                      <td class="all" nowrap>{{student.mobileno}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Religion</b>
+                      </td>
+                      <td class="all" nowrap>{{student.religion}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Race</b>
+                      </td>
+                      <td class="all" nowrap>{{student.race}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Student Email</b>
+                      </td>
+                      <td class="all" nowrap>{{student.email}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
             </div>
 
             <div class="sub-header">
@@ -204,18 +235,22 @@
             </div>
             <div class="card-body">
               <div class="table-responsive mailbox-messages">
-              <table class="table table-hover table-sm">
-                <tbody>
-                  <tr>
-                    <td class="all" nowrap><b>Current Address</b></td>
-                    <td class="all" nowrap>{{student.current_address}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Permanent Address</b></td>
-                    <td class="all" nowrap>{{student.permanent_address}}</td>
-                  </tr>
-                </tbody>
-              </table>
+                <table class="table table-hover table-sm">
+                  <tbody>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Current Address</b>
+                      </td>
+                      <td class="all" nowrap>{{student.current_address}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Permanent Address</b>
+                      </td>
+                      <td class="all" nowrap>{{student.permanent_address}}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
             <div class="sub-header">
@@ -224,94 +259,134 @@
             <div class="card-body parents">
               <div class="row">
                 <div class="table-responsive mailbox-messages">
-              <table class="table table-hover table-sm">
-                <tbody>
-                  <tr>
-                    <td class="all" nowrap><b>Father Name</b></td>
-                    <td class="all" nowrap>{{student.father_name}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Father Phone</b></td>
-                    <td class="all" nowrap>{{student.father_phone}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Father Job</b></td>
-                    <td class="all" nowrap>{{student.father_job}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Father NRC.</b></td>
-                    <td class="all" nowrap>{{student.father_job}}</td>
-                  </tr>
-                </tbody>
-              </table>
-              </div>
+                  <table class="table table-hover table-sm">
+                    <tbody>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Father Name</b>
+                        </td>
+                        <td class="all" nowrap>{{student.father_name}}</td>
+                      </tr>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Father Phone</b>
+                        </td>
+                        <td class="all" nowrap>{{student.father_phone}}</td>
+                      </tr>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Father Job</b>
+                        </td>
+                        <td class="all" nowrap>{{student.father_job}}</td>
+                      </tr>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Father NRC.</b>
+                        </td>
+                        <td class="all" nowrap>{{student.father_job}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
                 <div class="container">
-                  <img :src="'father_image/'+student.father_photo" class="img-responsive" v-if="student.father_photo"/>
-                  <img src="noimage.jpg" class="img-responsive" v-else/>
+                  <img
+                    :src="'father_image/'+student.father_photo"
+                    class="img-responsive"
+                    v-if="student.father_photo"
+                  />
+                  <img src="noimage.jpg" class="img-responsive" v-else />
                 </div>
               </div>
               <div class="row">
                 <div class="table-responsive mailbox-messages">
-              <table class="table table-hover table-sm">
-                <tbody>
-                  <tr>
-                    <td class="all" nowrap><b>Mother Name</b></td>
-                    <td class="all" nowrap>{{student.mother_name}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Mother Phone</b></td>
-                    <td class="all" nowrap>{{student.mother_phone}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Mother Job</b></td>
-                    <td class="all" nowrap>{{student.mother_job}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Mother NRC.</b></td>
-                    <td class="all" nowrap>{{student.mother_nrc}}</td>
-                  </tr>
-                </tbody>
-              </table>
-              </div>
+                  <table class="table table-hover table-sm">
+                    <tbody>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Mother Name</b>
+                        </td>
+                        <td class="all" nowrap>{{student.mother_name}}</td>
+                      </tr>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Mother Phone</b>
+                        </td>
+                        <td class="all" nowrap>{{student.mother_phone}}</td>
+                      </tr>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Mother Job</b>
+                        </td>
+                        <td class="all" nowrap>{{student.mother_job}}</td>
+                      </tr>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Mother NRC.</b>
+                        </td>
+                        <td class="all" nowrap>{{student.mother_nrc}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
                 <div class="container">
-                  <img :src="'mother_image/'+student.mother_photo" class="img-responsive" v-if="student.mother_photo"/>
-                  <img src="noimage.jpg" class="img-responsive" v-else/>
+                  <img
+                    :src="'mother_image/'+student.mother_photo"
+                    class="img-responsive"
+                    v-if="student.mother_photo"
+                  />
+                  <img src="noimage.jpg" class="img-responsive" v-else />
                 </div>
               </div>
               <div class="row">
                 <div class="table-responsive mailbox-messages">
-              <table class="table table-hover table-sm">
-                <tbody>
-                  <tr>
-                    <td class="all" nowrap><b>Guardian Name</b></td>
-                    <td class="all" nowrap>{{student.guardian_name}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Guardian Phone</b></td>
-                    <td class="all" nowrap>{{student.guardian_phone}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Guardian Relation</b></td>
-                    <td class="all" nowrap>{{student.guardian_relation}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Guardian Email</b></td>
-                    <td class="all" nowrap>{{student.guardian_email}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Guardian Job</b></td>
-                    <td class="all" nowrap>{{student.guardian_job}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Guardian NRC.</b></td>
-                    <td class="all" nowrap>{{student.guardian_nrc}}</td>
-                  </tr>
-                </tbody>
-              </table>
-              </div>
+                  <table class="table table-hover table-sm">
+                    <tbody>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Guardian Name</b>
+                        </td>
+                        <td class="all" nowrap>{{student.guardian_name}}</td>
+                      </tr>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Guardian Phone</b>
+                        </td>
+                        <td class="all" nowrap>{{student.guardian_phone}}</td>
+                      </tr>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Guardian Relation</b>
+                        </td>
+                        <td class="all" nowrap>{{student.guardian_relation}}</td>
+                      </tr>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Guardian Email</b>
+                        </td>
+                        <td class="all" nowrap>{{student.guardian_email}}</td>
+                      </tr>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Guardian Job</b>
+                        </td>
+                        <td class="all" nowrap>{{student.guardian_job}}</td>
+                      </tr>
+                      <tr>
+                        <td class="all" nowrap>
+                          <b>Guardian NRC.</b>
+                        </td>
+                        <td class="all" nowrap>{{student.guardian_nrc}}</td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
                 <div class="container">
-                  <img :src="'guardian_image/'+student.guardian_photo" class="img-responsive" v-if="student.guardian_photo"/>
-                  <img src="noimage.jpg" class="img-responsive" v-else/>
+                  <img
+                    :src="'guardian_image/'+student.guardian_photo"
+                    class="img-responsive"
+                    v-if="student.guardian_photo"
+                  />
+                  <img src="noimage.jpg" class="img-responsive" v-else />
                 </div>
               </div>
             </div>
@@ -320,30 +395,40 @@
             </div>
             <div class="card-body">
               <div class="table-responsive mailbox-messages">
-              <table class="table table-hover table-sm">
-                <tbody>
-                  <tr>
-                    <td class="all" nowrap><b>Blood Group</b></td>
-                    <td class="all" nowrap>{{student.blood_group}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Height</b></td>
-                    <td class="all" nowrap>{{student.height}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Weight</b></td>
-                    <td class="all" nowrap>{{student.weight}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Register Date</b></td>
-                    <td class="all" nowrap>{{student.register_date}}</td>
-                  </tr>
-                  <tr>
-                    <td class="all" nowrap><b>Previous School</b></td>
-                    <td class="all" nowrap>{{student.previous_school}}</td>
-                  </tr>
-                </tbody>
-              </table>
+                <table class="table table-hover table-sm">
+                  <tbody>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Blood Group</b>
+                      </td>
+                      <td class="all" nowrap>{{student.blood_group}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Height</b>
+                      </td>
+                      <td class="all" nowrap>{{student.height}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Weight</b>
+                      </td>
+                      <td class="all" nowrap>{{student.weight}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Register Date</b>
+                      </td>
+                      <td class="all" nowrap>{{student.register_date}}</td>
+                    </tr>
+                    <tr>
+                      <td class="all" nowrap>
+                        <b>Previous School</b>
+                      </td>
+                      <td class="all" nowrap>{{student.previous_school}}</td>
+                    </tr>
+                  </tbody>
+                </table>
               </div>
             </div>
           </div>
@@ -490,129 +575,131 @@
   </div>
 </template>
 <script>
+import { EventBus } from "../../js/event-bus.js";
 export default {
   data() {
     return {
-      documentData:{
-      },
+      documentData: {},
       profile: true,
       exam: false,
       document: false,
       timeline: false,
-      class_id:'',
-      sibling_class_id:'',
-      sibling_section_id:'',
-      section_id:'',
-      student:[],
-      sibling:[],
-      documents:[],
+      class_id: "",
+      sibling_class_id: "",
+      sibling_section_id: "",
+      section_id: "",
+      student: [],
+      sibling: [],
+      documents: []
     };
   },
-  created(){
-
+  created() {
+    EventBus.$emit("clicked");
     var id = this.$route.params.id;
     this.axios
-    .get(`/api/student/edit/${id}`)
-    .then(response=>{
-      this.student = response.data[0];
-      console.log(this.student);
-      this.axios
-      .get(`api/student/selectsection/${this.student.class_sections_id}`)
-      .then(response1=>{
-        this.class_id = response1.data.classes[0].class;
-        this.section_id = response1.data.sections[0].section;
+      .get(`/api/student/edit/${id}`)
+      .then(response => {
+        this.student = response.data[0];
+        console.log(this.student);
+        this.axios
+          .get(`api/student/selectsection/${this.student.class_sections_id}`)
+          .then(response1 => {
+            this.class_id = response1.data.classes[0].class;
+            this.section_id = response1.data.sections[0].section;
+          });
+        this.axios
+          .get(`api/uploaddocuments/show/${this.student.admission_no}`)
+          .then(response2 => {
+            this.documents = response2.data;
+          });
+        this.axios
+          .get(`/api/studentsiblings/siblings/${this.student.admission_no}`)
+          .then(response => {
+            if (response.data == null) {
+              this.sibling = [];
+            } else {
+              this.sibling = response.data[0];
+              if (this.sibling) {
+                this.axios
+                  .get(
+                    `api/student/selectsection/${this.sibling.class_sections_id}`
+                  )
+                  .then(response3 => {
+                    this.sibling_class_id = response3.data.classes[0].class;
+                    this.sibling_section_id =
+                      response3.data.sections[0].section;
+                  });
+              }
+            }
+            // console.log("sibling"+JSON.stringify(response.data));
+          });
       })
-      this.axios
-      .get(`api/uploaddocuments/show/${this.student.admission_no}`)
-      .then(response2=>{
-        this.documents = response2.data;
-      })
-      this.axios
-      .get(`/api/studentsiblings/siblings/${this.student.admission_no}`)
-      .then(response=>{
-        if(response.data == null){
-          this.sibling =[];
-        }else{
-        this.sibling = response.data[0];
-        if(this.sibling){
-          this.axios
-        .get(`api/student/selectsection/${this.sibling.class_sections_id}`)
-        .then(response3=>{
-          this.sibling_class_id = response3.data.classes[0].class;
-          this.sibling_section_id = response3.data.sections[0].section;
-        })
-        }
-        
-        }
-        // console.log("sibling"+JSON.stringify(response.data));
-      })
-    })
-    .catch(error=>{
-    })
+      .catch(error => {});
   },
   methods: {
-    addDocument(){
+    addDocument() {
       const config = {
         headers: { "content-type": "multipart/form-data" }
       };
-      var fileOne ={};
-      if(this.documentData.document_title || this.documentData.document_name){
-        fileOne={
-          'admission_no':this.student.admission_no,
-          'document_title':this.documentData.document_title,
-          'document_name':this.documentData.document_name,
-          'is_active':this.student.is_active,
-          'domain':this.student.domain,
-          'file':this.documentData.file,
-          'session_id':this.student.session_id,
-        }
+      var fileOne = {};
+      if (this.documentData.document_title || this.documentData.document_name) {
+        fileOne = {
+          admission_no: this.student.admission_no,
+          document_title: this.documentData.document_title,
+          document_name: this.documentData.document_name,
+          is_active: this.student.is_active,
+          domain: this.student.domain,
+          file: this.documentData.file,
+          session_id: this.student.session_id
+        };
       }
       let dataDocument1 = new FormData();
-      if(this.documentData.document_title || this.documentData.document_name){
+      if (this.documentData.document_title || this.documentData.document_name) {
         console.log("One");
-        dataDocument1.append('admission_no',fileOne.admission_no);
-        dataDocument1.append('document_title',fileOne.document_title);
-        dataDocument1.append('document_name',fileOne.document_name);
-        dataDocument1.append('is_active',fileOne.is_active);
-        dataDocument1.append('domain',fileOne.domain);
-        dataDocument1.append('file',fileOne.file);
-        dataDocument1.append('session_id',fileOne.session_id);
+        dataDocument1.append("admission_no", fileOne.admission_no);
+        dataDocument1.append("document_title", fileOne.document_title);
+        dataDocument1.append("document_name", fileOne.document_name);
+        dataDocument1.append("is_active", fileOne.is_active);
+        dataDocument1.append("domain", fileOne.domain);
+        dataDocument1.append("file", fileOne.file);
+        dataDocument1.append("session_id", fileOne.session_id);
         this.axios
-          .post('api/uploaddocuments/add',dataDocument1,config)
-          .then(response=>{
+          .post("api/uploaddocuments/add", dataDocument1, config)
+          .then(response => {
             this.axios
-          .get(`api/uploaddocuments/show/${this.student.admission_no}`)
-          .then(response2=>{
-            this.documents = response2.data;
-          })
-          })
+              .get(`api/uploaddocuments/show/${this.student.admission_no}`)
+              .then(response2 => {
+                this.documents = response2.data;
+              });
+          });
       }
       this.documentData = {};
-    $('#section').val('');
+      $("#section").val("");
     },
     onFileChange(e) {
-        this.documentData.document_name = e.target.files[0].name;
-        var files = e.target.files || e.dataTransfer.files;
-        if (!files.length)
-        return;
+      this.documentData.document_name = e.target.files[0].name;
+      var files = e.target.files || e.dataTransfer.files;
+      if (!files.length) return;
       this.createImage(files[0]);
     },
     createImage(file) {
       var image = new Image();
       var reader = new FileReader();
       var vm = this;
-        reader.onload = (e) => {
+      reader.onload = e => {
         vm.documentData.file = file;
-        }
+      };
       reader.readAsDataURL(file);
     },
     showData(name) {
       if (name == "profile") {
+        EventBus.$emit("clicked");
         this.profile = true;
         this.exam = false;
         this.document = false;
         this.timeline = false;
       } else if (name == "exam") {
+        EventBus.$emit("clicked");
         this.profile = false;
         this.exam = true;
         this.document = false;

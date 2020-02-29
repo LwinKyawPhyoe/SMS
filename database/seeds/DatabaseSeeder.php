@@ -112,5 +112,19 @@ class DatabaseSeeder extends Seeder
             'designation_name' => "Teacher"
         ]);
         /***end code of Wai Yan Soe */
+        DB::table('generals')->insert([
+            'color'=> 'defaultColor'
+        ]);
+        DB::table('school_details')->insert([
+            'school_name' => 'Private School',
+            'school_code' => 'MM-294905',
+            'address' => 'Myanmar, Mogok',
+            'phone' => '09284958284',
+            'email' =>'tastysoft1234@gmail.com',
+            'session' => '2019-20',
+            'session_month' => 'July',
+            'language' => 'English',
+            'schoollogo' => 'download.jpg',
+        ]);
     }
 }

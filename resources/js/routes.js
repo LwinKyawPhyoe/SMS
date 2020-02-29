@@ -72,6 +72,7 @@ import StaffAttendanceReport from '../views/Reports/StaffAttendanceReport.vue';
 import GeneralSetting from '../views/SystemSettings/GeneralSetting.vue';
 import Role from '../views/SystemSettings/role_permission.vue';
 import Assign from '../views/SystemSettings/assign_permission.vue';
+import Users from '../views/SystemSettings/Users.vue';
 
 //Homework
 import AddHomework from '../views/Homework/AddHomework.vue';
@@ -285,9 +286,9 @@ export const routes = [
         path: '/viewstudent:id',
         component: ViewStudent
     },
-{
-        name:'editstudent',
-        path:'/editstudent:id',
+    {
+        name: 'editstudent',
+        path: '/editstudent:id',
         component: UpdateStudent
     },
     {
@@ -352,6 +353,11 @@ export const routes = [
         name: 'editExamSchadule',
         path: '/editExamSchadule',
         component: editExamSchadule
+    },
+    {
+        name: 'users',
+        path: '/users',
+        component: Users
     },
 
 ];
