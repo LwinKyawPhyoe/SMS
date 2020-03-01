@@ -182,7 +182,7 @@
   </div>
 </template>
 <script>
-// import { EventBus } from "../../js/event-bus.js";
+import { EventBus } from "../../../js/event-bus.js";
 export default {
   data() {
     return {
@@ -195,7 +195,10 @@ export default {
     };
   },
   created() {
+
     EventBus.$emit("ThemeClicked");
+
+    EventBus.$emit("clicked");
     this.getStaffs();
     this.getRoles();
   },

@@ -57,7 +57,9 @@ class HostelRoomController extends Controller
                 'domain'  => 'TS'
             ]);
             $hostelroom->save();
-            return response()->json('The HostelRoom successfully added');
+          
+            return response()->json(['text' => 'Hostel Room added successfully', 'type' => 'success']);
+
         }
     }
 
@@ -95,7 +97,8 @@ class HostelRoomController extends Controller
         //
         $hostelroom = HostelRoom::find($id);
         $hostelroom->update($request->all());
-        return response()->json('The HostelRoom successfully updated');
+        return response()->json(['text' => 'Hostel Room updated successfully', 'type' => 'success']);
+
     }
 
     /**
@@ -108,9 +111,10 @@ class HostelRoomController extends Controller
     {
         $hostelroom = HostelRoom::find($id);
         $hostelroom->update([
-            "is_active" => "No"
+            "is_active" => "no"
         ]);
-        return response()->json('The HostelRoom successfully deleted');
+        return response()->json(['text' => 'Hostel Room deleted successfully', 'type' => 'success']);
+
     }
 
 

@@ -745,7 +745,7 @@
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to class="nav-list" id="nav-list">
+                        <router-link to="role" class="nav-list" id="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Roles Permissions
                         </router-link>
                       </li>
@@ -1107,7 +1107,7 @@
                       General Setting
                     </li>
                   </router-link>
-                  <router-link to class="smallLink">
+                  <router-link to="role" class="smallLink">
                     <li class="smLink">
                       <i class="fa fa-angle-double-right smIcon"></i>
                       Roles Permission

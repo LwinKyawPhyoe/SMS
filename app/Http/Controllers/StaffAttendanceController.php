@@ -72,21 +72,36 @@ class StaffAttendanceController extends Controller
     public function store(Request $request)
     {
         $formData = $request->data;
-        for ($i = 0; $i < count($formData); $i++) {
-            $session = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get();
-            for ($ii = 0; $ii < count($session); $ii++) {
-                $staffAttendance = new StaffAttendance([
-                    'date'         => $formData[$i]['date'],
-                    'staff_id'     => $formData[$i]['staff_id'],
-                    'staff_attendance_type_id'     => $formData[$i]['staff_attendance_type_id'],
-                    'note'        => $formData[$i]['note'],
-                    'session_id'  => $session[$ii]['id'],
-                    'domain'  => 'TS'
-                ]);
-            }
-            $staffAttendance->save();
+        $curdate = strtotime($formData[0]['date']);
+        $date = date('Y-m-d', $curdate);
+        $data = "";
+        $data = StaffAttendance::where('staff_id', $formData[0]['staff_id'])->where('date', $date)->get('id');
+        if(count($data) > 0 ) {
+            echo "edit";
         }
-        return response()->json($request->data);
+        else{
+            echo "add";
+        }
+        for ($i = 0; $i < count($formData); $i++) {
+          
+            // $session = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get();
+            // for ($ii = 0; $ii < count($session); $ii++) {
+            //     $staffAttendance = new StaffAttendance([
+            //         'date'         => $formData[$i]['date'],
+            //         'staff_id'     => $formData[$i]['staff_id'],
+            //         'staff_attendance_type_id'     => $formData[$i]['staff_attendance_type_id'],
+            //         'note'        => $formData[$i]['note'],
+            //         'session_id'  => $session[$ii]['id'],
+            //         'domain'  => 'TS'
+            //     ]);
+            // }
+            // $staffAttendance->save();
+        }
+        echo ($data);
+
+     
+
+        return response()->json(['data' => $data, 'text' => 'Staff Attendance added successfully', 'type' => 'success']);
     }
 
     /**

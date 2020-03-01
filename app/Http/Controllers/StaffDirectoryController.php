@@ -137,7 +137,7 @@ class StaffDirectoryController extends Controller
                     'domain'  => 'TS'
                 ]);
                 $staffDirectory->save();
-                return response()->json('The StaffDirectory successfully deleted');
+                return response()->json(['text' => 'Staff Directory added successfully', 'type' => 'success']);
             }
         }
     }
@@ -280,7 +280,8 @@ class StaffDirectoryController extends Controller
                     'domain'  => 'TS'
                 ]);
             }
-            return response()->json('Staff successfully updated');
+            return response()->json(['text' => 'Staff Directory updated successfully', 'type' => 'success']);
+
             // $staffDirectory = StaffDirectory::find($id);
         }
     }

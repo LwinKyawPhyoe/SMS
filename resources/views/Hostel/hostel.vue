@@ -24,6 +24,7 @@
                   <strong>*</strong>
                 </label>
                 <input
+                autocomplete="off"
                   type="text"
                   class="inputbox"
                   v-model="hostel.hostel_name"
@@ -54,15 +55,15 @@
               </div>
               <div class="col-12">
                 <label for="address">Address</label>
-                <input type="text" class="inputbox" v-model="hostel.address" />
+                <input autocomplete="off" type="text" class="inputbox" v-model="hostel.address" />
               </div>
               <div class="col-12">
                 <label for="intake">Intake</label>
-                <input type="text" class="inputbox" v-model="hostel.intake" />
+                <input autocomplete="off" type="number" class="inputbox" v-model="hostel.intake" />
               </div>
               <div class="col-12 end">
                 <label for="description">Description</label>
-                <textarea class="textareas" v-model="hostel.description" rows="3"></textarea>
+                <textarea autocomplete="off" class="textareas" v-model="hostel.description" rows="3"></textarea>
               </div>
               <div class="col-12">
                 <!--- store -->
@@ -230,10 +231,10 @@ export default {
   created() {
     EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
-      (this.deletemsg.text = response.text),
-        (this.deletemsg.type = response.type);
-      Util.workAlert("#delalertmsg");
-      this.getHostels();
+       (this.deletemsg.text = response.text),
+       (this.deletemsg.type = response.type);
+       Util.workAlert("#delalertmsg");
+       this.getHostels();
     });
     this.getHostels();
   },
@@ -252,15 +253,17 @@ export default {
     addHostel() {
       if (this.checkValidate()) {
         EventBus.$emit("onLoad", "1");
-
         console.log("-->" + JSON.stringify(this.hostel));
         this.axios
           .post("/api/hostel/store", this.hostel)
           .then(response => {
-            (this.msg.text = response.data.text),
-              (this.msg.type = response.data.type);
             this.getHostels();
             this.hostel = {};
+            this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
+            EventBus.$emit("onLoadEnd");
+            Util.scrollToTop();
           })
           .catch(error => console.log(error));
       }
@@ -269,12 +272,7 @@ export default {
      * EDIT SHOW DATA
      */
     editHostel(hos) {
-      let to = this.moveToDown ? this.$refs.description.offsetTop - 60 : 0;
-      window.scroll({
-        top: to,
-        left: 0,
-        behavior: "smooth"
-      });
+      Util.scrollToTop();
       this.moveToDown = !this.moveToDown;
       this.hostel = {};
       this.moveToDown = !this.moveToDown;
@@ -294,11 +292,16 @@ export default {
         EventBus.$emit("onLoad", "1");
         this.axios
           .post(`/api/hostel/update/${this.hostel.id}`, this.hostel)
-          .then(res => {
+          .then(response => {
             this.getHostels();
+            this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
             this.isEdit = false;
             this.hostel = "";
-            console.log(JSON.stringify(res));
+            EventBus.$emit("onLoadEnd");
+            Util.scrollToTop();
+            console.log(JSON.stringify(response));
           });
       }
     },

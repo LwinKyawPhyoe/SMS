@@ -17,7 +17,7 @@
           </div>
           <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
             <form @submit.prevent="addDepartment">
-              <message :alertmessage="msg" />
+              <message :alertmessage="msg" id="alertmsg"/>
               <div class="col-12">
                 <label for="name">
                   Name
@@ -49,6 +49,7 @@
             <h6>Department List</h6>
           </div>
           <div class="card-body">
+            <message :alertmessage="deletemsg" id="delalertmsg" />
             <input type="text" placeholder="Search..." class="searchText" />
             <div class="copyRows">
               <div class="row" id="copyRow">
@@ -138,6 +139,10 @@ export default {
       msg: {
         text: "",
         type: ""
+      },
+        deletemsg: {
+        text: "",
+        type: ""
       }
     };
   },
@@ -146,9 +151,13 @@ export default {
   },
   created() {
     EventBus.$emit("ThemeClicked");
+
     EventBus.$on("clicked", response => {
       this.getDepartments();
-      (this.msg.text = response.text), (this.msg.type = response.type);
+       (this.deletemsg.text = response.text),
+        (this.deletemsg.type = response.type);
+      Util.workAlert("#delalertmsg");
+
     });
     this.getDepartments();
   },
@@ -166,23 +175,21 @@ export default {
           .post("/api/department/store", this.department)
           .then(response => {
             this.getDepartments();
-            setTimeout(() => {
-              this.department = {};
+             this.department = {};
+             EventBus.$emit("onLoadEnd");
+               Util.scrollToTop();
               (this.msg.text = response.data.text),
                 (this.msg.type = response.data.type);
-            }, 100);
+            Util.workAlert("#alertmsg");
+
+        
           })
           .catch(error => console.log(error));
       }
     },
     editDepartment(data) {
       console.log(JSON.stringify(data.department_name));
-      let to = this.moveToDown ? this.$refs.description.offsetTop - 60 : 0;
-      window.scroll({
-        top: to,
-        left: 0,
-        behavior: "smooth"
-      });
+      Util.scrollToTop();
       this.department = {};
       this.department.id = data.id;
       this.department.department_name = data.department_name;
@@ -194,14 +201,14 @@ export default {
         this.axios
           .post(`/api/department/update/${this.department.id}`, this.department)
           .then(response => {
+            this.getDepartments();
+            EventBus.$emit("onLoadEnd");
+            Util.scrollToTop();
+            this.isEdit = false;
+            this.department = {};
             this.msg.text = response.data.text;
             this.msg.type = response.data.type;
-            setTimeout(() => {
-              this.getDepartments();
-              console.log("Response text ==> " + response.data.text);
-              this.isEdit = false;
-              this.department = {};
-            }, 100);
+            Util.workAlert("#alertmsg");
           });
       }
     },

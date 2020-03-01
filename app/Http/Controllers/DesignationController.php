@@ -50,7 +50,8 @@ class DesignationController extends Controller
                 'domain'  => 'TS'
             ]);
             $designation->save();
-            return response()->json('The Designation successfully added');
+            return response()->json(['text' => 'Designation added successfully', 'type' => 'success']);
+
         }
     }
 
@@ -88,7 +89,8 @@ class DesignationController extends Controller
         //
         $designation = Designation::find($id);
         $designation->update($request->all());
-        return response()->json('The Designation successfully updated');
+        return response()->json(['text' => 'Designation updated successfully', 'type' => 'success']);
+
     }
 
     /**
@@ -103,6 +105,6 @@ class DesignationController extends Controller
         $designation->update([
             "is_active" => "no"
         ]);
-        return response()->json('The Designation successfully deleted');
+        return response()->json(['text' => 'Designation deleted successfully', 'type' => 'success']);
     }
 }

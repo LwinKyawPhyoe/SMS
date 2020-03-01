@@ -64,7 +64,7 @@ class AssignPermissionController extends Controller
             $assignPermission->save();
         }
 
-        return response()->json($assignPermission);
+        return response()->json(['text' => 'Assign Permission added successfully', 'type' => 'success']);
     }
 
     /**

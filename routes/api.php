@@ -139,12 +139,14 @@ Route::get('attendance_types', 'AttendanceTypeController@getTypes');
 Route::get('features', 'ActivityController@index');
 Route::group(['prefix' => 'assign'], function () {
     Route::get('find/{id}', 'AssignPermissionController@find');
-    Route::post('store', 'StaffAttendanceController@store');
+    Route::get('show/{id}', 'AssignPermissionController@show');
+
+
+    Route::post('store/{id}', 'AssignPermissionController@store');
     Route::get('edit/{id}', 'StaffAttendanceController@edit');
     Route::post('update/{id}', 'StaffAttendanceController@update');
     Route::delete('delete/{id}', 'StaffAttendanceController@delete');
 });
-
 
 /***
  * End Code of Wai Yan Soe

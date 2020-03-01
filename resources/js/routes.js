@@ -216,7 +216,7 @@ export const routes = [
     },
     {
         name: 'assign',
-        path: '/role/assign',
+        path: '/role/assign/:id',
         component: Assign
     },
     {

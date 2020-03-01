@@ -87,8 +87,9 @@ class DepartmentController extends Controller
         //
         $department = Department::find($id);
         $department->update($request->all());
+
         return response()->json(['text' => 'Department updated successfully', 'type' => 'success']);
-        return response()->json("The Department successfully updated");
+
     }
 
     /**

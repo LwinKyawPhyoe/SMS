@@ -205,10 +205,10 @@
               >
                 <div style="width: 80%;height: 80%;border: 1px dotted black;margin-top: 1rem;">
                   <i
-                    class="fa fa-image"
+                    class="fa fa-image" v-if="!school.schoollogo"
                     style="margin: 5px 0px 1px 3px;width: 90%;zoom: 5;display: flex;justify-content: center;"
                   ></i>
-                  <h3 style="font-size: 13pt;text-align: center;">Pick Your Images</h3>
+                  <h3 v-if="!school.schoollogo" style="font-size: 13pt;text-align: center;">Pick Your Images</h3>
                   <input
                     type="file"
                     id="upload"

@@ -80,18 +80,18 @@ class DatabaseSeeder extends Seeder
         $roles = [
             [
                 'name' => "Admin",
-                'is_active' => "No",
-                "domain"  => "sms"
+                'is_active' => "yes",
+                "domain"  => "TS"
             ],
             [
                 'name' => "Teacher",
-                'is_active' => "No",
-                "domain"  => "sms"
+                'is_active' => "yes",
+                "domain"  => "TS"
             ],
             [
                 'name' => "Parent",
                 'is_active' => "No",
-                "domain"  => "sms"
+                "domain"  => "TS"
             ],
         ];
 
@@ -106,10 +106,13 @@ class DatabaseSeeder extends Seeder
         }
 
         DB::table('departments')->insert([
-            'department_name' => "Arts"
+            'department_name' => "Arts",
+            'is_active' => 'yes'
         ]);
         DB::table('designations')->insert([
-            'designation_name' => "Teacher"
+            'designation_name' => "Teacher",
+            'is_active' => 'yes'
+
         ]);
         /***end code of Wai Yan Soe */
         DB::table('generals')->insert([

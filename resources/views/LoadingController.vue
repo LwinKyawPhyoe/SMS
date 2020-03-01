@@ -37,9 +37,9 @@ export default {
     },
     presentLoading() {
       this.isLoading = true;
-      setTimeout(() => {
+      EventBus.$on("onLoadEnd", response =>{
         this.isLoading = false;
-      }, 2000);
+      });
     }
   }
 };

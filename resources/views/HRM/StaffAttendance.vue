@@ -9,6 +9,7 @@
     </div>
     <hr />
     <confirm v-if="makeAsHoliCheck == false" :url="props"></confirm>
+    <Loading> </Loading>
     <div class="card">
       <div class="card-header">
         <h6>Select Attendance</h6>
@@ -52,7 +53,7 @@
               :button-color="'#1b5e20'"
               :auto-close="true"
               :format="'YYYY/MM/DD'"
-              :formatted="'l'"
+               :formatted="'YYYY/MM/DD'"
             >
               <input
                 id="date_id"
@@ -158,12 +159,15 @@ import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import moment from "moment";
+import Loading from "../LoadingController.vue";
+
 
 export default {
   components: {
     VueCtkDateTimePicker,
     confirm,
-    message
+    message,
+    Loading
   },
   data() {
     return {
@@ -191,6 +195,7 @@ export default {
   },
   created() {
     EventBus.$emit("ThemeClicked");
+    EventBus.$emit("clicked");
     EventBus.$on("clicked", response => {
       console.log("-->" + JSON.stringify(response.check));
       this.makeAsHoliCheck = response.check;
@@ -222,24 +227,22 @@ export default {
       });
     },
     getRoles() {
-      this.axios.get("/api/roles").then(response => {
+      this.axios.get("/api/roles").then(response =>{
         this.roles = response.data;
       });
     },
     attendanceData() {
-      alert(this.model.date);
       this.model.date = moment(String(this.model.date)).format("YYYY/MM/DD");
-      alert("Model" + this.model.date);
-
       if (this.makeAsHoliCheck) {
         /**Holiday */
         this.formData.data = [];
-        for (var s = 0; s < this.staffs.length; s++) {
+        for (var s = 0; s < this.staffs.length; s++){
           this.formData.data.push({
             date: this.model.date,
             staff_id: this.staffs[s].id,
             staff_attendance_type_id: 5,
-            note: this.staffs[s].note
+            note: this.staffs[s].note,
+            
           });
         }
       } else {
@@ -266,13 +269,15 @@ export default {
         }
       }
     },
-    submit() {
+    submit(){
       this.attendanceData();
+      EventBus.$emit("onLoad");
       setTimeout(() => {
         this.axios
           .post(`/api/staffattendance/store`, this.formData)
           .then(response => {
             console.log("===>" + JSON.stringify(response.data));
+            EventBus.$emit("onLoadEnd");
           });
       }, 100);
     },
@@ -289,6 +294,7 @@ export default {
     },
     searchByRole() {
       if (this.checkValidate()) {
+          EventBus.$emit("onLoad");
         this.axios
           .get(`/api/staffdirectory/search_by_role/${this.search_by_role}`)
           .then(response => {
@@ -297,6 +303,7 @@ export default {
               this.staffs[i].note = "";
             }
             this.showForm = true;
+            EventBus.$emit("onLoadEnd");
           });
       }
     },

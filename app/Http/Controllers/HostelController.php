@@ -22,7 +22,6 @@ class HostelController extends Controller
             ->where('session_id', $sessionid[0]->id)
             ->orderBy('id', 'DESC')->get()->toArray();
         return array_reverse($hostels);
-      
     }
 
     /**
@@ -98,7 +97,7 @@ class HostelController extends Controller
         //
         $hostel = Hostel::find($id);
         $hostel->update($request->all());
-        return response()->json('The Hostel successfully updated');
+        return response()->json(['text' => 'Hostel updated successfully', 'type' => 'success']);
     }
 
     /**
@@ -109,12 +108,11 @@ class HostelController extends Controller
      */
     public function delete($id)
     {
-        //
         $hostel = Hostel::find($id);
         $hostel->update([
-            "is_active" => "No"
+            "is_active" => "no"
         ]);
-        return response()->json('The Hostel successfully deleted');
+        return response()->json(['text' => 'Hostel deleted successfully', 'type' => 'success']);
     }
     public function search($data)
     {

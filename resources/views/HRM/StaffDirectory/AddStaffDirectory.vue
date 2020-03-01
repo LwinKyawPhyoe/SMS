@@ -13,12 +13,17 @@
     </div>
     <hr />
     <Loading></Loading>
+
     <div
       class="alert alert-success"
       role="alert"
     >Staff email is their login username, password is generated automatically and send to staff email. Superadmin can change staff password on their staff profile page.</div>
+   
+    <message :alertmessage="msg" id="alertmsg" />
+   
     <div class="card">
-      <form @submit.prevent="submit" enctype="multipart/form-data">
+
+      <form @submit.prevent="addStaffDirectory" enctype="multipart/form-data">
         <div class="card-header">
           <h6>Basic Information</h6>
         </div>
@@ -31,9 +36,9 @@
               </label>
               <input
                 id="staff_id"
-                @keyup="onValidate(model.staff_id, 'staff_id', 'staff_idmsg')"
-                v-on:blur="onValidate(model.staff_id, 'staff_id', 'staff_idmsg')"
-                v-model="model.staff_id"
+                @keyup="onValidate(staff.staff_id, 'staff_id', 'staff_idmsg')"
+                v-on:blur="onValidate(staff.staff_id, 'staff_id', 'staff_idmsg')"
+                v-model="staff.staff_id"
                 type="text"
                 class="inputbox"
               />
@@ -46,9 +51,9 @@
               </label>
               <select
                 id="role_id"
-                @keyup="onValidate(model.role_id, 'role_id', 'role_idmsg')"
-                v-on:blur="onValidate(model.role_id, 'role_id', 'role_idmsg')"
-                v-model="model.role_id"
+                @keyup="onValidate(staff.role_id, 'role_id', 'role_idmsg')"
+                v-on:blur="onValidate(staff.role_id, 'role_id', 'role_idmsg')"
+                v-model="staff.role_id"
                 class="inputbox"
               >
                 <option :value="null" selected disabled>Select Role</option>
@@ -60,9 +65,9 @@
               <label for="Designation">Designation    <strong>*</strong></label>
               <select
                 id="designation_id"
-                @keyup="onValidate(model.role_id, 'designation_id', 'designationmsg')"
-                v-on:blur="onValidate(model.role_id, 'designation_id', 'designationmsg')"
-                v-model="model.designation_id"
+                @keyup="onValidate(staff.role_id, 'designation_id', 'designationmsg')"
+                v-on:blur="onValidate(staff.role_id, 'designation_id', 'designationmsg')"
+                v-model="staff.designation_id"
                 class="inputbox"
               >
                 <option selected disabled>Select Designation</option>
@@ -78,9 +83,9 @@
               <label for="Department">Department    <strong>*</strong></label>
               <select
                 id="department_id"
-                @keyup="onValidate(model.department_id, 'department_id', 'departmentmsg')"
-                v-on:blur="onValidate(model.department_id, 'department_id', 'departmentmsg')"
-                v-model="model.department_id"
+                @keyup="onValidate(staff.department_id, 'department_id', 'departmentmsg')"
+                v-on:blur="onValidate(staff.department_id, 'department_id', 'departmentmsg')"
+                v-model="staff.department_id"
                 class="inputbox"
               >
                 <option selected disabled>Select Department</option>
@@ -100,9 +105,9 @@
               </label>
               <input
                 id="name_id"
-                @keyup="onValidate(model.name, 'name_id', 'namemsg')"
-                v-on:blur="onValidate(model.name, 'name_id', 'namemsg')"
-                v-model="model.name"
+                @keyup="onValidate(staff.name, 'name_id', 'namemsg')"
+                v-on:blur="onValidate(staff.name, 'name_id', 'namemsg')"
+                v-model="staff.name"
                 type="text"
                 class="inputbox"
               />
@@ -110,11 +115,11 @@
             </div>
             <div class="textbox">
               <label for="Father Name">Father Name</label>
-              <input v-model="model.father_name" type="text" class="inputbox" />
+              <input v-model="staff.father_name" type="text" class="inputbox" />
             </div>
             <div class="textbox">
               <label for="Mother Name">Mother Name</label>
-              <input v-model="model.mother_name" type="text" class="inputbox" />
+              <input v-model="staff.mother_name" type="text" class="inputbox" />
             </div>
             <div class="textbox">
               <label for="Email">
@@ -123,9 +128,9 @@
               </label>
               <input
                 id="email_id"
-                @keyup="onValidate(model.email, 'email_id', 'emailmsg')"
-                v-on:blur="onValidate(model.email, 'email_id', 'emailmsg')"
-                v-model="model.email"
+                @keyup="onValidate(staff.email, 'email_id', 'emailmsg')"
+                v-on:blur="onValidate(staff.email, 'email_id', 'emailmsg')"
+                v-model="staff.email"
                 type="email"
                 class="inputbox"
               />
@@ -138,9 +143,9 @@
               </label>
               <select
                 id="gender_id"
-                @keyup="onValidate(model.gender, 'gender_id', 'gendermsg')"
-                v-on:blur="onValidate(model.gender, 'gender_id', 'gendermsg')"
-                v-model="model.gender"
+                @keyup="onValidate(staff.gender, 'gender_id', 'gendermsg')"
+                v-on:blur="onValidate(staff.gender, 'gender_id', 'gendermsg')"
+                v-model="staff.gender"
                 class="inputbox"
               >
                 <option selected disabled>Select Gender</option>
@@ -154,27 +159,19 @@
                 Date Of Birth
                 <strong>*</strong>
               </label>
-              <!-- <datepicker
-                id="dob_id"
-                @keyup="onValidate(model.dob, 'dob_id', 'dobmsg')"
-                v-on:blur="onValidate(model.dob, 'staff_id', 'dobmsg')"
-                v-model="model.dob"
-              ></datepicker>-->
               <VueCtkDateTimePicker
-                v-model="model.dob"
+                v-model="staff.dob"
                 :only-date="true"
                 :color="'#1b5e20'"
                 :button-color="'#1b5e20'"
                 :auto-close="true"
-                :format="'DD-MM-YYYY'"
-                :formatted="'l'"
-                :output-format="'DD-MM-YYYY'"
+                :format="'YYYY/MM/DD'"
+                :formatted="'YYYY/MM/DD'"
               >
                 <input
-                  v-model="model.dob"
-                  id="dob_id"
-                  @keyup="onValidate(model.dob, 'dob_id', 'dobmsg')"
-                  v-on:blur="onValidate(model.dob, 'dob_id', 'dobmsg')"
+                  v-model="staff.dob"
+                  @keyup="onValidate(staff.dob, 'dob_id', 'dobmsg')"
+                  v-on:blur="onValidate(staff.dob, 'dob_id', 'dobmsg')"
                   class="inputbox"
                   autocomplete="off"
                 />
@@ -183,30 +180,29 @@
             </div>
             <div class="textbox">
               <label for="Emergency">Date Of Joining</label>
-
               <VueCtkDateTimePicker
-                v-model="model.doj"
+                v-model="staff.doj"
                 :only-date="true"
                 :color="'#1b5e20'"
                 :button-color="'#1b5e20'"
                 :auto-close="true"
-                :format="'DD-MM-YYYY'"
-                :formatted="'l'"
+                :format="'YYYY/MM/DD'"
+               :formatted="'YYYY/MM/DD'"
               >
-                <input id="dob_id" class="inputbox" autocomplete="off" :value="model.doj" />
+                <input  class="inputbox" autocomplete="off" :value="staff.doj" />
               </VueCtkDateTimePicker>
             </div>
             <div class="textbox">
               <label for="Phone">Phone</label>
-              <input v-model="model.phone" type="text" class="inputbox" />
+              <input v-model="staff.phone" type="text" class="inputbox" />
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-12">
               <label for="Emergency">Emergency Contact Number</label>
-              <input v-model="model.emergency_contact_no" type="text" class="inputbox" />
+              <input v-model="staff.emergency_contact_no" type="text" class="inputbox" />
             </div>
             <div class="textbox">
               <label for="Marital">Marital Status</label>
-              <select v-model="model.marital_status" class="inputbox">
+              <select v-model="staff.marital_status" class="inputbox">
                 <option selected disabled>Select Marital Status</option>
                 <option value="Single">Single</option>
                 <option value="Married">Married</option>
@@ -220,33 +216,33 @@
               </label>
               <input
                 id="image_id"
-                @keyup="onValidate(model.image, 'image_id', 'imagemsg')"
-                v-on:blur="onValidate(model.image, 'image_id', 'imagemsg')"
+                @keyup="onValidate(staff.image, 'image_id', 'imagemsg')"
+                v-on:blur="onValidate(staff.image, 'image_id', 'imagemsg')"
                 v-on:change="onImageChange"
                 type="file"
                 class="inputbox"
               />
-              <span id="imagemsg" class="error_message">Date Of Birth is required</span>
+              <span id="imagemsg" class="error_message">Photo is required</span>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-12">
               <label for="Current">Current Address</label>
-              <textarea v-model="model.current_address" rows="2" class="textareas"></textarea>
+              <textarea v-model="staff.current_address" rows="2" class="textareas"></textarea>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-12">
               <label for="Permanent">Permanent Address</label>
-              <textarea v-model="model.permanent_address" rows="2" class="textareas"></textarea>
+              <textarea v-model="staff.permanent_address" rows="2" class="textareas"></textarea>
             </div>
             <div class="textbox">
               <label for="Qualification">Qualification</label>
-              <textarea v-model="model.qualification" rows="2" class="textareas"></textarea>
+              <textarea v-model="staff.qualification" rows="2" class="textareas"></textarea>
             </div>
             <div class="textbox">
               <label for="Experience">Work Experience</label>
-              <textarea v-model="model.work_exp" rows="2" class="textareas"></textarea>
+              <textarea v-model="staff.work_exp" rows="2" class="textareas"></textarea>
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-12">
               <label for="Note">Note</label>
-              <textarea v-model="model.note" rows="2" class="textareas"></textarea>
+              <textarea v-model="staff.note" rows="2" class="textareas"></textarea>
             </div>
           </div>
         </div>
@@ -281,18 +277,18 @@
                   EPF No
                   <strong>*</strong>
                 </label>
-                <input v-model="model.epf_no" type="text" class="inputbox" />
+                <input v-model="staff.epf_no" type="text" class="inputbox" />
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <label for="Salary">
                   Basic Salary
                   <strong>*</strong>
                 </label>
-                <input v-model="model.basic_salary" type="text" class="inputbox" />
+                <input v-model="staff.basic_salary" type="text" class="inputbox" />
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <label for="contract">Contract Type</label>
-                <select v-model="model.contract_type" class="inputbox" name="class">
+                <select v-model="staff.contract_type" class="inputbox" name="class">
                   <option selected disabled>Select Contract Type</option>
                   <option value="Permanent">Permanent</option>
                   <option value="Probation">Probation</option>
@@ -303,14 +299,14 @@
                   Work Shift
                   <strong>*</strong>
                 </label>
-                <input v-model="model.work_shift" type="text" class="inputbox" name="name" />
+                <input v-model="staff.work_shift" type="text" class="inputbox" name="name" />
               </div>
               <div class="col-lg-4 col-12">
                 <label for="Location">
                   Location
                   <strong>*</strong>
                 </label>
-                <input v-model="model.location" type="text" class="inputbox" name="name" />
+                <input v-model="staff.location" type="text" class="inputbox" name="name" />
               </div>
             </div>
           </div>
@@ -321,15 +317,15 @@
             <div class="row" id="row">
               <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <label for="medical">Medical Leave</label>
-                <input v-model="model.medical_leave" type="text" class="inputbox" name="name" />
+                <input v-model="staff.medical_leave" type="text" class="inputbox" name="name" />
               </div>
               <div class="col-lg-4 col-md-6 col-sm-6 col-12">
                 <label for="casual">Casual Leave</label>
-                <input v-model="model.casual_leave" type="text" class="inputbox" name="name" />
+                <input v-model="staff.casual_leave" type="text" class="inputbox" name="name" />
               </div>
               <div class="col-lg-4 col-12">
                 <label for="maternity">Maternity Leave</label>
-                <input v-model="model.maternity_leave" type="text" class="inputbox" name="name" />
+                <input v-model="staff.maternity_leave" type="text" class="inputbox" name="name" />
               </div>
             </div>
           </div>
@@ -340,19 +336,19 @@
             <div class="row" id="row">
               <div class="textbox">
                 <label for="Account">Account Title</label>
-                <input v-model="model.account_title" type="text" class="inputbox" name="name" />
+                <input v-model="staff.account_title" type="text" class="inputbox" name="name" />
               </div>
               <div class="textbox">
                 <label for="bankNumber">Bank Account Number</label>
-                <input v-model="model.bank_account_no" type="text" class="inputbox" name="name" />
+                <input v-model="staff.bank_account_no" type="text" class="inputbox" name="name" />
               </div>
               <div class="textbox">
                 <label for="ifsc">IFSC Code</label>
-                <input v-model="model.ifsc_code" type="text" class="inputbox" name="name" />
+                <input v-model="staff.ifsc_code" type="text" class="inputbox" name="name" />
               </div>
               <div class="textbox">
                 <label for="branch">Bank Branch Name</label>
-                <input v-model="model.bank_branch_name" type="text" class="inputbox" name="name" />
+                <input v-model="staff.bank_branch_name" type="text" class="inputbox" name="name" />
               </div>
             </div>
           </div>
@@ -363,19 +359,19 @@
             <div class="row" id="row">
               <div class="textbox">
                 <label for="Facebook">Facebook URL</label>
-                <input v-model="model.facebook" type="text" class="inputbox" name="name" />
+                <input v-model="staff.facebook" type="text" class="inputbox" name="name" />
               </div>
               <div class="textbox">
                 <label for="Twitter">Twitter URL</label>
-                <input v-model="model.twitter" type="text" class="inputbox" name="name" />
+                <input v-model="staff.twitter" type="text" class="inputbox" name="name" />
               </div>
               <div class="textbox">
                 <label for="Linkedin">Linkedin URL</label>
-                <input v-model="model.linkedin" type="text" class="inputbox" name="name" />
+                <input v-model="staff.linkedin" type="text" class="inputbox" name="name" />
               </div>
               <div class="textbox">
                 <label for="Instagram">Instagram URL</label>
-                <input v-model="model.instagram" type="text" class="inputbox" name="name" />
+                <input v-model="staff.instagram" type="text" class="inputbox" name="name" />
               </div>
             </div>
           </div>
@@ -455,31 +451,59 @@ import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
 import Loading from "../../LoadingController.vue";
 import { EventBus } from "../../../js/event-bus.js";
+import { Util } from "../../../js/util";
+import message from "../../Alertmessage/message.vue";
 
 export default {
   components: {
     VueCtkDateTimePicker,
-    Loading
+    Loading,
+    message
   },
   data() {
     return {
-      yourValue: null,
-      model: {},
+      staff: {
+        staff_id : '',
+        role_id  : '',
+        designation_id: '',
+        department_id: '',
+        name : '',
+        father_name: '',
+        mother_name: '',
+        email: '',
+        gender: '',
+        dob: '',
+        phone: '',
+        energency_contact_no: '',
+        marital_status: '',
+        image: '',
+        current_address: '',
+        permanent_address: '',
+        qualification: '',
+        work_exp: '',
+        note: '',
+        password: '',
+      },
+    
       staffDirectorys: [],
       roles: [],
       designations: [],
       departments: [],
       addMore: false,
-      checkroute: false
+      checkroute: false,
+         msg: {
+        text: "",
+        type: ""
+      },
     };
   },
-  mounted() {},
+  mounted() {
+  },
   created() {
     EventBus.$emit("ThemeClicked");
     console.log(this.$route.path);
-    if (this.$route.path == "/stadirectory/edit") {
+    if (this.$route.path == "/stadirectory/edit"){
       this.checkroute = true;
-      p;
     }
     this.axios
       .get(`/api/staffdirectory/edit/${this.$route.params.id}`)
@@ -490,6 +514,8 @@ export default {
     this.getRoles();
     this.getDesignations();
     this.getDepartments();
+
+      
   },
   methods: {
     getRoles() {
@@ -522,77 +548,84 @@ export default {
     },
     onImageChange(e) {
       console.log(e.target.files[0]);
-      this.model.image = e.target.files[0];
+      this.staff.image = e.target.files[0];
     },
     onFileChange1(e) {
-      this.model.resume = e.target.files[0];
+      this.staff.resume = e.target.files[0];
     },
     onFileChange2(e) {
-      this.model.joining_letter = e.target.files[0];
+      this.staff.joining_letter = e.target.files[0];
     },
     onFileChange3(e) {
-      this.model.other_document = e.target.files[0];
+      this.staff.other_document = e.target.files[0];
     },
-    submit(e) {
+    addStaffDirectory(e){
+      alert(this.staff.mother_name);
       if (this.checkValidate()) {
-        EventBus.$emit("onLoad", "hello");
-        (this.model.dob = new Date().toISOString().slice(0, 10)),
+        EventBus.$emit("onLoad");
+        (this.staff.dob = new Date().toISOString().slice(0, 10)),
           e.preventDefault();
         let currentObj = this;
         const config = {
           headers: { "content-type": "multipart/form-data" }
         };
+        
         let formData = new FormData();
-        formData.append("staff_id", this.model.staff_id);
-        formData.append("role_id", this.model.role_id);
-        formData.append("designation_id", this.model.designation_id);
-        formData.append("department_id", this.model.department_id);
-        formData.append("name", this.model.name);
-        formData.append("father_name", this.model.father_name);
-        formData.append("mother_name", this.model.mother_name);
-        formData.append("email", this.model.email);
-        formData.append("gender", this.model.gender);
-        formData.append("dob", this.model.dob);
-        formData.append("phone", this.model.phone);
+        formData.append("staff_id", this.staff.staff_id);
+        formData.append("role_id", this.staff.role_id);
+        formData.append("designation_id", this.staff.designation_id);
+        formData.append("department_id", this.staff.department_id);
+        formData.append("name", this.staff.name);
+        formData.append("father_name", this.staff.father_name);
+        formData.append("mother_name", this.staff.mother_name);
+        formData.append("email", this.staff.email);
+        formData.append("gender", this.staff.gender);
+        formData.append("dob", this.staff.dob);
+        formData.append("phone", this.staff.phone);
         formData.append(
           "emergency_contact_no",
-          this.model.emergency_contact_no
+          this.staff.emergency_contact_no
         );
-        formData.append("marital_status", this.model.marital_status);
-        formData.append("image", this.model.image);
-        formData.append("current_address", this.model.current_address);
-        formData.append("permanent_address", this.model.permanent_address);
-        formData.append("qualification", this.model.qualification);
-        formData.append("work_exp", this.model.work_exp);
-        formData.append("note", this.model.note);
-        formData.append("password", this.model.password);
-        formData.append("epf_no", this.model.epf_no);
-        formData.append("basic_salary", this.model.basic_salary);
-        formData.append("contract_type", this.model.contract_type);
-        formData.append("work_shift", this.model.work_shift);
-        formData.append("location", this.model.location);
-        formData.append("medical_leave", this.model.medical_leave);
-        formData.append("casual_leave", this.model.casual_leave);
-        formData.append("maternity_leave", this.model.maternity_leave);
-        formData.append("account_title", this.model.account_title);
-        formData.append("bank_account_no", this.model.bank_account_no);
-        formData.append("ifsc_code", this.model.ifsc_code);
-        formData.append("bank_branch_name", this.model.bank_branch_name);
-        formData.append("facebook", this.model.facebook);
-        formData.append("twitter", this.model.twitter);
-        formData.append("instagram", this.model.instagram);
-        formData.append("linkedin", this.model.linkedin);
-        formData.append("resume", this.model.resume);
-        formData.append("joining_letter", this.model.joining_letter);
-        formData.append("other_document", this.model.other_document);
-        formData.append("location", this.model.location);
-        formData.append("date_of_joining", this.model.doj);
+        formData.append("marital_status", this.staff.marital_status);
+        formData.append("image", this.staff.image);
+        formData.append("current_address", this.staff.current_address);
+        formData.append("permanent_address", this.staff.permanent_address);
+        formData.append("qualification", this.staff.qualification);
+        formData.append("work_exp", this.staff.work_exp);
+        formData.append("note", this.staff.note);
+        formData.append("password", this.staff.password);
+        formData.append("epf_no", this.staff.epf_no);
+        formData.append("basic_salary", this.staff.basic_salary);
+        formData.append("contract_type", this.staff.contract_type);
+        formData.append("work_shift", this.staff.work_shift);
+        formData.append("location", this.staff.location);
+        formData.append("medical_leave", this.staff.medical_leave);
+        formData.append("casual_leave", this.staff.casual_leave);
+        formData.append("maternity_leave", this.staff.maternity_leave);
+        formData.append("account_title", this.staff.account_title);
+        formData.append("bank_account_no", this.staff.bank_account_no);
+        formData.append("ifsc_code", this.staff.ifsc_code);
+        formData.append("bank_branch_name", this.staff.bank_branch_name);
+        formData.append("facebook", this.staff.facebook);
+        formData.append("twitter", this.staff.twitter);
+        formData.append("instagram", this.staff.instagram);
+        formData.append("linkedin", this.staff.linkedin);
+        formData.append("resume", this.staff.resume);
+        formData.append("joining_letter", this.staff.joining_letter);
+        formData.append("other_document", this.staff.other_document);
+        formData.append("location", this.staff.location);
+        formData.append("date_of_joining", this.staff.doj);
         this.axios
           .post("/api/staffdirectory/store", formData, config)
           .then(response => {
             this.getStaffDirectory();
+            this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
+            EventBus.$emit("onLoadEnd");
+            Util.scrollToTop();
             if (response.data) {
-              alert(JSON.stringify(response.data));
+          
             } else {
               this.model = {};
             }
@@ -602,57 +635,57 @@ export default {
     },
     updateStaffDirectory(e) {
       if (this.checkValidate()) {
-        this.model.dob = new Date().toISOString().slice(0, 10);
+        this.staff.dob = new Date().toISOString().slice(0, 10);
         // e.preventDefault();
         let currentObj = this;
         const config = {
           headers: { "content-type": "multipart/form-data" }
         };
         let formData = new FormData();
-        formData.append("staff_id", this.model.staff_id);
-        formData.append("role_id", this.model.role_id);
-        formData.append("designation_id", this.model.designation_id);
-        formData.append("department_id", this.model.department_id);
-        formData.append("name", this.model.name);
-        formData.append("father_name", this.model.father_name);
-        formData.append("mother_name", this.model.mother_name);
-        formData.append("email", this.model.email);
-        formData.append("gender", this.model.gender);
-        formData.append("dob", this.model.dob);
-        formData.append("phone", this.model.phone);
+        formData.append("staff_id", this.staff.staff_id);
+        formData.append("role_id", this.staff.role_id);
+        formData.append("designation_id", this.staff.designation_id);
+        formData.append("department_id", this.staff.department_id);
+        formData.append("name", this.staff.name);
+        formData.append("father_name", this.staff.father_name);
+        formData.append("mother_name", this.staff.mother_name);
+        formData.append("email", this.staff.email);
+        formData.append("gender", this.staff.gender);
+        formData.append("dob", this.staff.dob);
+        formData.append("phone", this.staff.phone);
         formData.append(
           "emergency_contact_no",
-          this.model.emergency_contact_no
+          this.staff.emergency_contact_no
         );
-        formData.append("marital_status", this.model.marital_status);
-        formData.append("image", this.model.image);
-        formData.append("current_address", this.model.current_address);
-        formData.append("permanent_address", this.model.permanent_address);
-        formData.append("qualification", this.model.qualification);
-        formData.append("work_exp", this.model.work_exp);
-        formData.append("note", this.model.note);
-        formData.append("password", this.model.password);
-        formData.append("epf_no", this.model.epf_no);
-        formData.append("basic_salary", this.model.basic_salary);
-        formData.append("contract_type", this.model.contract_type);
-        formData.append("work_shift", this.model.work_shift);
-        formData.append("location", this.model.location);
-        formData.append("medical_leave", this.model.medical_leave);
-        formData.append("casual_leave", this.model.casual_leave);
-        formData.append("maternity_leave", this.model.maternity_leave);
-        formData.append("account_title", this.model.account_title);
-        formData.append("bank_account_no", this.model.bank_account_no);
-        formData.append("ifsc_code", this.model.ifsc_code);
-        formData.append("bank_branch_name", this.model.bank_branch_name);
-        formData.append("facebook", this.model.facebook);
-        formData.append("twitter", this.model.twitter);
-        formData.append("instagram", this.model.instagram);
-        formData.append("linkedin", this.model.linkedin);
-        formData.append("resume", this.model.resume);
-        formData.append("joining_letter", this.model.joining_letter);
-        formData.append("other_document", this.model.other_document);
-        formData.append("location", this.model.location);
-        formData.append("date_of_joining", this.model.doj);
+        formData.append("marital_status", this.staff.marital_status);
+        formData.append("image", this.staff.image);
+        formData.append("current_address", this.staff.current_address);
+        formData.append("permanent_address", this.staff.permanent_address);
+        formData.append("qualification", this.staff.qualification);
+        formData.append("work_exp", this.staff.work_exp);
+        formData.append("note", this.staff.note);
+        formData.append("password", this.staff.password);
+        formData.append("epf_no", this.staff.epf_no);
+        formData.append("basic_salary", this.staff.basic_salary);
+        formData.append("contract_type", this.staff.contract_type);
+        formData.append("work_shift", this.staff.work_shift);
+        formData.append("location", this.staff.location);
+        formData.append("medical_leave", this.staff.medical_leave);
+        formData.append("casual_leave", this.staff.casual_leave);
+        formData.append("maternity_leave", this.staff.maternity_leave);
+        formData.append("account_title", this.staff.account_title);
+        formData.append("bank_account_no", this.staff.bank_account_no);
+        formData.append("ifsc_code", this.staff.ifsc_code);
+        formData.append("bank_branch_name", this.staff.bank_branch_name);
+        formData.append("facebook", this.staff.facebook);
+        formData.append("twitter", this.staff.twitter);
+        formData.append("instagram", this.staff.instagram);
+        formData.append("linkedin", this.staff.linkedin);
+        formData.append("resume", this.staff.resume);
+        formData.append("joining_letter", this.staff.joining_letter);
+        formData.append("other_document", this.staff.other_document);
+        formData.append("location", this.staff.location);
+        formData.append("date_of_joining", this.staff.doj);
         this.axios
           .post(
             `/api/staffdirectory/update/${this.$route.params.id}`,
@@ -683,39 +716,39 @@ export default {
       document.getElementById(megId).style.display = "block";
     },
     checkValidate() {
-      if (!this.model.staff_id) {
+      if (!this.staff.staff_id) {
         this.onValidateMessage("staff_id", "staff_idmsg");
         return false;
       }
-      if (!this.model.role_id) {
+      if (!this.staff.role_id) {
         this.onValidateMessage("role_id", "role_idmsg");
         return false;
       }
-      if (!this.model.designation_id) {
+      if (!this.staff.designation_id) {
         this.onValidateMessage("designation_id", "designationmsg");
         return false;
       }
-      if (!this.model.department_id) {
+      if (!this.staff.department_id) {
         this.onValidateMessage("department_id", "departmentmsg");
         return false;
       }
-      if (!this.model.name) {
+      if (!this.staff.name) {
         this.onValidateMessage("name_id", "namemsg");
         return false;
       }
-      if (!this.model.email) {
+      if (!this.staff.email) {
         this.onValidateMessage("email_id", "emailmsg");
         return false;
       }
-      if (!this.model.gender) {
+      if (!this.staff.gender) {
         this.onValidateMessage("gender_id", "gendermsg");
         return false;
       }
-      if (!this.model.dob) {
+      if (!this.staff.dob) {
         this.onValidateMessage("dob_id", "dobmsg");
         return false;
       }
-      if (!this.model.image) {
+      if (!this.staff.image) {
         this.onValidateMessage("image_id", "imagemsg");
         return false;
       } else {

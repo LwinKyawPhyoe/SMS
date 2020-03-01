@@ -16,6 +16,8 @@
             <h6>Add Hostel Room</h6>
           </div>
           <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
+            <message :alertmessage="msg" id="alertmsg" />
+
             <form @submit.prevent="addHostelRooms">
               <div class="col-12">
                 <label for="room_no">
@@ -23,6 +25,7 @@
                   <strong>*</strong>
                 </label>
                 <input
+                autocomplete="off"
                   id="name_id"
                   @keyup="onValidate(hostelroom.room_no, 'name_id', 'namemsg')"
                   v-on:blur="onValidate(hostelroom.room_no, 'name_id', 'namemsg')"
@@ -82,11 +85,12 @@
                   <strong>*</strong>
                 </label>
                 <input
+                autocomplete="off"
                   id="nob_id"
                   @keyup="onValidate(hostelroom.no_of_bed, 'nob_id', 'nobmsg')"
                   v-on:blur="onValidate(hostelroom.no_of_bed, 'nob_id', 'nobmsg')"
                   v-model="hostelroom.no_of_bed"
-                  type="text"
+                  type="number"
                   class="inputbox"
                 />
                 <span id="nobmsg" class="error_message">Number Of Bed is required</span>
@@ -97,18 +101,19 @@
                   <strong>*</strong>
                 </label>
                 <input
+                autocomplete="off"
                   id="cpb_id"
                   @keyup="onValidate(hostelroom.cost_per_bed, 'cpb_id', 'cpbmsg')"
                   v-on:blur="onValidate(hostelroom.cost_per_bed, 'cpb_id', 'cpbmsg')"
                   v-model="hostelroom.cost_per_bed"
-                  type="text"
+                  type="number"
                   class="inputbox"
                 />
                 <span id="cpbmsg" class="error_message">Cost Per Bed is required</span>
               </div>
               <div class="col-12 end">
                 <label for="description">Description</label>
-                <textarea v-model="hostelroom.description" class="textareas" rows="3"></textarea>
+                <textarea autocomplete="off" v-model="hostelroom.description" class="textareas" rows="3"></textarea>
               </div>
               <div class="col-12">
                 <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
@@ -125,6 +130,7 @@
             <h6>Hostel Room List</h6>
           </div>
           <div class="card-body">
+            <message :alertmessage="deletemsg" id="delalertmsg"/>
             <input
               v-model="search"
               @input="searchData()"
@@ -231,6 +237,14 @@ export default {
         type: ""
       },
       hostelroom: {},
+       msg: {
+        text: "",
+        type: ""
+      },
+      deletemsg: {
+        text: "",
+        type: ""
+      },
       search: "",
       hostelrooms: [],
       hostel_table: [],
@@ -246,7 +260,12 @@ export default {
   },
   created() {
     EventBus.$emit("ThemeClicked");
-    EventBus.$on("clicked", clickCount => {
+    EventBus.$on("clicked", response => {
+
+      (this.deletemsg.text = response.text),
+      (this.deletemsg.type = response.type);
+      Util.workAlert("#delalertmsg");
+
       this.getHostels();
       this.getRoomTypes();
       this.getHostelRooms();
@@ -274,17 +293,18 @@ export default {
           .then(response => {
             this.getHostelRooms();
             this.hostelroom = {};
+            EventBus.$emit("onLoadEnd");
+            this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
+            Util.scrollToTop();
+
           })
           .catch(error => console.log(error));
       }
     },
     editHostelRoom(hos) {
-      let to = this.moveToDown ? this.$refs.description.offsetTop - 60 : 0;
-      window.scroll({
-        top: to,
-        left: 0,
-        behavior: "smooth"
-      });
+      Util.scrollToTop();
       this.hostelroom = {};
       this.hostelroom.id = hos.id;
       this.hostelroom.hostel_id = hos.hostel_id;
@@ -301,11 +321,17 @@ export default {
         EventBus.$emit("onLoad", "1");
         this.axios
           .post(`/api/hostelroom/update/${this.hostelroom.id}`, this.hostelroom)
-          .then(res => {
+          .then(response => {
             this.getHostelRooms();
             this.isEdit = false;
             this.hostelroom = "";
-            console.log(JSON.stringify(res));
+            EventBus.$emit('onLoadEnd');
+            this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
+            Util.scrollToTop();
+
+            console.log(JSON.stringify(response));
           });
       }
     },

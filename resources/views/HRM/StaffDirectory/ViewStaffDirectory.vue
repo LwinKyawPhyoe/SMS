@@ -413,9 +413,6 @@ export default {
       ary_types: []
     };
   },
-  mounted: function (){
-   EventBus.$emit('onLoad',"1");
-  },
   created() {
     EventBus.$emit("ThemeClicked");
     this.getProfile();
@@ -456,7 +453,7 @@ export default {
       }
     },
     searchAttendanceByDate() {
-      EventBus.$emit('onLoad','1');
+      EventBus.$emit('onLoad');
       this.axios
         .get(`/api/searchDate/${this.$route.params.id}/${this.search_by_year}`)
         .then(response => {
@@ -469,7 +466,7 @@ export default {
           for (var tt = 0; tt < this.attendance_type.length; tt++) {
             var month = moment(this.ary_types[t].date).format("MMM");
             var date = moment(this.ary_types[t].date).format("D");
-            if (
+            if(
               this.ary_types[t].staff_attendance_type_id ==
               this.attendance_type[tt].id
             ) {
@@ -485,6 +482,7 @@ export default {
           }
         }
         console.log("Ary" + JSON.stringify(this.ary));
+        EventBus.$emit("onLoadEnd");
       }, 1000);
     },
     /***

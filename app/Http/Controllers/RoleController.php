@@ -49,11 +49,12 @@ class RoleController extends Controller
         for ($i = 0; $i < count($session); $i++) {
             $role = new Role([
                 "name" => $request->input('name'),
+                'type' => "Custom",
                 'session_id'  => $session[$i]['id'],
                 'domain'  => 'TS'
             ]);
             $role->save();
-            return response()->json("The Role successfully added");
+            return response()->json(['text' => 'Role added successfully', 'type' => 'success']);
         }
     }
 
@@ -92,7 +93,7 @@ class RoleController extends Controller
         //
         $role = Role::find($id);
         $role->update($request->all());
-        return response()->json('The role successfully updated');
+        return response()->json(['text' => 'Role updated successfully', 'type' => 'success']);
     }
 
     /**
@@ -108,6 +109,6 @@ class RoleController extends Controller
         $role->update([
             "is_active" => "No"
         ]);
-        return response()->json('The role successfully deleted');
+        return response()->json(['text' => 'Role deleted successfully', 'type' => 'success']);
     }
 }

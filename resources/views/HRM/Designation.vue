@@ -16,6 +16,8 @@
             <h6>Add Designation</h6>
           </div>
           <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
+            <message :alertmessage="msg" id="alertmsg" />
+
             <form @submit.prevent="addDesignation">
               <div class="col-12">
                 <label for="name">
@@ -23,6 +25,7 @@
                   <strong>*</strong>
                 </label>
                 <input
+                autocomplete="off"
                   id="name_id"
                   @keyup="onValidate(designation.designation_name, 'name_id', 'namemsg')"
                   v-on:blur="onValidate(designation.designation_name, 'name_id', 'namemsg')"
@@ -41,13 +44,14 @@
           </div>
         </div>
       </div>
-
       <div class="col-lg-7 col-md-12" style="padding-left:0;">
         <div class="card">
           <div class="card-header">
             <h6>Designation List</h6>
           </div>
           <div class="card-body">
+            <message :alertmessage="deletemsg" id="delalertmsg" />
+
             <input type="text" placeholder="Search..." class="searchText" />
             <div class="copyRows">
               <div class="row" id="copyRow">
@@ -120,7 +124,8 @@ import Loading from "../LoadingController.vue";
 export default {
   components: {
     confirm,
-    Loading
+    Loading,
+    message
   },
   data() {
     return {
@@ -132,7 +137,15 @@ export default {
       designation: {},
       designations: [],
       isEdit: false,
-      delurl: ""
+      delurl: "",
+      msg: {
+        text: "",
+        type: ""
+      },
+      deletemsg: {
+        text: "",
+        type: ""
+      }
     };
   },
   mounted() {
@@ -142,6 +155,9 @@ export default {
     EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
       this.getDesignations();
+       (this.deletemsg.text = response.text),
+        (this.deletemsg.type = response.type);
+      Util.workAlert("#delalertmsg");
     });
     this.getDesignations();
   },
@@ -154,26 +170,24 @@ export default {
     addDesignation() {
       console.log(JSON.stringify(this.designation));
       if (this.checkValidate()) {
-        EventBus.$emit("onLoad", "1");
+        EventBus.$emit("onLoad");
         this.axios
           .post("/api/designation/store", this.designation)
           .then(response => {
             this.getDesignations();
-            setTimeout(() => {
-              this.designation = {};
-            }, 100);
+             this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
+            EventBus.$emit("onLoadEnd");
+            Util.scrollToTop();
+            this.designation = {};
           })
           .catch(error => console.log(error));
       }
     },
     editDesignation(data) {
       console.log(JSON.stringify(data.name));
-      let to = this.moveToDown ? this.$refs.description.offsetTop - 60 : 0;
-      window.scroll({
-        top: to,
-        left: 0,
-        behavior: "smooth"
-      });
+      Util.scrollToTop();
       this.designation = {};
       this.designation.id = data.id;
       this.designation.designation_name = data.designation_name;
@@ -181,17 +195,22 @@ export default {
     },
     updateDesignation() {
       if (this.checkValidate()) {
-        EventBus.$emit("onLoad", "1");
+        EventBus.$emit("onLoad");
         console.log(JSON.stringify(this.designation));
         this.axios
           .post(
             `/api/designation/update/${this.designation.id}`,
             this.designation
           )
-          .then(res => {
+          .then(response => {
             this.isEdit = false;
             this.designation = {};
             this.getDesignations();
+            this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
+            EventBus.$emit("onLoadEnd");
+            Util.scrollToTop();
             console.log(JSON.stringify(res));
           });
       }

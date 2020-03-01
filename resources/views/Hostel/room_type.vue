@@ -24,6 +24,7 @@
                   <strong>*</strong>
                 </label>
                 <input
+                  autocomplete="off"
                   type="text"
                   class="inputbox"
                   v-model="room.room_type"
@@ -54,6 +55,7 @@
           <div class="card-body">
             <message :alertmessage="deletemsg" id="delalertmsg" />
             <input
+            autocomplete="off"
               v-model="search"
               @input="searchData()"
               type="text"
@@ -83,7 +85,8 @@
                 </div>
               </div>
             </div>
-
+           
+           
             <div class="table-responsive" id="print">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
@@ -168,7 +171,7 @@ export default {
   mounted() {
     this.getRoomTypes();
   },
-  created() {
+  created(){
     EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
       (this.deletemsg.text = response.text),
@@ -199,6 +202,8 @@ export default {
             this.msg.type = response.data.type;
             Util.workAlert("#alertmsg");
             this.room = {};
+            EventBus.$emit("onLoadEnd");
+            Util.scrollToTop();
             setTimeout(() => {
               this.room = {};
             }, 100);
@@ -207,12 +212,7 @@ export default {
       }
     },
     editRoomType(data) {
-      let to = this.moveToDown ? this.$refs.description.offsetTop - 60 : 0;
-      window.scroll({
-        top: to,
-        left: 0,
-        behavior: "smooth"
-      });
+    Util.scrollToTop();
       this.room = {};
       this.room.id = data.id;
       this.room.room_type = data.room_type;
@@ -225,11 +225,17 @@ export default {
         EventBus.$emit("onLoad", this.roomtypes);
         this.axios
           .post(`/api/roomtype/update/${this.room.id}`, this.room)
-          .then(res => {
-            this.isEdit = false;
-            this.room = "";
+          .then(response => {
             this.getRoomTypes();
-            console.log(JSON.stringify(res));
+            this.isEdit = false;
+            this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
+            this.room = "";
+            EventBus.$emit("onLoadEnd");
+            Util.scrollToTop();
+
+            console.log(JSON.stringify(response));
           });
       }
     },
