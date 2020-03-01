@@ -366,7 +366,7 @@ export default {
     };
   },
   created() {
-    EventBus.$emit("clicked");
+    EventBus.$emit("ThemeClicked");
     this.axios.get("/api/color").then(response => {
       this.colors = response.data;
     });

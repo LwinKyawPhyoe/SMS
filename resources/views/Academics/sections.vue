@@ -11,8 +11,8 @@
         <hr>
 
         <confirm :url="props"></confirm>
-        <div class="row" style="align-items: end !important;">
-            <div class="col-lg-5 col-md-12" style="padding-left:2px;">
+        <div class="row rowContainer" style="align-items: end !important;">
+            <div class="col-lg-5 col-md-12" style="padding:0;">
                 <div class="card">
                     <div class="card-header">
                         <h6>Add Section</h6>
@@ -27,7 +27,7 @@
                                     v-on:blur="onValidate(SectionObj.section, 'sectionid', 'sectionmsg')"/>
                                 <span id="sectionmsg" class="error_message">Section Name is required</span>
                             </div>
-                            <div class="col-12">
+                            <div class="col-12 column-12">
                                 <button type="submit" id="globalSave" class="save">Save</button>
                             </div>
                         </form>
@@ -124,6 +124,7 @@ export default {
         };
     },
     created() {
+        EventBus.$emit("ThemeClicked");
         EventBus.$on("clicked", response => {
             this.deletemsg.text = response.text,
             this.deletemsg.type = response.type

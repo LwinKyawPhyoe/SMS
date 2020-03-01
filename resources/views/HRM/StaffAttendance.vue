@@ -190,7 +190,7 @@ export default {
     };
   },
   created() {
-    EventBus.$emit("clicked");
+    EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
       console.log("-->" + JSON.stringify(response.check));
       this.makeAsHoliCheck = response.check;

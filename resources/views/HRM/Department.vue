@@ -145,6 +145,7 @@ export default {
     this.getDepartments();
   },
   created() {
+    EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
       this.getDepartments();
       (this.msg.text = response.text), (this.msg.type = response.type);

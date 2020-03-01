@@ -139,6 +139,7 @@ export default {
     this.getDesignations();
   },
   created() {
+    EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
       this.getDesignations();
     });

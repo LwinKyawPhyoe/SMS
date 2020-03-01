@@ -126,6 +126,7 @@ export default {
         }
     },
     created() {
+        EventBus.$emit("ThemeClicked");
         EventBus.$on("SessionSaved", response => {
             this.ClassTimeTableObj = { "class_id": "", "section_id": "", "subject_id": "", "staff_id": "", "classtimetbl": []};
             this.ClassList = [{"id":0,"class":"Select Class","section":[{"id": 0, "section":"Class Section"}]}];
@@ -290,6 +291,7 @@ export default {
         goSearch(){            
             if(this.checkValidate())
             {
+                EventBus.$emit("ThemeClicked");
                 this.axios.post('api/ClassTimeTable/search', this.ClassTimeTableObj).then(response => {                    
                     this.showTimeTbl = true;                    
                     this.classTimeTbl = [

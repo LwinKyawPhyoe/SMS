@@ -123,7 +123,7 @@ export default {
     };
   },
   created() {
-    EventBus.$emit("clicked");
+    EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
       this.getContent();
       this.deletemsg.text = response.text;

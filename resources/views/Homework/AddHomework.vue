@@ -193,6 +193,7 @@ export default {
         };
     },
     created() {
+        EventBus.$emit("ThemeClicked");
         this.getHomeworkList();
         EventBus.$on("saveHomework", data => {
             this.getHomeworkList();

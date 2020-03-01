@@ -161,6 +161,7 @@ import message from '../Alertmessage/message.vue';
             }
         },
         created() {
+            EventBus.$emit("ThemeClicked");
             this.getdata();
             this.getAcademic();
             EventBus.$on("onLoad", response => {

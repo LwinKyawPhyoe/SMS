@@ -176,7 +176,7 @@ export default {
     };
   },
   created() {
-    EventBus.$emit("clicked");
+    EventBus.$emit("ThemeClicked");
   },
   methods: {
     allTableHeader(id, id1, id2, id3) {

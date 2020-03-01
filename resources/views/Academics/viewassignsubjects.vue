@@ -222,6 +222,7 @@ export default {
         }
     },
     created() {
+        EventBus.$emit("ThemeClicked");
         EventBus.$on("clicked", response => {            
             this.deletemsg.text = response.text;
             this.deletemsg.type = response.type;
@@ -372,6 +373,7 @@ export default {
         goSearch() {
             if(this.checkValidate())
             {
+                EventBus.$emit("ThemeClicked");
                 this.showall = true;
                 this.axios.post('/api/AssSubject/search', this.AssSubject).then(response => {                                                                
                     this.AssSubSort(response.data);
@@ -384,6 +386,7 @@ export default {
             this.axios.get('/api/asssubject').then(response => {                                                
                 this.AssSubSort(response.data);
                 this.showall = true;
+                EventBus.$emit("ThemeClicked");
                 this.AssSubject.class_id = this.ClassList[0].id;
                 this.AssSubject.section_id = this.SectionList[0].id;
             });

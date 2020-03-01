@@ -245,6 +245,7 @@ export default {
     this.getHostelRooms();
   },
   created() {
+    EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", clickCount => {
       this.getHostels();
       this.getRoomTypes();

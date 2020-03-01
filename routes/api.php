@@ -291,7 +291,6 @@ Route::group(['prefix' => 'content'], function() {
     Route::get('delete/{id}','ContentController@destroy');
 });
 
-
 //Lwin Kyaw Phyo
 //Academic Year Route
 Route::get('academicyr', 'AcademicYearController@index');

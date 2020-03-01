@@ -84,6 +84,7 @@
         alertMessage:''
       };
     },created(){
+        EventBus.$emit("ThemeClicked");
         this.id1 = this.$route.params.exam_id;
         this.id2 = this.$route.params.class_id;
         this.id3 = this.$route.params.section_id;

@@ -417,6 +417,7 @@ export default {
    EventBus.$emit('onLoad',"1");
   },
   created() {
+    EventBus.$emit("ThemeClicked");
     this.getProfile();
     this.countAttendance();
     this.getMonth();

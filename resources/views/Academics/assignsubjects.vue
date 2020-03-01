@@ -111,6 +111,7 @@ export default {
     };
   },
   created() {
+    EventBus.$emit("ThemeClicked");
     EventBus.$on("SessionSaved", response => {            
         console.log(JSON.stringify(response));
         this.ClassList = [{"id":0,"class":"Select Class","section":[{"id": 0, "section":"Class Section"}]}];
@@ -243,6 +244,7 @@ export default {
     goSearch() {
       if(this.checkValidate())
       {
+        EventBus.$emit("ThemeClicked");
         this.axios.post('/api/AssSubject/search', this.AssSubject).then(response => {        
           if(response.data == "" || response.data == [])
           {
@@ -256,7 +258,7 @@ export default {
             for(let i=0; i<response.data.length; i++){
               this.AssSubObj.push({aID: response.data[i].AssSubId, itemid: i+1,SubCaption: "Subject",SubValue: response.data[i].subject_id,TeacherCaption: "Teacher",TeacherValue: response.data[i].staff_id});
             }
-          }
+          }          
         });
       }
     },

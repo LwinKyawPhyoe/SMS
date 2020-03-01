@@ -594,7 +594,7 @@ export default {
     };
   },
   created() {
-    EventBus.$emit("clicked");
+    EventBus.$emit("ThemeClicked");
     var id = this.$route.params.id;
     this.axios
       .get(`/api/student/edit/${id}`)

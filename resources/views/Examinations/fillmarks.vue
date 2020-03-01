@@ -171,7 +171,7 @@ export default {
     };
   },
   created() {
-    EventBus.$emit("clicked");
+    EventBus.$emit("ThemeClicked");
     this.getExamNames();
     this.getClass();
   },

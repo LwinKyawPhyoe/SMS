@@ -88,6 +88,7 @@ export default {
     };
   },
   created() {
+    EventBus.$emit("ThemeClicked");
     this.getUserPermission();
     this.findUser();
   },

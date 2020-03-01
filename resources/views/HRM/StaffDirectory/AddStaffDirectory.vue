@@ -475,6 +475,7 @@ export default {
   },
   mounted() {},
   created() {
+    EventBus.$emit("ThemeClicked");
     console.log(this.$route.path);
     if (this.$route.path == "/stadirectory/edit") {
       this.checkroute = true;

@@ -843,7 +843,7 @@ export default {
     };
   },
   created() {
-    EventBus.$emit("clicked");
+    EventBus.$emit("ThemeClicked");
     this.allData();
     var id = this.$route.params.id;
     this.axios

@@ -161,6 +161,7 @@ export default {
         }
     },
     created() {
+        EventBus.$emit("ThemeClicked");
         this.getAllClass();
         this.getAllSession();
     },
@@ -272,7 +273,8 @@ export default {
 
         goSearch(){
             if(this.checkSearchValidate()){
-                this.showStudRecord = true;                
+                this.showStudRecord = true;
+                EventBus.$emit("ThemeClicked");
                 var class_section_id = '';
                 for(let i=0; i<this.class_sectionList.length; i++){
                     
@@ -285,7 +287,7 @@ export default {
                 this.axios.get(`/api/student/sibling/${class_section_id}`).then(response => {                    
                     for(let s=0; s<response.data.length; s++){
                         this.PromoteObj.push({"id": response.data[s].id,"admission_no": response.data[s].admission_no, "student_name": response.data[s].name, "father_name": response.data[s].father_name, "dob": response.data[s].dob, "result": "Pass", "nextsessionstatus": "Continue"});
-                    }                    
+                    }                 
                 });                
             }            
         },

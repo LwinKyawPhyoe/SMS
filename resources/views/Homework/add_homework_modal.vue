@@ -80,6 +80,7 @@ export default {
         };
     },
     created() {
+        EventBus.$emit("ThemeClicked");
         EventBus.$on("openAddHomework", data => {
             this.getAllClass();
             this.$refs.editor1.setContent("");

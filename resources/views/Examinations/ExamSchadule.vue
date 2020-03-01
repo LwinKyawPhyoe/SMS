@@ -185,7 +185,7 @@ export default {
     };
   },
   created() {
-    EventBus.$emit("clicked");
+    EventBus.$emit("ThemeClicked");
     this.getClass();
   },
   methods: {

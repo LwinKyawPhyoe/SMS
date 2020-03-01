@@ -1217,7 +1217,7 @@ export default {
     };
   },
   created() {
-    EventBus.$on("clicked", response => {
+    EventBus.$on("ThemeClicked", response => {
       this.getColor();
     });
     this.getColor();

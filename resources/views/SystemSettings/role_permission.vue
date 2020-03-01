@@ -132,6 +132,7 @@ export default {
     this.getRoles();
   },
   created() {
+    EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", clickCount => {
       this.getRoles();
     });

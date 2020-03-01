@@ -134,6 +134,7 @@ export default {
     };
   },
   created(){
+    EventBus.$emit("ThemeClicked");
     this.allData();
   },
  

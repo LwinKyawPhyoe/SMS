@@ -123,6 +123,7 @@ export default {
         }
     },
     created() {
+        EventBus.$emit("ThemeClicked");
         EventBus.$on("SessionSaved", response => {            
             console.log(JSON.stringify(response));
             this.ClassList = [{"id":0,"class":"Select Class","section":[{"id": 0, "section":"Class Section"}]}];
@@ -241,6 +242,7 @@ export default {
         goSearch(){            
             if(this.checkValidate())
             {
+                EventBus.$emit("ThemeClicked");
                 this.axios.post('api/ClassTimeTable/viewsearch', this.ClassTimeTableObj).then(response => {                    
                     let array = response.data.sort((a, b) => {
                         if (a.classTimeTblid > b.classTimeTblid) {

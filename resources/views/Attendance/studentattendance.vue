@@ -163,7 +163,7 @@ export default {
     };
   },
   created() {
-    EventBus.$emit("clicked");
+    EventBus.$emit("ThemeClicked");
     this.axios.get("/api/attendancetypes").then(response => {
       this.attendance_type = response.data;
       console.log(JSON.stringify(response.data));

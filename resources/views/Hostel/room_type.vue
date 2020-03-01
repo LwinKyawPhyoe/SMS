@@ -169,6 +169,7 @@ export default {
     this.getRoomTypes();
   },
   created() {
+    EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
       (this.deletemsg.text = response.text),
         (this.deletemsg.type = response.type);

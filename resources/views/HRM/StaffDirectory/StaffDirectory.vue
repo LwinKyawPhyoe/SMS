@@ -195,7 +195,7 @@ export default {
     };
   },
   created() {
-    EventBus.$emit("clicked");
+    EventBus.$emit("ThemeClicked");
     this.getStaffs();
     this.getRoles();
   },
