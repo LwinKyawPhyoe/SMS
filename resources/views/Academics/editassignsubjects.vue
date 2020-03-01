@@ -78,7 +78,7 @@
           </div>
         </div>
         <hr />
-        <div class="col-12 column-12">
+        <div class="col-12">
           <button @click="goSave()" id="globalSave" class="save" style="margin:0 0 1rem;">Save</button>
         </div>
       </div>
@@ -87,7 +87,6 @@
 </template>
 
 <script>
-import { EventBus } from "../../js/event-bus.js";
 import message from "../Alertmessage/message.vue";
 import store from "store2";
 export default {
@@ -136,8 +135,7 @@ export default {
       },
     };
   },
-  created() {   
-    EventBus.$emit("clicked"); 
+  created() {    
     this.getAllClass();
     this.getAllSubject();    
   }, 
@@ -183,7 +181,16 @@ export default {
 
     getAllClass() {
       this.axios.get("/api/class").then(response => {
-        this.sortList(response.data);
+        let array = response.data.sort((a, b) => {
+            if (a.sectionid > b.sectionid) {
+                return 1;
+            }
+            if (a.sectionid < b.sectionid) {
+                return -1;
+            }
+            return 0;
+        });
+        this.sortList(array);
         this.getEditAssSub();
       });
     },

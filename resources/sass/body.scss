@@ -12,6 +12,27 @@ body {
     height: 61px;
     position: fixed;
     z-index: 1;
+    .sessions {
+      position: absolute;
+      margin-left: 21rem;
+      top: 15px;
+      .session {
+        font-size: 12pt;
+        cursor: pointer;
+        .pencil {
+          margin: 0 3px;
+        }
+      }
+      p {
+        text-align: center;
+        margin-top: -9px;
+        font-size: 10pt;
+      }
+    }
+    h5.session:hover{
+      text-decoration: underline;
+      color: #0056b3;
+    }
     // User Name
     .Items {
       position: absolute;

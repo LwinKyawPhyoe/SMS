@@ -1127,7 +1127,7 @@
           </ul>
         </div>
       </div>
-    </div>
+    </div>    
 
     <div
       class="modal fade"
@@ -1138,7 +1138,7 @@
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="width:653px;">
+        <div class="modal-content" style="width:653px !important;">
           <div class="modal-body" style="padding:0;">
             <div class="card-header" id="globalcardHeader" style="width: 100%;margin-left: 0;">
               <h6>Session</h6>
@@ -1149,16 +1149,14 @@
               ></i>
             </div>
             <div class="textbox" style="width: 100% !important;padding: 1rem 1rem;">
-              <label>Session</label>
-              <select class="inputbox">
-                <option value="2017-2018">2017-2018</option>
-                <option value="2018-2019">2018-2019</option>
-                <option value="2019-2020">2019-2020</option>
+              <label>Session</label>              
+              <select class="inputbox" v-model="session_id">                              
+                  <option v-for="session in sessionList" :key="session.id" :value="session.id">{{session.session}}</option>                
               </select>
             </div>
           </div>
-          <div class="modal-footer" style="padding: 0px;">
-            <button type="button" id="globalSave" style="margin: 1rem;" class="save">Save</button>
+          <div class="modal-footer" style="padding-top: 0;">
+            <button type="button" @click="goSave()" id="globalSave" class="save">Save</button>
           </div>
         </div>
       </div>
@@ -1167,6 +1165,13 @@
     <div class="content">
       <div class="content_header pc">
         <i class="fa fa-bars" id="list" onclick="changeBar()"></i>
+        <div class="sessions row" id="sessions" style="margin-top: 5px;">
+          <h5 class="session" data-toggle="modal" data-target="#exampleModalCenter1">
+            Current Session 
+          </h5>
+          <p style="margin: 3px;">-</p>
+          <h5 style="font-size: 12pt; cursor: pointer;">{{session}}</h5>
+        </div>
         <div class="Items">
           <div class="userTitle">
             <h5 class="userName">Technotrust</h5>
@@ -1204,7 +1209,11 @@ export default {
       colors: [],
       school: {},
       oldElemtnt: ".",
-      oldItemId: "."
+      oldItemId: ".",
+
+      sessionList: [],
+      session_id: "",
+      session: ""
     };
   },
   created() {
@@ -1212,11 +1221,44 @@ export default {
       this.getColor();
     });
     this.getColor();
+    this.getAllSession();
     this.axios.get("/api/schools").then(response => {
       this.school = response.data;
-    });
+    });    
   },
   methods: {
+    getAllSession() {      
+        this.sessionList = [];
+        this.axios.get("/api/academicyr").then(response => {                        
+            for(let i=0; i<response.data.length; i++){
+              if(response.data[i].is_active != 'delete'){
+                this.sessionList.push(response.data[i]);
+              }
+            }
+
+            const found = this.sessionList.find(element => element.is_active == "yes");            
+            this.session_id = found.id;
+            this.session = found.session;
+            console.log("session >>"+ this.session + "id >>>"+ this.session_id);
+        });
+    },
+
+    goSave(){
+      const found = this.sessionList.find(element => element.is_active == "yes");            
+      var oldid = found.id;
+      var AcademicYr = {"updateid": this.session_id, "oldid": oldid};
+      this.axios
+        .post("/api/AcademicYear/update", AcademicYr)
+        .then(response => {           
+           this.getAllSession();
+           $('#exampleModalCenter1').modal('hide');
+            EventBus.$emit("SessionSaved", response.data);
+        })
+        .catch(error => {
+            console.log("err->" + JSON.stringify(this.error.response));
+        });
+    },
+
     dropdown(id, icon) {
       if (document.getElementById(id).style.display == "block") {
         document.getElementById(id).style.display = "none";

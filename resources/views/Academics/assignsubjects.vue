@@ -3,8 +3,8 @@
     <div class="toplink">
       <h2 class="stuName">Academics</h2>
       <h4 class="stuLink">
-        <router-link class="home" to="home">Home</router-link>>
-        <router-link class="home" to="/viewasssubjects">Assign Subject</router-link>> Create Assign Subject
+        <router-link class="home" to="home">Home</router-link> > 
+        <router-link class="home" to="/viewasssubjects">Assign Subject</router-link> > Create Assign Subject
       </h4>
     </div>
     <hr style="margin-bottom: -0.5rem;" />
@@ -15,24 +15,14 @@
       </div>
       <div class="card-body">
         <form @submit.prevent="goSearch">
-          <div class="row" id="row" style="margin: 0px;">
+          <div class="row" id="row" style="margin: 0px;">        
             <div class="col-lg-6 col-md-6 col-12 textbox">
               <label for="name" class="title">
                 Class
                 <strong>*</strong>
-              </label>
-              <select
-                id="classid"
-                @change="changeClass(AssSubject.class_id)"
-                class="inputbox"
-                name="class"
-                v-model="AssSubject.class_id"
-              >
-                <option
-                  v-for="Classes in ClassList"
-                  :key="Classes.id"
-                  :value="Classes.id"
-                >{{Classes.class}}</option>
+              </label>            
+              <select id="classid" @change="changeClass(AssSubject.class_id)" class="inputbox" name="class" v-model="AssSubject.class_id">                              
+                  <option v-for="Classes in ClassList" :key="Classes.id" :value="Classes.id">{{Classes.class}}</option>                
               </select>
               <span id="classmsg" class="error_message">Class is required</span>
             </div>
@@ -41,24 +31,14 @@
                 Section
                 <strong>*</strong>
               </label>
-              <select
-                id="sectionid"
-                @change="changeSection(AssSubject.section_id)"
-                class="inputbox"
-                name="class"
-                v-model="AssSubject.section_id"
-              >
-                <option
-                  v-for="Section in SectionList"
-                  :key="Section.id"
-                  :value="Section.id"
-                >{{Section.section}}</option>
+              <select id="sectionid" @change="changeSection(AssSubject.section_id)" class="inputbox" name="class" v-model="AssSubject.section_id">
+                <option v-for="Section in SectionList" :key="Section.id" :value="Section.id">{{Section.section}}</option>
               </select>
               <span id="sectionmsg" class="error_message">Section is required</span>
             </div>
-            <div class="col-12 column-12">
+            <div class="col-12">              
               <button type="submit" class="searchButton" id="globalSearch">Search</button>
-            </div>
+            </div>          
           </div>
         </form>
       </div>
@@ -68,24 +48,14 @@
         <button @click="AddRow()" class="add">Add</button>
       </div>
       <div v-if="haveRecord" class="card-body">
-        <div
-          v-for="assSub in AssSubObj"
-          :key="assSub.id"
-          class="row"
-          id="row"
-          style="padding-bottom: 0;"
-        >
+        <div v-for="assSub in AssSubObj" :key="assSub.id" class="row" id="row" style="padding-bottom: 0;">
           <div class="col-lg-6 col-12 textbox" style="display: flex;flex-wrap: wrap;">
             <div class="col-lg-3 col-12" style="padding-left: 5px;padding-right: 5px;">
               <label for="name" class="title">{{ assSub.SubCaption }}</label>
             </div>
             <div class="col-lg-7 col-12" style="padding-left: 5px;padding-right: 5px;">
               <select class="inputbox" name="class" v-model="assSub.SubValue">
-                <option
-                  v-for="sublist in SubjectList"
-                  :key="sublist.id"
-                  :value="sublist.id"
-                >{{getSubjectName(sublist.name,sublist.type)}}</option>
+                <option v-for="sublist in SubjectList" :key="sublist.id" :value="sublist.id">{{getSubjectName(sublist.name,sublist.type)}}</option>
               </select>
             </div>
           </div>
@@ -93,16 +63,9 @@
             <div class="col-lg-3 col-12" style="padding-left: 5px;padding-right: 5px;">
               <label for="name" class="title">{{ assSub.TeacherCaption }}</label>
             </div>
-            <div
-              class="col-lg-7 col-12"
-              style="padding-left: 5px;padding-right: 5px; margin-bottom: 5px;"
-            >
+            <div class="col-lg-7 col-12" style="padding-left: 5px;padding-right: 5px; margin-bottom: 5px;">
               <select class="inputbox" name="class" v-model="assSub.TeacherValue">
-                <option
-                  v-for="teachlist in TeacherList"
-                  :key="teachlist.id"
-                  :value="teachlist.id"
-                >{{teachlist.name}}</option>
+                <option v-for="teachlist in TeacherList" :key="teachlist.id" :value="teachlist.id">{{teachlist.name}}</option>
               </select>
             </div>
             <div class="col-lg-2 col-12" style="padding-left: 5px;padding-right: 5px;">
@@ -113,7 +76,7 @@
           </div>
         </div>
         <hr />
-        <div class="col-12 column-12">
+        <div class="col-12">          
           <button @click="goSave()" class="save" id="globalSave" style="margin:0 0 1rem;">Save</button>
         </div>
       </div>
@@ -127,27 +90,11 @@ import store from "store2";
 export default {
   data() {
     return {
-      AssSubject: {
-        id: "",
-        class_id: "",
-        section_id: "",
-        assignSubject: [],
-        delRecord: []
-      },
-      ClassList: [
-        {
-          id: 0,
-          class: "Select Class",
-          section: [{ id: 0, section: "Class Section" }]
-        }
-      ],
-      SectionList: [{ id: 0, section: "Class Section" }],
-      SubjectList: [{ id: 0, name: "Select Subject", type: "" }],
-      TeacherList: [
-        { id: 0, name: "Select Teacher" },
-        { id: 1, name: "Shivam" },
-        { id: 2, name: "Jason" }
-      ],
+      AssSubject: {"id":"", "class_id": "", "section_id": "", "assignSubject": [], "delRecord": []},
+      ClassList: [{"id":0,"class":"Select Class","section":[{"id": 0, "section":"Class Section"}]}],
+      SectionList: [{"id":0,"section":"Class Section"}],
+      SubjectList: [{"id":0,"name":"Select Subject","type": ""}],
+      TeacherList: [{"id": 0, "name": "Select Teacher"},{"id": 1, "name": "Shivam"},{"id": 2, "name": "Jason"}],
       haveRecord: false,
 
       DeleteRecord: [],
@@ -164,79 +111,70 @@ export default {
     };
   },
   created() {
-    EventBus.$emit("clicked");
-    EventBus.$on("SessionSaved", response => {
-      console.log(JSON.stringify(response));
-      this.ClassList = [
-        {
-          id: 0,
-          class: "Select Class",
-          section: [{ id: 0, section: "Class Section" }]
-        }
-      ];
-      this.SectionList = [{ id: 0, section: "Class Section" }];
-      this.getAllClass();
-      this.getAllSubject();
+    EventBus.$on("SessionSaved", response => {            
+        console.log(JSON.stringify(response));
+        this.ClassList = [{"id":0,"class":"Select Class","section":[{"id": 0, "section":"Class Section"}]}];
+        this.SectionList = [{"id":0,"section":"Class Section"}];
+        this.getAllClass();
+        this.getAllSubject();
     });
     this.getAllClass();
     this.getAllSubject();
   },
   methods: {
-    getAllSubject() {
-      this.axios.get("/api/subject").then(response => {
-        for (let i = 0; i < response.data.length; i++) {
-          this.SubjectList.push({
-            id: response.data[i].id,
-            name: response.data[i].name,
-            type: response.data[i].type
-          });
-        }
-        this.AssSubObj[0].SubValue = this.SubjectList[0].id;
-        this.AssSubObj[0].TeacherValue = this.TeacherList[0].id;
-      });
+    getAllSubject(){
+      this.axios
+        .get('/api/subject')
+        .then(response => {
+            for(let i=0; i<response.data.length; i++){
+              this.SubjectList.push({"id": response.data[i].id, "name": response.data[i].name, "type": response.data[i].type});
+            }
+            this.AssSubObj[0].SubValue = this.SubjectList[0].id;
+            this.AssSubObj[0].TeacherValue = this.TeacherList[0].id;
+        });
     },
 
-    getSubjectName(aName, aType) {
-      if (aType == "") return aName;
-      else return aName + " " + "(" + aType + ")";
+    getSubjectName(aName, aType){
+      if(aType == "")   return aName;
+      else    return aName+" "+"("+aType+")";
     },
 
     getAllClass() {
       this.axios.get("/api/class").then(response => {
-        this.sortList(response.data);
+        let array = response.data.sort((a, b) => {
+            if (a.sectionid > b.sectionid) {
+                return 1;
+            }
+            if (a.sectionid < b.sectionid) {
+                return -1;
+            }
+            return 0;
+        });
+        this.sortList(array);
       });
     },
 
-    sortList(aList) {
-      for (let i = 0; i < aList.length; i++) {
-        if (this.ClassList == [] || this.ClassList.length == 0) {
+    sortList(aList){       
+      for(let i=0; i < aList.length; i++){
+        if(this.ClassList == [] || this.ClassList.length == 0){
           let obj = [];
-          obj.push({ id: aList[i].sectionid, section: aList[i].section });
-          this.ClassList.push({
-            id: aList[i].classid,
-            class: aList[i].class,
-            section: obj
-          });
-        } else {
+          obj.push({"id": aList[i].sectionid, "section": aList[i].section});
+          this.ClassList.push({"id": aList[i].classid,"class": aList[i].class, "section": obj});
+        }
+        else{
           let check = 0;
-          for (let a = 0; a < this.ClassList.length; a++) {
-            if (this.ClassList[a].class == aList[i].class) {
-              this.ClassList[a].section.push({
-                id: aList[i].sectionid,
-                section: aList[i].section
-              });
+          for(let a=0; a < this.ClassList.length; a++){
+            if(this.ClassList[a].class == aList[i].class){              
+              this.ClassList[a].section.push({"id": aList[i].sectionid, "section": aList[i].section});
               check = 1;
             }
           }
 
-          if (check == 0) {
+          if(check == 0)
+          {
             let obj1 = [];
-            obj1.push({ id: aList[i].sectionid, section: aList[i].section });
-            this.ClassList.push({
-              id: aList[i].classid,
-              class: aList[i].class,
-              section: obj1
-            });
+            obj1.push({"id": aList[i].sectionid, "section": aList[i].section});
+            this.ClassList.push({"id": aList[i].classid,"class": aList[i].class, "section": obj1});
           }
         }
       }
@@ -244,13 +182,14 @@ export default {
       this.AssSubject.section_id = this.SectionList[0].id;
     },
 
-    changeClass(aId) {
+    changeClass(aId){
       this.SectionList = [];
-      this.SectionList = [{ id: 0, section: "Class Section" }];
-      if (aId != 0) {
-        for (let i = 0; i < this.ClassList.length; i++) {
-          if (this.ClassList[i].id == aId) {
-            for (let a = 0; a < this.ClassList[i].section.length; a++) {
+      this.SectionList = [{"id":0,"section":"Class Section"}];
+      if(aId != 0)
+      {
+        for(let i=0; i<this.ClassList.length;i++){
+          if(this.ClassList[i].id == aId){
+            for(let a=0; a<this.ClassList[i].section.length; a++){
               this.SectionList.push(this.ClassList[i].section[a]);
             }
             break;
@@ -259,114 +198,80 @@ export default {
       }
       this.AssSubject.section_id = this.SectionList[0].id;
       this.haveRecord = false;
-      this.AssSubObj = [
-        {
-          aID: 0,
-          itemid: 1,
-          SubCaption: "Subject",
-          SubValue: "",
-          TeacherCaption: "Teacher",
-          TeacherValue: ""
-        }
-      ];
-      if (this.AssSubject.class_id == 0) {
-        $("#classid").css("border", "1px solid red");
-      } else {
-        $("#classmsg").css("display", "none");
-        $("#classid").css("border", "1px solid #d2d6de");
+      this.AssSubObj = [{aID: 0, itemid: 1, SubCaption: "Subject", SubValue: "", TeacherCaption: "Teacher", TeacherValue: ""}];
+      if(this.AssSubject.class_id == 0)
+      {
+          $('#classid').css('border', '1px solid red');
+      }
+      else
+      {
+          $('#classmsg').css('display', 'none');
+          $('#classid').css('border', '1px solid #d2d6de');
       }
     },
 
-    changeSection(aId) {
+    changeSection(aId)
+    {
       this.haveRecord = false;
-      this.AssSubObj = [
-        {
-          aID: 0,
-          itemid: 1,
-          SubCaption: "Subject",
-          SubValue: "",
-          TeacherCaption: "Teacher",
-          TeacherValue: ""
-        }
-      ];
-      if (aId == 0) $("#sectionid").css("border", "1px solid red");
-      else {
-        $("#sectionmsg").css("display", "none");
-        $("#sectionid").css("border", "1px solid #d2d6de");
+      this.AssSubObj = [{aID: 0, itemid: 1, SubCaption: "Subject", SubValue: "", TeacherCaption: "Teacher", TeacherValue: ""}];
+      if(aId == 0)   $('#sectionid').css('border', '1px solid red');
+      else
+      {
+          $('#sectionmsg').css('display', 'none');        
+          $('#sectionid').css('border', '1px solid #d2d6de');
       }
     },
 
-    checkValidate() {
-      var returnValue = true;
-      if (
-        this.AssSubject.class_id == "" ||
-        this.AssSubject.class_id == undefined ||
-        this.AssSubject.class_id == 0
-      ) {
-        $("#classmsg").css("display", "block");
-        $("#classid").css("border", "1px solid red");
-        returnValue = false;
-      }
-      if (
-        this.AssSubject.section_id == "" ||
-        this.AssSubject.section_id == undefined ||
-        this.AssSubject.section_id == 0
-      ) {
-        $("#sectionmsg").css("display", "block");
-        $("#sectionid").css("border", "1px solid red");
-        returnValue = false;
-      }
-      return returnValue;
+    checkValidate()
+    {
+        var returnValue = true;
+        if(this.AssSubject.class_id == "" || this.AssSubject.class_id == undefined || this.AssSubject.class_id == 0)
+        {
+            $('#classmsg').css('display', 'block');
+            $('#classid').css('border', '1px solid red');
+            returnValue = false;
+        }
+        if(this.AssSubject.section_id == "" || this.AssSubject.section_id == undefined || this.AssSubject.section_id == 0)
+        {
+            $('#sectionmsg').css('display', 'block');
+            $('#sectionid').css('border', '1px solid red');
+            returnValue = false;
+        }            
+        return returnValue;
     },
 
     goSearch() {
-      if (this.checkValidate()) {
-        this.axios
-          .post("/api/AssSubject/search", this.AssSubject)
-          .then(response => {
-            if (response.data == "" || response.data == []) {
-              this.haveRecord = true;
-              this.AssSubObj = [
-                {
-                  aID: 0,
-                  itemid: 1,
-                  SubCaption: "Subject",
-                  SubValue: 0,
-                  TeacherCaption: "Teacher",
-                  TeacherValue: 0
-                }
-              ];
-            } else {
-              this.AssSubObj = [];
-              this.haveRecord = true;
-              for (let i = 0; i < response.data.length; i++) {
-                this.AssSubObj.push({
-                  aID: response.data[i].AssSubId,
-                  itemid: i + 1,
-                  SubCaption: "Subject",
-                  SubValue: response.data[i].subject_id,
-                  TeacherCaption: "Teacher",
-                  TeacherValue: response.data[i].staff_id
-                });
-              }
+      if(this.checkValidate())
+      {
+        this.axios.post('/api/AssSubject/search', this.AssSubject).then(response => {        
+          if(response.data == "" || response.data == [])
+          {
+            this.haveRecord = true;
+            this.AssSubObj = [{aID: 0, itemid: 1, SubCaption: "Subject", SubValue: 0, TeacherCaption: "Teacher", TeacherValue: 0}]
+          }
+          else
+          {          
+            this.AssSubObj = [];
+            this.haveRecord = true;
+            for(let i=0; i<response.data.length; i++){
+              this.AssSubObj.push({aID: response.data[i].AssSubId, itemid: i+1,SubCaption: "Subject",SubValue: response.data[i].subject_id,TeacherCaption: "Teacher",TeacherValue: response.data[i].staff_id});
             }
-          });
+          }
+        });
       }
     },
 
-    goSave() {
+    goSave(){
       this.AssSubject.delRecord = this.DeleteRecord;
-      this.AssSubject.assignSubject = this.AssSubObj;
-      this.axios
-        .post("/api/AssSubject/save", this.AssSubject)
-        .then(response => {
-          this.DeleteRecord = [];
-          this.$router.push({ name: "viewasssubjects" });
-          store.set("msg", "save");
-        });
+      this.AssSubject.assignSubject = this.AssSubObj;      
+      this.axios.post('/api/AssSubject/save', this.AssSubject).then(response =>{        
+        this.DeleteRecord = [];        
+        this.$router.push({name: 'viewasssubjects'});
+        store.set("msg","save");
+      });
     },
 
-    AddRow() {
+    AddRow(){
       this.AssSubObj.push({
         aID: 0,
         itemid: Number(this.AssSubObj[this.AssSubObj.length - 1].itemid + 1),
@@ -375,12 +280,8 @@ export default {
         TeacherCaption: "Teacher",
         TeacherValue: ""
       });
-      this.AssSubObj[
-        this.AssSubObj.length - 1
-      ].SubValue = this.SubjectList[0].id;
-      this.AssSubObj[
-        this.AssSubObj.length - 1
-      ].TeacherValue = this.TeacherList[0].id;
+      this.AssSubObj[this.AssSubObj.length - 1].SubValue = this.SubjectList[0].id;
+      this.AssSubObj[this.AssSubObj.length - 1].TeacherValue = this.TeacherList[0].id;
     },
 
     DeleteRow(aValue) {
@@ -393,7 +294,7 @@ export default {
           }
         }
       }
-    }
+    },    
   }
 };
 </script>
