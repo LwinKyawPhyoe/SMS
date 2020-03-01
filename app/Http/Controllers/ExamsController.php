@@ -45,7 +45,7 @@ class ExamsController extends Controller
                 if($checkActive[0]->is_active == 'delete')
                 {
                     //Save Update is_active
-                    $checkActive[0]->is_active = "no";
+                    $checkActive[0]->is_active = "yes";
                     $checkActive[0]->save(); 
                     return response()->json('Exam added successfully');
                 }
