@@ -56,7 +56,12 @@
   color: white;
 }
 
+.header .body_content .dashboardLink:hover {
+  color: white;
+}
+
 .header .body_content .navList {
+  color: inherit;
   width: 100%;
   text-decoration: none;
   position: relative;

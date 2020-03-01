@@ -16,7 +16,7 @@
             <h6>Add Exam</h6>
           </div>
           <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
-            <message :alertmessage="msg" id="alertSave"/>
+            <message :alertmessage="msg" id="alertmsg" />
             <div class="col-12">
               <label for="name">Name<strong>*</strong></label>
               <input id="nameid" type="text" class="inputbox" name="name" v-model="saveexam.name"
@@ -28,10 +28,8 @@
               <label for="note">Note</label><br>
               <textarea class="textareas" rows="3" v-model="saveexam.remark"></textarea>
             </div><br>
-
-            <label v-if="savebutton == true" style="margin-left:50px;">Please Activate Academic Year <strong>*</strong></label>
-            <div class="col-12">
-              <button class="save" @click="addExam(SessionList.id)" v-for="SessionList in SessionList" :key="SessionList.id">Save</button>
+            <div class="col-12 column-12">
+              <button class="save" id="globalSave" @click="addExam()">Save</button>
             </div>
           </div>
         </div>
@@ -42,7 +40,7 @@
             <h6>Exam List</h6>
           </div>
           <div class="card-body">
-            <message :alertmessage="deletemsg" id="alertDelete"/>
+            <message :alertmessage="deletemsg" id="delalertmsg" />
             <input v-on:keyup="searchTable()" type="text" placeholder="Search..." class="searchText" id="myInput" />
             <div class="copyRows">
               <div class="row" id="copyRow">
@@ -88,7 +86,10 @@
                 </div>
               </div>
             </div>
-            <div class="table-responsive">
+            <div v-if="data == false">
+              <h1 class="NoData">No Data</h1>
+            </div>
+            <div class="table-responsive" v-else>
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
                   <tr>
@@ -130,6 +131,7 @@ import { EventBus } from "../../js/event-bus.js";
 import Loading from "../LoadingController.vue";
 import confirm from "../message/confirm.vue";
 import message from '../Alertmessage/message.vue';
+import { Util } from "../../js/util";
     export default {
       components: {
           Loading,
@@ -157,16 +159,19 @@ import message from '../Alertmessage/message.vue';
                 successAlertmsg: "",
                 successAlertmsg1: "",
                 erroralertmsg: "",
-                savebutton:''
+                savebutton:'',
+                data : false
             }
         },
         created() {
-            EventBus.$emit("ThemeClicked");
             this.getdata();
-            this.getAcademic();
+            EventBus.$emit("ThemeClicked");
             EventBus.$on("onLoad", response => {
             this.getdata();
-            this.workAlert('alertDelete');
+            
+            this.deletemsg.text = 'Deleted Successfully',
+            this.deletemsg.type = 'success'
+            Util.workAlert("#delalertmsg");
             });
         },
         methods: {
@@ -175,30 +180,22 @@ import message from '../Alertmessage/message.vue';
                 .get('/api/ExamList')
                 .then(response => {
                     this.exams = response.data;
-                });
-            },getAcademic(){
-               this.axios
-                .get('/api/activeacademicyr') 
-                .then(response => {
-                this.SessionList = response.data;
-                var academicYr = response.data;
-                if (academicYr.length ==1 ){
-                  this.savebutton = false;
-                }else{
-                  this.savebutton = true;
-                }
+                    if(this.exams.length > 0){
+                      this.data = true;
+                    }else{
+                      this.data = false;
+                    }
                 });
             },Test(para){
               console.log(para);
             },
-            addExam(session_id) {
+            addExam() {
               if(this.checkValidate())
               {
                 // EventBus.$emit("clicked");
                 if(this.saveexam.remark==null){
                 this.saveexam.remark='No Description'
                 }
-                this.saveexam.session_id=session_id;
                 this.saveexam.domain = 'TS',
                 this.axios
                 .post('/api/exams/addexam', this.saveexam)
@@ -208,7 +205,7 @@ import message from '../Alertmessage/message.vue';
                 this.getdata(),
                 this.msg.text = 'Saved Successfully',
                 this.msg.type = 'success',
-                this.workAlert('alertSave')
+                Util.workAlert("#alertmsg")
                 ))
               .catch(error => {            
                 console.log("err->" + JSON.stringify(error));         
@@ -224,10 +221,8 @@ import message from '../Alertmessage/message.vue';
                 },
                 goDelete(id){
                   var funName = "deleteexam";
-                  this.props.type = "delete";
+                  this.props.type = "theinDelete";
                   this.props.url = `exams/${funName}/${id}`;
-                  this.deletemsg.text = 'Deleted Successfully',
-                  this.deletemsg.type = 'success'
                 },
                 searchTable(){      
                 var input, filter, found, table, tr, td, i, j;
@@ -281,11 +276,6 @@ import message from '../Alertmessage/message.vue';
       this.axios.get(`/api/ExamList`).then(response=>{
         console.log(response.data);
       })
-    },workAlert(tagID){
-      document.getElementById(tagID).style.display = 'block';
-      setTimeout(() => {
-        document.getElementById(tagID).style.display = 'none';
-      }, 2000);
     }
   }
   }

@@ -7,7 +7,8 @@
       </h4>
     </div>
     <hr />
-
+    <confirm :url="props"></confirm>
+    <Loading></Loading>
     <div class="row rowContainer" style="align-items: end !important;margin:0;">
       <div class="col-lg-5 col-md-12" style="padding:0;">
         <div class="card">
@@ -15,17 +16,7 @@
             <h6>Add Grade</h6>
           </div>
           <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
-            <div
-              id="OthAlert"
-              style="margin: 0 10px 10px 10px;display:none;"
-              class="alert alert-success"
-              role="alert"
-            >
-              {{ successAlertmsg }}
-              <button @click="goAlertClose(1)" type="button" class="close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+            <message :alertmessage="msg" id="alertmsg" />
             <div class="col-12">
               <label for="gradename">
                 Grade Name
@@ -91,17 +82,7 @@
             <h6>Grade List</h6>
           </div>
           <div class="card-body">
-            <div
-              id="deleteAlert"
-              style="margin: 10px 10px 10px 10px;display:none;"
-              class="alert alert-success"
-              role="alert"
-            >
-              {{successAlertmsg1}}
-              <button @click="goAlertClose(2)" type="button" class="close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
+            <message :alertmessage="deletemsg" id="delalertmsg" />
             <input
               v-on:keyup="searchTable()"
               type="text"
@@ -167,7 +148,10 @@
                 </div>
               </div>
             </div>
-            <div class="table-responsive">
+            <div v-if="data == false">
+              <h1 class="NoData">No Data</h1>
+            </div>
+            <div v-else class="table-responsive">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
                   <tr>
@@ -191,7 +175,8 @@
                       <i class="fa fa-pencil pen" @click="EditMarksGrade(MarksGrade.id)">
                         <span class="penLabel">Edit</span>
                       </i>
-                      <i class="fa fa-trash time" @click="DeleteMarksGrade(MarksGrade.id)">
+                      <i data-toggle="modal"
+                        data-target="#exampleModalCenter" class="fa fa-trash time" @click="DeleteMarksGrade(MarksGrade.id)">
                         <span class="timeLabel">Delete</span>
                       </i>
                     </td>
@@ -208,9 +193,30 @@
 </template>
 <script>
 import { EventBus } from "../../js/event-bus.js";
+import Loading from "../LoadingController.vue";
+import confirm from "../message/confirm.vue";
+import message from '../Alertmessage/message.vue';
+import { Util } from "../../js/util";
 export default {
+      components: {
+          Loading,
+          confirm,
+          message
+        },
   data() {
     return {
+      props: {
+                    url: "",
+                    type: ""
+                },
+                msg: {
+                text: "",
+                type: ""
+                },
+                deletemsg: {
+                text: "",
+                type: ""        
+                },
       marksGrade: [],
       saveMarksGrade: {},
       successAlertmsg: "",
@@ -220,12 +226,19 @@ export default {
       errors: [],
       check: false,
       error: {},
-      arrayError: []
+      arrayError: [],
+      data : false
     };
   },
   created() {
     EventBus.$emit("ThemeClicked");
     this.getmarksGrades();
+    EventBus.$on("onLoad", response => {
+            this.getmarksGrades();
+            this.deletemsg.text = 'Deleted Successfully',
+            this.deletemsg.type = 'success'
+            Util.workAlert("#delalertmsg");
+            });
   },
   methods: {
     allTableHeader(id, id1, id2, id3) {
@@ -241,6 +254,11 @@ export default {
     getmarksGrades() {
       this.axios.get(`/api/marksGrade/getMarksGrade`).then(response => {
         this.marksGrade = response.data;
+        if(this.marksGrade.length > 0){
+                      this.data = true;
+                    }else{
+                      this.data = false;
+                    }
       });
     },
     SaveMarksGrade() {
@@ -253,21 +271,18 @@ export default {
         ) {
           this.saveMarksGrade.description = "No description";
         }
-        $("#OthAlert").css("display", "block");
         this.axios
           .post(`/api/marksGrade/addMarksGrade`, this.saveMarksGrade)
           .then(response => {
             this.saveMarksGrade = {};
             this.getmarksGrades();
-            this.successAlertmsg = response.data;
+            this.msg.text = 'Saved Successfully',
+                this.msg.type = 'success',
+                Util.workAlert("#alertmsg")
           });
       } else {
         console.log("required");
       }
-    },
-    goAlertClose(aVal) {
-      if (aVal == 1) $("#OthAlert").css("display", "none");
-      else $("#deleteAlert").css("display", "none");
     },
     searchTable() {
       var input, filter, found, table, tr, td, i, j;
@@ -337,14 +352,9 @@ export default {
       console.log("test");
     },
     DeleteMarksGrade(id) {
-      this.axios
-        .get(`/api/marksGrade/deleteMarksGrade/${id}`)
-        .then(response => {
-          this.successAlertmsg1 = response.data;
-          $("#deleteAlert").css("display", "block");
-          let i = this.marksGrade.map(item => item.id).indexOf(id);
-          this.marksGrade.splice(i, 1);
-        });
+        var funName = "deleteMarksGrade";
+        this.props.type = "theinDelete";
+        this.props.url = `marksGrade/${funName}/${id}`;
     },
     EditMarksGrade(id) {
       this.axios.get(`/api/marksGrade/editMarksGrade/${id}`).then(response => {

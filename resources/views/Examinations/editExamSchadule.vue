@@ -57,7 +57,7 @@
 <script>
   import DatePicker from 'vue2-datepicker';
   import 'vue2-datepicker/index.css';
- 
+  import {EventBus} from "../../js/event-bus";
   export default {
     components: { DatePicker },
     data() {
@@ -84,14 +84,15 @@
         alertMessage:''
       };
     },created(){
-        EventBus.$emit("ThemeClicked");
         this.id1 = this.$route.params.exam_id;
         this.id2 = this.$route.params.class_id;
         this.id3 = this.$route.params.section_id;
         this.Search();
         this.getExamName();
         this.getClass();
+        EventBus.$emit("ThemeClicked");
         this.getSection();
+        
         setTimeout(() => {
             this.display = true;
         }, 1300);

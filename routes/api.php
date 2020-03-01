@@ -268,10 +268,10 @@ Route::group(['prefix' => 'marksGrade'], function() {
     Route::get('getStudentExam/{idsArray}','MarksGradeController@GetStudentAndExam');
 });
 Route::get('activeacademicyr', 'AcademicYearController@activeAcademic');
-Route::get('getClasses', 'ClassesController@Theinindex');
-Route::get('getSections', 'SectionController@Theinindex');
-Route::get('getClassSectionId/{arrayids}','ClassSectionController@getAssignSub_id');
-Route::get('getClassSection/{id}', 'ClassSectionController@Theinindex');
+Route::get('getClasses', 'ExamsController@Theinindex');
+Route::get('getSections', 'ExamsController@Zheinindex');
+Route::get('getClassSectionId/{arrayids}','ExamsController@getAssignSub_id');
+Route::get('getClassSection/{id}', 'ExamsController@CSZTheinindex');
 Route::get('searchExamSchadule/{arrayClassSectionExam}', 'ExamSchaduleController@index');
 // End Thei Htike Aung Section
 

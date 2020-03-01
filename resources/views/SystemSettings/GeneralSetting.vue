@@ -189,7 +189,7 @@
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="width:653px;">
+        <div class="modal-content" style="width:653px !important;">
           <div class="modal-body" style="padding:0;">
             <div class="card-header" id="globalcardHeader" style="width: 100%;margin-left: 0;">
               <h6>Edit Logo</h6>
@@ -230,8 +230,8 @@
     </div>
     <hr />
 
-    <div class="row rowContainer" style="align-items: end !important;">
-      <div class="col-lg-4 col-12" style="padding-left:2px;">
+    <div class="row rowContainer" style="align-items: end !important;margin:0;">
+      <div class="col-lg-4 col-12" style="padding:5px;">
         <div class="card" id="globalCard">
           <div class="card-header" id="globalcardHeader">
             <h6>Edit Logo</h6>
@@ -253,7 +253,7 @@
         </div>
       </div>
 
-      <div class="col-lg-8 col-12" style="padding-left:0;">
+      <div class="col-lg-8 col-12" style="padding:5px;">
         <div class="card" id="globalCard">
           <div class="card-header editCard" id="globalcardHeader">
             <h6>General Setting</h6>
@@ -396,6 +396,7 @@ export default {
         .then(response => {
           this.school = response.data;
           $("#profileModal").modal("hide");
+          window.location = window.location.href;
         });
     },
     changeTheme(id) {

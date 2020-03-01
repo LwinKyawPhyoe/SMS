@@ -387,12 +387,10 @@
 
             <div class="body_content" id="body_content">
               <ul class="additional-menu">
-                <li>
-                  <a class="navList" id="globalList">
-                    <router-link class="routerLink" id="globalLink" to>
+                <li class="dashboardLink">
+                    <router-link class="routerLink navList" id="globalLink globalList" to="/dashboard">
                       <i class="fa fa-credit-card" id="sidebarIcon"></i>Dashboard
                     </router-link>
-                  </a>
                 </li>
                 <li>
                   <a @click="dropdown('link','dropIcon')" class="navList" id="globalList">
@@ -605,12 +603,12 @@
                   <div class="dropdownForm" id="dropdownForm">
                     <ul class="link" id="link6">
                       <li class="nav-list">
-                        <router-link class="nav-list" id="nav-list" to>
+                        <router-link class="nav-list" id="nav-list" to="/homework">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Add Homework
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to class="nav-list" id="nav-list">
+                        <router-link to="/evaluation_report" class="nav-list" id="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Evaluation Report
                         </router-link>
                       </li>
@@ -772,11 +770,11 @@
 
         <div class="smallBar" id="smBar">
           <ul class="Links" id="Links" onclick="showForm()">
-            <a class="link">
+            <router-link class="link" to="/dashboard">
               <li>
                 <i class="fa fa-credit-card smallIcon"></i>
               </li>
-            </a>
+            </router-link>
             <a class="link">
               <li>
                 <i class="fa fa-group smallIcon"></i>
@@ -973,13 +971,13 @@
               <li>
                 <i class="fa fa-flask smallIcon" style="zoom:1.3 !important;"></i>
                 <ul class="smallLists">
-                  <router-link to class="smallLink">
+                  <router-link to="/homework" class="smallLink">
                     <li class="smLink">
                       <i class="fa fa-angle-double-right smIcon"></i>
                       Add Homework
                     </li>
                   </router-link>
-                  <router-link to class="smallLink">
+                  <router-link to="/evaluation_report" class="smallLink">
                     <li class="smLink">
                       <i class="fa fa-angle-double-right smIcon"></i>
                       Evaluation Report
@@ -1252,7 +1250,7 @@ export default {
         .then(response => {           
            this.getAllSession();
            $('#exampleModalCenter1').modal('hide');
-            EventBus.$emit("SessionSaved", response.data);
+           window.location = window.location.href;
         })
         .catch(error => {
             console.log("err->" + JSON.stringify(this.error.response));

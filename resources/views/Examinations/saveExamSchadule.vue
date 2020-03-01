@@ -58,7 +58,7 @@
       </div>
       <div class="card-body" v-if="display == true">
         <div v-if="data == false">
-          <h1 class="NoData">No Subject in this Class</h1>
+          <h1 class="NoData">No Data</h1>
         </div>
         <div class="table-responsive" v-if="data == true">
           <table class="table table-hover table-striped">
@@ -105,7 +105,7 @@
             type="button"
             @click="saveExamSchadule()"
           >
-            <router-link to="examschadule" style="color:white" class="submit">Submit</router-link>
+            <router-link to style="color:white" class="submit">Submit</router-link>
           </button>
           <button v-if="data == false" class="save" id="globalSave" style="margin:10px 1rem 1rem 0px" type="button">
             <router-link to="examschadule" style="color:white" class="submit">Back</router-link>
@@ -229,6 +229,7 @@ export default {
         .post(`/api/examSchadules/addExamSchadule`, this.SaveExamSchadule)
         .then(response => {
           this.message = response.data;
+          this.$router.push({name:'examschadule'})
         });
     }
   }

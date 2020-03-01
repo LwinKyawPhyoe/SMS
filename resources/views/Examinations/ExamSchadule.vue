@@ -215,7 +215,6 @@ export default {
       this.array.push(Class_id);
       this.array.push(Section_id);
       this.axios.get(`/api/getClassSectionId/${this.array}`).then(response => {
-        // this.examNames = response.data;
         var ReturnData = response.data;
         var RealData = [];
 
