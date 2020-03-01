@@ -1885,25 +1885,6 @@ button:focus {
   border-radius: 10px;
 }
 
-.StaffInformation .metaBtn {
-  color: white;
-  background-color: #1b5e20;
-  border: none;
-  padding: 5px;
-  text-align: center;
-  font-size: 14px;
-}
-
-.StaffInformation .metaBtn:active {
-  border: none;
-  outline: none;
-}
-
-.StaffInformation .metaBtn:focus {
-  border: none;
-  outline: none;
-}
-
 .StaffInformation .search {
   width: 100px;
   float: right;

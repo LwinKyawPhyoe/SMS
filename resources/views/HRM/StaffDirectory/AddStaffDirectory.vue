@@ -18,11 +18,10 @@
       class="alert alert-success"
       role="alert"
     >Staff email is their login username, password is generated automatically and send to staff email. Superadmin can change staff password on their staff profile page.</div>
-   
-    <message :alertmessage="msg" id="alertmsg" />
-   
-    <div class="card">
 
+    <message :alertmessage="msg" id="alertmsg" />
+
+    <div class="card">
       <form @submit.prevent="addStaffDirectory" enctype="multipart/form-data">
         <div class="card-header">
           <h6>Basic Information</h6>
@@ -62,7 +61,10 @@
               <span id="role_idmsg" class="error_message">Role is required</span>
             </div>
             <div class="textbox">
-              <label for="Designation">Designation    <strong>*</strong></label>
+              <label for="Designation">
+                Designation
+                <strong>*</strong>
+              </label>
               <select
                 id="designation_id"
                 @keyup="onValidate(staff.role_id, 'designation_id', 'designationmsg')"
@@ -80,7 +82,10 @@
               <span id="designationmsg" class="error_message">Designation is required</span>
             </div>
             <div class="textbox">
-              <label for="Department">Department    <strong>*</strong></label>
+              <label for="Department">
+                Department
+                <strong>*</strong>
+              </label>
               <select
                 id="department_id"
                 @keyup="onValidate(staff.department_id, 'department_id', 'departmentmsg')"
@@ -96,7 +101,6 @@
                 >{{department.department_name}}</option>
               </select>
               <span id="departmentmsg" class="error_message">Department is required</span>
-
             </div>
             <div class="textbox">
               <label for="name">
@@ -187,16 +191,16 @@
                 :button-color="'#1b5e20'"
                 :auto-close="true"
                 :format="'YYYY/MM/DD'"
-               :formatted="'YYYY/MM/DD'"
+                :formatted="'YYYY/MM/DD'"
               >
-                <input  class="inputbox" autocomplete="off" :value="staff.doj" />
+                <input class="inputbox" autocomplete="off" :value="staff.doj" />
               </VueCtkDateTimePicker>
             </div>
             <div class="textbox">
               <label for="Phone">Phone</label>
               <input v-model="staff.phone" type="text" class="inputbox" />
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12" style="padding: 5px;">
               <label for="Emergency">Emergency Contact Number</label>
               <input v-model="staff.emergency_contact_no" type="text" class="inputbox" />
             </div>
@@ -224,11 +228,11 @@
               />
               <span id="imagemsg" class="error_message">Photo is required</span>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12" style="padding:5px;">
               <label for="Current">Current Address</label>
               <textarea v-model="staff.current_address" rows="2" class="textareas"></textarea>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12" style="padding:5px;">
               <label for="Permanent">Permanent Address</label>
               <textarea v-model="staff.permanent_address" rows="2" class="textareas"></textarea>
             </div>
@@ -240,7 +244,7 @@
               <label for="Experience">Work Experience</label>
               <textarea v-model="staff.work_exp" rows="2" class="textareas"></textarea>
             </div>
-            <div class="col-lg-6 col-md-6 col-sm-6 col-12">
+            <div class="col-lg-6 col-md-6 col-sm-6 col-12" style="padding:5px;">
               <label for="Note">Note</label>
               <textarea v-model="staff.note" rows="2" class="textareas"></textarea>
             </div>
@@ -250,14 +254,16 @@
           <h6>
             Add More Details
             <strong
-              style="float:right;padding:2px 20px;color:white !important;cursor:pointer;"
+              class="moreInformation"
+              style="float:right;padding:2px 20px;color:white;cursor:pointer;"
               @click="openClose()"
               v-if="!addMore"
             >
               <i class="fa fa-plus"></i>
             </strong>
             <strong
-              style="float:right;color:white !important;padding:2px 20px;cursor:pointer;"
+              class="moreInformation"
+              style="float:right;color:white;padding:2px 20px;cursor:pointer;"
               @click="openClose()"
               v-else
             >
@@ -265,7 +271,7 @@
             </strong>
           </h6>
         </div>
-        <div class="card-body" style="padding-top: 15px;" v-if="addMore===true">
+        <div class="card-body" style="padding-top: 15px;padding-bottom: 5px;" v-if="addMore===true">
           <!-- 
           <div class="sub-header">
             <h6>Payroll</h6>
@@ -379,7 +385,7 @@
           <div class="sub-header">
             <h6>Upload Documents</h6>
           </div>
-          <div class="card-body" style="font-size:10pt;">
+          <div class="card-body" style="font-size:10pt;margin-top: -10px;">
             <div class="row">
               <div class="col-lg-6 col-md-12 col-12">
                 <table class="table">
@@ -438,8 +444,16 @@
             </div>
           </div>
         </div>
-        <button v-if="checkroute == false" type="submit" class="save">Save</button>
-        <button v-else @click="updateStaffDirectory()" type="button" class="save">Save</button>
+        <div class="col-12 column-12">
+          <button v-if="checkroute == false" type="submit" id="globalSave" class="save">Save</button>
+          <button
+            v-else
+            @click="updateStaffDirectory()"
+            type="button"
+            id="globalSave"
+            class="save"
+          >Save</button>
+        </div>
       </form>
       <br />
     </div>
@@ -463,46 +477,45 @@ export default {
   data() {
     return {
       staff: {
-        staff_id : '',
-        role_id  : '',
-        designation_id: '',
-        department_id: '',
-        name : '',
-        father_name: '',
-        mother_name: '',
-        email: '',
-        gender: '',
-        dob: '',
-        phone: '',
-        energency_contact_no: '',
-        marital_status: '',
-        image: '',
-        current_address: '',
-        permanent_address: '',
-        qualification: '',
-        work_exp: '',
-        note: '',
-        password: '',
+        staff_id: "",
+        role_id: "",
+        designation_id: "",
+        department_id: "",
+        name: "",
+        father_name: "",
+        mother_name: "",
+        email: "",
+        gender: "",
+        dob: "",
+        phone: "",
+        energency_contact_no: "",
+        marital_status: "",
+        image: "",
+        current_address: "",
+        permanent_address: "",
+        qualification: "",
+        work_exp: "",
+        note: "",
+        password: ""
       },
-    
+
       staffDirectorys: [],
       roles: [],
       designations: [],
       departments: [],
       addMore: false,
       checkroute: false,
-         msg: {
+      msg: {
         text: "",
         type: ""
-      },
+      }
     };
   },
-  mounted() {
-  },
+  mounted() {},
   created() {
     EventBus.$emit("ThemeClicked");
     console.log(this.$route.path);
-    if (this.$route.path == "/stadirectory/edit"){
+    if (this.$route.path == "/stadirectory/edit") {
       this.checkroute = true;
     }
     this.axios
@@ -514,8 +527,6 @@ export default {
     this.getRoles();
     this.getDesignations();
     this.getDepartments();
-
-      
   },
   methods: {
     getRoles() {
@@ -534,6 +545,7 @@ export default {
       });
     },
     openClose() {
+      EventBus.$emit("ThemeClicked");
       if (this.addMore == false) {
         this.addMore = true;
       } else {
@@ -559,7 +571,7 @@ export default {
     onFileChange3(e) {
       this.staff.other_document = e.target.files[0];
     },
-    addStaffDirectory(e){
+    addStaffDirectory(e) {
       alert(this.staff.mother_name);
       if (this.checkValidate()) {
         EventBus.$emit("onLoad");
@@ -569,7 +581,7 @@ export default {
         const config = {
           headers: { "content-type": "multipart/form-data" }
         };
-        
+
         let formData = new FormData();
         formData.append("staff_id", this.staff.staff_id);
         formData.append("role_id", this.staff.role_id);
@@ -625,7 +637,6 @@ export default {
             EventBus.$emit("onLoadEnd");
             Util.scrollToTop();
             if (response.data) {
-          
             } else {
               this.model = {};
             }

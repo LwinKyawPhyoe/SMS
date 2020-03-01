@@ -31,7 +31,7 @@
                 <option :value="role.id" v-for="(role) in roles" :key="role.id">{{role.name}}</option>
               </select>
               <span id="search_rolemsg" class="error_message">Role is required</span>
-              <button type="submit" id="globalSearch" class="search">Search</button>
+              <button type="submit" id="globalSearch" class="searchButton">Search</button>
             </form>
           </div>
           <div class="textarea">
@@ -52,6 +52,7 @@
           class="metaBtn tabTheme"
           id="listView"
           onclick="changeMega('listView','detailsView')"
+          style="background:white;color:black;"
           @click="listView()"
         >
           <i class="fa fa-list"></i> List View
@@ -195,7 +196,6 @@ export default {
     };
   },
   created() {
-
     EventBus.$emit("ThemeClicked");
 
     EventBus.$emit("clicked");

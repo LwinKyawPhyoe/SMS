@@ -127,7 +127,7 @@ class DatabaseSeeder extends Seeder
             'session' => '2019-20',
             'session_month' => 'July',
             'language' => 'English',
-            'schoollogo' => 'download.jpg',
+            'schoollogo' => 'titleImage.png',
         ]);
     }
 }

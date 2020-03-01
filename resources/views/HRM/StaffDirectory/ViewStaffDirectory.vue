@@ -78,8 +78,8 @@
         </div>
       </div>
       <div class="col-lg-8 col-md-12">
-        <div class="card" id="globalCard">
-          <div class="card-header detailsCard" id="globalcardHeader">
+        <div class="card">
+          <div class="card-header detailsCard">
             <div class="buttonCard">
               <button
                 class="tab tabTheme"
@@ -453,7 +453,7 @@ export default {
       }
     },
     searchAttendanceByDate() {
-      EventBus.$emit('onLoad');
+      EventBus.$emit("onLoad");
       this.axios
         .get(`/api/searchDate/${this.$route.params.id}/${this.search_by_year}`)
         .then(response => {
@@ -466,7 +466,7 @@ export default {
           for (var tt = 0; tt < this.attendance_type.length; tt++) {
             var month = moment(this.ary_types[t].date).format("MMM");
             var date = moment(this.ary_types[t].date).format("D");
-            if(
+            if (
               this.ary_types[t].staff_attendance_type_id ==
               this.attendance_type[tt].id
             ) {
