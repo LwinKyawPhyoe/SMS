@@ -16,7 +16,7 @@
             <h6>Add Room Type</h6>
           </div>
           <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
-            <message :alertmessage="msg" />
+            <message :alertmessage="msg" id="alertmsg" />
             <form @submit.prevent="addRoomType">
               <div class="col-12">
                 <label for="roomtype">
@@ -52,6 +52,7 @@
             <h6>Room Type List</h6>
           </div>
           <div class="card-body">
+            <message :alertmessage="deletemsg" id="delalertmsg" />
             <input
               v-model="search"
               @input="searchData()"
@@ -169,6 +170,9 @@ export default {
   },
   created() {
     EventBus.$on("clicked", response => {
+      (this.deletemsg.text = response.text),
+        (this.deletemsg.type = response.type);
+      Util.workAlert("#delalertmsg");
       this.getRoomTypes();
     });
     this.getRoomTypes();
@@ -189,16 +193,10 @@ export default {
           .post("/api/roomtype/store", this.room)
           .then(response => {
             this.getRoomTypes();
-            (this.msg.text = response.data.text),
-              (this.msg.type = response.data.type);
-            let to = this.moveToDown
-              ? this.$refs.description.offsetTop - 60
-              : 0;
-            window.scroll({
-              top: to,
-              left: 0,
-              behavior: "smooth"
-            });
+            console.log(JSON.stringify(response.data));
+            this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
             this.room = {};
             setTimeout(() => {
               this.room = {};

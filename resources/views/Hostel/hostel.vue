@@ -17,7 +17,7 @@
           </div>
           <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
             <form action>
-              <message :alertmessage="msg" />
+              <message :alertmessage="msg" id="alertmsg" />
               <div class="col-12">
                 <label for="hostel_name">
                   Hostel Name
@@ -84,6 +84,7 @@
             <h6>Hostel List</h6>
           </div>
           <div class="card-body">
+            <message :alertmessage="deletemsg" id="delalertmsg" />
             <input
               v-model="search"
               @input="searchData()"
@@ -227,7 +228,10 @@ export default {
     this.getHostels();
   },
   created() {
-    EventBus.$on("clicked", clickCount => {
+    EventBus.$on("clicked", response => {
+      (this.deletemsg.text = response.text),
+        (this.deletemsg.type = response.type);
+      Util.workAlert("#delalertmsg");
       this.getHostels();
     });
     this.getHostels();
