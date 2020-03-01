@@ -79,6 +79,9 @@ import AddHomework from '../views/Homework/AddHomework.vue';
 import EvaluationReport from '../views/Homework/EvaluationReport.vue';
 import editExamSchadule from '../views/Examinations/editExamSchadule.vue';
 
+//Dashboard
+import Dashboard from '../views/Dashboard/Dashboard.vue';
+
 export const routes = [
     {
         name: 'stuattendance',
@@ -103,11 +106,6 @@ export const routes = [
     {
         name: 'AddStudent',
         path: '/AddStudent',
-        component: AddStudent
-    },
-    {
-        name: 'AddStudent',
-        path: '/',
         component: AddStudent
     },
     {
@@ -349,7 +347,8 @@ export const routes = [
         path: '/staffdirectory/profile/:id',
         component: ViewStaDirectory
     },
-/**end of staff directory */ {
+    /**end of staff directory */ 
+    {
         name: 'editExamSchadule',
         path: '/editExamSchadule',
         component: editExamSchadule
@@ -359,5 +358,15 @@ export const routes = [
         path: '/users',
         component: Users
     },
-
+    // Dashboard
+    {
+        name: 'dashboard',
+        path: '/dashboard',
+        component: Dashboard
+    },
+    {
+        name: 'dashboard',
+        path: '/',
+        component: Dashboard
+    },
 ];

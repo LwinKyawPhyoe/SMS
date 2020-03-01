@@ -14,7 +14,7 @@ class CreateAcademicYearsTable extends Migration
     public function up()
     {
         Schema::create('academic_years', function (Blueprint $table) {
-            $table->bigIncrements('id');
+            $table->increments('id');
             $table->char('session',60);
             $table->char('is_active',25);
             $table->char('domain',100);
