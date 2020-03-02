@@ -10,6 +10,8 @@
         </div>
         <hr style="margin-bottom: -0.5rem;">
 
+        <confirm :url="props"></confirm>
+        <Loading></Loading>
         <div class="card">
             <div class="card-header">
                 <h6>Select Criteria</h6>
@@ -52,7 +54,7 @@
                             <strong>*</strong>
                         </label>                        
                         <select id="promotesessionid" @change="changePromoteSession(PromoteStudObj.promote_session)" class="inputbox" name="class" v-model="PromoteStudObj.promote_session">
-                            <option v-for="session in sessionList" :key="session.id" :value="session.id">{{session.session}}</option>
+                            <option v-for="session in sessionList" :key="session.id" :value="session.id" :disabled="session.is_active == 'yes'">{{session.session}}</option>
                         </select>
                         <span id="promotesessionmsg" class="error_message">Session is required</span>
                     </div>
@@ -92,7 +94,7 @@
                             <tbody>
                                 <tr v-for="item in PromoteObj" :key="item.id" class="active">
                                     <td class="all" nowrap>{{ item.admission_no }}</td>
-                                    <td class="all" nowrap>{{ item.student_name }}</td>
+                                    <td class="all" nowrap>{{ item.name }}</td>
                                     <td class="all" nowrap>{{ item.father_name }}</td>
                                     <td class="all" nowrap>{{ item.dob }}</td>
                                     <td>
@@ -107,12 +109,12 @@
                                     </td>
                                     <td>
                                         <label class="radio-inline" style="display: inline-block; margin-bottom: .5rem; margin-top: 15px;">
-                                            <input type="radio" :name="item.student_name" checked value="Continue" :v-model="item.nextsessionstatus" @click="clickNSession_Radio($event, 'Continue', item.admission_no)"/> Continue
+                                            <input type="radio" :name="item.student_name" checked value="Continue" :v-model="item.session_status" @click="clickNSession_Radio($event, 'Continue', item.admission_no)"/> Continue
                                         </label>
                                     </td>
                                     <td>
                                         <label class="radio-inline" style="display: inline-block; margin-bottom: .5rem; margin-top: 15px;">
-                                            <input type="radio" :name="item.student_name" value="Leave" :v-model="item.nextsessionstatus" @click="clickNSession_Radio($event, 'Leave', item.admission_no)" /> Leave
+                                            <input type="radio" :name="item.student_name" value="Leave" :v-model="item.session_status" @click="clickNSession_Radio($event, 'Leave', item.admission_no)" /> Leave
                                         </label>
                                     </td>
                                 </tr>                                
@@ -131,10 +133,15 @@
 
 <script>
 import message from "../Alertmessage/message.vue";
+import confirm from "../message/confirm.vue";
 import Loading from "../LoadingController.vue";
+
+import { EventBus } from "../../js/event-bus.js";
+import {Util} from '../../js/util';
 export default {
     components: {
         Loading,
+        confirm,
         message
     },
     data() {
@@ -150,12 +157,14 @@ export default {
             class_sectionList: [],
 
             showStudRecord: false,
-            PromoteObj: [
-                {"id":"","admission_no": "", "student_name": "", "father_name": "", "dob": "", "result": "Pass", "nextsessionstatus": "Continue"}
-            ],
+            PromoteObj: [],
 
             msg: {
                 text: "",
+                type: ""
+            },
+            props: {
+                url: "",
                 type: ""
             },
         }
@@ -164,6 +173,9 @@ export default {
         EventBus.$emit("ThemeClicked");
         this.getAllClass();
         this.getAllSession();
+    },
+    mounted() {
+        EventBus.$emit("onLoad");
     },
     methods: {        
         getAllClass() {
@@ -206,13 +218,10 @@ export default {
                         this.ClassList.push({"id": aList[i].classid,"class": aList[i].class, "section": obj1});                        
                     }
                 }
-            }
-            this.PromoteClassList = this.ClassList;
+            }            
             this.SearchStudObj.class_id = this.ClassList[0].id;
             this.SearchStudObj.section_id = this.SectionList[0].id;
-
-            this.PromoteStudObj.class_id = this.PromoteClassList[0].id;
-            this.PromoteStudObj.section_id = this.PromoteSectionList[0].id;
+            EventBus.$emit("onLoadEnd");
         },
 
         changeClass(aId){
@@ -274,6 +283,8 @@ export default {
         goSearch(){
             if(this.checkSearchValidate()){
                 this.showStudRecord = true;
+                this.PromoteStudObj.class_id = this.PromoteClassList[0].id;
+                this.PromoteStudObj.section_id = this.PromoteSectionList[0].id;
                 EventBus.$emit("ThemeClicked");
                 var class_section_id = '';
                 for(let i=0; i<this.class_sectionList.length; i++){
@@ -284,11 +295,15 @@ export default {
                     }
                 }
                 this.PromoteObj = [];
-                this.axios.get(`/api/student/sibling/${class_section_id}`).then(response => {                    
-                    for(let s=0; s<response.data.length; s++){
-                        this.PromoteObj.push({"id": response.data[s].id,"admission_no": response.data[s].admission_no, "student_name": response.data[s].name, "father_name": response.data[s].father_name, "dob": response.data[s].dob, "result": "Pass", "nextsessionstatus": "Continue"});
-                    }                 
-                });                
+                this.axios.get(`/api/student/sibling/${class_section_id}`).then(response => {                        
+                    this.PromoteObj = response.data;                    
+                    for(let s=0; s<this.PromoteObj.length; s++){
+                        this.PromoteObj[s].result = "Pass";
+                        this.PromoteObj[s].session_status = "Continue";
+                    }
+                    
+                    console.log("aa>>"+ JSON.stringify(this.PromoteObj));
+                });
             }            
         },
 
@@ -300,10 +315,10 @@ export default {
                         this.sessionList.push(response.data[i]);
                     }
                 }
-                this.PromoteStudObj.promote_session = this.sessionList[0].id;
+                this.PromoteStudObj.promote_session = this.sessionList[0].id;                
                 // console.log(JSON.stringify(this.sessionList));
             });
-        },
+        },        
 
         changePromoteClass(aId){
             this.PromoteSectionList = [];
@@ -341,13 +356,66 @@ export default {
             }
         },
 
-        changePromoteSession(aId){
+        changePromoteSession(aId){            
+            this.axios.get(`/api/Class/search/${aId}`).then(response => {                            
+                if(response.data == [] || response.data.length == 0){
+                    $('#exampleModalCenter').modal('show');
+                    this.props.type = "OK";
+                    this.props.url = "Please, Go to save class and section for this session!";
+
+                    this.PromoteClassList = [{"id":0,"class":"Select Class","section":[{"id": 0, "section":"Select Section"}]}];
+                    this.PromoteSectionList = [{"id":0,"section":"Select Section"}];
+                    this.PromoteStudObj.class_id = this.PromoteClassList[0].id;
+                    this.PromoteStudObj.section_id = this.PromoteSectionList[0].id;
+                }
+                else
+                {
+                    let array = response.data.sort((a, b) => {
+                        if (a.sectionid > b.sectionid) {
+                            return 1;
+                        }
+                        if (a.sectionid < b.sectionid) {
+                            return -1;
+                        }
+                        return 0;
+                    });                    
+                    this.sortPromoteClassList(array);
+                }
+            });
             if(aId == 0)   $('#promotesessionid').css('border', '1px solid red');
             else
             {
                 $('#promotesessionmsg').css('display', 'none');        
                 $('#promotesessionid').css('border', '1px solid #d2d6de');
             }
+        },
+
+        sortPromoteClassList(aList){            
+            for(let i=0; i < aList.length; i++){
+                if(this.PromoteClassList == [] || this.PromoteClassList.length == 0){
+                    let obj = [];
+                    obj.push({"id": aList[i].sectionid, "section": aList[i].section});
+                    this.PromoteClassList.push({"id": aList[i].classid,"class": aList[i].class, "section": obj});                    
+                }
+                else{
+                    let check = 0;
+                    for(let a=0; a < this.PromoteClassList.length; a++){
+                        if(this.PromoteClassList[a].class == aList[i].class){              
+                            this.PromoteClassList[a].section.push({"id": aList[i].sectionid, "section": aList[i].section});                            
+                            check = 1;
+                        }
+                    }
+
+                    if(check == 0)
+                    {
+                        let obj1 = [];
+                        obj1.push({"id": aList[i].sectionid, "section": aList[i].section});
+                        this.PromoteClassList.push({"id": aList[i].classid,"class": aList[i].class, "section": obj1});                        
+                    }
+                }
+            }
+            this.PromoteStudObj.class_id = this.PromoteClassList[0].id;
+            this.PromoteStudObj.section_id = this.PromoteSectionList[0].id;
         },
 
         checkPromoteValidate()
@@ -385,11 +453,11 @@ export default {
             }
         },
 
-        clickNSession_Radio(e, aNextSessionStatus, aAdmissionNo){
+        clickNSession_Radio(e, aSessionStatus, aAdmissionNo){
             if(e.target.checked){
                 for(let p=0; p<this.PromoteObj.length; p++){
                     if(this.PromoteObj[p].admission_no == aAdmissionNo){
-                        this.PromoteObj[p].nextsessionstatus = aNextSessionStatus;
+                        this.PromoteObj[p].session_status = aSessionStatus;
                         break;
                     }
                 }
@@ -399,7 +467,13 @@ export default {
         goPromote(){
             if(this.checkPromoteValidate()){                
                 this.PromoteStudObj.promoteStudList = this.PromoteObj;
-                console.log("Result >>>"+JSON.stringify(this.PromoteStudObj));                
+                // console.log("Result >>>"+JSON.stringify(this.PromoteStudObj));
+                this.axios.post('/api/StudPromote/promote', this.PromoteStudObj).then(response => {
+                    console.log("Result >>>"+JSON.stringify(response.data));
+                })
+                .catch(error => {            
+                console.log("err->" + JSON.stringify(this.error.response))
+                });
             }            
         }
     }

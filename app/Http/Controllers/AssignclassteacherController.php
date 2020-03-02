@@ -19,6 +19,18 @@ class AssignclassteacherController extends Controller
         return array_reverse($assclassteacher);
     }
 
+    public function search(Request $request)
+    {        
+        $sessionid = AcademicYear::where('is_active','yes')->where('domain','TS')->get('id');
+        $assclassteacher = assignclassteacher::where('class_id', $request->input('class_id'))
+                                            ->where('section_id', $request->input('section_id'))
+                                            ->where('is_active', 'yes')
+                                            ->where('domain', 'TS')
+                                            ->where('session_id', $sessionid[0]->id)
+                                            ->orderBy('id', 'DESC')->get()->toArray();
+        return $assclassteacher;                        
+    }
+
     public function store(Request $request)
     {
         if($request->input('id') == "")

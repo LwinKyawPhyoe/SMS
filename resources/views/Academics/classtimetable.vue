@@ -9,6 +9,7 @@
         </div>
         <hr style="margin-bottom: -0.5rem;" />
 
+        <Loading></Loading>
         <div class="card">
             <div class="card-header">
                 <h6>Select Criteria</h6>
@@ -97,13 +98,15 @@
 </template>
 
 <script>
+import Loading from "../LoadingController.vue";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
 import { EventBus } from "../../js/event-bus.js";
 import store from "store2";
 export default {
     components: {
-        VueCtkDateTimePicker
+        VueCtkDateTimePicker,
+        Loading
     },
     data() {
         return {
@@ -139,6 +142,9 @@ export default {
         });
         this.getAllSubject();
         this.getAllClass();        
+    },
+    mounted() {
+        EventBus.$emit("onLoad");
     },
     methods: {
         getAllSubject(){
@@ -193,6 +199,7 @@ export default {
             }
             this.ClassTimeTableObj.class_id = this.ClassList[0].id;
             this.ClassTimeTableObj.section_id = this.SectionList[0].id;
+            EventBus.$emit("onLoadEnd");
         },
 
         changeClass(aId){

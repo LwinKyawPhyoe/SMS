@@ -153,12 +153,13 @@ export default {
         this.getAllSession();
     },
     mounted() {
-        EventBus.$emit("onLoad", "start");
+        EventBus.$emit("onLoad");
     },
     methods: {
         getAllSession() {            
             this.axios.get("/api/academicyr").then(response => {
                 this.SessionList = response.data;
+                EventBus.$emit("onLoadEnd");
             });
         },
 
@@ -212,7 +213,7 @@ export default {
             {
                 var funName = "delete"; /**Delete function */
                 this.props.type = "delete";
-                this.props.url = `AcademicYear/${funName}/${aID}`;                
+                this.props.url = `AcademicYear/${funName}/${aID}`;
             }               
         },
 

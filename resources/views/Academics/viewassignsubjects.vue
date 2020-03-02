@@ -9,6 +9,7 @@
     <hr style="margin-bottom: -0.5rem;" />
 
     <confirm :url="props"></confirm>
+    <Loading></Loading>
     <div class="card">
       <div class="card-header">
         <h6>Select Criteria</h6>
@@ -240,7 +241,9 @@
 
 <script>
 import message from "../Alertmessage/message.vue";
+import Loading from "../LoadingController.vue";
 import confirm from "../message/confirm.vue";
+
 import { EventBus } from "../../js/event-bus.js";
 import store from "store2";
 import { Util } from "../../js/util";
@@ -248,6 +251,7 @@ import { Util } from "../../js/util";
 export default {
   components: {
     confirm,
+    Loading,
     message
   },
   data() {
@@ -262,11 +266,7 @@ export default {
       ],
       SectionList: [{ id: 0, section: "Class Section" }],
       SubjectList: [{ id: 0, name: "Select Subject", type: "" }],
-      TeacherList: [
-        { id: 0, name: "Select Teacher" },
-        { id: 1, name: "Shivam" },
-        { id: 2, name: "Jason" }
-      ],
+      TeacherList: [],
 
       AssSubList: [],
       showall: false,
@@ -336,6 +336,10 @@ export default {
     store.clearAll();
     this.getAllClass();
     this.getAllSubject();
+    this.getTeacherList();
+  },
+  mounted() {
+    EventBus.$emit("onLoad");
   },
   methods: {
     getAllSubject() {
@@ -350,6 +354,16 @@ export default {
         this.AssSubObj[0].SubValue = this.SubjectList[0].id;
         this.AssSubObj[0].TeacherValue = this.TeacherList[0].id;
       });
+    },
+
+    getTeacherList() {
+      this.axios.get("/api/designations").then(
+          response => {
+              for(let i=0; i<response.data.length; i++){
+                  this.TeacherList.push({"id": response.data[i].id, "name": response.data[i].designation_name, "checked": false});
+              }
+              console.log(JSON.stringify(this.TeacherList));
+          });
     },
 
     getAllClass() {
@@ -402,6 +416,7 @@ export default {
       }
       this.AssSubject.class_id = this.ClassList[0].id;
       this.AssSubject.section_id = this.SectionList[0].id;
+      EventBus.$emit("onLoadEnd");
     },
 
     getSubjectName(aName, aType) {

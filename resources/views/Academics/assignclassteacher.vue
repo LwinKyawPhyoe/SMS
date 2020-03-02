@@ -9,6 +9,7 @@
         <hr style="margin-bottom: -0.5rem;" />
 
         <confirm :url="props"></confirm>
+        <Loading></Loading>
         <div class="row rowContainer" style="align-items: end !important;">
             <div class="col-lg-5 col-md-12" style="padding:0;">
                 <div class="card">
@@ -124,11 +125,14 @@
 <script>
 import message from "../Alertmessage/message.vue";
 import confirm from "../message/confirm.vue";
+import Loading from "../LoadingController.vue";
+
 import { EventBus } from "../../js/event-bus.js";
 import {Util} from '../../js/util';
 
 export default {
     components: {
+        Loading,
         confirm,
         message    
     },
@@ -138,7 +142,7 @@ export default {
             Teacher: [],
             ClassList: [{"id":0,"class":"Select Class","section":[{"id": 0, "section":"Select Section"}]}],
             SectionList: [{"id":0,"section":"Select Section"}],
-            TeacherList: [{"id": 1, "name": "Shivam", "checked": false},{"id": 2, "name": "Jason", "checked": false}],
+            TeacherList: [],
             AssClassTeacherList: [],
             classsection:[],
             props: {
@@ -173,8 +177,22 @@ export default {
         this.getAllClass();
         this.getAllSection();
         this.getAssClassTeacher();
+        this.getTeacherList();
+    },
+    mounted() {
+        EventBus.$emit("onLoad");
     },
     methods: {
+        getTeacherList() {
+            this.axios.get("/api/designations").then(
+                response => {
+                    for(let i=0; i<response.data.length; i++){
+                        this.TeacherList.push({"id": response.data[i].id, "name": response.data[i].designation_name, "checked": false});
+                    }
+                    console.log(JSON.stringify(this.TeacherList));
+                });
+        },
+
         getAllClass() {
             this.axios.get("/api/class").then(response => {
                 let array = response.data.sort((a, b) => {
@@ -227,11 +245,12 @@ export default {
 
         getAssClassTeacher(){
             this.AssClassTeacherList = [];
+            EventBus.$emit("onLoadEnd");
             this.axios.get("/api/classTeacher").then(response => {                          
                 for(let i=0; i < response.data.length; i++){
                     let staffAry = [];
                     staffAry = response.data[i].staff_id.split(",");
-                    this.AssClassTeacherList.push({"id": response.data[i].id, "class_id": response.data[i].class_id, "staff_id": staffAry, "section_id": response.data[i].section_id});
+                    this.AssClassTeacherList.push({"id": response.data[i].id, "class_id": response.data[i].class_id, "staff_id": staffAry, "section_id": response.data[i].section_id});                    
                 }          
             });  
         },
@@ -262,6 +281,7 @@ export default {
             }
             this.ClassTeacher.class_id = this.ClassList[0].id;
             this.ClassTeacher.section_id = this.SectionList[0].id;
+            EventBus.$emit("onLoadEnd");
         },
 
         changeClass(aId){

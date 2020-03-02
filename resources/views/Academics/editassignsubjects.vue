@@ -87,11 +87,13 @@
 </template>
 
 <script>
+import Loading from "../LoadingController.vue";
 import message from "../Alertmessage/message.vue";
 import store from "store2";
 export default {
   components: {      
-      message
+      message,
+      Loading
   },
   data() {
     return {
@@ -111,11 +113,7 @@ export default {
       ],
       SectionList: [{ id: 0, section: "Class Section" }],
       SubjectList: [{ id: 0, name: "Select Subject", type: "" }],
-      TeacherList: [
-        { id: 0, name: "Select Teacher" },
-        { id: 1, name: "Shivam" },
-        { id: 2, name: "Jason" }
-      ],      
+      TeacherList: [],      
 
       DeleteRecord: [],
       AssSubObj: [
@@ -138,7 +136,11 @@ export default {
   created() {    
     EventBus.$emit("ThemeClicked");
     this.getAllClass();
-    this.getAllSubject();    
+    this.getAllSubject();
+    this.getTeacherList();   
+  },
+  mounted() {
+    EventBus.$emit("onLoad");
   }, 
   methods: {
     getEditAssSub(){      
@@ -161,6 +163,16 @@ export default {
       });
     },
 
+    getTeacherList() {
+      this.axios.get("/api/designations").then(
+          response => {
+              for(let i=0; i<response.data.length; i++){
+                  this.TeacherList.push({"id": response.data[i].id, "name": response.data[i].designation_name, "checked": false});
+              }
+              console.log(JSON.stringify(this.TeacherList));
+          });
+    },
+
     getAllSubject() {
       this.axios.get("/api/subject").then(response => {
         for (let i = 0; i < response.data.length; i++) {
@@ -172,6 +184,7 @@ export default {
         }
         this.AssSubObj[0].SubValue = this.SubjectList[0].id;
         this.AssSubObj[0].TeacherValue = this.TeacherList[0].id;
+        EventBus.$emit("onLoadEnd");
       });
     },
 

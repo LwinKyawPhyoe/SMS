@@ -299,6 +299,7 @@ Route::group(['prefix' => 'Section'], function() {
 Route::get('class', 'ClassesController@index');
 Route::group(['prefix' => 'Class'], function() {
     Route::post('save','ClassesController@store');
+    Route::get('search/{id}','ClassesController@searchWithSession');
     Route::get('edit/{id}','ClassesController@edit');
     Route::delete('delete/{id}','ClassesController@destroy');
 });
@@ -315,6 +316,7 @@ Route::group(['prefix' => 'Subject'], function() {
 Route::get('classTeacher', 'AssignclassteacherController@index');
 Route::group(['prefix' => 'ClassTeacher'], function() {
     Route::post('save','AssignclassteacherController@store');
+    Route::post('search','AssignclassteacherController@search');
     Route::get('edit/{id}','AssignclassteacherController@edit');
     Route::delete('delete/{id}','AssignclassteacherController@destroy');
 });
@@ -337,6 +339,12 @@ Route::group(['prefix' => 'ClassTimeTable'], function() {
     Route::post('viewsearch','ClassTimetableController@viewsearch');
     Route::get('edit/{id}','ClassTimetableController@edit');
     Route::delete('delete/{id}','ClassTimetableController@destroy');
+});
+
+//Student Promote Route
+Route::get('studPromote', 'studentPromoteController@index');
+Route::group(['prefix' => 'StudPromote'], function() {
+    Route::post('promote','studentPromoteController@promote');
 });
 //Lwin Kyaw Phyo
 

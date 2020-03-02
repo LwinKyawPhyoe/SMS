@@ -9,6 +9,7 @@
         <hr />
 
         <confirm :url="props"></confirm>
+        <Loading></Loading>
         <div class="row rowContainer" style="align-items: end !important;">
             <div class="col-lg-5 col-md-12" style="padding:0;">
                 <div class="card">
@@ -112,11 +113,14 @@
 <script>
 import message from '../Alertmessage/message.vue';
 import confirm from "../message/confirm.vue";
+import Loading from "../LoadingController.vue";
+
 import { EventBus } from "../../js/event-bus.js";
 import {Util} from '../../js/util';
 
 export default {
     components: {
+        Loading,
         confirm,
         message    
     },
@@ -153,6 +157,9 @@ export default {
         });
         this.getAllSubject();
     },
+    mounted() {
+        EventBus.$emit("onLoad");
+    },
     methods: {
         getAllSubject(){
             this.axios
@@ -160,6 +167,7 @@ export default {
                 .then(response => {
                     console.log("--->>>"+ JSON.stringify(response.data)),
                     this.SubjectList = response.data;
+                    EventBus.$emit("onLoadEnd");
                 });
         },
 

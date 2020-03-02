@@ -18,7 +18,7 @@
             for
             class="fontColour"
             style="font-size:16px;color:white"
-          >Current Section: 2020_2021</label>
+          >Current Session: 2020_2021</label>
           <i class="fa fa-pencil pen fontColour" style="margin-left:10px;color:white"></i>
         </div>
         <div class="row profile">
@@ -1165,10 +1165,8 @@
         <i class="fa fa-bars" id="list" onclick="changeBar()"></i>
         <div class="sessions row" id="sessions" style="margin-top: 5px;">
           <h5 class="session" data-toggle="modal" data-target="#exampleModalCenter1">
-            Current Session 
-          </h5>
-          <p style="margin: 3px;">-</p>
-          <h5 style="font-size: 12pt; cursor: pointer;">{{session}}</h5>
+            Current Session : {{session}}
+          </h5>          
         </div>
         <div class="Items">
           <div class="userTitle">

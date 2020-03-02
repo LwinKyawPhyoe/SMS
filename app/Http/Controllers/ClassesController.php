@@ -36,6 +36,31 @@ class ClassesController extends Controller
         return $classList;
     }
 
+    public function searchWithSession($id)
+    {
+        $sessionid = AcademicYear::where('is_active','yes')->where('domain','TS')->get('id');
+        $query ="SELECT
+                    cs.id AS class_section_id,
+                    c.id AS classid,
+                    c.class,
+                    s.id AS sectionid,
+                    s.section
+                FROM
+                    class_sections cs
+                INNER JOIN classes c ON
+                    cs.class_id = c.id
+                INNER JOIN Sections s ON
+                    cs.section_id = s.id
+                WHERE
+                    cs.is_active = 'yes' AND c.is_active = 'yes' AND s.is_active = 'yes' AND 
+                    cs.domain = 'TS' AND c.domain = 'TS' AND s.domain = 'TS' AND
+                    cs.session_id = ? AND c.session_id = ? AND s.session_id = ?
+                ORDER BY
+                    cs.class_id";
+        $classList = DB::select($query, [$id,$id,$id]);
+        return $classList;
+    }
+
     public function store(Request $request)
     {
         if($request->input('id') == "")

@@ -8,6 +8,7 @@
         </div>
         <hr style="margin-bottom: -0.5rem;" />
 
+        <Loading></Loading>
         <div class="card">
             <div class="card-header">
                 <h6>Select Criteria</h6>
@@ -100,12 +101,15 @@
 
 <script>
 import message from "../Alertmessage/message.vue";
+import Loading from "../LoadingController.vue";
+
 import { EventBus } from "../../js/event-bus.js";
 import store from "store2";
 import { Util } from '../../js/util';
 
 export default {
-    components: {        
+    components: {  
+        Loading,      
         message
     },
     data() {
@@ -140,6 +144,9 @@ export default {
         store.clearAll();
 
         this.getAllClass();
+    },
+    mounted() {
+        EventBus.$emit("onLoad");
     },
     methods: {
         getAllClass() {
@@ -183,6 +190,7 @@ export default {
             }
             this.ClassTimeTableObj.class_id = this.ClassList[0].id;
             this.ClassTimeTableObj.section_id = this.SectionList[0].id;
+            EventBus.$emit("onLoadEnd");
         },
 
         changeClass(aId){
