@@ -11,27 +11,17 @@
                     <input type="text" placeholder="Search..." class="searchText">
                     <div class="copyRows">
                         <div class="row" id="copyRow">
-                            <div class="col-2">
-                            <a href="#" title="Copy">
-                                <i class="fa fa-copy"></i>
-                            </a>
-                            </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 <a href="#" title="Excel">
                                 <i class="fa fa-file-excel-o"></i>
                                 </a>
                             </div>
-                            <div class="col-2">
-                                <a href="#" title="PDF">
-                                <i class="fa fa-file-pdf-o"></i>
-                                </a>
-                            </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 <a href="#" title="Print">
                                 <i class="fa fa-print"></i>
                                 </a>
                             </div>
-                            <div class="col-2">
+                            <div class="col-3">
                                 <a title="Columns" onclick="showColumns('ModalColumns','ModalBackground')">
                                     <i class="fa fa-columns"></i>
                                 </a>
@@ -58,30 +48,20 @@
                                 <tr>
                                     <th :class="arrayTableColumns[0].class" nowrap>Admission Number</th>
                                     <th :class="arrayTableColumns[1].class" nowrap>Name</th>
-                                    <th :class="arrayTableColumns[2].class" nowrap>Status</th>
+                                    <th :class="arrayTableColumns[2].class" nowrap style="float: right;">Status</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr class="active">
+                                <tr class="active" v-for="data in studentList">
                                     <td :class="arrayTableColumns[0].class" nowrap>
-                                        18001
+                                        {{data.admission_no}}
                                     </td>
                                     <td :class="arrayTableColumns[1].class" nowrap>
-                                        Edward Thomas
+                                        {{data.name}}
                                     </td>
-                                    <td :class="arrayTableColumns[2].class" nowrap>
-                                        <a href="#" style="text-decoration:none;" class="btn-success btn-sm">Complete</a>
-                                    </td>
-                                </tr>
-                                <tr class="active">
-                                    <td :class="arrayTableColumns[0].class" nowrap>
-                                        18001
-                                    </td>
-                                    <td :class="arrayTableColumns[1].class" nowrap>
-                                        Edward Thomas
-                                    </td>
-                                    <td :class="arrayTableColumns[2].class" nowrap>
-                                        <a href="#" style="text-decoration:none;" class="btn-success btn-sm">Complete</a>
+                                    <td :class="arrayTableColumns[2].class" nowrap style="float: right;">
+                                        <a v-if="data.active" href="#" style="text-decoration:none;" class="btn-success btn-sm">Complete</a>
+                                        <a v-if="!data.active" href="#" style="text-decoration:none;" class="btn-danger btn-sm">Incomplete</a>
                                     </td>
                                 </tr>
                             </tbody>
@@ -96,21 +76,21 @@
                             <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
                                 <i class="fa fa-calendar" style="font-size: 15px;"></i>
                                 &nbsp;
-                                <span style="font-weight: bold">Homework Date:</span> 07/16/2018
+                                <span style="font-weight: bold">Homework Date:</span> {{showDate(passData.homework_date)}}
                             </p>
                         </div>
                         <div style="padding: 5px 0px;">
                             <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
                                 <i class="fa fa-calendar"  style="font-size: 15px;"></i>
                                 &nbsp;
-                                <span style="font-weight: bold">Submission Date:</span> 07/16/2018
+                                <span style="font-weight: bold">Submission Date:</span> {{showDate(passData.submission_date)}}
                             </p>
                         </div>
                         <div style="padding: 5px 0px;">
                             <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
                                 <i class="fa fa-calendar"  style="font-size: 15px;"></i>
                                 &nbsp;
-                                <span style="font-weight: bold">Evaluation Date:</span> 07/16/2018
+                                <span style="font-weight: bold">Evaluation Date:</span> {{showDate(passData.date)}}
                             </p>
                         </div>
                     </div>
@@ -126,22 +106,28 @@
                     </div>
                     <div style="padding: 5px 0px;">
                         <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
-                            <span style="font-weight: bold">Section:</span> A
+                            <span style="font-weight: bold">Section:</span> {{passData.section}}
                         </p>
                     </div>
                     <div style="padding: 5px 0px;">
                         <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
-                            <span style="font-weight: bold">Class:</span> Class 1
+                            <span style="font-weight: bold">Class:</span> {{passData.class}}
                         </p>
                     </div>
                     <div style="padding: 5px 0px;">
                         <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
-                            <span style="font-weight: bold">Subject:</span> Mathematics
+                            <span style="font-weight: bold">Subject:</span> {{passData.subject}}
+                        </p>
+                    </div>
+                    <div v-if="passData.document" style="padding: 5px 0px;">
+                        <p style="padding: 0px;margin: 0px !important;font-size: 14px;color:blue;cursor: pointer;">
+                            <span style="font-weight: bold">Download</span> 
+                             <i class="fa fa-download download" style="color:blue;"></i>
                         </p>
                     </div>
                     <div style="padding: 5px 0px;">
                         <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
-                            <span style="font-weight: bold">Description:</span> Study table from 1-10 .
+                            <span style="font-weight: bold">Description:</span> {{passData.description}}
                         </p>
                     </div>
                 </div>
@@ -151,7 +137,15 @@
 </div>
 </template>
 <script>
+import { EventBus } from "../../js/event-bus.js";
     export default {
+        created() {
+            EventBus.$on("openEvaluation", data => {
+                this.passData = data;
+                this.getStudent();
+                this.clickShowColumn(this.arrayTableColumns);
+            });
+        },
         data() {
             return {
                 checkColumns: false,
@@ -160,15 +154,56 @@
                     {"Name": "Name","Id": "NameId", "class": "tbl_body_Name"},
                     {"Name": "Status","Id": "StatusId", "class": "tbl_body_Status"}
                 ],
+                passData: {},
+                studentList: [],
             };
         },
         methods: {
+            getStudent(){
+                let data = new FormData();
+                this.studentList = [];
+                data.append("id", this.passData.class_section_id);
+                this.axios.post('/api/homework/showStudent', data)
+                .then(response => {
+                    var array1 = [];
+                    var array2 = []; 
+                    if(this.passData.com_admission_no != "" && this.passData.com_admission_no != null){
+                        array1 = this.passData.com_admission_no.split(',');
+                    }
+                    if(this.passData.incom_admission_no != "" && this.passData.incom_admission_no !=null){
+                        array2 = this.passData.incom_admission_no.split(',');
+                    }
+                    for(let i = 0;i < response.data.length;i++){
+                        for(let a = 0;a < array1.length;a++){
+                            if(array1[a] == response.data[i].id){
+                                this.studentList.push({"admission_no": response.data[i].admission_no,"name": response.data[i].name,"active": true});
+                            }
+                        }
+                        for(let b = 0;b < array2.length;b++){
+                            if(array2[b] == response.data[i].id){
+                                this.studentList.push({"admission_no": response.data[i].admission_no,"name": response.data[i].name,"active": false});
+                            }
+                        }
+                    }
+                    console.log(JSON.stringify(this.studentList));
+                }).catch(error => {            
+                    console.log("err->" + JSON.stringify(this.error.response));
+                });
+            },
             clickHideColumn(data){
                 showTableHeader(data);
             },
             clickShowColumn(data){
                 clickShowAllColumn(data);
-            }
+            },
+            showDate(date) {
+                if(date){
+                    let day = date.substring(6, 8);
+                    let month = date.substring(4, 6);
+                    let year = date.substring(0, 4);
+                    return day + "/" + month + "/" + year;
+                }
+            },
         }
     }
 </script>   

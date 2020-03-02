@@ -15,16 +15,12 @@
         <h6>Assignment List</h6>
       </div>
       <div class="card-body">
-        <message :alertmessage="deletemsg" />
+        <message :alertmessage="msg" id="alertmsg"/>
         <input type="text" placeholder="Search..." class="searchText" />
         <div class="copyRows">
-          <div class="row" id="copyRow">
+          <div class="row" id="copyRow">                
             <div class="col-3">
-              <a
-                href="#"
-                @click.prevent="downloadExcel('studenttable', 'name', 'Upload_Content.xls')"
-                title="Excel"
-              >
+              <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Upload_Content.xls')" title="Excel">
                 <i class="fa fa-file-excel-o"></i>
               </a>
             </div>
@@ -40,7 +36,7 @@
             </div>
           </div>
         </div>
-
+        
         <div class="table-responsive">
           <table class="table table-hover table-striped" id="studenttable">
             <thead>
@@ -64,29 +60,17 @@
                 <td class="all" nowrap>{{item.type}}</td>
                 <td class="all" nowrap>{{item.date}}</td>
                 <td class="all" nowrap>
-                  <p
-                    style="padding: 0;margin: 0;"
-                    v-if="item.available_for == '1' || item.available_for == '1,2' || item.available_for == '2,1'"
-                  >Super Admin</p>
-                  <p
-                    style="padding: 0;margin: 0;"
-                    v-if="item.available_for == '2' || item.available_for == '1,2' || item.available_for == '2,1'"
-                  >Student</p>
+                <p style="padding: 0;margin: 0;"
+                v-if="item.available_for == '1' || item.available_for == '1,2' || item.available_for == '2,1'">Super Admin</p>
+                <p style="padding: 0;margin: 0;"
+                v-if="item.available_for == '2' || item.available_for == '1,2' || item.available_for == '2,1'">Student</p>
                 </td>
                 <td class="all" nowrap>{{ReturnClass(item.class_section_id)}}</td>
                 <td class="all" nowrap style="text-align:right;">
-                  <i
-                    class="fa fa-download download"
-                    @click.prevent="downloadFile('Tran_Route.xls')"
-                  >
+                  <i class="fa fa-download download" @click.prevent="downloadFile('Tran_Route.xls')">
                     <span class="downloadLabel">Download</span>
                   </i>
-                  <i
-                    class="fa fa-trash time"
-                    @click="goDelete(item.id)"
-                    data-toggle="modal"
-                    data-target="#exampleModalCenter"
-                  >
+                  <i class="fa fa-trash time" @click="goDelete(item.id)" data-toggle="modal" data-target="#exampleModalCenter">
                     <span class="timeLabel">Delete</span>
                   </i>
                 </td>
@@ -99,75 +83,80 @@
   </div>
 </template>
 <script>
+
 import message from "../Alertmessage/message.vue";
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
+import {Util} from '../../js/util';
 
-export default {
-  components: {
+export default 
+{
+  components: 
+  {
     message,
-    confirm
+    confirm,
   },
-  data() {
+  data(){
     return {
       props: {
         url: "",
         type: ""
       },
-      deletemsg: {
+      msg: {
         text: "",
         type: ""
       },
       ContentList: [],
-      ClassSessionList: []
-    };
+      ClassSessionList: [],
+    }
   },
-  created() {
+  created() 
+  {
     EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
       this.getContent();
-      this.deletemsg.text = response.text;
-      this.deletemsg.type = response.type;
+      this.msg.text = response.text;
+      this.msg.type = response.type;
+      Util.workAlert('#alertmsg');
     });
     this.getAllClass();
     this.getContent();
   },
   methods: {
     // Get Content
-    getContent() {
+      getContent(){
       this.ContentList = [];
-      this.axios
-        .post("/api/content/show", { type: "Assignments" })
-        .then(response => {
-          this.ContentList = response.data;
-          console.log(JSON.stringify(response.data));
-        });
+      this.axios.post('/api/content/show',{'type':'Assignments'}).then(response => {
+        this.ContentList = response.data;
+        console.log(JSON.stringify(response.data));
+      });
     },
-    // Get Class And
-    getAllClass() {
-      this.axios.get("/api/class").then(response => {
+    // Get Class And 
+    getAllClass(){
+      this.axios.get('/api/class').then(response => {
         this.ClassSessionList = response.data;
+        console.log(JSON.stringify(response.data));
       });
     },
     // Return Class Name
-    ReturnClass(val) {
+    ReturnClass(val){
       var name = "";
-      if (val != null) {
-        name = "ALL Classes";
+      if(val != null){
+        name = "ALL Classes"
       }
-      for (let i = 0; i < this.ClassSessionList.length; i++) {
-        if (this.ClassSessionList[i].class_session_id == val) {
+      for(let i = 0;i < this.ClassSessionList.length;i++){
+        if(this.ClassSessionList[i].class_section_id == val){
           name = this.ClassSessionList[i].class;
         }
       }
       return name;
     },
     //Delete Conteent
-    goDelete(aID) {
+    goDelete(aID){
       var funName = "delete"; /**Delete function */
-      this.props.type = "get";
+      this.props.type = "delete";
       this.props.url = `content/${funName}/${aID}`;
-    }
+    },
   }
-};
+}
 </script>

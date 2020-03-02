@@ -277,22 +277,6 @@ Route::get('getClassSection/{id}', 'ExamsController@CSZTheinindex');
 Route::get('searchExamSchadule/{arrayClassSectionExam}', 'ExamSchaduleController@index');
 // End Thei Htike Aung Section
 
-// Start Home work
-Route::get('homework', 'HomeworkController@index');
-Route::group(['prefix' => 'homework'], function() {
-    Route::post('save','HomeworkController@store');
-    Route::post('edit','HomeworkController@edit');
-    Route::get('delete/{id}','HomeworkController@destroy');
-});
-
-// Start Content
-Route::get('content', 'ContentController@index');
-Route::group(['prefix' => 'content'], function() {
-    Route::post('save','ContentController@store');
-    Route::post('show','ContentController@show');
-    Route::get('delete/{id}','ContentController@destroy');
-});
-
 //Lwin Kyaw Phyo
 //Academic Year Route
 Route::get('academicyr', 'AcademicYearController@index');
@@ -372,4 +356,34 @@ Route::group(['prefix'=>'school'],function(){
     Route::post('update/{id}','SchoolDetailController@update');
     Route::delete('delete/{id}','SchoolDetailController@delete');
     Route::post('updatePhoto/{image}','SchoolDetailController@updatePhoto');
+});
+
+// Start Home work
+Route::get('homework', 'HomeworkController@index');
+Route::group(['prefix' => 'homework'], function() {
+    Route::post('save','HomeworkController@store');
+    Route::post('edit','HomeworkController@edit');
+    Route::get('show','HomeworkController@show');
+    Route::post('showStudent','HomeworkController@showStudent');
+    Route::post('searchHomework','HomeworkController@searchHomework');
+    Route::post('searchHomeworkSub','HomeworkController@searchHomeworkSub');
+    Route::delete('delete/{id}','HomeworkController@destroy');
+});
+
+// Start Content
+Route::get('content', 'ContentController@index');
+Route::group(['prefix' => 'content'], function() {
+    Route::post('save','ContentController@store');
+    Route::post('show','ContentController@show');
+    Route::delete('delete/{id}','ContentController@destroy');
+});
+
+// Start Homework Evaluation
+Route::get('homework_evaluation', 'HomeworkEvaluationController@index');
+Route::group(['prefix' => 'homework_evaluation'], function() {
+    Route::post('save','HomeworkEvaluationController@store');
+    Route::post('show','HomeworkEvaluationController@show');
+    Route::post('update','HomeworkEvaluationController@update');
+    Route::post('searchEvaluation','HomeworkEvaluationController@searchEvaluation');
+    Route::post('searchEvaluationSub','HomeworkEvaluationController@searchEvaluationSub');
 });

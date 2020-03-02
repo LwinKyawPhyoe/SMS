@@ -52,7 +52,7 @@
                         </div>
                         <div class="col-lg-1 col-12" style="text-align: center;padding: 5px 0px;">
                             <div style="text-align: center;">
-                                <div class="row">
+                                <div class="row" style="margin: 0px">
                                     <div class="col-sm-6 col-md-6 col-lg-12 div_remove_student">
                                         <button @click="goUnCompleted()" class="btn_check_box btn_check_small">
                                             <i class="fa fa-angle-left" style="font-size: 19px;font-weight: bold;"></i>
@@ -106,13 +106,13 @@
                     </div>
                     <div class="row" style="padding: 0px 15px;margin-top: 15px;align-items:flex-end;">
                         <div class="col-sm-12 col-md-12 col-lg" style="padding: 0;">
-                            <label for="uploadDate">Evaluation Date</label>
-                            <input type="date" class="inputbox" id="uploadDate">
+                            <label for="Evaluation">Evaluation Date</label>
+                            <input type="date" class="inputbox" id="Evaluation" v-model="ObjData.dvaluation_date">
                         </div> 
                         <div class="col-lg-1">
                         </div>
                         <div class="col-sm-12 col-md-12 col-lg" style="padding: 0;">
-                            <button class="save btn-dark" style="margin-top: 10px;">Save</button>
+                            <button :disabled="btnDissable" class="save btn-dark" id="globalSave" style="margin-top: 10px;" @click="goSave()">Save</button>
                         </div> 
                     </div>
                 </div>
@@ -124,21 +124,21 @@
                             <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
                                 <i class="fa fa-calendar" style="font-size: 15px;"></i>
                                 &nbsp;
-                                <span style="font-weight: bold">Homework Date:</span> 07/16/2018
+                                <span style="font-weight: bold">Homework Date:</span> {{showDate(passData.homework_date)}}
                             </p>
                         </div>
                         <div style="padding: 5px 0px;">
                             <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
                                 <i class="fa fa-calendar"  style="font-size: 15px;"></i>
                                 &nbsp;
-                                <span style="font-weight: bold">Submission Date:</span> 07/16/2018
+                                <span style="font-weight: bold">Submission Date:</span> {{showDate(passData.submission_date)}}
                             </p>
                         </div>
-                        <div style="padding: 5px 0px;">
+                        <div style="padding: 5px 0px;" v-if="ObjData.showSummaryDate">
                             <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
                                 <i class="fa fa-calendar"  style="font-size: 15px;"></i>
                                 &nbsp;
-                                <span style="font-weight: bold">Evaluation Date:</span> 07/16/2018
+                                <span style="font-weight: bold">Evaluation Date:</span> {{showDate(ObjData.showSummaryDate)}}
                             </p>
                         </div>
                     </div>
@@ -154,22 +154,28 @@
                     </div>
                     <div style="padding: 5px 0px;">
                         <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
-                            <span style="font-weight: bold">Section:</span> A
+                            <span style="font-weight: bold">Section:</span> {{passData.section}}
                         </p>
                     </div>
                     <div style="padding: 5px 0px;">
                         <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
-                            <span style="font-weight: bold">Class:</span> Class 1
+                            <span style="font-weight: bold">Class:</span> {{passData.class}}
                         </p>
                     </div>
                     <div style="padding: 5px 0px;">
                         <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
-                            <span style="font-weight: bold">Subject:</span> Mathematics
+                            <span style="font-weight: bold">Subject:</span> {{passData.class}}
+                        </p>
+                    </div>
+                    <div v-if="passData.document" style="padding: 5px 0px;">
+                        <p style="padding: 0px;margin: 0px !important;font-size: 14px;color:blue;cursor: pointer;">
+                            <span style="font-weight: bold">Download</span> 
+                             <i class="fa fa-download download" style="color:blue;"></i>
                         </p>
                     </div>
                     <div style="padding: 5px 0px;">
                         <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
-                            <span style="font-weight: bold">Description:</span> Study table from 1-10 .
+                            <span style="font-weight: bold">Description:</span> {{passData.description}}
                         </p>
                     </div>
                 </div>
@@ -180,29 +186,124 @@
 </template>
 
 <script>
+import { EventBus } from "../../js/event-bus.js";
 export default {
+    created() {
+        EventBus.$on("openEDetailHomework", data => {
+            this.passData = data;
+            this.checkCompleted= false;
+            this.checkUnCompleted= false;
+            this.ObjData.showSummaryDate = "";
+            this.showStudents = [];
+            this.showCompletedStudents = [];
+            this.checkForUpdate = false;
+            this.getStudent();
+        });
+    },
     data() {
         return {
+            passData: {},
+            ObjData: {"dvaluation_date": new Date().toISOString().substr(0, 10),"showSummaryDate": "",
+                        "id": ""},
             checkCompleted: false,
             checkUnCompleted: false,
+            checkForUpdate: false,
+            btnDissable: false,
             selectStudents: [],
             selectCompletedStudents: [],
-            showStudents: [
-                {"id": 1,"name": "Name1","active": false},
-                {"id": 2,"name": "Name2","active": false},
-                {"id": 3,"name": "Name3","active": false},
-                {"id": 4,"name": "Name4","active": false},
-                {"id": 5,"name": "Name5","active": false},
-                {"id": 6,"name": "Name6","active": false},
-                {"id": 7,"name": "Name7","active": false},
-                {"id": 8,"name": "Name8","active": false},
-                {"id": 9,"name": "Name9","active": false},
-                {"id": 10,"name": "Name10","active": false}
-            ],
+            showStudents: [],
             showCompletedStudents : [],
         };
     },
     methods: {
+        getStudent(){
+            let data = new FormData();
+            data.append("id", this.passData.class_section_id);
+            this.axios.post('/api/homework/showStudent', data)
+            .then(response => {
+                if(response.data == []){
+                    this.btnDissable = true;
+                }else{
+                    this.btnDissable = false;
+                }
+                let formData = new FormData();
+                formData.append("id", this.passData.homeworkId);
+                this.axios.post('/api/homework_evaluation/show', formData)
+                .then(result => {
+                    if(result.data.length == 0){
+                        for(let i = 0;i < response.data.length;i++){
+                            this.showStudents.push({"id": response.data[i].id,"name": response.data[i].name,"active": false});
+                        }
+                    }else{
+                        this.checkForUpdate = true;
+                        this.ObjData.id = result.data[0].id;
+                        if(result.data[0].com_admission_no == "" 
+                        || result.data[0].com_admission_no == null){
+                            for(let i = 0;i < response.data.length;i++){
+                                this.showStudents.push({"id": response.data[i].id,"name": response.data[i].name,"active": false});
+                            }
+                        }else{
+                            this.ObjData.showSummaryDate = result.data[0].date;
+                            var arrayData = [];
+                            arrayData = result.data[0].com_admission_no.split(',');
+                            for(let i = 0;i < response.data.length;i++){
+                                var value = false;
+                                for(let a = 0;a < arrayData.length;a++){
+                                    if(arrayData[a] == response.data[i].id){
+                                        value = true;
+                                        this.showCompletedStudents.push({"id": response.data[i].id,"name": response.data[i].name,"active": false});
+                                    }
+                                }
+                                if(!value){
+                                    this.showStudents.push({"id": response.data[i].id,"name": response.data[i].name,"active": false});
+                                }
+                            }
+                        }
+                    }
+                }).catch(error => {            
+                    console.log("err->" + JSON.stringify(this.error.response));
+                });
+            }).catch(error => {            
+                console.log("err->" + JSON.stringify(this.error.response));
+            });
+        },
+        goSave(){
+            var com_admission_no = "";
+            var incom_admission_no = "";
+            var array1 = [];
+            var array2 = [];
+            for(let i = 0;i < this.showStudents.length;i++){
+                array1.push(this.showStudents[i].id);
+            }
+            for(let i = 0;i < this.showCompletedStudents.length;i++){
+                array2.push(this.showCompletedStudents[i].id);
+            }
+            if(array1 != []){
+               incom_admission_no = array1.toString(); 
+            }
+            if(array2 != []){
+               com_admission_no = array2.toString(); 
+            }
+            let formData = new FormData();
+            formData.append("homework_id", this.passData.homeworkId);
+            formData.append("com_admission_no", com_admission_no);
+            formData.append("incom_admission_no", incom_admission_no);
+            formData.append("date", this.formatDate(this.ObjData.dvaluation_date));
+            var url = "";
+            if(this.checkForUpdate){
+                url = '/api/homework_evaluation/update';
+                formData.append("id", this.ObjData.id);
+            }else{
+                url = '/api/homework_evaluation/save';
+            }
+            this.axios.post(url, formData)
+            .then(response => {
+                $('#EvaluateHomework').modal('hide');
+                EventBus.$emit("saveHomework", response.data);
+            }).catch(error => {            
+                console.log("err->" + JSON.stringify(this.error.response));
+            });
+        },
         clickStudent(index){
             this.showStudents[index].active = !this.showStudents[index].active;
             if(this.selectStudents.length === 0){
@@ -308,7 +409,21 @@ export default {
                 return 0;
             });
             this.selectCompletedStudents = [];
-        }
+        },
+        showDate(date) {
+            if(date){
+                let day = date.substring(6, 8);
+                let month = date.substring(4, 6);
+                let year = date.substring(0, 4);
+                return day + "/" + month + "/" + year;
+            }
+        },
+        formatDate(date){
+            let year = date.substring(0, 4);
+            let month = date.substring(5, 7);
+            let day = date.substring(8, 10);
+            return year + month + day;
+        },
     }
 };
 </script>

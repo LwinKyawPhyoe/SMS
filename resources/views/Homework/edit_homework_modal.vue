@@ -12,7 +12,7 @@
                             <strong>*</strong>
                         </label>
                         <select id="class_id1" class="inputbox" @change="selectClass(objData.class,'class_id1','class_msg1')" name="class" v-model="objData.class">
-                            <option disabled value="0">Select Class</option>
+                            <option disabled value="">Select Class</option>
                             <option v-for="item in ClassList" :value="item.id">{{item.class}}</option>
                         </select>
                         <span id="class_msg1" class="error_message">Class is required</span>
@@ -22,7 +22,7 @@
                             <strong>*</strong>
                         </label>
                         <select id="section_id1" class="inputbox" @change="selectSection(objData.section,'section_id1','section_msg1')" name="class" v-model="objData.section">
-                            <option disabled value="0">Select Section</option>
+                            <option disabled value="">Select Section</option>
                             <option v-for="item in SectionList" :value="item.id">{{item.section}}</option>
                         </select>
                         <span id="section_msg1" class="error_message">Section is required</span>
@@ -32,10 +32,8 @@
                             <strong>*</strong>
                         </label>
                         <select id="subject_id1" class="inputbox" @change="selectSubject(objData.subject,'subject_id1','subject_msg1')" name="class" v-model="objData.subject">
-                            <option disabled value="0">Select Subject</option>
-                            <option value="1">Subject 1</option>
-                            <option value="2">Subject 2</option>
-                            <option value="3">Subject 3</option>
+                            <option disabled value="">Select Subject</option>
+                            <option v-for="item in SubjectList" :value="item.id">{{item.name}}</option>
                         </select>
                         <span id="subject_msg1" class="error_message">Subject is required</span>
                     </div>
@@ -61,28 +59,32 @@
                 </div>
             </div>
             <div class="modal-footer" style="padding: 10px 15px;"> 
-                <button class="save btn-dark" style="margin: 0px;" @click="editHomework()">Save</button>
+                <button class="save btn-dark" style="margin: 0px;" id="globalSave" @click="editHomework()">Save</button>
             </div>
     </div>
 </div>
 </template>
 <script>
 import { EventBus } from "../../js/event-bus.js";
+import {Util} from '../../js/util';
 export default {
     data() {
         return {
-            objData: {"class": "0","section": "0","subject": "0","homework_date": new Date().toISOString().substr(0, 10),"submission_date": new Date().toISOString().substr(0, 10),"document": "","description":""},
+            objData: {"class": "","section": "","subject": "","homework_date": new Date().toISOString().substr(0, 10),"submission_date": new Date().toISOString().substr(0, 10),"document": "","description":""},
             ClassList: [],
             SectionList: [],
             passData: [],
+            SubjectList: [],
         };
     },
     created() {
         EventBus.$on("openEditHomework", data => {
             this.SectionList = [];
             this.ClassList = [];
-            this.objData.class = "0";
-            this.objData.section = "0";
+            this.SubjectList = [];
+            this.objData.class = "";
+            this.objData.section = "";
+            this.objData.subject = "";
             this.getAllClass(data);
             document.getElementById('description_msg1').style.display = "none";
             document.getElementById('class_msg1').style.display = "none";
@@ -97,8 +99,8 @@ export default {
         setData(data){
             this.passData = data;
             this.objData.class  = this.passData.classid;
-            this.SectionList = [];
             this.objData.section = this.passData.sectionid;
+            this.objData.subject = this.passData.subjectid;
             this.objData.homework_date = this.showDate(this.passData.homework_date);
             this.objData.submission_date = this.showDate(this.passData.submission_date);
             this.$refs.documentFile.value = '';
@@ -108,6 +110,22 @@ export default {
                     this.SectionList = this.ClassList[i].section;
                 }
             }
+            let input = {"class_id": this.objData.class,"section_id": this.objData.section};
+            this.axios.post("/api/AssSubject/search",input)
+            .then(response => {
+                this.axios.get("/api/subject").then(result => {
+                    for(let i = 0;i < result.data.length;i++){
+                        for(let a = 0;a < response.data.length;a++){
+                            if(response.data[a].subject_id == result.data[i].id){
+                                this.SubjectList.push({
+                                    id: result.data[a].id,
+                                    name: result.data[a].name
+                                });
+                            }
+                        }
+                    }
+                });
+            });
         },
         // Get Class and Section
         getAllClass(data){
@@ -168,9 +186,11 @@ export default {
         },
         // Select For Change
         selectClass(value, inputId, megId){
-            this.onValidate(value, inputId, megId);
+            Util.onValidate(value, inputId, megId);
             this.SectionList = [];
-            this.objData.section = "0";
+            this.SubjectList = [];
+            this.objData.section = "";
+            this.objData.subject = "";
             for(let i = 0;i < this.ClassList.length;i++){
                 if(this.ClassList[i].id === this.objData.class){
                     this.SectionList = this.ClassList[i].section;
@@ -178,37 +198,42 @@ export default {
             }
         },
         selectSection(value, inputId, megId){
-            this.onValidate(value, inputId, megId);
+            Util.onValidate(value, inputId, megId);
+            this.SubjectList = [];
+            this.objData.subject = "";
+            let data = {"class_id": this.objData.class,"section_id": this.objData.section};
+            this.axios.post("/api/AssSubject/search",data)
+            .then(response => {
+                this.axios.get("/api/subject").then(result => {
+                    for(let i = 0;i < result.data.length;i++){
+                        for(let a = 0;a < response.data.length;a++){
+                            if(response.data[a].subject_id == result.data[i].id){
+                                this.SubjectList.push({
+                                    id: result.data[a].id,
+                                    name: result.data[a].name
+                                });
+                            }
+                        }
+                    }
+                });
+            });
         },
         selectSubject(value, inputId, megId){
-            this.onValidate(value, inputId, megId);
+            Util.onValidate(value, inputId, megId);
         },
         // Validation
-        onValidationMessage(inputId, megId) {
-            document.getElementById(inputId).style.border = "solid 1px red";
-            document.getElementById(megId).style.display = "block";
-        },
-        onValidate(value, inputId, megId)
-        {
-            if(value == 0) document.getElementById(inputId).style.border = 'solid 1px red';
-            else 
-            {
-                document.getElementById(inputId).style.border = 'solid 1px #d2d6de';
-                document.getElementById(megId).style.display = 'none';
-            }
-        },
         checkValidation(){
             let checkValue = true;
-            if(this.objData.class == 0){
-                this.onValidationMessage('class_id1','class_msg1');
+            if(this.objData.class == ""){
+                Util.onValidationMessage('class_id1','class_msg1');
                 checkValue = false;
             }
-            if(this.objData.section == 0){
-                this.onValidationMessage('section_id1','section_msg1');
+            if(this.objData.section == ""){
+                Util.onValidationMessage('section_id1','section_msg1');
                 checkValue = false;
             }
-            if(this.objData.subject == 0){
-                this.onValidationMessage('subject_id1','subject_msg1');
+            if(this.objData.subject == ""){
+                Util.onValidationMessage('subject_id1','subject_msg1');
                 checkValue = false;
             }
             if(this.objData.description == "" || this.objData.description == undefined){
@@ -229,7 +254,7 @@ export default {
             let month = date.substring(4, 6);
             let year = date.substring(0, 4);
             return year +"-"+ month +"-"+ day;
-        }
+        },
     } 
 };
 </script>

@@ -16,8 +16,8 @@ class CreateHomeworkEvaluationsTable extends Migration
         Schema::create('homework_evaluations', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->integer('homework_id')->unsigned();
-            $table->char('com_admission_no',100);
-            $table->char('incom_admission_no',100);
+            $table->char('com_admission_no',100)->nullable();
+            $table->char('incom_admission_no',100)->nullable();
             $table->integer('session_id')->unsigned();
             $table->char('date',20);
             $table->char('is_active',25);

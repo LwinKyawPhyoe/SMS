@@ -6,5 +6,5 @@ use Illuminate\Database\Eloquent\Model;
 
 class homework_evaluation extends Model
 {
-    //
+    protected $guarded = [];
 }
