@@ -14,7 +14,7 @@ class StudentController extends Controller
         $allHostel = DB::select('select * from hostels where is_active="Yes"',[]);
         $allClass = DB::select('select * from classes where is_active="yes"  and domain="TS" and session_id=? ', [$sessionid[0]->id]);
         $route = DB::select('select * from routes where is_active="Yes"  and domain="TS" and session_id=? ',[$sessionid[0]->id]);
-        return ['class'=>$allClass,'hostel'=>$allHostel,'routes'=>$route];
+        return ['class'=>$allClass,'hostel'=>$allHostel,'routes'=>$route,'session'=>$sessionid];
     }
 
     public function section($id){
@@ -62,23 +62,47 @@ class StudentController extends Controller
         //
     }
 
-
+    public function searchHostel($hostel_room_id){
+        $hostel_room = DB::select('SELECT * FROM hostel_rooms where id =?',[$hostel_room_id]);
+        $hostel = DB::select('SELECT * FROM hostels where id=?',[$hostel_room[0]->hostel_id]);
+        return $hostel;
+    }
     public function store(Request $request)
     {
+        $viladition ="";
           $admision_no = DB::select('select * from students where admission_no =?',[$request->input('admission_no')]);
 
           $email = DB::select('select * from students where email =?',[$request->input('email')]);
           $phone = DB::select('select * from students where mobileno =?',[$request->input('mobileno')]);
-          if($admision_no){
-            return response()->json("not");
-          }else if($email){
-            return response()->json("not");
-          }
-          else if($phone){
-            return response()->json("not");
-          }
-          else{
-            $data = DB::select('select * from students where admission_no =?',[$request->input('sibling_admission_no')]);
+        if($admision_no){
+            $viladition = "admission_no";
+        }
+
+        if(!$request->input('email')){
+            if($email){
+                $viladition = "email";
+            }
+        }
+
+        if(!$request->input('mobileno')){
+            if($phone){
+                $viladition = "phone";
+            }
+        }
+
+        //   if($admision_no){
+        //     return response()->json("not");
+        //   }else if($email){
+        //     return response()->json("not");
+        //   }
+        //   else if($phone){
+        //     return response()->json("not");
+        //   }
+        //   else{
+            if($viladition){
+                return $viladition;
+            }else{
+                $data = DB::select('select * from students where admission_no =?',[$request->input('sibling_admission_no')]);
             
             $fatherImageName='';
             $motherImageName='';
@@ -221,8 +245,10 @@ class StudentController extends Controller
                 'race'=>$request->race
             ]);
             $student->save();
-            return response()->json("Save Success");
-          }
+            return response()->json("Saved Success");
+            }
+            
+        //   }
         
     }
     public function update(Request $request, $id)
@@ -371,7 +397,6 @@ class StudentController extends Controller
                $data[$i]['guardian_phone'] = $student[$i]->guardian_phone;
            }
            return $data;
-        
     }
     public function studentReport1($class_id,$section_id){
         $data=[];

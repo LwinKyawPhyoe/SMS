@@ -35,6 +35,7 @@ class StudentSessionController extends Controller
      */
     public function store(Request $request)
     {
+        
         $session = new student_session([
             'session_id'=>$request->input('session_id'),
             'admission_no'=>$request->input('admission_no'),
@@ -45,15 +46,9 @@ class StudentSessionController extends Controller
             'domain'=>$request->input('domain'),
         ]);
         $session->save();
-        return response()->json("Session Save Successfully");
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\student_session  $student_session
-     * @return \Illuminate\Http\Response
-     */
+    
     public function show(student_session $student_session)
     {
         //
@@ -65,21 +60,26 @@ class StudentSessionController extends Controller
      * @param  \App\student_session  $student_session
      * @return \Illuminate\Http\Response
      */
-    public function edit(student_session $student_session)
+    public function edit($id)
     {
         //
+        $session = DB::select('SELECT * FROM sessions');
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \App\student_session  $student_session
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, student_session $student_session)
+    
+    public function update(Request $request,$id)
     {
-        //
+        $session = student_session::where('admission_no',$id)->get();
+        $session->update([
+            'session_id'=>$request->input('session_id'),
+            'admission_no'=>$request->input('admission_no'),
+            'class_section_id'=>$request->input('class_section_id'),
+            'route_id'=>$request->input('route_id'),
+            'hostel_room_id'=>$request->input('hostel_room_id'),
+            'is_active'=>$request->input('is_active'),
+            'domain'=>$request->input('domain'),
+        ]);
+        
     }
 
     /**

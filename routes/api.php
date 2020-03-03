@@ -164,7 +164,7 @@ Route::group(['prefix' => 'attendancetype'], function () {
 Route::get('studentattendances', 'StudentAttendanceController@index');
 Route::group(['prefix' => 'studentattendance'], function () {
     Route::post('add', 'StudentAttendanceController@store');
-    Route::get('show/{para}', 'StudentAttendanceController@show');
+    Route::get('show/{class_section_id}/{date}', 'StudentAttendanceController@show');
     Route::get('edit/{id}', 'StudentAttendanceController@edit');
     Route::post('update/{id}', 'StudentAttendanceController@update');
     Route::delete('delete/{id}', 'StudentAttendanceController@destroy');
@@ -189,6 +189,7 @@ Route::group(['prefix' => 'student'], function() {
     Route::get('studentReport2/{class_id}/{gender}','StudentController@studentReport2');
     Route::get('studentReport3/{class_id}','StudentController@studentReport3');
     Route::get('studentReport4/{gender}','StudentController@studentReport4');
+    Route::get('studentHostel/{hostem_room_id}','StudentController@searchHostel');
 });
 Route::get('studentsibling', 'StudentSiblingController@index');
 Route::group(['prefix' => 'studentsiblings'], function () {
@@ -198,6 +199,7 @@ Route::group(['prefix' => 'studentsiblings'], function () {
     Route::post('update/{id}', 'StudentSiblingController@update');
     Route::delete('delete/{id}', 'StudentSiblingController@destroy');
     Route::get('/siblings/{id}','StudentSiblingController@selectStudentSiblings');
+
 });
 Route::get('session', 'StudentSessionController@index');
 Route::group(['prefix' => 'sessions'], function () {
@@ -216,7 +218,6 @@ Route::group(['prefix' => 'uploaddocuments'], function () {
     Route::delete('delete/{id}', 'StudentDocumentController@destroy');
 });
 //---------------------------------- end of wai yan moung -----------------
-
 // Kyaw Soe Hein
 Route::get('tranRouteList', 'RouteController@index');
 Route::group(['prefix' => 'TranRoute'], function () {

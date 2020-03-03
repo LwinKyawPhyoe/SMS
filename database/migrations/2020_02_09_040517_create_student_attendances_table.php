@@ -16,6 +16,7 @@ class CreateStudentAttendancesTable extends Migration
         Schema::create('student_attendances', function (Blueprint $table) {
             $table->bigIncrements('id');
             $table->string('admission_no')->nullable();
+            $table->string('class_section_id')->nullable();
             $table->string('date')->nullable();
             $table->string('attendance_type_id')->nullable();
             $table->string('biometric_attendance')->nullable();
