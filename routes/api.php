@@ -168,6 +168,7 @@ Route::group(['prefix' => 'studentattendance'], function () {
     Route::get('edit/{id}', 'StudentAttendanceController@edit');
     Route::post('update/{id}', 'StudentAttendanceController@update');
     Route::delete('delete/{id}', 'StudentAttendanceController@destroy');
+    Route::get('search/{class_section_id}/{date}' ,'StudentAttendanceController@search');
 });
 Route::get('student','StudentController@index');
 Route::group(['prefix' => 'student'], function() {

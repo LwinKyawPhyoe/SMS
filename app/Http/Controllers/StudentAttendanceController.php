@@ -83,7 +83,7 @@ class StudentAttendanceController extends Controller
             $student = DB::select('select * from students where admission_no=? and session_id=? and domain="TS" and is_active="yes"',[$check[$i]->admission_no,$sessionid[0]->id]);
             $data[$i]['id']=$check[$i]->id;
             $data[$i]['name'] = $student[0]->name;
-            $data[$i]['admission_no'] = $check[$i]->admission_no;
+            $data[$i]['admission_no'] = $student[0]->admission_no;
             $data[$i]['class_section_id'] = $check[$i]->class_section_id;
             $data[$i]['date'] = $check[$i]->date;
             $data[$i]['attendance_type_id'] = $check[$i]->attendance_type_id;
@@ -114,7 +114,30 @@ class StudentAttendanceController extends Controller
 
 
     }
-
+    public function search($class_section_id,$date){
+        $data=[];
+        $sessionid = DB::select('select * from academic_years where is_active="yes"',[]);
+        $check = DB::select('select * from student_attendances WHERE class_section_id=? and date=? and session_id=?',[$class_section_id,$date,$sessionid[0]->id]);
+        if(count($check)>0){
+           for($i=0;$i<count($check);$i++){
+            $student = DB::select('select * from students where admission_no=? and session_id=? and domain="TS" and is_active="yes"',[$check[$i]->admission_no,$sessionid[0]->id]);
+            $data[$i]['id']=$check[$i]->id;
+            $data[$i]['name'] = $student[0]->name;
+            $data[$i]['roll_no']= $student[0]->roll_no;
+            $data[$i]['admission_no'] = $check[$i]->admission_no;
+            $data[$i]['class_section_id'] = $check[$i]->class_section_id;
+            $data[$i]['date'] = $check[$i]->date;
+            $data[$i]['attendance_type_id'] = $check[$i]->attendance_type_id;
+            $data[$i]['biometric_attendance'] = $check[$i]->biometric_attendance;
+            $data[$i]['remark'] = $check[$i]->remark;
+            $data[$i]['is_active'] =$check[$i]->is_active;;
+            $data[$i]['domain'] =$check[$i]->domain;
+            $data[$i]['session_id'] = $check[$i]->session_id;
+           }
+        //    return $data;
+        }
+        return ['data'=>$data];
+    }
     /**
      * Show the form for editing the specified resource.
      *
