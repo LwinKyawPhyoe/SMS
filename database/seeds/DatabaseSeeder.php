@@ -73,6 +73,7 @@ class DatabaseSeeder extends Seeder
         $this->call([
             StudentsTableSeeder::class,
             AcademicsMenuSeeder::class,
+            ExamList::class,
         ]);
 
 
@@ -80,18 +81,18 @@ class DatabaseSeeder extends Seeder
         $roles = [
             [
                 'name' => "Admin",
-                'is_active' => "yes",
-                "domain"  => "TS"
+                'is_active' => "No",
+                "domain"  => "sms"
             ],
             [
                 'name' => "Teacher",
-                'is_active' => "yes",
-                "domain"  => "TS"
+                'is_active' => "No",
+                "domain"  => "sms"
             ],
             [
                 'name' => "Parent",
                 'is_active' => "No",
-                "domain"  => "TS"
+                "domain"  => "sms"
             ],
         ];
 
@@ -106,13 +107,10 @@ class DatabaseSeeder extends Seeder
         }
 
         DB::table('departments')->insert([
-            'department_name' => "Arts",
-            'is_active' => 'yes'
+            'department_name' => "Arts"
         ]);
         DB::table('designations')->insert([
-            'designation_name' => "Teacher",
-            'is_active' => 'yes'
-
+            'designation_name' => "Teacher"
         ]);
         /***end code of Wai Yan Soe */
         DB::table('generals')->insert([
@@ -127,7 +125,7 @@ class DatabaseSeeder extends Seeder
             'session' => '2019-20',
             'session_month' => 'July',
             'language' => 'English',
-            'schoollogo' => 'titleImage.png',
+            'schoollogo' => 'download.jpg',
         ]);
     }
 }

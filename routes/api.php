@@ -252,6 +252,7 @@ Route::group(['prefix' => 'exams'], function() {
     Route::post('addexam','ExamsController@store');
     Route::get('editexam/{id}','ExamsController@edit');
     Route::get('deleteexam/{id}','ExamsController@destroy');
+    Route::get('getStudentExam/{id}','ExamsController@getStudentExam');
 });
 Route::group(['prefix' => 'examSchadules'], function() {
     Route::post('addExamSchadule','ExamSchaduleController@store');

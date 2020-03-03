@@ -604,8 +604,197 @@ img {
 .StudentInformation,
 .StudentHistory,
 .ViewStudent {
+  margin-top: 5rem !important;
+  padding: 0 1rem;
+  background-color: whitesmoke;
   z-index: 0;
   margin-bottom: 10px;
+}
+
+.Student .showsib,
+.StaffInformation .showsib,
+.StudentInformation .showsib,
+.StudentHistory .showsib,
+.ViewStudent .showsib {
+  background: #1b5e20;
+  color: white;
+  border: 2px solid green;
+  border-radius: 3px;
+  padding: 0 10px;
+}
+
+.Student .showsib .span,
+.StaffInformation .showsib .span,
+.StudentInformation .showsib .span,
+.StudentHistory .showsib .span,
+.ViewStudent .showsib .span {
+  margin: 4px 5px 0px 0;
+  float: right;
+  padding: 0 7px;
+  cursor: pointer;
+  background-color: #1b5e20;
+  color: white;
+  border-radius: 3px;
+}
+
+.Student .sibling,
+.StaffInformation .sibling,
+.StudentInformation .sibling,
+.StudentHistory .sibling,
+.ViewStudent .sibling {
+  border-radius: 8px;
+  box-shadow: 0 1px 10px rgba(0, 0, 0, 0.11);
+  border: 1px solid #d7dfe3;
+  padding: 10px;
+  height: 100%;
+}
+
+.Student .sibling .img,
+.StaffInformation .sibling .img,
+.StudentInformation .sibling .img,
+.StudentHistory .sibling .img,
+.ViewStudent .sibling .img {
+  width: 25%;
+  float: left;
+}
+
+.Student .sibling .img img,
+.StaffInformation .sibling .img img,
+.StudentInformation .sibling .img img,
+.StudentHistory .sibling .img img,
+.ViewStudent .sibling .img img {
+  border-radius: 20px;
+  border: 2px solid #c2c1c1;
+  width: 100%;
+}
+
+.Student .sibling .right,
+.StaffInformation .sibling .right,
+.StudentInformation .sibling .right,
+.StudentHistory .sibling .right,
+.ViewStudent .sibling .right {
+  padding-left: 10px;
+  width: 75%;
+  float: right;
+}
+
+.Student .sibling .right .divcontent strong,
+.StaffInformation .sibling .right .divcontent strong,
+.StudentInformation .sibling .right .divcontent strong,
+.StudentHistory .sibling .right .divcontent strong,
+.ViewStudent .sibling .right .divcontent strong {
+  width: 100%;
+  font-size: 14px;
+  color: var(--primary);
+}
+
+.Student .sibling .right .divcontent .key,
+.StaffInformation .sibling .right .divcontent .key,
+.StudentInformation .sibling .right .divcontent .key,
+.StudentHistory .sibling .right .divcontent .key,
+.ViewStudent .sibling .right .divcontent .key {
+  color: black;
+  font-size: 14px;
+}
+
+.Student .textbox input::-webkit-outer-spin-button,
+.Student .textbox input::-webkit-inner-spin-button,
+.StaffInformation .textbox input::-webkit-outer-spin-button,
+.StaffInformation .textbox input::-webkit-inner-spin-button,
+.StudentInformation .textbox input::-webkit-outer-spin-button,
+.StudentInformation .textbox input::-webkit-inner-spin-button,
+.StudentHistory .textbox input::-webkit-outer-spin-button,
+.StudentHistory .textbox input::-webkit-inner-spin-button,
+.ViewStudent .textbox input::-webkit-outer-spin-button,
+.ViewStudent .textbox input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.Student .textbox input,
+.StaffInformation .textbox input,
+.StudentInformation .textbox input,
+.StudentHistory .textbox input,
+.ViewStudent .textbox input {
+  width: 100%;
+  outline: none;
+}
+
+.Student .textbox .vdp-datepicker__calendar,
+.StaffInformation .textbox .vdp-datepicker__calendar,
+.StudentInformation .textbox .vdp-datepicker__calendar,
+.StudentHistory .textbox .vdp-datepicker__calendar,
+.ViewStudent .textbox .vdp-datepicker__calendar {
+  position: absolute;
+  z-index: 100;
+  background: white;
+  width: -webkit-fit-content;
+  width: -moz-fit-content;
+  width: fit-content;
+  border: 1px solid #ccc;
+}
+
+.Student .textbox header,
+.StaffInformation .textbox header,
+.StudentInformation .textbox header,
+.StudentHistory .textbox header,
+.ViewStudent .textbox header {
+  display: -webkit-box !important;
+  display: flex !important;
+  position: absolute;
+  width: 100%;
+  height: auto;
+  z-index: 1;
+  background: #044604;
+  color: #fff;
+  -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+  text-align: center;
+  margin-left: 0px;
+}
+
+.Student .textbox header .up:not(.disabled):hover,
+.StaffInformation .textbox header .up:not(.disabled):hover,
+.StudentInformation .textbox header .up:not(.disabled):hover,
+.StudentHistory .textbox header .up:not(.disabled):hover,
+.ViewStudent .textbox header .up:not(.disabled):hover {
+  background-color: #1b5e20;
+}
+
+.Student .textbox header .next:after,
+.StaffInformation .textbox header .next:after,
+.StudentInformation .textbox header .next:after,
+.StudentHistory .textbox header .next:after,
+.ViewStudent .textbox header .next:after {
+  border-left: 10px solid white;
+}
+
+.Student .textbox header .next:hover,
+.Student .textbox header .prev:hover,
+.StaffInformation .textbox header .next:hover,
+.StaffInformation .textbox header .prev:hover,
+.StudentInformation .textbox header .next:hover,
+.StudentInformation .textbox header .prev:hover,
+.StudentHistory .textbox header .next:hover,
+.StudentHistory .textbox header .prev:hover,
+.ViewStudent .textbox header .next:hover,
+.ViewStudent .textbox header .prev:hover {
+  background-color: #1b5e20 !important;
+}
+
+.Student .textbox header .prev:after,
+.StaffInformation .textbox header .prev:after,
+.StudentInformation .textbox header .prev:after,
+.StudentHistory .textbox header .prev:after,
+.ViewStudent .textbox header .prev:after {
+  border-right: 10px solid white;
+}
+
+.Student #addMore,
+.StaffInformation #addMore,
+.StudentInformation #addMore,
+.StudentHistory #addMore,
+.ViewStudent #addMore {
+  display: none;
 }
 
 .Student .modalbtn,
@@ -697,6 +886,14 @@ img {
   padding: 0 5px;
 }
 
+.Student .card,
+.StaffInformation .card,
+.StudentInformation .card,
+.StudentHistory .card,
+.ViewStudent .card {
+  background-color: khaki;
+}
+
 .Student .card .footer,
 .StaffInformation .card .footer,
 .StudentInformation .card .footer,
@@ -721,6 +918,63 @@ img {
   font-size: 15px;
   color: white;
   padding: 5px;
+}
+
+.Student .card .stucard-header,
+.StaffInformation .card .stucard-header,
+.StudentInformation .card .stucard-header,
+.StudentHistory .card .stucard-header,
+.ViewStudent .card .stucard-header {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+          align-items: center;
+  height: 34px;
+  background-color: #1b5e20;
+  margin: -20px 15px 0px 15px;
+  padding: 0;
+  padding-left: 20px;
+  color: white;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.Student .card .stucard-header h6,
+.StaffInformation .card .stucard-header h6,
+.StudentInformation .card .stucard-header h6,
+.StudentHistory .card .stucard-header h6,
+.ViewStudent .card .stucard-header h6 {
+  margin: 0;
+  font-size: 16px;
+}
+
+.Student .card .stusub-header,
+.StaffInformation .card .stusub-header,
+.StudentInformation .card .stusub-header,
+.StudentHistory .card .stusub-header,
+.ViewStudent .card .stusub-header {
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-align: center;
+          align-items: center;
+  height: 34px;
+  background-color: #1b5e20;
+  margin: 0 15px 0px 15px;
+  padding: 0;
+  padding-left: 20px;
+  color: white;
+  border-top-left-radius: 3px;
+  border-top-right-radius: 3px;
+}
+
+.Student .card .stusub-header h6,
+.StaffInformation .card .stusub-header h6,
+.StudentInformation .card .stusub-header h6,
+.StudentHistory .card .stusub-header h6,
+.ViewStudent .card .stusub-header h6 {
+  margin: 0;
+  font-size: 16px;
+  width: 100%;
 }
 
 .Student .card .stucard-body,
@@ -749,6 +1003,25 @@ img {
 .ViewStudent .card .stucard-body .row .textbox {
   width: 25%;
   padding: 5px;
+}
+
+.Student .card .stucard-body .row .textbox p,
+.StaffInformation .card .stucard-body .row .textbox p,
+.StudentInformation .card .stucard-body .row .textbox p,
+.StudentHistory .card .stucard-body .row .textbox p,
+.ViewStudent .card .stucard-body .row .textbox p {
+  margin: 0;
+  padding: 0;
+}
+
+.Student .card .stucard-body .row .textbox img,
+.StaffInformation .card .stucard-body .row .textbox img,
+.StudentInformation .card .stucard-body .row .textbox img,
+.StudentHistory .card .stucard-body .row .textbox img,
+.ViewStudent .card .stucard-body .row .textbox img {
+  margin: 0 50px;
+  margin: 0;
+  text-align: center;
 }
 
 .Student .card .stucard-body .row .textbox label,
