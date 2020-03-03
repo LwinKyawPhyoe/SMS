@@ -244,16 +244,39 @@
   </div>
 </template>
 <script>
+import { EventBus } from "../../js/event-bus.js";
 export default {
   data() {
     return {
       student: true,
       parent: false,
-      staff: false
+      staff: false,
+      colors: ""
     };
+  },
+  created() {
+    EventBus.$emit("ThemeClicked");
+    this.axios.get("/api/settings").then(response => {
+      this.colors = response.data;
+    });
   },
   methods: {
     toggleBtns(id, id1, id2) {
+      if (this.colors.color == "lightColor") {
+        document.getElementById(id).style.backgroundColor = "white";
+        document.getElementById(id).style.color = "Black";
+        document.getElementById(id1).style.backgroundColor = "transparent";
+        document.getElementById(id1).style.color = "Black";
+        document.getElementById(id2).style.backgroundColor = "transparent";
+        document.getElementById(id2).style.color = "Black";
+      } else {
+        document.getElementById(id).style.backgroundColor = "white";
+        document.getElementById(id).style.color = "Black";
+        document.getElementById(id1).style.backgroundColor = "transparent";
+        document.getElementById(id1).style.color = "white";
+        document.getElementById(id2).style.backgroundColor = "transparent";
+        document.getElementById(id2).style.color = "white";
+      }
       if (id == "student") {
         this.student = true;
         this.parent = false;
@@ -267,12 +290,6 @@ export default {
         this.parent = false;
         this.staff = true;
       }
-      document.getElementById(id).style.backgroundColor = "white";
-      document.getElementById(id).style.color = "Black";
-      document.getElementById(id1).style.backgroundColor = "transparent";
-      document.getElementById(id1).style.color = "white";
-      document.getElementById(id2).style.backgroundColor = "transparent";
-      document.getElementById(id2).style.color = "white";
     }
   }
 };

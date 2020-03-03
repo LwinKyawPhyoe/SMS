@@ -1,14 +1,13 @@
 
 <template>
-  <div id="bar" class="Student" style="transition:all 0.5s;">
-    <div class="toplink" style="margin-top:-20px;">
+  <div id="bar" class="Student form">
+    <div class="toplink">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
         <router-link to="/Student">Home</router-link>> Student Admission
       </h6>
     </div>
     <hr />
-    <br />
     <form @submit.prevent="save" enctype="multipart/form-data" >
     
     <div class="card">
@@ -25,7 +24,7 @@
         <div class="modal-content"
         style="background:none;border:none;width:100% !important;padding: 1rem;"
         >
-            <div class="stucard-header">
+            <div class="card-header">
               <h6 style="width:100%">
                 Add Sibling
                 <i
@@ -90,7 +89,7 @@
       </div>
     </div>
     <!-- ----------------------modal end --------------------------- -->
-      <div class="stucard-header">
+      <div class="card-header">
         <h6>Student Admission</h6>
       </div>
       <div class="stucard-body">
@@ -316,7 +315,7 @@
         </div>
       </div>
 
-      <div class="stusub-header">
+      <div class="sub-header">
         <h6>Parents Details</h6>
       </div>
       <div class="stucard-body">
@@ -458,18 +457,20 @@
         </div>
         </div>
         <div class="breakline"></div>
-      <div class="stusub-header">
+      <div class="sub-header">
         <h6>
           Add More Information
           <strong
-            style="float:right;padding:2px 20px;color:white !important;cursor:pointer;"
+            style="float:right;padding:2px 20px;color:white;cursor:pointer;"
             @click="closeOpen()"
             v-if="!addMore"
+            class="moreInformation"
           >
             <i class="fa fa-plus"></i>
           </strong>
           <strong
-            style="float:right;color:white !important;padding:2px 20px;cursor:pointer;"
+          class="moreInformation"
+            style="float:right;color:white;padding:2px 20px;cursor:pointer;"
             @click="closeOpen()"
             v-else-if="addMore"
           >
@@ -479,7 +480,7 @@
       </div>
       <div class="stucard-body" style="padding-top: 15px;" id="addMore">
         <div class="card" style="margin: 15px;">
-          <div class="stucard-header">
+          <div class="card-header">
             <h6>Student Address Details</h6>
           </div>
           <div class="stucard-body">
@@ -499,7 +500,7 @@
               </div>
             </div>
           </div>
-          <div class="stusub-header">
+          <div class="sub-header">
             <h6>Transport Details</h6>
           </div>
           <div class="stucard-body">
@@ -515,7 +516,7 @@
               </div>
             </div>
           </div>
-          <div class="stusub-header">
+          <div class="sub-header">
             <h6>Previous School Details</h6>
           </div>
           <div class="stucard-body">
@@ -530,7 +531,7 @@
               </div>
             </div>
           </div>
-          <div class="stusub-header">
+          <div class="sub-header">
             <h6>Hostel Details</h6>
           </div>
           <div class="stucard-body">
@@ -555,7 +556,7 @@
               </div>
             </div>
           </div>
-          <div class="stusub-header">
+          <div class="sub-header">
             <h6>Upload Document</h6>
           </div>
           <div class="stucard-body">
@@ -612,8 +613,8 @@
         </div>
       </div>
 
-      <div class="footer" id="footer">
-        <button type="submit">Save</button>
+      <div class="footer column-12" id="footer">
+        <button type="submit" style="margin-right: 15px;" id="globalSave" class="save">Save</button>
       </div>
       </div>
 </form>
@@ -622,6 +623,7 @@
 </template>
 
 <script>
+import { EventBus } from "../../js/event-bus.js";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
 export default {
@@ -744,6 +746,7 @@ export default {
     };
   },
   created() {
+    EventBus.$emit("ThemeClicked");
     this.allData();
   },
   methods: {

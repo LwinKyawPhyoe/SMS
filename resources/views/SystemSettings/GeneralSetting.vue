@@ -203,7 +203,7 @@
               <div
                 style="justify-content: center;padding: 20px;height: 245px;display: flex;margin: 1rem 0;"
               >
-                <div style="width: 80%;height: 80%;border: 1px dotted black;margin-top: 1rem;">
+                <div style="width: 80%;height: 80%;border: 1px dotted #7c98fd;margin-top: 1rem;">
                   <i
                     class="fa fa-image" v-if="!school.schoollogo"
                     style="margin: 5px 0px 1px 3px;width: 90%;zoom: 5;display: flex;justify-content: center;"
@@ -214,13 +214,13 @@
                     id="upload"
                     title="Profile Images"
                     @change="Preview_image($event)"
-                    style="position: absolute;width: 73%;top: 3rem;z-index: 1;margin-top: 1rem;height: 57%;opacity: 0;cursor: auto;"
+                    style="position: absolute;top: 3rem;z-index: 1;margin-top: 1rem;height: 57%;opacity: 0;cursor: auto;"
                   />
                 </div>
                 <img
                   id="schoolLogo"
                   :src="'SettingImages/'+school.schoollogo"
-                  style="padding: 0 5px;margin-top: 1.4rem;position: absolute;height: 52%;width: 70%;z-index: 0;"
+                  style="margin-top: 1.4rem;position: absolute;height: 52%;width: 70%;z-index: 0;"
                 />
               </div>
             </form>
@@ -231,7 +231,7 @@
     <hr />
 
     <div class="row rowContainer" style="align-items: end !important;margin:0;">
-      <div class="col-lg-4 col-12" style="padding:5px;">
+      <div class="col-lg-4 col-12" style="padding:0 5px;">
         <div class="card" id="globalCard">
           <div class="card-header" id="globalcardHeader">
             <h6>Edit Logo</h6>

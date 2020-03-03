@@ -381,7 +381,7 @@
           <div class="header">
             <div class="row sidebar_header">
               <div class="col-12">
-                <h5 style="font-size: 18pt;" class="projectName">{{this.school.school_name}}</h5>
+                <h5 style="font-size: 18pt;margin: 0;" class="projectName">{{this.school.school_name}}</h5>
               </div>
             </div>
 
@@ -688,13 +688,13 @@
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link class="nav-list" id="nav-list" to>
-                          <i class="fa fa-angle-double-right listItem" id="listItem"></i>Student Guardian
+                        <router-link to="/studenthistory" id="nav-list" class="nav-list">
+                          <i class="fa fa-angle-double-right listItem" id="listItem"></i>Student History
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="/studenthistory" id="nav-list" class="nav-list">
-                          <i class="fa fa-angle-double-right listItem" id="listItem"></i>Student History
+                        <router-link class="nav-list" id="nav-list" to>
+                          <i class="fa fa-angle-double-right listItem" id="listItem"></i>Guardian Report
                         </router-link>
                       </li>
                       <li class="nav-list">

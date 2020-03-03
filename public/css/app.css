@@ -604,9 +604,7 @@ img {
 .StudentInformation,
 .StudentHistory,
 .ViewStudent {
-  margin-top: 5rem !important;
-  padding: 0 1rem;
-  background-color: whitesmoke;
+  padding: 1rem;
   z-index: 0;
   margin-bottom: 10px;
 }
@@ -886,20 +884,12 @@ img {
   padding: 0 5px;
 }
 
-.Student .card,
-.StaffInformation .card,
-.StudentInformation .card,
-.StudentHistory .card,
-.ViewStudent .card {
-  background-color: khaki;
-}
-
 .Student .card .footer,
 .StaffInformation .card .footer,
 .StudentInformation .card .footer,
 .StudentHistory .card .footer,
 .ViewStudent .card .footer {
-  margin-top: 10px;
+  margin-top: 5px;
   width: 100%;
   margin-bottom: 10px;
 }
@@ -918,63 +908,6 @@ img {
   font-size: 15px;
   color: white;
   padding: 5px;
-}
-
-.Student .card .stucard-header,
-.StaffInformation .card .stucard-header,
-.StudentInformation .card .stucard-header,
-.StudentHistory .card .stucard-header,
-.ViewStudent .card .stucard-header {
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-align: center;
-          align-items: center;
-  height: 34px;
-  background-color: #1b5e20;
-  margin: -20px 15px 0px 15px;
-  padding: 0;
-  padding-left: 20px;
-  color: white;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-}
-
-.Student .card .stucard-header h6,
-.StaffInformation .card .stucard-header h6,
-.StudentInformation .card .stucard-header h6,
-.StudentHistory .card .stucard-header h6,
-.ViewStudent .card .stucard-header h6 {
-  margin: 0;
-  font-size: 16px;
-}
-
-.Student .card .stusub-header,
-.StaffInformation .card .stusub-header,
-.StudentInformation .card .stusub-header,
-.StudentHistory .card .stusub-header,
-.ViewStudent .card .stusub-header {
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-align: center;
-          align-items: center;
-  height: 34px;
-  background-color: #1b5e20;
-  margin: 0 15px 0px 15px;
-  padding: 0;
-  padding-left: 20px;
-  color: white;
-  border-top-left-radius: 3px;
-  border-top-right-radius: 3px;
-}
-
-.Student .card .stusub-header h6,
-.StaffInformation .card .stusub-header h6,
-.StudentInformation .card .stusub-header h6,
-.StudentHistory .card .stusub-header h6,
-.ViewStudent .card .stusub-header h6 {
-  margin: 0;
-  font-size: 16px;
-  width: 100%;
 }
 
 .Student .card .stucard-body,
@@ -2630,7 +2563,7 @@ button:focus {
 }
 
 .systemsetting .modal-bodys #ThemeColor {
-  padding: 0 1rem;
+  padding: 0;
 }
 
 .systemsetting .modal-bodys #ThemeColor .col-xs-6 {
@@ -2686,7 +2619,7 @@ button:focus {
 }
 
 .systemsetting .rowContainer .imgCard .img {
-  border: 1px solid var(--success);
+  border: 1px solid #7c98fd;
   border-radius: 5px;
   padding: 5px;
 }
@@ -2757,6 +2690,34 @@ button:focus {
   height: 20px;
   border: none;
   border-radius: 3px;
+}
+
+@media (max-width: 425px) {
+  #schoolLogo {
+    padding: 5px 15px;
+  }
+
+  #upload {
+    width: 70%;
+  }
+
+  .metaBtn {
+    font-size: 9pt;
+  }
+}
+
+@media (min-width: 425.1px) {
+  #schoolLogo {
+    padding: 5px;
+  }
+
+  #upload {
+    width: 73%;
+  }
+
+  .metaBtn {
+    font-size: 14px;
+  }
 }
 
 .ViewStaffDirectory {

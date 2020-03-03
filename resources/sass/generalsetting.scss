@@ -12,7 +12,7 @@
       }
     }
     #ThemeColor {
-      padding: 0 1rem;
+      padding: 0;
       .col-xs-6 {
         width: 50%;
       }
@@ -53,7 +53,7 @@
     .imgCard {
       padding: 1rem;
       .img {
-        border: 1px solid var(--success);
+        border: 1px solid #7c98fd;
         border-radius: 5px;
         padding: 5px;
       }
@@ -118,5 +118,27 @@
         border-radius: 3px;
       }
     }
+  }
+}
+@media (max-width: 425px) {
+  #schoolLogo {
+    padding: 5px 15px;
+  }
+  #upload {
+    width: 70%;
+  }
+  .metaBtn {
+    font-size: 9pt;
+  }
+}
+@media (min-width: 425.1px) {
+  #schoolLogo {
+    padding: 5px;
+  }
+  #upload {
+    width: 73%;
+  }
+  .metaBtn {
+    font-size: 14px;
   }
 }

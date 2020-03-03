@@ -1,5 +1,5 @@
 <template>
-  <div class="StudentHistory" id="bar">
+  <div class="StudentHistory form" id="bar">
     <div class="toplink">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
@@ -7,9 +7,8 @@
       </h6>
     </div>
     <hr />
-    <br />
     <div class="card">
-      <div class="stucard-header">
+      <div class="card-header">
         <h6>Select Criteria</h6>
       </div>
       <div class="stucard-body">
@@ -44,7 +43,7 @@
               <option v-for="list in sectionList" :key="list.id" :value="list.id">{{list.section}}</option>
             </select>
             <span id="section_msg" class="error_message">Section required.</span>
-            <button class="searchButton" @click="searchBySectionId()">Search</button>
+            <button class="searchButton" id="globalSearch" @click="searchBySectionId()">Search</button>
           </div>
         </div>
       </div>

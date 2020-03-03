@@ -275,7 +275,6 @@ export default {
 
   methods: {
     searchByKeyWord() {
-      EventBus.$emit("clicked");
       if (this.keyword) {
         this.axios
           .get(`/api/student/keyword/${this.keyword}`)
@@ -322,6 +321,7 @@ export default {
             }
           });
       }
+      EventBus.$emit("ThemeClicked");
     },
     selectClass(e) {
       this.sectionList = [];
@@ -350,7 +350,7 @@ export default {
       });
     },
     searchBySectionId() {
-      this.formViladition();  
+      this.formViladition();
       if (this.viladition == true) {
         EventBus.$emit("clicked");
         this.axios
@@ -399,6 +399,7 @@ export default {
             }
           });
       }
+      EventBus.$emit("ThemeClicked");
     },
     listView() {
       this.view = true;

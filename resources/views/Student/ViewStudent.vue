@@ -1,5 +1,5 @@
 <template>
-  <div class="ViewStudent" id="bar">
+  <div class="ViewStudent form" id="bar">
     <div class="toplink">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
@@ -7,7 +7,6 @@
       </h6>
     </div>
     <hr />
-    <br />
     <div
       class="modal fade"
       id="exampleModalCenter"
@@ -501,6 +500,7 @@
   </div>
 </template>
 <script>
+import { EventBus } from "../../js/event-bus.js";
 export default {
   data() {
     return {
@@ -522,7 +522,7 @@ export default {
     };
   },
   created(){
-
+  EventBus.$emit("ThemeClicked");
     var id = this.$route.params.id;
     this.axios
     .get(`/api/student/edit/${id}`)
@@ -625,11 +625,13 @@ export default {
     },
     showData(name) {
       if (name == "profile") {
+        EventBus.$emit("ThemeClicked");
         this.profile = true;
         this.exam = false;
         this.document = false;
         this.timeline = false;
       } else if (name == "exam") {
+        EventBus.$emit("ThemeClicked");
         this.profile = false;
         this.exam = true;
         this.document = false;
