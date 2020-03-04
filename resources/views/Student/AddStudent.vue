@@ -1,14 +1,13 @@
 
 <template>
-  <div id="bar" class="Student" style="transition:all 0.5s;">
-    <div class="toplink" style="margin-top:-43px;">
+  <div id="bar" class="Student form">
+    <div class="toplink">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
         <router-link to="/Student">Home</router-link>> Student Admission
       </h6>
     </div>
     <hr />
-    <br />
     <message :alertmessage="message" id="savedmsg"/>
     <form @submit.prevent="save" enctype="multipart/form-data" >
     
@@ -632,7 +631,7 @@
       </div>
 
       <div class="footer" id="footer">
-        <button type="submit" class="searchButton">Save</button>
+        <button type="submit" id="globalSave" class="save" style="margin-right:15px;">Save</button>
       </div>
       </div>
 </form>

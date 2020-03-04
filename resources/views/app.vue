@@ -1358,10 +1358,11 @@ export default {
           for (color = 0; color < dark.length; color++) {
             dark[color].style.background = "#1b5e20";
           }
-          var dark = document.getElementsByClassName("block1");
+          var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
-            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+            dark[color].style.background = "#1b5e20";
+            dark[color].style.color = "white";
           }
           var dark = document.getElementsByClassName("content");
           var color;
@@ -1424,10 +1425,11 @@ export default {
             dark[color].style.background = "#1b5e20";
           }
         } else if (this.colors.color == "redColor") {
-          var dark = document.getElementsByClassName("block2");
+          var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
-            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+            dark[color].style.background = "darkred";
+            dark[color].style.color = "white";
           }
           var dark = document.getElementsByClassName("confirm-modal-header");
           var color;
@@ -1521,10 +1523,11 @@ export default {
             dark[color].style.background = "#5e1b1b";
           }
         } else if (this.colors.color == "blueColor") {
-          var dark = document.getElementsByClassName("block3");
+          var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
-            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+            dark[color].style.background = "darkcyan";
+            dark[color].style.color = "#1b5e20";
           }
           var dark = document.getElementsByClassName("confirm-modal-header");
           var color;
@@ -1618,10 +1621,11 @@ export default {
             dark[color].style.background = "#1b5e5e";
           }
         } else if (this.colors.color == "darkColor") {
-          var dark = document.getElementsByClassName("block4");
+          var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
-            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+            dark[color].style.background = "#212529";
+            dark[color].style.color = "white";
           }
           var dark = document.getElementsByClassName("item-body");
           var color;
@@ -1716,10 +1720,11 @@ export default {
             dark[color].style.background = "black";
           }
         } else if (this.colors.color == "lightColor") {
-          var dark = document.getElementsByClassName("block5");
+          var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
-            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+            dark[color].style.background = "#e1e1e1";
+            dark[color].style.color = "black";
           }
           var dark = document.getElementsByClassName("router");
           var color;

@@ -1270,6 +1270,7 @@ strong {
 .home {
   text-decoration: none;
   color: #1b5e20;
+  margin-right: 5px;
 }
 
 input[type=file] {
@@ -1792,7 +1793,7 @@ input[type=file] {
 }
 
 .bg-green {
-  background-color: #66aa18 !important;
+  background: none;
 }
 
 /***RIGHT SIDE MENU **/
@@ -2738,8 +2739,7 @@ button:focus {
 .systemsetting .modal-bodys #ThemeColor .blockColor .backColor .circle {
   position: absolute;
   z-index: 1;
-  zoom: 3;
-  display: none;
+  zoom: 2;
   color: white;
 }
 

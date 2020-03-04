@@ -158,40 +158,70 @@
                   <div class="col-md-3 col-sm-6 col-xs-6 col-12">
                     <div class="blockColor" @click="changeTheme('defaultColor')">
                       <div class="backColor" id="default" style="background:#1b5e20;">
-                        <i class="fa fa-check-circle circle" id="defaultCircle"></i>
-                        <p class="default" id="defaultText">Default</p>
+                        <i
+                          class="fa fa-check-circle circle"
+                          v-if="this.color == 'defaultColor'"
+                          id="defaultCircle"
+                        ></i>
+                        <p
+                          class="default"
+                          v-if="this.color != 'defaultColor'"
+                          id="defaultText"
+                        >Default</p>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-3 col-sm-6 col-xs-6 col-12">
                     <div class="blockColor" @click="changeTheme('redColor')">
                       <div class="backColor" id="red" style="background:darkred;">
-                        <i class="fa fa-check-circle circle" id="redCircle"></i>
-                        <p class="default" id="redText">Red</p>
+                        <i
+                          class="fa fa-check-circle circle"
+                          v-if="this.color == 'redColor'"
+                          id="redCircle"
+                        ></i>
+                        <p class="default" id="redText" v-if="this.color != 'redColor'">Red</p>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-3 col-sm-6 col-xs-6 col-12">
                     <div class="blockColor" @click="changeTheme('blueColor')">
                       <div class="backColor" id="blue" style="background:darkcyan;">
-                        <i class="fa fa-check-circle circle" id="blueCircle"></i>
-                        <p class="default" id="blueText">Blue</p>
+                        <i
+                          class="fa fa-check-circle circle"
+                          v-if="this.color == 'blueColor'"
+                          id="blueCircle"
+                        ></i>
+                        <p class="default" v-if="this.color != 'blueColor'" id="blueText">Blue</p>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-3 col-sm-6 col-xs-6 col-12">
                     <div class="blockColor" @click="changeTheme('darkColor')">
                       <div class="backColor" id="dark" style="background:currentColor;">
-                        <i class="fa fa-check-circle circle" id="darkCircle"></i>
-                        <p class="default" id="darkText">Dark</p>
+                        <i
+                          class="fa fa-check-circle circle"
+                          v-if="this.color == 'darkColor'"
+                          id="darkCircle"
+                        ></i>
+                        <p class="default" id="darkText" v-if="this.color != 'darkColor'">Dark</p>
                       </div>
                     </div>
                   </div>
                   <div class="col-md-3 col-sm-6 col-xs-6 col-12">
                     <div class="blockColor" @click="changeTheme('lightColor')">
                       <div class="backColor" id="light" style="background:#edeeef;">
-                        <i class="fa fa-check-circle circle" id="lightCircle" style="color:black;"></i>
-                        <p class="default" id="lightText" style="color:black;">Light</p>
+                        <i
+                          class="fa fa-check-circle circle"
+                          id="lightCircle"
+                          v-if="this.color == 'lightColor'"
+                          style="color:black;"
+                        ></i>
+                        <p
+                          class="default"
+                          id="lightText"
+                          v-if="this.color != 'lightColor'"
+                          style="color:black;"
+                        >Light</p>
                       </div>
                     </div>
                   </div>
@@ -263,7 +293,7 @@
     </div>
     <hr />
 
-    <div class="row rowContainer" style="align-items: end !important;margin:0;margin-top: -1rem;">
+    <div class="row rowContainer" style="align-items: end !important;margin:0;margin-top:-1rem;">
       <div class="col-lg-4 col-12" style="padding:5px;">
         <div class="card" id="globalCard">
           <div class="card-header" id="globalcardHeader">
@@ -349,7 +379,7 @@
                     </td>
                     <td class="all" nowrap>{{this.school.language}}</td>
                   </tr>
-                  <tr>
+                  <tr v-for="color in colors" :key="color.id">
                     <td class="all" nowrap>
                       <b>Current Theme</b>
                     </td>
@@ -357,22 +387,47 @@
                       <span class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="themeBlock block1" style="background:#1b5e20;"></div>
                         <label for="default">Default</label>
+                        <i
+                          class="fa fa-check"
+                          v-if="color.color == 'defaultColor'"
+                          style="color:#1b5e20;margin-left:5px;"
+                        ></i>
                       </span>
                       <span class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="themeBlock block2" style="background:darkred;"></div>
                         <label for="theme1">Theme 1</label>
+                        <i
+                          class="fa fa-check"
+                          v-if="color.color == 'redColor'"
+                          style="color:darkred;margin-left:5px;"
+                        ></i>
                       </span>
                       <span class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="themeBlock block3" style="background:darkcyan;"></div>
                         <label for="theme2">Theme 2</label>
+                        <i
+                          class="fa fa-check"
+                          style="color:darkcyan;margin-left:5px;"
+                          v-if="color.color == 'blueColor'"
+                        ></i>
                       </span>
                       <span class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="themeBlock block4" style="background:black;"></div>
                         <label for="theme3">Theme 3</label>
+                        <i
+                          class="fa fa-check"
+                          v-if="color.color == 'darkColor'"
+                          style="color:black;margin-left:5px;"
+                        ></i>
                       </span>
                       <span class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="themeBlock block5" style="background:whitesmoke;"></div>
                         <label for="theme4">Theme 4</label>
+                        <i
+                          class="fa fa-check"
+                          v-if="color.color == 'lightColor'"
+                          style="color:#cacaca;margin-left:5px;"
+                        ></i>
                       </span>
                     </td>
                   </tr>
@@ -448,20 +503,16 @@ export default {
       }
     },
     changeTheme(id) {
+      this.color = id;
       if (id == "defaultColor") {
-        this.color = id;
         this.defaultColor();
       } else if (id == "redColor") {
-        this.color = id;
         this.redColor();
       } else if (id == "blueColor") {
-        this.color = id;
         this.blueColor();
       } else if (id == "darkColor") {
-        this.color = id;
         this.darkColor();
       } else if (id == "lightColor") {
-        this.color = id;
         this.lightColor();
       }
     },
@@ -506,6 +557,8 @@ export default {
       for (var i = 0; i < this.colors.length; i++) {
         if (this.colors[i].id == "1") {
           this.passColor = this.colors[i];
+          this.color = this.colors[i].color;
+          console.log(this.color);
           this.focusTheme();
         }
       }
@@ -543,16 +596,6 @@ export default {
       document.getElementById("blue").style.border = "none";
       document.getElementById("dark").style.border = "none";
       document.getElementById("light").style.border = "none";
-      document.getElementById("defaultCircle").style.display = "block";
-      document.getElementById("redCircle").style.display = "none";
-      document.getElementById("blueCircle").style.display = "none";
-      document.getElementById("darkCircle").style.display = "none";
-      document.getElementById("lightCircle").style.display = "none";
-      document.getElementById("defaultText").style.display = "none";
-      document.getElementById("redText").style.display = "block";
-      document.getElementById("blueText").style.display = "block";
-      document.getElementById("darkText").style.display = "block";
-      document.getElementById("lightText").style.display = "block";
     },
     redColor() {
       document.getElementById("red").style.border =
@@ -561,16 +604,6 @@ export default {
       document.getElementById("dark").style.border = "none";
       document.getElementById("light").style.border = "none";
       document.getElementById("default").style.border = "none";
-      document.getElementById("defaultCircle").style.display = "none";
-      document.getElementById("redCircle").style.display = "block";
-      document.getElementById("blueCircle").style.display = "none";
-      document.getElementById("darkCircle").style.display = "none";
-      document.getElementById("lightCircle").style.display = "none";
-      document.getElementById("defaultText").style.display = "block";
-      document.getElementById("redText").style.display = "none";
-      document.getElementById("blueText").style.display = "block";
-      document.getElementById("darkText").style.display = "block";
-      document.getElementById("lightText").style.display = "block";
     },
     blueColor() {
       document.getElementById("blue").style.border =
@@ -579,16 +612,6 @@ export default {
       document.getElementById("default").style.border = "none";
       document.getElementById("dark").style.border = "none";
       document.getElementById("light").style.border = "none";
-      document.getElementById("defaultCircle").style.display = "none";
-      document.getElementById("redCircle").style.display = "none";
-      document.getElementById("blueCircle").style.display = "block";
-      document.getElementById("darkCircle").style.display = "none";
-      document.getElementById("lightCircle").style.display = "none";
-      document.getElementById("defaultText").style.display = "block";
-      document.getElementById("redText").style.display = "block";
-      document.getElementById("blueText").style.display = "none";
-      document.getElementById("darkText").style.display = "block";
-      document.getElementById("lightText").style.display = "block";
     },
     darkColor() {
       document.getElementById("dark").style.border =
@@ -597,16 +620,6 @@ export default {
       document.getElementById("red").style.border = "none";
       document.getElementById("light").style.border = "none";
       document.getElementById("blue").style.border = "none";
-      document.getElementById("defaultCircle").style.display = "none";
-      document.getElementById("redCircle").style.display = "none";
-      document.getElementById("blueCircle").style.display = "none";
-      document.getElementById("darkCircle").style.display = "block";
-      document.getElementById("lightCircle").style.display = "none";
-      document.getElementById("defaultText").style.display = "block";
-      document.getElementById("redText").style.display = "block";
-      document.getElementById("blueText").style.display = "block";
-      document.getElementById("darkText").style.display = "none";
-      document.getElementById("lightText").style.display = "block";
     },
     lightColor() {
       document.getElementById("light").style.border =
@@ -615,16 +628,6 @@ export default {
       document.getElementById("default").style.border = "none";
       document.getElementById("red").style.border = "none";
       document.getElementById("blue").style.border = "none";
-      document.getElementById("defaultCircle").style.display = "none";
-      document.getElementById("redCircle").style.display = "none";
-      document.getElementById("blueCircle").style.display = "none";
-      document.getElementById("darkCircle").style.display = "none";
-      document.getElementById("lightCircle").style.display = "block";
-      document.getElementById("defaultText").style.display = "block";
-      document.getElementById("redText").style.display = "block";
-      document.getElementById("blueText").style.display = "block";
-      document.getElementById("darkText").style.display = "block";
-      document.getElementById("lightText").style.display = "none";
     }
   }
 };

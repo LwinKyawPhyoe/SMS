@@ -117,7 +117,7 @@ class DatabaseSeeder extends Seeder
             'color'=> 'defaultColor'
         ]);
         DB::table('school_details')->insert([
-            'school_name' => 'Private School',
+            'school_name' => 'SSMS',
             'school_code' => 'MM-294905',
             'address' => 'Myanmar, Mogok',
             'phone' => '09284958284',
@@ -125,7 +125,7 @@ class DatabaseSeeder extends Seeder
             'session' => '2019-20',
             'session_month' => 'July',
             'language' => 'English',
-            'schoollogo' => 'download.jpg',
+            'schoollogo' => 'titleImage.png',
         ]);
 
 
