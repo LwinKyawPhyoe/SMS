@@ -10,18 +10,94 @@ class StudentController extends Controller
 {
     public function index()
     {   
-        $sessionid = DB::select('select * from academic_years where is_active="yes"',[]);
-        $allHostel = DB::select('select * from hostels where is_active="Yes"',[]);
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
+        $allHostel = DB::select('select * from hostels where is_active="Yes" session_id=? domain="TS"',[$sessionid[0]->id]);
         $allClass = DB::select('select * from classes where is_active="yes"  and domain="TS" and session_id=? ', [$sessionid[0]->id]);
         $route = DB::select('select * from routes where is_active="Yes"  and domain="TS" and session_id=? ',[$sessionid[0]->id]);
         return ['class'=>$allClass,'hostel'=>$allHostel,'routes'=>$route,'session'=>$sessionid];
     }
+    public function searchsibling($sibling_id){
+        $data=[];
+        $test=[];
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
+        // $studnet = DB::select('SELECT * FROM student_siblings WHERE admission_number =? AND is_active="yes" AND session_id=?',[$id,$sessionid[0]->id]);
+        $admission_no = DB::select('SELECT * FROM student_siblings WHERE admission_no =? AND is_active="yes" AND domain="TS" AND session_id=?',[$sibling_id,$sessionid[0]->id]);
+        $sibling_admission_no = DB::select('SELECT * FROM student_siblings WHERE sibling_admission_no =? AND is_active="yes" AND domain="TS" AND session_id=?',[$sibling_id,$sessionid[0]->id]);
 
+        if($admission_no || $sibling_admission_no){
+            if(count($admission_no) > count($sibling_admission_no)){
+                $students = DB::select('SELECT * FROM students WHERE admission_no =? AND is_active="yes" and session_id=? and domain="TS"',[$sibling_id,$sessionid[0]->id]);
+                $class_section = DB::select('SELECT * FROM class_sections WHERE id =? AND is_active="yes" and session_id=? and domain="TS"',[$students[0]->class_sections_id,$sessionid[0]->id]);
+                $class = DB::select('SELECT * FROM classes WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_section[0]->class_id,$sessionid[0]->id]);
+                $section = DB::select('SELECT * FROM sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_section[0]->section_id,$sessionid[0]->id]);
+                $data[0]['id']=$students[0]->id;
+                $data[0]['name']=$students[0]->name;
+                $data[0]['admission_no']=$students[0]->admission_no;
+                $data[0]['class']=$class[0]->class;
+                $data[0]['section'] = $section[0]->section;
+                $data[0]['class_sections_id'] =$students[0]->class_sections_id;
+                for($i=0;$i<count($admission_no);$i++){
+                    $student = DB::select('SELECT * FROM students WHERE admission_no =? AND is_active="yes" and domain="TS" and session_id=?',[$admission_no[$i]->sibling_admission_no,$sessionid[0]->id]);
+                    $class_sections = DB::select('SELECT * FROM class_sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$student[$i]->class_sections_id,$sessionid[0]->id]);
+                    $classes = DB::select('SELECT * FROM classes WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_sections[0]->class_id,$sessionid[0]->id]);
+                    $sections = DB::select('SELECT * FROM sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_sections[0]->section_id,$sessionid[0]->id]);
+                    $data[$i+1]['id']=$student[$i]->id;
+                    $data[$i+1]['name']=$student[$i]->name;
+                    $data[$i+1]['admission_no']=$student[$i]->admission_no;
+                    $data[$i+1]['class']=$classes[0]->class;
+                    $data[$i+1]['section'] = $sections[0]->section;
+                    $data[$i+1]['class_sections_id'] =$students[0]->class_sections_id;
+                }
+                return $data;
+            }else if(count($sibling_admission_no)>count($admission_no)){
+                $students = DB::select('SELECT * FROM students WHERE admission_no =? AND is_active="yes" and domain="TS" and session_id=?',[$sibling_id,$sessionid[0]->id]);
+                $class_section = DB::select('SELECT * FROM class_sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$students[0]->class_sections_id,$sessionid[0]->id]);
+                $class = DB::select('SELECT * FROM classes WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_section[0]->class_id,$sessionid[0]->id]);
+                $section = DB::select('SELECT * FROM sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_section[0]->section_id,$sessionid[0]->id]);
+                $data[0]['id']=$students[0]->id;
+                $data[0]['name']=$students[0]->name;
+                $data[0]['admission_no']=$students[0]->admission_no;
+                $data[0]['class']=$class[0]->class;
+                $data[0]['section'] = $section[0]->section;
+                $data[0]['class_sections_id'] =$students[0]->class_sections_id;
+                for($i=0;$i<count($sibling_admission_no);$i++){
+                    $student = DB::select('SELECT * FROM students WHERE admission_no =? AND is_active="yes" and domain="TS" and session_id=?',[$sibling_admission_no[$i]->admission_no,$sessionid[0]->id]);
+                    $class_sections = DB::select('SELECT * FROM class_sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$student[$i]->class_sections_id,$sessionid[0]->id]);
+                    $classes = DB::select('SELECT * FROM classes WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_sections[0]->class_id,$sessionid[0]->id]);
+                    $sections = DB::select('SELECT * FROM sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_sections[0]->section_id,$sessionid[0]->id]);
+                    $data[$i+1]['id']=$student[$i]->id;
+                    $data[$i+1]['name']=$student[$i]->name;
+                    $data[$i+1]['admission_no']=$student[$i]->admission_no;
+                    $data[$i+1]['class']=$classes[0]->class;
+                    $data[$i+1]['section'] = $sections[0]->section;
+                    $data[$i+1]['class_sections_id'] =$students[0]->class_sections_id;
+                }
+                return $data;
+            }else{
+                echo "SAME";
+            }
+            
+        }else{
+            $students = DB::select('SELECT * FROM students WHERE admission_no =? AND is_active="yes" and domain="TS" and session_id=?',[$sibling_id,$sessionid[0]->id]);
+            $class_section = DB::select('SELECT * FROM class_sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$students[0]->class_sections_id,$sessionid[0]->id]);
+            $class = DB::select('SELECT * FROM classes WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_section[0]->class_id,$sessionid[0]->id]);
+            $section = DB::select('SELECT * FROM sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_section[0]->section_id,$sessionid[0]->id]);
+            $data[0]['id']=$students[0]->id;
+            $data[0]['name']=$students[0]->name;
+            $data[0]['admission_no']=$students[0]->admission_no;
+            $data[0]['class']=$class[0]->class;
+            $data[0]['section'] = $section[0]->section;
+            $data[0]['class_sections_id'] =$students[0]->class_sections_id;
+            return $data;
+        }
+       
+    }
     public function section($id){
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         $section = [];
-        $classsection = DB::select('SELECT * FROM class_sections WHERE class_id =? AND is_active="yes"',[$id]);
+        $classsection = DB::select('SELECT * FROM class_sections WHERE class_id =? AND is_active="yes" and domain="TS" and session_id=?',[$id,$sessionid[0]->id]);
         for($i = 0;$i<count($classsection);$i++){
-            $test = DB::select('SELECT * FROM sections WHERE id=?',[$classsection[$i]->section_id]);
+            $test = DB::select('SELECT * FROM sections WHERE id=? and domain="TS" and session_id=?',[$classsection[$i]->section_id,$sessionid[0]->id]);
             foreach($test as $test1){
                 array_push($section,$test1);
             }
@@ -29,26 +105,32 @@ class StudentController extends Controller
         return($section);
     }
     public function classSection($class_id,$section_id){
-        $classsection = DB::select('SELECT * FROM class_sections WHERE class_id =? AND section_id=? AND is_active="yes"',[$class_id,$section_id]);
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
+        $classsection = DB::select('SELECT * FROM class_sections WHERE class_id =? AND section_id=? AND is_active="yes" and session_id=? and domain="TS"',[$class_id,$section_id,$sessionid[0]->id]);
         return $classsection;
     }
+    
     public function selectStudent($id){
-        $student = DB::select('SELECT * FROM students WHERE class_sections_id=?',[$id]);
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
+        $student = DB::select('SELECT * FROM students WHERE class_sections_id=? and domain="TS" and session_id=?',[$id,$sessionid[0]->id]);
         return $student;
     }
     public function selectSibling($id){
-        $student = DB::select('SELECT * FROM students WHERE admission_no=? and is_active="yes"',[$id]);
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
+        $student = DB::select('SELECT * FROM students WHERE admission_no=? and is_active="yes" and session_id=? and domain="TS"',[$id,$sessionid[0]->id]);
         return $student;
     }
     public function selectHostel($id){
-        $rooms = DB::select('SELECT * FROM hostel_rooms WHERE hostel_id=?',[$id]);
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
+        $rooms = DB::select('SELECT * FROM hostel_rooms WHERE hostel_id=? and domain="TS" and session_id=?',[$id,$sessionid[0]->id]);
         return $rooms;
     }
     public function selectClassSection($id){
-        $classSection = DB::select('SELECT * FROM class_sections WHERE id = ?',[$id]);
-        $classes = DB::select('SELECT * FROM classes WHERE id = ?',[$classSection[0]->class_id]);
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
+        $classSection = DB::select('SELECT * FROM class_sections WHERE id = ? and domain="TS" and session_id=?',[$id,$sessionid[0]->id,$sessionid[0]->id]);
+        $classes = DB::select('SELECT * FROM classes WHERE id = ? and domain="TS" and session_id=?',[$classSection[0]->class_id,$sessionid[0]->id]);
         // print_r($classes);
-        $sections = DB::select('SELECT * FROM sections WHERE id = ?',[$classSection[0]->section_id]);
+        $sections = DB::select('SELECT * FROM sections WHERE id = ? and session_id=? and domain="TS"',[$classSection[0]->section_id,$sessionid[0]->id]);
         return ['classes'=>$classes,'sections'=>$sections];
     }
     
@@ -63,16 +145,18 @@ class StudentController extends Controller
     }
 
     public function searchHostel($hostel_room_id){
-        $hostel_room = DB::select('SELECT * FROM hostel_rooms where id =?',[$hostel_room_id]);
-        $hostel = DB::select('SELECT * FROM hostels where id=?',[$hostel_room[0]->hostel_id]);
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
+        $hostel_room = DB::select('SELECT * FROM hostel_rooms where id =? and domain="TS" and session_id=?',[$hostel_room_id,$sessionid[0]->id]);
+        $hostel = DB::select('SELECT * FROM hostels where id=? and domain="TS" and session_id=?',[$hostel_room[0]->hostel_id,$sessionid[0]->id]);
         return $hostel;
     }
     public function store(Request $request)
     {
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         $viladition ="";
-          $admision_no = DB::select('select * from students where admission_no =?',[$request->input('admission_no')]);
+          $admision_no = DB::select('select * from students where admission_no =? and domain="TS" and session_id=?',[$request->input('admission_no'),$sessionid[0]->id]);
 
-          $email = DB::select('select * from students where email =?',[$request->input('email')]);
+          $email = DB::select('select * from students where email =? and domain="TS" and session_id=?',[$request->input('email'),$sessionid[0]->id]);
           $phone = DB::select('select * from students where mobileno =?',[$request->input('mobileno')]);
         if($admision_no){
             $viladition = "admission_no";
@@ -102,7 +186,7 @@ class StudentController extends Controller
             if($viladition){
                 return $viladition;
             }else{
-                $data = DB::select('select * from students where admission_no =?',[$request->input('sibling_admission_no')]);
+                $data = DB::select('select * from students where admission_no =? and domain="TS" and session_id=?',[$request->input('sibling_admission_no'),$sessionid[0]->id]);
             
             $fatherImageName='';
             $motherImageName='';
@@ -253,8 +337,9 @@ class StudentController extends Controller
     }
     public function update(Request $request, $id)
     {
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         $viladition="";
-        $admision_no = DB::select('select * from students where admission_no =?',[$request->input('admission_no')]);
+        $admision_no = DB::select('select * from students where admission_no =? and domain="TS" and session_id=?',[$request->input('admission_no'),$sessionid[0]->id]);
         if($admision_no[0]->email == $request->email){
             $viladition="";
         }
@@ -263,13 +348,13 @@ class StudentController extends Controller
         }
         
         if($admision_no[0]->email != $request->email){
-          $email = DB::select('select * from students where email =?',[$request->input('email')]);
+          $email = DB::select('select * from students where email =? and domain="TS" and session_id=?',[$request->input('email'),$sessionid[0]->id]);
           if($email){
               $viladition = "This Email Already Exists";
           }
         }
         if($admision_no[0]->mobileno != $request->mobileno){
-          $phone = DB::select('select * from students where mobileno =?',[$request->input('mobileno')]);
+          $phone = DB::select('select * from students where mobileno =? and domain="TS" and session_id=?',[$request->input('mobileno'),$sessionid[0]->id]);
           if($phone){
             $viladition = "This Phone Already Exists";
           }
@@ -277,7 +362,7 @@ class StudentController extends Controller
         if($viladition){
             return $viladition;
         }else{
-            $data = DB::select('select * from students where admission_no =?',[$request->input('admission_no')]);
+            $data = DB::select('select * from students where admission_no =? and domain="TS" and session_id=?',[$request->input('admission_no'),$sessionid[0]->id]);
             $fatherImageName='';
             $motherImageName='';
             $imageName='';
@@ -378,9 +463,10 @@ class StudentController extends Controller
 
     }
     public function studentReport($class_id,$section_id,$gender){
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         $data =[];
-           $section= DB::select('SELECT * FROM class_sections WHERE class_id=? AND section_id=?',[$class_id,$section_id]);
-           $student = DB::select('SELECT * FROM students WHERE class_sections_id=? AND gender=?',[$section[0]->id,$gender]);
+           $section= DB::select('SELECT * FROM class_sections WHERE class_id=? AND section_id=? and domain="TS" and session_id=?',[$class_id,$section_id,$sessionid[0]->id]);
+           $student = DB::select('SELECT * FROM students WHERE class_sections_id=? AND gender=? and domain="TS" and session_id=?',[$section[0]->id,$gender,$sessionid[0]->id]);
            $class = DB::select('SELECT * FROM classes WHERE id=?',[$section[0]->class_id]);
            $section = DB::select('SELECT * FROM sections WHERE id=?',[$section[0]->section_id]);
            for($i=0;$i<count($student);$i++){
@@ -399,12 +485,13 @@ class StudentController extends Controller
            return $data;
     }
     public function studentReport1($class_id,$section_id){
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         $data=[];
-        $section= DB::select('SELECT * FROM class_sections WHERE class_id=? AND section_id=?',[$class_id,$section_id]);
-        $student = DB::select('SELECT * FROM students WHERE class_sections_id=?',[$section[0]->id]);
+        $section= DB::select('SELECT * FROM class_sections WHERE class_id=? AND section_id=? and domain="TS" and session_id=?',[$class_id,$section_id,$sessionid[0]->id]);
+        $student = DB::select('SELECT * FROM students WHERE class_sections_id=? and domain="TS" and session_id=?',[$section[0]->id,$sessionid[0]->id]);
         for($i=0;$i<count($student);$i++){
-            $section1= DB::select('SELECT * FROM class_sections WHERE id=?',[$student[$i]->class_sections_id]);
-            $class = DB::select('SELECT * FROM classes WHERE id=?',[$section1[0]->class_id]);
+            $section1= DB::select('SELECT * FROM class_sections WHERE id=? and domain="TS" and session_id=?',[$student[$i]->class_sections_id,$sessionid[0]->id]);
+            $class = DB::select('SELECT * FROM classes WHERE id=? and domain="TS" and session_id=?',[$section1[0]->class_id,$sessionid[0]->id]);
             $section = DB::select('SELECT * FROM sections WHERE id=?',[$section1[0]->section_id]);
             $data[$i]['name'] = $student[$i]->name;
             $data[$i]['admission_no'] = $student[$i]->admission_no;
@@ -422,20 +509,21 @@ class StudentController extends Controller
     }
 
     public function studentReport2($class_id,$gender){
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         $array=[];
         $data=[];
         $student=[];
-        $section= DB::select('SELECT * FROM class_sections WHERE class_id=?',[$class_id]);
+        $section= DB::select('SELECT * FROM class_sections WHERE class_id=? and domain="TS" and session_id=?',[$class_id,$sessionid[0]->id]);
         for($i = 0;$i<count($section);$i++){
-            $students = DB::select('SELECT * FROM students WHERE class_sections_id=? AND gender=?',[$section[$i]->id,$gender]);
+            $students = DB::select('SELECT * FROM students WHERE class_sections_id=? AND gender=? and domain="TS" and session_id=?',[$section[$i]->id,$gender,$sessionid[0]->id]);
             array_push($student,$students);
         }
         // $list = $student[0];
         for($i=0;$i<count($student);$i++){
             for($x =0;$x<count($student[$i]);$x++){
-                $section1= DB::select('SELECT * FROM class_sections WHERE id=?',[$student[$i][$x]->class_sections_id]);
-                $class = DB::select('SELECT * FROM classes WHERE id=?',[$section1[0]->class_id]);
-                $section = DB::select('SELECT * FROM sections WHERE id=?',[$section1[0]->section_id]);
+                $section1= DB::select('SELECT * FROM class_sections WHERE id=? and domain="TS" and session_id=?',[$student[$i][$x]->class_sections_id,$sessionid[0]->id]);
+                $class = DB::select('SELECT * FROM classes WHERE id=? and domain="TS" and session_id=?',[$section1[0]->class_id,$sessionid[0]->id]);
+                $section = DB::select('SELECT * FROM sections WHERE id=? and domain="TS" and session_id=?',[$section1[0]->section_id,$sessionid[0]->id]);
                 $data[$x]['name'] = $student[$i][$x]->name;
                 $data[$x]['admission_no'] = $student[$i][$x]->admission_no;
                 $data[$x]['class'] = $class[0]->class;
@@ -455,20 +543,21 @@ class StudentController extends Controller
         return $array;
     }
     public function studentReport3($class_id){
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         $array=[];
         $data=[];
         $student=[];
-        $section= DB::select('SELECT * FROM class_sections WHERE class_id=?',[$class_id]);
+        $section= DB::select('SELECT * FROM class_sections WHERE class_id=? and domain="TS" and session_id=?',[$class_id,$sessionid[0]->id]);
         for($i = 0;$i<count($section);$i++){
-            $students = DB::select('SELECT * FROM students WHERE class_sections_id=?',[$section[$i]->id]);
+            $students = DB::select('SELECT * FROM students WHERE class_sections_id=? and domain="TS" and session_id=?',[$section[$i]->id,$sessionid[0]->id]);
             array_push($student,$students);
         }
         // $list = $student[0];
         for($i=0;$i<count($student);$i++){
             for($x =0;$x<count($student[$i]);$x++){
-                $section1= DB::select('SELECT * FROM class_sections WHERE id=?',[$student[$i][$x]->class_sections_id]);
-                $class = DB::select('SELECT * FROM classes WHERE id=?',[$section1[0]->class_id]);
-                $section = DB::select('SELECT * FROM sections WHERE id=?',[$section1[0]->section_id]);
+                $section1= DB::select('SELECT * FROM class_sections WHERE id=? and domain="TS" and session_id=?',[$student[$i][$x]->class_sections_id,$sessionid[0]->id]);
+                $class = DB::select('SELECT * FROM classes WHERE id=? and domain="TS" and session_id=?',[$section1[0]->class_id,$sessionid[0]->id]);
+                $section = DB::select('SELECT * FROM sections WHERE id=? domain="TS" and session_id=?',[$section1[0]->section_id,$sessionid[0]->id]);
                 $data[$x]['name'] = $student[$i][$x]->name;
                 $data[$x]['admission_no'] = $student[$i][$x]->admission_no;
                 $data[$x]['class'] = $class[0]->class;
@@ -488,16 +577,17 @@ class StudentController extends Controller
         return $array;
     }
     public function studentReport4($gender){
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         $array=[];
         $data=[];
         $student=[];
-        $student = DB::select('SELECT * FROM students WHERE gender=?',[$gender]);
+        $student = DB::select('SELECT * FROM students WHERE gender=? and domain="TS" and session_id=?',[$gender,$sessionid[0]->id]);
         // return $student;
         // $list = $student[0];
         for($i=0;$i<count($student);$i++){
-                $section1= DB::select('SELECT * FROM class_sections WHERE id=?',[$student[$i]->class_sections_id]);
-                $class = DB::select('SELECT * FROM classes WHERE id=?',[$section1[0]->class_id]);
-                $section = DB::select('SELECT * FROM sections WHERE id=?',[$section1[0]->section_id]);
+                $section1= DB::select('SELECT * FROM class_sections WHERE id=? and domain="TS" and session_id=?',[$student[$i]->class_sections_id,$sessionid[0]->id]);
+                $class = DB::select('SELECT * FROM classes WHERE id=? and domain="TS" and session_id=?',[$section1[0]->class_id,$sessionid[0]->id]);
+                $section = DB::select('SELECT * FROM sections WHERE id=? and domain="TS" and session_id=?',[$section1[0]->section_id,$sessionid[0]->id]);
                 $data[$i]['name'] = $student[$i]->name;
                 $data[$i]['admission_no'] = $student[$i]->admission_no;
                 $data[$i]['class'] = $class[0]->class;
@@ -515,16 +605,17 @@ class StudentController extends Controller
     }
     public function show()
     {
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         $array=[];
         $data=[];
         $student=[];
-        $student = DB::select('SELECT * FROM students',[]);
+        $student = DB::select('SELECT * FROM students where session_id=? and domain="TS"',[$sessionid[0]->id]);
         // return $student;
         // $list = $student[0];
         for($i=0;$i<count($student);$i++){
-                $section1= DB::select('SELECT * FROM class_sections WHERE id=?',[$student[$i]->class_sections_id]);
-                $class = DB::select('SELECT * FROM classes WHERE id=?',[$section1[0]->class_id]);
-                $section = DB::select('SELECT * FROM sections WHERE id=?',[$section1[0]->section_id]);
+                $section1= DB::select('SELECT * FROM class_sections WHERE id=? and domain="TS" and session_id=?',[$student[$i]->class_sections_id,$sessionid[0]->id]);
+                $class = DB::select('SELECT * FROM classes WHERE id=? and session_id=? and domain="TS"',[$section1[0]->class_id]);
+                $section = DB::select('SELECT * FROM sections WHERE id=? and session_id=? and domain="TS"',[$section1[0]->section_id,$sessionid[0]->id]);
                 $data[$i]['name'] = $student[$i]->name;
                 $data[$i]['admission_no'] = $student[$i]->admission_no;
                 $data[$i]['class'] = $class[0]->class;
@@ -544,13 +635,15 @@ class StudentController extends Controller
     public function edit($id)
     {
         // print_r($id);
-        $student = DB::select('select * from students where id =?',[$id]);
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
+        $student = DB::select('select * from students where id =? ',[$id]);
         return $student;
     }
 
     public function selectByKeyword($keyword){
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         if($keyword != ''){
-            $students = DB::select('SELECT * FROM students WHERE name LIKE ? OR admission_no LIKE ? OR father_name LIKE ? OR roll_no LIKE ? OR gender LIKE ? OR religion LIKE ? OR mother_name LIKE ? OR race LIKE ? OR email LIKE ? OR blood_group LIKE ? OR height LIKE ? OR weight LIKE ? OR guardian_name LIKE ? OR mobileno LIKE ?',[$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword]);
+            $students = DB::select('SELECT * FROM students WHERE name LIKE ? OR admission_no LIKE ? OR father_name LIKE ? OR roll_no LIKE ? OR gender LIKE ? OR religion LIKE ? OR mother_name LIKE ? OR race LIKE ? OR email LIKE ? OR blood_group LIKE ? OR height LIKE ? OR weight LIKE ? OR guardian_name LIKE ? OR mobileno LIKE ? and domain="TS" and session_id=?',[$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$sessionid[0]->id]);
             return $students;
         }
     }

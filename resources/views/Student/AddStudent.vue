@@ -1,30 +1,25 @@
 
 <template>
-  <div id="bar" class="Student form">
-    <div class="toplink">
+  <div id="bar" class="Student" style="transition:all 0.5s;">
+    <div class="toplink" style="margin-top:-43px;">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
         <router-link to="/Student">Home</router-link>> Student Admission
       </h6>
     </div>
     <hr />
+    <br />
+    <message :alertmessage="message" id="savedmsg"/>
     <form @submit.prevent="save" enctype="multipart/form-data" >
     
     <div class="card">
       <!-- Modal start -->
-      <div
-      class="modal fade"
-      id="exampleModalCenter"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="exampleModalCenter">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
         <div class="modal-content"
         style="background:none;border:none;width:100% !important;padding: 1rem;"
         >
-            <div class="card-header">
+            <div class="stucard-header">
               <h6 style="width:100%">
                 Add Sibling
                 <i
@@ -35,7 +30,9 @@
               </h6>
             </div>
             <div class="card-body">
-              <div class="col-12">
+              <div class="row">
+
+              <div class="col-md-4 textbox">
                 <label for="class">
                   Class
                   <strong>*</strong>
@@ -49,7 +46,7 @@
               </option>
                 </select>
               </div>
-              <div class="col-12">
+              <div class="col-md-4 textbox">
                 <label for="section">
                   Section
                   <strong>*</strong>
@@ -63,7 +60,7 @@
                   </option>
                 </select>
               </div>
-              <div class="col-12">
+              <div class="col-md-4 textbox">
                 <label for="student">
                   Student
                   <strong>*</strong>
@@ -75,14 +72,37 @@
                   </option>
                 </select>
               </div>
-              <div class="row" v-if="siblings">
+              </div>
+              <!-- <div class="row" v-if="siblings">
                 <div class="col-md-6 showsib"  v-for="list in studentsiblings" :key="list.id">
                   {{list.name}}
                   <span class="span" @click="removeSiblings()">X</span>
                 </div>
+              </div> -->
+              <div class="table-responsive" v-if="studentsiblings.length >0">
+          <table class="table table-hover table-striped" id="studenttable" >
+            <thead>
+              <tr role="row">
+                <th class="all" nowrap>No</th>
+                <th class="all" nowrap>Admission Number</th>
+                <th class="all" nowrap>Name</th>
+                <th class="all" nowrap>Class</th>
+                <th class="all" nowrap>Section</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(list,index) in studentsiblings" :key="list.id">
+                <td nowrap>{{index+1}}</td>
+                <td nowrap>{{list.admission_no}}</td>
+                <td nowarp>{{list.name}}</td>
+                <td nowarp>{{list.class}}</td>
+                <td nowarp>{{list.section}}</td>
+              </tr>
+            </tbody>
+          </table>
               </div>
               <div class="col-12">
-                <button class="modalbtn" style="text-align:center;margin-top:10px;" type="button" @click="saveSibling()">Save</button>
+                <button class="modalbtn" style="text-align:center;margin-top:10px;" type="button" @click="saveSibling()" data-dismiss="modal">Save</button>
               </div>
             </div>
         </div>
@@ -92,7 +112,7 @@
       <div class="card-header">
         <h6>Student Admission</h6>
       </div>
-      <div class="stucard-body">
+      <div class="card-body">
   
   <!-- <div v-if="student.image === null">
     <h2>Select an image</h2>
@@ -189,8 +209,8 @@
               :color="'#1b5e20'"
               :button-color="'#1b5e20'"
               :auto-close="true"
-              :format="'DD-MM-YYYY'"
-              :formatted="'l'"
+              :format="'YYYY-MM-DD'"
+              :formatted="'YYYY/MM/DD'"
               >
               <input
                   id="stubirthday"
@@ -233,8 +253,8 @@
               :color="'#1b5e20'"
               :button-color="'#1b5e20'"
               :auto-close="true"
-              :format="'DD-MM-YYYY'"
-              :formatted="'l'"
+              :format="'YYYY-MM-DD'"
+              :formatted="'YYYY/MM/DD'"
               >
               <input
                   id="admDate"
@@ -288,8 +308,8 @@
               :color="'#1b5e20'"
               :button-color="'#1b5e20'"
               :auto-close="true"
-              :format="'DD-MM-YYYY'"
-              :formatted="'l'"
+              :format="'YYYY-MM-DD'"
+              :formatted="'YYYY/MM/DD'"
               >
               <input
                   id="regDate"
@@ -305,10 +325,10 @@
               <i class="fa fa-plus"></i> Add Sibling
             </button>
           </div>
-          <div  v-if="studentsiblings" class="textbox">
-            <label v-if="studentsiblings" style="visibility:hidden;">Siblings</label>
-                <div class="col-md-12 showsib"  v-for="list in studentsiblings" :key="list.id">
-                  {{list.name}}
+          <div  v-if="studentsiblings.length>0" class="textbox">
+            <label  style="visibility:hidden;">Siblings</label>
+                <div class="col-md-11 showsib">
+                  {{sibling_name}}
                   <span class="span" style="margin-top:0px;" @click="removeSiblings()">X</span>
                 </div>
           </div>
@@ -318,7 +338,7 @@
       <div class="sub-header">
         <h6>Parents Details</h6>
       </div>
-      <div class="stucard-body">
+      <div class="card-body">
         <div class="row">
           <div class="textbox">
             <label for="faName">Father Name</label>
@@ -461,16 +481,14 @@
         <h6>
           Add More Information
           <strong
-            style="float:right;padding:2px 20px;color:white;cursor:pointer;"
+            style="float:right;padding:2px 20px;color:white !important;cursor:pointer;"
             @click="closeOpen()"
             v-if="!addMore"
-            class="moreInformation"
           >
             <i class="fa fa-plus"></i>
           </strong>
           <strong
-          class="moreInformation"
-            style="float:right;color:white;padding:2px 20px;cursor:pointer;"
+            style="float:right;color:white !important;padding:2px 20px;cursor:pointer;"
             @click="closeOpen()"
             v-else-if="addMore"
           >
@@ -478,12 +496,12 @@
           </strong>
         </h6>
       </div>
-      <div class="stucard-body" style="padding-top: 15px;" id="addMore">
+      <div class="card-body" style="padding-top: 15px;" id="addMore">
         <div class="card" style="margin: 15px;">
           <div class="card-header">
             <h6>Student Address Details</h6>
           </div>
-          <div class="stucard-body">
+          <div class="card-body">
             <div class="row">
 
               <div class="textarea">
@@ -503,7 +521,7 @@
           <div class="sub-header">
             <h6>Transport Details</h6>
           </div>
-          <div class="stucard-body">
+          <div class="card-body">
             <div class="row">
               <div class="textarea">
                 <label for="routelist">Route List</label>
@@ -519,7 +537,7 @@
           <div class="sub-header">
             <h6>Previous School Details</h6>
           </div>
-          <div class="stucard-body">
+          <div class="card-body">
             <div class="row">
               <div class="textarea">
                 <label for="preSchoool">Previous School</label>
@@ -534,7 +552,7 @@
           <div class="sub-header">
             <h6>Hostel Details</h6>
           </div>
-          <div class="stucard-body">
+          <div class="card-body">
             <div class="row">
               <div class="textarea">
                 <label for="hostel">Hostel</label>
@@ -559,7 +577,7 @@
           <div class="sub-header">
             <h6>Upload Document</h6>
           </div>
-          <div class="stucard-body">
+          <div class="card-body">
             <div class="row">
               <div class="col1">
                 <label>No.</label>
@@ -613,8 +631,8 @@
         </div>
       </div>
 
-      <div class="footer column-12" id="footer">
-        <button type="submit" style="margin-right: 15px;" id="globalSave" class="save">Save</button>
+      <div class="footer" id="footer">
+        <button type="submit" class="searchButton">Save</button>
       </div>
       </div>
 </form>
@@ -626,19 +644,28 @@
 import { EventBus } from "../../js/event-bus.js";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
+import {Util} from '../../js/util';
+import message from "../Alertmessage/message.vue";
+import Loading from "../LoadingController.vue";
 export default {
   components: {
-    VueCtkDateTimePicker
+    VueCtkDateTimePicker,
+    message,
+    Loading,
   },
   name:'app',
   success:'',
   data() {
     return {
+      sibling_name:'',
       classesList:[],
       num:0,
       guardian_src:'',
       routeList : [],
-      message:'',
+      msg: {
+        text: "",
+        type: ""
+      },
       session:{},
       hostelList:[],
       rooms:[],
@@ -713,9 +740,9 @@ export default {
         // dob: new Date(),
         // admission_date: new Date(),
         // register_date: new Date(),
-        dob:'',
-        admission_date:'',
-        register_date:'',
+        dob:new Date().toISOString().slice(0, 10),
+        admission_date:new Date().toISOString().slice(0, 10),
+        register_date:new Date().toISOString().slice(0, 10),
         current_address:'',
         permanent_address:'',
         class_section_id:'',
@@ -746,8 +773,8 @@ export default {
     };
   },
   created() {
-    EventBus.$emit("ThemeClicked");
     this.allData();
+    EventBus.$emit("ThemeClicked");
   },
   methods: {
     changeHostel(e){
@@ -833,9 +860,9 @@ export default {
         // dob: new Date(),
         // admission_date: new Date(),
         // register_date: new Date(),
-        dob:'',
-        admission_date:'',
-        register_date:'',
+        dob:new Date().toISOString().slice(0, 10),
+        admission_date:new Date().toISOString().slice(0, 10),
+        register_date:new Date().toISOString().slice(0, 10),
         current_address:'',
         permanent_address:'',
         class_section_id:'',
@@ -872,16 +899,14 @@ export default {
         $('#file4').val('');
     },
     saveSibling(){
-    
-      this.sibling={};
-      this.sibling =
-        {
-          'sibling_admission_no':this.sibling_id,
-          'admission_no':this.student.admission_no,
-          'is_active': this.student.is_active, 
-          'domain': this.student.domain,
-          'session_id':this.student.session_id,
-        };
+      if(this.sibling_id){
+        this.axios
+        .get(`/api/student/addSibling/${this.sibling_id}`)
+        .then(response=>{
+          this.studentsiblings =response.data;
+          this.sibling_name = this.studentsiblings[0].name
+        })
+      }
       var data=[];
       if(this.sibling_id){
         this.axios
@@ -953,7 +978,6 @@ export default {
         document.getElementById('faPhone').disabled = false;
         document.getElementById('faNrc').disabled = false;
         document.getElementById('faJob').disabled = false;
-
         document.getElementById('moName').disabled = false;
         document.getElementById('moPhone').disabled = false;
         document.getElementById('moNrc').disabled = false;
@@ -1216,7 +1240,6 @@ export default {
       }
     },
     addStudent(){
-      
       const config = {
         headers: { "content-type": "multipart/form-data" }
       };
@@ -1279,16 +1302,13 @@ export default {
           .post('/api/student/add', formData,config)
           .then(response=> {
             if(response.data =="admission_no"){
-              this.message = "This admission number already exists";
-              alert(this.message);
+              alert("This admission number already exists");
             }
             else if(response.data =="email"){
-              this.message = "This email alreay exists";
-              alert(this.message);
+              alert("This email alreay exists");
             }
             else if(response.data =="phone"){
-              this.message = "This mobile number alreay exists";
-              alert(this.message);
+               alert("This mobile number alreay exists");
             }
             else{
               this.addSessions();
@@ -1296,8 +1316,9 @@ export default {
               this.addDocument();
               this.refreshForm();
               this.allData();
-              this.message = "Saved successfully.";
-              alert(this.message);
+              this.message.text = "Saved successfully.";
+              this.message.type = 'success';
+              Util.workAlert('#savedmsg');
             }
           })
           .catch(errors=>{
@@ -1306,30 +1327,24 @@ export default {
           
     },
     addSibling(){
-      this.sibling=[];
-      if(this.sibling_id){
-        this.sibling =
-        {
-          'sibling_admission_no':this.sibling_id,
-          'admission_no':this.student.admission_no,
-          'is_active': this.student.is_active, 
-          'domain': this.student.domain,
-          'session_id':this.student.session_id,
-        };
-      this.axios
-       .post('api/studentsiblings/add',this.sibling)
-       .then(response=>{
-       console.log(response.data);
-       }).catch(errors=>{
-         console.log(errors);
-      })
-      }else{
-        console.log("No sibling id");
+      var sibling={};
+      if(this.studentsiblings.length > 0){
+        for(let i =0;i<this.studentsiblings.length;i++){
+         sibling ={
+           'admission_no':this.student.admission_no,
+            'sibling_admission_no':this.studentsiblings[i].admission_no,
+            'is_active': this.student.is_active,
+            'domain' :this.student.domain,
+            'session_id':this.student.session_id,
+         };
+         this.axios
+          .post(`/api/studentsiblings/add`,sibling)
+          .then(response=>{
+            console.log(response.data);
+          })
+            // console.log(JSON.stringify(this.studentsiblings[0]));
+          }
       }
-      
-      
-              
-          
     },
     addSessions(){
       this.session = {
