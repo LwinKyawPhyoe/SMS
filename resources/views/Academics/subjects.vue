@@ -6,7 +6,7 @@
                 <router-link to="/home" class="home">Home</router-link>> Subject
             </h4>
         </div>
-        <hr />
+        <hr style="margin-bottom: -0.5rem;" />
 
         <confirm :url="props"></confirm>
         <Loading></Loading>
@@ -76,7 +76,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive" id="print">
+                        <div v-if="SubjectList.length == 0">
+                            <h1 class="NoData">No Data</h1>
+                        </div>
+                        <div v-if="SubjectList.length != 0" class="table-responsive" id="print">
                             <table class="table table-hover table-striped" id="studenttable">
                                 <thead>
                                     <tr>
@@ -165,7 +168,6 @@ export default {
             this.axios
                 .get('/api/subject')
                 .then(response => {
-                    console.log("--->>>"+ JSON.stringify(response.data)),
                     this.SubjectList = response.data;
                     EventBus.$emit("onLoadEnd");
                 });
@@ -210,9 +212,8 @@ export default {
             this.axios
                 .get(`/api/Subject/edit/${aId}`)
                 .then(response => {                        
-                    this.subjectObj = response.data[0],
-                    this.type = this.subjectObj.type,
-                    console.log("---->" + JSON.stringify(response.data[0]))
+                    this.subjectObj = response.data[0];
+                    this.type = this.subjectObj.type;                    
                 });
         },
 

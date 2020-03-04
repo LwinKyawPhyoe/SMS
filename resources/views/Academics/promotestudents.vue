@@ -19,27 +19,40 @@
             <div class="card-body">
                 <message :alertmessage="msg" id="alertmsg"/>
                 <div class="row" id="row" style="margin: 0px;">
-                    <div class="col-lg-6 col-md-6 col-12 textbox">
-                        <label for="name" class="title">
-                            Class
-                            <strong>*</strong>
-                        </label>
-                        <select id="classid" @change="changeClass(SearchStudObj.class_id)" class="inputbox" name="class" v-model="SearchStudObj.class_id">                              
-                            <option v-for="Classes in ClassList" :key="Classes.id" :value="Classes.id">{{Classes.class}}</option>                
-                        </select>
-                        <span id="classmsg" class="error_message">Class is required</span>
+                    <div class="col-md-6 row" id="row" style="padding:0px; margin: 0px">
+                        <div class="col-lg-6 col-md-6 col-12 textbox">
+                            <label for="name" class="title">
+                                Class
+                                <strong>*</strong>
+                            </label>
+                            <select id="classid" @change="changeClass(SearchStudObj.class_id)" class="inputbox" name="class" v-model="SearchStudObj.class_id">                              
+                                <option v-for="Classes in ClassList" :key="Classes.id" :value="Classes.id">{{Classes.class}}</option>                
+                            </select>
+                            <span id="classmsg" class="error_message">Class is required</span>
+                        </div>
+                        <div class="col-lg-6 col-md-6 col-12 textbox">
+                            <label for="name" class="title">Section
+                                <strong>*</strong>
+                            </label>
+                            <select id="sectionid" @change="changeSection(SearchStudObj.section_id)" class="inputbox" name="class" v-model="SearchStudObj.section_id">
+                                <option v-for="Section in SectionList" :key="Section.id" :value="Section.id">{{Section.section}}</option>
+                            </select>
+                            <span id="sectionmsg" class="error_message">Section is required</span>
+                        </div>
+                        <div class="col-12">
+                            <button @click="goSearch()" class="searchButton" id="globalSearch">Search</button>
+                        </div>
                     </div>
-                    <div class="col-lg-6 col-md-6 col-12 textbox">
-                        <label for="name" class="title">Section
-                            <strong>*</strong>
-                        </label>
-                        <select id="sectionid" @change="changeSection(SearchStudObj.section_id)" class="inputbox" name="class" v-model="SearchStudObj.section_id">
-                            <option v-for="Section in SectionList" :key="Section.id" :value="Section.id">{{Section.section}}</option>
-                        </select>
-                        <span id="sectionmsg" class="error_message">Section is required</span>
-                    </div>
-                    <div class="col-12">
-                        <button @click="goSearch()" class="searchButton" id="globalSearch">Search</button>
+                    <div class="col-md-6 row" id="row" style="padding:0px; margin: 0px">
+                        <div class="col-lg-12 col-md-12 col-12 textbox">
+                            <label for="name" class="title">
+                                Search By Keyword                                
+                            </label>
+                            <input type="text" class="inputbox" v-model="searchKeyword" placeholder="Search By Name,Nrc,..etc."/>
+                        </div>
+                        <div class="col-12">
+                            <button @click="goSearchByKeyword()" class="searchButton" id="globalSearch">Search</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -54,7 +67,7 @@
                             <strong>*</strong>
                         </label>                        
                         <select id="promotesessionid" @change="changePromoteSession(PromoteStudObj.promote_session)" class="inputbox" name="class" v-model="PromoteStudObj.promote_session">
-                            <option v-for="session in sessionList" :key="session.id" :value="session.id" :disabled="session.is_active == 'yes'">{{session.session}}</option>
+                            <option v-for="session in sessionList" :key="session.id" :value="session.id">{{session.session}}</option>
                         </select>
                         <span id="promotesessionmsg" class="error_message">Session is required</span>
                     </div>
@@ -155,6 +168,7 @@ export default {
             PromoteSectionList: [{"id":0,"section":"Select Section"}],
             sessionList: [{"id":0,"session":"Select Session"}],
             class_sectionList: [],
+            searchKeyword: '',
 
             showStudRecord: false,
             PromoteObj: [],
@@ -300,11 +314,16 @@ export default {
                     for(let s=0; s<this.PromoteObj.length; s++){
                         this.PromoteObj[s].result = "Pass";
                         this.PromoteObj[s].session_status = "Continue";
-                    }
-                    
-                    console.log("aa>>"+ JSON.stringify(this.PromoteObj));
+                    }                    
+                    // console.log("Stud List >>"+ JSON.stringify(this.PromoteObj));
                 });
             }            
+        },
+
+        goSearchByKeyword(){
+            this.axios.get(`/api/student/keyword/${this.searchKeyword}`).then(response => {
+                console.log("Keyword >>>"+JSON.stringify(response.data));
+            });
         },
 
         getAllSession() {
@@ -315,8 +334,7 @@ export default {
                         this.sessionList.push(response.data[i]);
                     }
                 }
-                this.PromoteStudObj.promote_session = this.sessionList[0].id;                
-                // console.log(JSON.stringify(this.sessionList));
+                this.PromoteStudObj.promote_session = this.sessionList[0].id;                                
             });
         },        
 
@@ -472,7 +490,7 @@ export default {
                     console.log("Result >>>"+JSON.stringify(response.data));
                 })
                 .catch(error => {            
-                console.log("err->" + JSON.stringify(this.error.response))
+                    console.log("err->" + JSON.stringify(this.error.response));
                 });
             }            
         }

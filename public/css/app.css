@@ -1795,6 +1795,150 @@ input[type=file] {
   background-color: #66aa18 !important;
 }
 
+/***RIGHT SIDE MENU **/
+
+.sta-menu-open i {
+  font-size: 20px;
+}
+
+.sta-menu-open i:hover {
+  color: var(--info);
+}
+
+.right-side-menu {
+  position: fixed;
+  right: 0;
+  margin-top: -10px;
+  width: 250px;
+  height: 100%;
+  margin-right: -250px;
+  background-color: white;
+  box-shadow: -10px 3px 12px 0 rgba(0, 0, 0, 0.26);
+  -webkit-transition: all 0.3s;
+  transition: all 0.3s;
+  z-index: 1;
+}
+
+.right-side-menu .statop .statopfixed {
+  position: relative;
+  z-index: 2;
+  width: 250px;
+}
+
+.right-side-menu .statop .statopfixed .classtap {
+  background: #a71704;
+  color: #fff;
+  font-size: 16px;
+  margin-bottom: 0;
+  padding: 10px;
+}
+
+.right-side-menu .statop .statopfixed .classtap .staclose {
+  float: right;
+}
+
+.right-side-menu .statop .statopfixed .scrollmenu {
+  background: #535050;
+  overflow: auto;
+  white-space: nowrap;
+}
+
+.right-side-menu .statop .statopfixed div.scrollmenu a {
+  display: inline-block;
+  color: white;
+  text-align: center;
+  padding: 10px;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.right-side-menu .statop .statopfixed div.scrollmenu a:hover {
+  background-color: #777;
+}
+
+.right-side-menu .statop .statopfixed div.scrollmenu .sta-active {
+  background-color: #777;
+}
+
+.right-side-menu .sta-content {
+  position: relative;
+  height: 100%;
+  padding-bottom: 20px;
+  overflow-y: auto;
+  /*Create ripple effec*/
+}
+
+.right-side-menu .sta-content .sta-name {
+  cursor: default;
+  position: relative;
+  border-bottom: 1px solid #ddd;
+  display: block;
+  overflow: hidden;
+  background: #fff;
+  width: 250px;
+}
+
+.right-side-menu .sta-content .sta-name a {
+  display: block;
+  color: #000;
+  padding-left: 5px;
+  padding-right: 5px;
+  padding-top: 4px;
+}
+
+.right-side-menu .sta-content .sta-name .icon {
+  float: left;
+  padding-left: 5px;
+}
+
+.right-side-menu .sta-content .sta-name img {
+  width: 30px;
+  height: 30px;
+  border-radius: 25px;
+  margin-bottom: 4px;
+}
+
+.right-side-menu .sta-content .sta-name .sta-title {
+  line-height: 24px;
+  padding-left: 50px;
+}
+
+.right-side-menu .sta-content .ripple {
+  position: relative;
+  overflow: hidden;
+  -webkit-transform: translate3d(0, 0, 0);
+          transform: translate3d(0, 0, 0);
+}
+
+.right-side-menu .sta-content .ripple:after {
+  content: "";
+  display: block;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  background-image: radial-gradient(circle, rgba(37, 37, 37, 0.884) 10%, transparent 10.01%);
+  background-repeat: no-repeat;
+  background-position: 50%;
+  -webkit-transform: scale(10, 10);
+          transform: scale(10, 10);
+  opacity: 0;
+  -webkit-transition: opacity 1s, -webkit-transform 0.5s;
+  transition: opacity 1s, -webkit-transform 0.5s;
+  transition: transform 0.5s, opacity 1s;
+  transition: transform 0.5s, opacity 1s, -webkit-transform 0.5s;
+}
+
+.right-side-menu .sta-content .ripple:active:after {
+  -webkit-transform: scale(0, 0);
+          transform: scale(0, 0);
+  opacity: 0.3;
+  -webkit-transition: 0s;
+  transition: 0s;
+}
+
 .StudentInformation .table td,
 .StudentHistory .table td {
   text-align: center;
@@ -2736,7 +2880,7 @@ button:focus {
   border: none !important;
   background-color: transparent !important;
   text-align: right;
-  color: green;
+  color: var(--info);
   font-weight: 600;
 }
 
@@ -2744,6 +2888,7 @@ button:focus {
   margin-top: -1rem;
   margin: -1rem;
   padding: 0;
+  /**#efc347 **/
 }
 
 .ViewStaffDirectory #row .tableCard .Profile {
@@ -2758,6 +2903,20 @@ button:focus {
   display: block;
   border: 3px solid #1b5e2033;
   padding: 3px;
+}
+
+.ViewStaffDirectory #row .tableCard .Profile .disableIcon {
+  position: absolute;
+  right: 50%;
+  left: 54%;
+  top: 28%;
+  width: 24px;
+  padding: 3px;
+  background: white;
+  border: 1px solid #d1dfd2;
+  color: red !important;
+  border-radius: 50%;
+  text-align: -webkit-center;
 }
 
 .ViewStaffDirectory #row .tableCard .Profile .name {
@@ -2818,6 +2977,8 @@ button:focus {
 }
 
 .ViewStaffDirectory #row .detailsCard .buttonCard {
+  overflow: auto;
+  white-space: nowrap;
   height: 103%;
 }
 
@@ -2992,36 +3153,27 @@ button:focus {
   text-align: center;
 }
 
-.ViewStaffDirectory #row .timelinebody {
+.ViewStaffDirectory #row .TimeLine {
   padding-top: 1rem;
 }
 
-.ViewStaffDirectory #row .timelinebody .add {
+.ViewStaffDirectory #row .TimeLine .add {
   margin-top: -5px;
   height: 25px;
   width: 60px;
-  background: #1b5e1fee;
+  background: #3e4e5b;
   color: rgba(255, 255, 255, 0.61);
 }
 
-.ViewStaffDirectory #row .timelinebody .add:active,
-.ViewStaffDirectory #row .timelinebody .add:hover {
-  background: #1b5e20;
+.ViewStaffDirectory #row .TimeLine .add:active,
+.ViewStaffDirectory #row .TimeLine .add:hover {
+  background: #3e4e5b;
   color: white;
 }
 
-.ViewStaffDirectory #row .timelinebody .TimeLine {
-  /* The actual timeline (the vertical ruler) */
-  /* Container around content */
-  /* The circles on the timeline */
-  /* Add arrows to the right container (pointing left) */
-  /* Fix the circle for containers on the right side */
-  /* The actual content */
-}
-
-.ViewStaffDirectory #row .timelinebody .TimeLine span {
+.ViewStaffDirectory #row .TimeLine span {
   color: white;
-  background-color: var(--success);
+  background-color: var(--info);
   padding: 3px;
   display: inline-block;
   border-radius: 5px;
@@ -3029,87 +3181,83 @@ button:focus {
   margin-left: 10px;
 }
 
-.ViewStaffDirectory #row .timelinebody .TimeLine .timeline {
+.ViewStaffDirectory #row .TimeLine .timeline {
   position: relative;
-  margin: 0 auto;
+  margin-right: 1rem;
+  padding: 8px;
   color: white;
-  padding-right: 20px;
 }
 
-.ViewStaffDirectory #row .timelinebody .TimeLine .timeline::after {
+.ViewStaffDirectory #row .TimeLine .timeline::after {
   content: "";
   position: absolute;
-  width: 6px;
-  background-color: #1b5e20;
+  width: 4px;
+  background-color: var(--info);
   top: 0;
   bottom: 0;
   margin-left: 36px;
 }
 
-.ViewStaffDirectory #row .timelinebody .TimeLine .container {
+.ViewStaffDirectory #row .TimeLine .container {
   padding: 10px 0px 10px 40px;
   position: relative;
   background-color: none;
   width: 90%;
 }
 
-.ViewStaffDirectory #row .timelinebody .TimeLine .container::after {
-  content: "";
-  position: absolute;
-  width: 25px;
-  height: 25px;
-  right: -17px;
-  background-color: white;
-  border: 1px solid black;
-  top: 15px;
-  border-radius: 50%;
-  z-index: 1;
-}
-
-.ViewStaffDirectory #row .timelinebody .TimeLine .right::before {
-  content: " ";
-  height: 0;
-  position: absolute;
-  top: 22px;
-  width: 0;
-  z-index: 1;
-  left: 30px;
-  border: medium solid white;
-  border-width: 10px 10px 10px 0;
-  border-color: transparent #1b5e20 transparent transparent;
-}
-
-.ViewStaffDirectory #row .timelinebody .TimeLine .right::after {
+.ViewStaffDirectory #row .TimeLine .right::after {
   left: -16px;
 }
 
-.ViewStaffDirectory #row .timelinebody .TimeLine .right {
+.ViewStaffDirectory #row .TimeLine .right {
   background-color: white;
   margin-left: 42px;
-  padding-right: 1rem;
 }
 
-.ViewStaffDirectory #row .timelinebody .TimeLine .content {
+.ViewStaffDirectory #row .TimeLine .content {
   position: relative;
   border-radius: 6px;
-  background-color: #ddd;
+  background-color: #12b0ca5e;
 }
 
-.ViewStaffDirectory #row .timelinebody .TimeLine .content h6 {
+.ViewStaffDirectory #row .TimeLine .content .timeIcon {
+  position: absolute;
+  background: whitesmoke;
+  z-index: 1;
+  box-shadow: 0 0 0 2px var(--info), inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05);
+  padding: 10px;
+  zoom: 1.2;
+  border-radius: 50%;
+  margin-left: -3.4rem;
+  color: black;
+}
+
+.ViewStaffDirectory #row .TimeLine .content h6 {
   width: 100%;
   color: white;
-  background-color: #1b5e20;
+  background-color: var(--info);
   padding: 10px;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
 }
 
-.ViewStaffDirectory #row .timelinebody .TimeLine .content p {
+.ViewStaffDirectory #row .TimeLine .content p {
   margin-top: -8px;
   padding: 10px;
   color: black;
   border-bottom-right-radius: 3px;
   border-bottom-left-radius: 3px;
+}
+
+.ViewStaffDirectory #row .TimeLine .timelineBottom .timeIcon {
+  background: whitesmoke;
+  z-index: 1;
+  box-shadow: 0 0 0 2px var(--info), inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05);
+  padding: 10px;
+  zoom: 1.2;
+  border-radius: 50%;
+  color: black;
+  margin: 0 0 1rem 20px;
 }
 
 .ViewStaffDirectory .table_header,

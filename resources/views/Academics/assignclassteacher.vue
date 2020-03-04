@@ -86,7 +86,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive" id="print">
+                        <div v-if="AssClassTeacherList.length == 0">
+                            <h1 class="NoData">No Data</h1>
+                        </div>
+                        <div v-if="AssClassTeacherList.length != 0" class="table-responsive" id="print">
                             <table class="table table-hover table-striped" id="studenttable">
                                 <thead>
                                     <tr>

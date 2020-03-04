@@ -11,14 +11,10 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class studentPromoteController extends Controller
-{
-    public function index()
-    {
-        //
-    }
-    
+{    
     public function promote(Request $request)
-    {        
+    {
+        // note shi yin update lote yan and search shar yan and
         $sessionid = AcademicYear::where('is_active','yes')->where('domain','TS')->get('id');
         $ClassSectionID = class_section::where('class_id', $request->input('class_id'))
                                     ->where('section_id', $request->input('section_id'))

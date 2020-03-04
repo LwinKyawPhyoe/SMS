@@ -120,5 +120,12 @@ export const Util = {
         setTimeout(()=> {
             $(id).css('display', 'none');
         }, 3000);
+    },
+
+    searchTable(aValue, aID){
+        var value = aValue.toLowerCase();
+        $(aID).filter(function() {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+        });
     }
 };

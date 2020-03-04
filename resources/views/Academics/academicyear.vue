@@ -6,6 +6,7 @@
                 <router-link to="/home" class="home">Home</router-link>> Academic-Year
             </h4>
         </div>
+        <hr style="margin-bottom: -0.5rem;" />
 
         <confirm :url="props"></confirm>
         <Loading></Loading>
@@ -43,7 +44,7 @@
                     </div>
                     <div class="card-body">            
                         <message :alertmessage="deletemsg" id="delalertmsg"/>
-                        <input v-on:keyup="searchTable()" id="myInput" type="text" placeholder="Search..." class="searchText"/>
+                        <input v-on:keyup="searchTable(searchQuery)" v-model="searchQuery" id="myInput" type="text" placeholder="Search..." class="searchText"/>
                         <div class="copyRows">
                             <div class="row" id="copyRow">                
                                 <div class="col-3">
@@ -63,7 +64,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive" id="print">
+                        <div v-if="SessionList.length == 0">
+                            <h1 class="NoData">No Data</h1>
+                        </div>
+                        <div v-if="SessionList.length != 0" class="table-responsive" id="print">
                             <table class="table table-hover table-striped" id="studenttable">
                                 <thead>
                                     <tr>
@@ -124,6 +128,7 @@ export default {
         return {
             AcademicYr: {},
             SessionList: [],
+            searchQuery: '',
             props: {
                 url: "",
                 type: ""
@@ -222,26 +227,8 @@ export default {
             else return "";
         },
 
-        searchTable() {
-            var input, filter, found, table, tr, td, i, j;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td");
-                for (j = 0; j < td.length; j++) {
-                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        found = true;
-                    }
-                }
-                if (found) {
-                    tr[i].style.display = "";
-                    found = false;
-                } else {
-                    tr[i].style.display = "none";
-                }
-            }
+        searchTable(aValue) {
+            Util.searchTable(aValue, '#myTable tr');
         },
 
         printme(table)

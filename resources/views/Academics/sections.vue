@@ -8,7 +8,7 @@
                 <router-link to="/home" class="home">Home</router-link> > Sections
             </h4>
         </div>
-        <hr>
+        <hr style="margin-bottom: -0.5rem;" />
 
         <confirm :url="props"></confirm>
         <Loading></Loading>
@@ -44,7 +44,8 @@
                     <div class="card-body">
                         <message :alertmessage="deletemsg" id="delalertmsg"/>
                         <input
-                            v-on:keyup="searchTable()"
+                            v-on:keyup="searchTable(searchQuery)"
+                            v-model="searchQuery"
                             id="myInput"
                             type="text"
                             placeholder="Search..."
@@ -69,7 +70,10 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="table-responsive" id="print">            
+                        <div v-if="SectionList.length == 0">
+                            <h1 class="NoData">No Data</h1>
+                        </div>
+                        <div v-if="SectionList.length != 0" class="table-responsive" id="print">            
                             <table class="table table-hover table-striped" id="studenttable">
                                 <thead>
                                     <tr>
@@ -113,6 +117,7 @@ export default {
         return {
             SectionObj: {},
             SectionList: [],
+            searchQuery: '',
             props: {
                 url: "",
                 type: ""
@@ -202,26 +207,8 @@ export default {
             this.props.url = `Section/${funName}/${aID}`;            
         },
 
-        searchTable() {
-            var input, filter, found, table, tr, td, i, j;
-            input = document.getElementById("myInput");
-            filter = input.value.toUpperCase();
-            table = document.getElementById("myTable");
-            tr = table.getElementsByTagName("tr");
-            for (i = 0; i < tr.length; i++) {
-                td = tr[i].getElementsByTagName("td");
-                for (j = 0; j < td.length; j++) {
-                    if (td[j].innerHTML.toUpperCase().indexOf(filter) > -1) {
-                        found = true;
-                    }
-                }
-                if (found) {
-                    tr[i].style.display = "";
-                    found = false;
-                } else {
-                    [i].style.display = "none";
-                }
-            }
+        searchTable(aValue) {
+            Util.searchTable(aValue, '#myTable tr');
         },
 
         printme(table)
