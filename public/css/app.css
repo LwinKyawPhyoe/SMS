@@ -2591,6 +2591,14 @@ button:focus {
           align-items: center;
 }
 
+.systemsetting .modal-bodys #ThemeColor .blockColor .backColor .circle {
+  position: absolute;
+  z-index: 1;
+  zoom: 3;
+  display: none;
+  color: white;
+}
+
 .systemsetting .modal-bodys #ThemeColor .blockColor .backColor .default {
   margin: 0px;
   font-size: 15px;
@@ -2601,7 +2609,7 @@ button:focus {
 }
 
 .systemsetting .modal-bodys #ThemeColor .blockColor .backColor:hover {
-  border: 35px solid #adadad38 !important;
+  border: 48px solid #adadad38 !important;
 }
 
 .systemsetting .modal-bodys #ThemeColor .blockColor .backColor:hover p {

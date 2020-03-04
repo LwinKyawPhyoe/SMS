@@ -381,16 +381,23 @@
           <div class="header">
             <div class="row sidebar_header">
               <div class="col-12">
-                <h5 style="font-size: 18pt;margin: 0;" class="projectName">{{this.school.school_name}}</h5>
+                <h5
+                  style="font-size: 18pt;margin: 0;"
+                  class="projectName"
+                >{{this.school.school_name}}</h5>
               </div>
             </div>
 
             <div class="body_content" id="body_content">
               <ul class="additional-menu">
                 <li class="dashboardLink">
-                    <router-link class="routerLink navList" id="globalLink globalList" to="/dashboard">
-                      <i class="fa fa-credit-card" id="sidebarIcon"></i>Dashboard
-                    </router-link>
+                  <router-link
+                    class="routerLink navList"
+                    id="globalLink globalList"
+                    to="/dashboard"
+                  >
+                    <i class="fa fa-credit-card" id="sidebarIcon"></i>Dashboard
+                  </router-link>
                 </li>
                 <li>
                   <a @click="dropdown('link','dropIcon')" class="navList" id="globalList">
@@ -1125,7 +1132,7 @@
           </ul>
         </div>
       </div>
-    </div>    
+    </div>
 
     <div
       class="modal fade"
@@ -1147,9 +1154,13 @@
               ></i>
             </div>
             <div class="textbox" style="width: 100% !important;padding: 1rem 1rem;">
-              <label>Session</label>              
-              <select class="inputbox" v-model="session_id">                              
-                  <option v-for="session in sessionList" :key="session.id" :value="session.id">{{session.session}}</option>                
+              <label>Session</label>
+              <select class="inputbox" v-model="session_id">
+                <option
+                  v-for="session in sessionList"
+                  :key="session.id"
+                  :value="session.id"
+                >{{session.session}}</option>
               </select>
             </div>
           </div>
@@ -1164,9 +1175,11 @@
       <div class="content_header pc">
         <i class="fa fa-bars" id="list" onclick="changeBar()"></i>
         <div class="sessions row" id="sessions" style="margin-top: 5px;">
-          <h5 class="session" data-toggle="modal" data-target="#exampleModalCenter1">
-            Current Session : {{session}}
-          </h5>          
+          <h5
+            class="session"
+            data-toggle="modal"
+            data-target="#exampleModalCenter1"
+          >Current Session : {{session}}</h5>
         </div>
         <div class="Items">
           <div class="userTitle">
@@ -1220,38 +1233,42 @@ export default {
     this.getAllSession();
     this.axios.get("/api/schools").then(response => {
       this.school = response.data;
-    });    
+    });
   },
   methods: {
-    getAllSession() {      
-        this.sessionList = [];
-        this.axios.get("/api/academicyr").then(response => {                        
-            for(let i=0; i<response.data.length; i++){
-              if(response.data[i].is_active != 'delete'){
-                this.sessionList.push(response.data[i]);
-              }
-            }
+    getAllSession() {
+      this.sessionList = [];
+      this.axios.get("/api/academicyr").then(response => {
+        for (let i = 0; i < response.data.length; i++) {
+          if (response.data[i].is_active != "delete") {
+            this.sessionList.push(response.data[i]);
+          }
+        }
 
-            const found = this.sessionList.find(element => element.is_active == "yes");            
-            this.session_id = found.id;
-            this.session = found.session;
-            console.log("session >>"+ this.session + "id >>>"+ this.session_id);
-        });
+        const found = this.sessionList.find(
+          element => element.is_active == "yes"
+        );
+        this.session_id = found.id;
+        this.session = found.session;
+        console.log("session >>" + this.session + "id >>>" + this.session_id);
+      });
     },
 
-    goSave(){
-      const found = this.sessionList.find(element => element.is_active == "yes");            
+    goSave() {
+      const found = this.sessionList.find(
+        element => element.is_active == "yes"
+      );
       var oldid = found.id;
-      var AcademicYr = {"updateid": this.session_id, "oldid": oldid};
+      var AcademicYr = { updateid: this.session_id, oldid: oldid };
       this.axios
         .post("/api/AcademicYear/update", AcademicYr)
-        .then(response => {           
-           this.getAllSession();
-           $('#exampleModalCenter1').modal('hide');
-           window.location = window.location.href;
+        .then(response => {
+          this.getAllSession();
+          $("#exampleModalCenter1").modal("hide");
+          window.location = window.location.href;
         })
         .catch(error => {
-            console.log("err->" + JSON.stringify(this.error.response));
+          console.log("err->" + JSON.stringify(this.error.response));
         });
     },
 
@@ -1833,7 +1850,7 @@ export default {
           }
         }
       });
-    }
+    },
   }
 };
 </script>
