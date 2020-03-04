@@ -350,7 +350,7 @@ export const routes = [
     /**end of staff directory */ 
     {
         name: 'editExamSchadule',
-        path: '/editExamSchadule',
+        path: '/editExamSchadule/:exam_id/:exam_name/:class_id/:section_id/:class_name/:section_name',
         component: editExamSchadule
     },
     {
