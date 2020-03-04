@@ -113,6 +113,7 @@ export default {
             let input = {"class_id": this.objData.class,"section_id": this.objData.section};
             this.axios.post("/api/AssSubject/search",input)
             .then(response => {
+                EventBus.$emit("onLoadEnd");
                 this.axios.get("/api/subject").then(result => {
                     for(let i = 0;i < result.data.length;i++){
                         for(let a = 0;a < response.data.length;a++){
@@ -129,6 +130,7 @@ export default {
         },
         // Get Class and Section
         getAllClass(data){
+            EventBus.$emit("onLoad");
             this.axios.get('/api/class').then(response => {
                 this.sortList(response.data,data);
             });

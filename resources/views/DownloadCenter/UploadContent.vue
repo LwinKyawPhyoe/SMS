@@ -6,12 +6,13 @@
         <router-link to="home" class="home">Home</router-link>> Upload Content
       </h4>
     </div>
-    <hr />
+    <hr style="margin-bottom: -0.5rem;"/>
 
     <confirm :url="props"></confirm>
+    <Loading></Loading>
 
     <div class="row" style="align-items: end !important;margin: 0px;">
-      <div class="col-lg-4 col-md-12" style="padding-left:0px;">
+      <div class="col-lg-4 col-md-12" style="padding:0px;">
         <div class="card">
           <div class="card-header">
             <h6>Upload Content</h6>
@@ -102,14 +103,14 @@
         </div>
       </div>
 
-      <div class="col-lg-8 col-md-12" style="padding:0px;">
+      <div class="col-lg-8 col-md-12 div_very_small" style="padding: 0px;padding-left: 15px;">
         <div class="card">
           <div class="card-header">
             <h6>Content List</h6>
           </div>
           <div class="card-body">
             <message :alertmessage="deletemsg"  id="deletemsg" />
-            <input type="text" placeholder="Search..." class="searchText" />
+            <input type="text" placeholder="Search..." class="searchText" id="myInput" />
             <div class="copyRows">
               <div class="row" id="copyRow">                
                 <div class="col-3">
@@ -123,43 +124,56 @@
                   </a>
                 </div>
                 <div class="col-3">
-                  <a href="#" title="Columns">
+                  <a title="Columns" @click="showColumns()">
                     <i class="fa fa-columns"></i>
                   </a>
+                  <div id="columns" class="columns">
+                    <div v-for="item in arrayTableColumns">
+                        <p @click="showTableHeader(item)" :id="item.Id" class="tableLink">
+                            <span>{{item.Name}}</span>
+                        </p> 
+                    </div>
+                    <div>
+                        <p @click="clickShowAllColumn(arrayTableColumns)" class="tableLinkActive">
+                            <span>Restore visibility</span>
+                        </p>
+                    </div>
+                  </div>
+                  <div @click="clickBackground()" id="backgroundColumn" style="top: 0;left: 0;width: 100%;height: 100%;background: transparent;"></div>
                 </div>
               </div>
             </div>
-            
+            <h1 class="NoData" v-if="ContentList.length==0">No Data</h1>
             <div class="table-responsive" id="print">
-              <table class="table table-hover table-striped" id="studenttable">
+              <table class="table table-hover table-striped" id="studenttable" v-if="ContentList.length!=0">
                 <thead>
                   <tr>
-                    <th class="all" nowrap>Content Title</th>
-                    <th class="all" nowrap>Type</th>
-                    <th class="all" nowrap>Date</th>
-                    <th class="all" nowrap>Available For</th>
-                    <th class="all" nowrap>Class</th>
-                    <th class="all" nowrap style="text-align:right;">Action</th>
+                    <th :class="arrayTableColumns[0].class" nowrap>Content Title</th>
+                    <th :class="arrayTableColumns[1].class" nowrap>Type</th>
+                    <th :class="arrayTableColumns[2].class" nowrap>Date</th>
+                    <th :class="arrayTableColumns[3].class" nowrap>Available For</th>
+                    <th :class="arrayTableColumns[4].class" nowrap>Class</th>
+                    <th :class="arrayTableColumns[5].class" nowrap style="text-align:right;">Action</th>
                   </tr>
                 </thead>
-                <tbody>
+                <tbody id="myTable">
                   <tr class="active" v-for="item in ContentList">
-                    <td class="all" nowrap>
+                    <td :class="arrayTableColumns[0].class" nowrap>
                       <p class="toolText">
                         {{item.title}}
                         <span class="tooltipLabel">No Description</span>
                       </p>
                     </td>
-                    <td class="all" nowrap>{{item.type}}</td>
-                    <td class="all" nowrap>{{item.date}}</td>
-                    <td class="all" nowrap>
+                    <td :class="arrayTableColumns[1].class" nowrap>{{item.type}}</td>
+                    <td :class="arrayTableColumns[2].class" nowrap>{{showDate(item.date)}}</td>
+                    <td :class="arrayTableColumns[3].class" nowrap>
                     <p style="padding: 0;margin: 0;"
                     v-if="item.available_for == '1' || item.available_for == '1,2' || item.available_for == '2,1'">Super Admin</p>
                     <p style="padding: 0;margin: 0;"
                     v-if="item.available_for == '2' || item.available_for == '1,2' || item.available_for == '2,1'">Student</p>
                     </td>
-                    <td class="all" nowrap>{{ReturnClass(item.class_section_id)}}</td>
-                    <td class="all" nowrap style="text-align:right;">
+                    <td :class="arrayTableColumns[4].class" nowrap>{{ReturnClass(item.class_section_id)}}</td>
+                    <td :class="arrayTableColumns[5].class" nowrap style="text-align:right;">
                       <i class="fa fa-download download" @click.prevent="downloadFile('Tran_Route.xls')">
                         <span class="downloadLabel">Download</span>
                       </i>
@@ -177,11 +191,13 @@
     </div>
   </div>
 </template>
+
 <script>
 import message from "../Alertmessage/message.vue";
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
 import {Util} from '../../js/util';
+import Loading from "../LoadingController.vue";
 
 export default 
 {
@@ -189,20 +205,19 @@ export default
   {
     message,
     confirm,
+    Loading,
   },
   data() 
   {
     return {
-      props: {
-        url: "",
-        type: ""
-      },
-      classDisabled : true,
-      sectionDisabled : true,
-      AvailableDisabled : true,
-      checkStudent : false,
-      checkAdmin: false,
-      checkAvailable : false,
+      arrayTableColumns: [
+        {"Name": "Content Title","Id": "Content_Id", "class": "tbl_body_Content"},
+        {"Name": "Type","Id": "Type_Id", "class": "tbl_body_Type"},
+        {"Name": "Date","Id": "Date_Id", "class": "tbl_body_Date"},
+        {"Name": "Available For","Id": "Available_Id", "class": "tbl_body_Available"},
+        {"Name": "Class","Id": "Class_Id", "class": "tbl_body_Class"},
+        {"Name": "Action","Id": "Action_Id", "class": "tbl_body_Action"}
+      ],
       uploadContent: {
         "title": "","type": "","class": "","section": "","date": new Date().toISOString().substr(0, 10),
         "description": "","contentFile": ""
@@ -213,6 +228,10 @@ export default
         {'value':'Syllabus','caption':'Syllabus'},
         {'value':'Other Download','caption':'Other Download'},
       ],
+      props: {
+        url: "",
+        type: ""
+      },
       msg: {
         text: "",
         type: ""
@@ -221,6 +240,12 @@ export default
         text: "",
         type: ""
       },
+      classDisabled : true,
+      sectionDisabled : true,
+      AvailableDisabled : true,
+      checkStudent : false,
+      checkAdmin: false,
+      checkAvailable : false,
       Available : [],
       ClassList: [],
       ClassSessionList: [],
@@ -228,7 +253,9 @@ export default
       SectionList: [],
     };
   },
-
+  mounted() {
+      EventBus.$emit("onLoad");
+  },
   created() 
   {
     EventBus.$emit("ThemeClicked");
@@ -245,9 +272,11 @@ export default
   methods: {
     // Get Content
     getContent(){
+      EventBus.$emit("onLoad");
       this.ContentList = [];
       this.axios.get('/api/content').then(response => {
         this.ContentList = response.data;
+        EventBus.$emit("onLoadEnd");
       });
     },
     // Get Class And 
@@ -403,7 +432,7 @@ export default
       formData.append("class", this.uploadContent.class);
       formData.append("section", this.uploadContent.section);
       formData.append("class", this.uploadContent.class);
-      formData.append("date", this.uploadContent.date);
+      formData.append("date", this.formatDate(this.uploadContent.date));
       formData.append("description", this.uploadContent.description);
       formData.append("contentFile", this.uploadContent.contentFile);
       const config = {
@@ -474,11 +503,48 @@ export default
       this.Available = [];
       this.SectionList = [];
       this.$refs.contentFile.value = '';
+      $("#classCol").css("background-color", "#eae6e6");
       this.uploadContent= {
         "title": "","type": "","class": "","section": "","date": new Date().toISOString().substr(0, 10),
         "description": "","contentFile": ""
       };
-    }
+    },
+    // Column Hide 
+    showColumns(){
+      Util.showColumns('columns','backgroundColumn');
+    },
+    clickBackground(){
+      Util.clickBackground('columns','backgroundColumn');
+    },
+    showTableHeader(data){
+      Util.showTableHeader(data);
+    },
+    clickShowAllColumn(data){
+      Util.clickShowAllColumn(data);
+    },
+    // Save Date Format
+    formatDate(date){
+      let year = date.substring(0, 4);
+      let month = date.substring(5, 7);
+      let day = date.substring(8, 10);
+      return year + month + day;
+    },
+    showDate(date) {
+      if(date){
+        let day = date.substring(6, 8);
+        let month = date.substring(4, 6);
+        let year = date.substring(0, 4);
+        return day + "/" + month + "/" + year;
+      }
+    },
   }
 };
 </script>
+
+<style>
+@media (max-width: 991px) and (min-width: 0px){
+    .div_very_small{
+        padding: 0px !important;
+    }
+}
+</style>

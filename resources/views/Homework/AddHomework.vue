@@ -12,6 +12,7 @@
             <hr style="margin-bottom: -0.5rem;">
 
             <confirm :url="props"></confirm>
+            <Loading></Loading>
 
             <div class="card">
                 <div class="card-header">
@@ -23,26 +24,26 @@
                             <label for="name" class="title">Class
                                 <strong>*</strong>
                             </label>
-                            <select id="class_id" class="inputbox" @change="selectClass(objData.class,'class_id','class_msg')" name="class" v-model="objData.class">
+                            <select id="class_home_id" class="inputbox" @change="selectClass(objData.class,'class_home_id','class_home_msg')" name="class" v-model="objData.class">
                                 <option disabled value="">Select Class</option>
                                 <option v-for="item in ClassList" :value="item.id">{{item.class}}</option>
                             </select>
-                            <span id="class_msg" class="error_message">Class is required</span>
+                            <span id="class_home_msg" class="error_message">Class is required</span>
                         </div>
                         <div class="col-lg-4 col-12 textbox">
                             <label for="name" class="title">Section
                                 <strong>*</strong>
                             </label>
-                            <select id="section_id" class="inputbox" @change="selectSection(objData.section,'section_id','section_msg')" name="class" v-model="objData.section">
+                            <select id="section_home_id" class="inputbox" @change="selectSection(objData.section,'section_home_id','section_home_msg')" name="class" v-model="objData.section">
                                 <option disabled value="">Select Section</option>
                                 <option v-for="item in SectionList" :value="item.id">{{item.section}}</option>
                             </select>
-                            <span id="section_msg" class="error_message">Section is required</span>
+                            <span id="section_home_msg" class="error_message">Section is required</span>
                         </div>
                         <div class="col-lg-4 col-12 textbox">
                             <label for="name" class="title">Subject
                             </label>
-                            <select id="subject_id" class="inputbox" name="class" v-model="objData.subject">
+                            <select class="inputbox" name="class" v-model="objData.subject">
                                 <option disabled value="">Select Subject</option>
                                 <option v-for="item in SubjectList" :value="item.id">{{item.name}}</option>
                             </select>
@@ -73,28 +74,29 @@
                                 </a>
                             </div>
                             <div class="col-3">
-                                <a title="Columns" onclick="showColumns('columns','backgroundColumn')">
+                                <a title="Columns" @click="showColumns()">
                                     <i class="fa fa-columns"></i>
                                 </a>
                                 
                                 <div id="columns" class="columns">
                                     <div v-for="item in arrayTableColumns">
-                                        <p @click="clickHideColumn(item)" :id="item.Id" class="tableLink">
+                                        <p @click="showTableHeader(item)" :id="item.Id" class="tableLink">
                                             <span>{{item.Name}}</span>
                                         </p> 
                                     </div>
                                     <div>
-                                        <p @click="clickShowColumn(arrayTableColumns)" class="tableLinkActive">
+                                        <p @click="clickShowAllColumn(arrayTableColumns)" class="tableLinkActive">
                                             <span>Restore visibility</span>
                                         </p>
                                     </div>
                                 </div>
-                                <div onclick="clickBackground('columns','backgroundColumn')" id="backgroundColumn" style="top: 0;left: 0;width: 100%;height: 100%;background: transparent;"></div>
+                                <div @click="clickBackground()" id="backgroundColumn" style="top: 0;left: 0;width: 100%;height: 100%;background: transparent;"></div>
                             </div>
                         </div>
                     </div>
+                    <h1 class="NoData" v-if="homeworkList.length==0">No Data</h1>
                     <div class="table-responsive">            
-                        <table class="table table-hover table-striped">
+                        <table class="table table-hover table-striped" v-if="homeworkList.length!=0">
                             <thead>
                                 <tr>
                                     <th :class="arrayTableColumns[0].class" nowrap>Class</th>
@@ -167,6 +169,7 @@
 </template>
 
 <script>
+
 import addmodal from "../Homework/add_homework_modal.vue";
 import editmodal from "../Homework/edit_homework_modal.vue";
 import detailmodal from "../Homework/detail_homework_modal.vue";
@@ -174,6 +177,7 @@ import { EventBus } from "../../js/event-bus.js";
 import {Util} from '../../js/util';
 import confirm from "../message/confirm.vue";
 import message from "../Alertmessage/message.vue";
+import Loading from "../LoadingController.vue";
 export default {
     components: {
         addmodal,
@@ -181,6 +185,7 @@ export default {
         detailmodal,
         confirm,
         message,
+        Loading,
     },
     data() {
         return {
@@ -209,6 +214,9 @@ export default {
             SectionList: [],
             SubjectList: [],
         };
+    },  
+    mounted() {
+        EventBus.$emit("onLoad");
     },
     created() {
         EventBus.$emit("ThemeClicked");
@@ -219,7 +227,6 @@ export default {
             this.getHomeworkList();
         });
         EventBus.$on("clicked", response => {
-            console.log(JSON.stringify(response));
             this.msg.text = response.text;
             this.msg.type = response.type;
             Util.workAlert('#alertmsg');
@@ -230,11 +237,13 @@ export default {
     },
     methods: {
         getHomeworkList(){
+            EventBus.$emit("onLoad");
             this.axios.get('/api/homework').then(response => {
                 this.homeworkList = response.data;
             });
             this.axios.get('/api/homework_evaluation').then(response => {
                 this.evaluationDate = response.data;
+                EventBus.$emit("onLoadEnd");
             });
         },
         // Get Class and Section
@@ -302,6 +311,7 @@ export default {
         // Search
         SearchData(){
             if(this.checkValidation()){
+                EventBus.$emit("onLoad");
                 let formData = new FormData();
                 formData.append("class", this.objData.class);
                 formData.append("section", this.objData.section);
@@ -309,11 +319,13 @@ export default {
                 if(this.objData.subject == ""){
                     this.axios.post('/api/homework/searchHomework', formData)
                     .then(result => {
+                        EventBus.$emit("onLoadEnd");
                         this.homeworkList = result.data;
                     });
                 }else{
                     this.axios.post('/api/homework/searchHomeworkSub', formData)
                     .then(result => {
+                        EventBus.$emit("onLoadEnd");
                         this.homeworkList = result.data;
                     });
                 }
@@ -322,11 +334,11 @@ export default {
         checkValidation(){
             let checkValue = true;
             if(this.objData.class == ""){
-                Util.onValidateMessage('class_id','class_msg');
+                Util.onValidateMessage('class_home_id','class_home_msg');
                 checkValue = false;
             }
             if(this.objData.section == ""){
-                Util.onValidateMessage('section_id','section_msg');
+                Util.onValidateMessage('section_home_id','section_home_msg');
                 checkValue = false;
             }
             return checkValue;
@@ -367,11 +379,17 @@ export default {
             }
         },
         // Column Hide 
-        clickHideColumn(data){
-            showTableHeader(data);
+        showColumns(){
+            Util.showColumns('columns','backgroundColumn');
         },
-        clickShowColumn(data){
-            clickShowAllColumn(data);
+        clickBackground(){
+            Util.clickBackground('columns','backgroundColumn');
+        },
+        showTableHeader(data){
+            Util.showTableHeader(data);
+        },
+        clickShowAllColumn(data){
+           Util.clickShowAllColumn(data);
         },
     }
 };

@@ -22,23 +22,23 @@
                                 </a>
                             </div>
                             <div class="col-3">
-                                <a title="Columns" onclick="showColumns('ModalColumns','ModalBackground')">
+                                <a title="Columns" @click="showColumns()">
                                     <i class="fa fa-columns"></i>
                                 </a>
                                 
                                 <div id="ModalColumns" class="columns">
                                     <div v-for="item in arrayTableColumns">
-                                        <p @click="clickHideColumn(item)" :id="item.Id" class="tableLink">
+                                        <p @click="showTableHeader(item)" :id="item.Id" class="tableLink">
                                             <span>{{item.Name}}</span>
                                         </p>
                                     </div>
                                     <div>
-                                        <p @click="clickShowColumn(arrayTableColumns)" class="tableLinkActive">
+                                        <p @click="clickShowAllColumn(arrayTableColumns)" class="tableLinkActive">
                                             <span>Restore visibility</span>
                                         </p>
                                     </div>
                                 </div>
-                                <div onclick="clickBackground('ModalColumns','ModalBackground')" id="ModalBackground" style="top: 0;left: 0;width: 100%;height: 100%;background: transparent;"></div>
+                                <div @click="clickBackground()" id="ModalBackground" style="top: 0;left: 0;width: 100%;height: 100%;background: transparent;"></div>
                             </div>
                         </div>
                     </div>
@@ -127,7 +127,8 @@
                     </div>
                     <div style="padding: 5px 0px;">
                         <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
-                            <span style="font-weight: bold">Description:</span> {{passData.description}}
+                            <span style="font-weight: bold">Description:</span> 
+                            <span v-html="passData.description"></span>
                         </p>
                     </div>
                 </div>
@@ -137,13 +138,14 @@
 </div>
 </template>
 <script>
-import { EventBus } from "../../js/event-bus.js";
+    import { EventBus } from "../../js/event-bus.js";
+    import {Util} from '../../js/util';
     export default {
         created() {
             EventBus.$on("openEvaluation", data => {
                 this.passData = data;
                 this.getStudent();
-                this.clickShowColumn(this.arrayTableColumns);
+                this.clickShowAllColumn(this.arrayTableColumns);
             });
         },
         data() {
@@ -160,6 +162,7 @@ import { EventBus } from "../../js/event-bus.js";
         },
         methods: {
             getStudent(){
+                EventBus.$emit("onLoad");
                 let data = new FormData();
                 this.studentList = [];
                 data.append("id", this.passData.class_section_id);
@@ -185,16 +188,10 @@ import { EventBus } from "../../js/event-bus.js";
                             }
                         }
                     }
-                    console.log(JSON.stringify(this.studentList));
+                    EventBus.$emit("onLoadEnd");
                 }).catch(error => {            
                     console.log("err->" + JSON.stringify(this.error.response));
                 });
-            },
-            clickHideColumn(data){
-                showTableHeader(data);
-            },
-            clickShowColumn(data){
-                clickShowAllColumn(data);
             },
             showDate(date) {
                 if(date){
@@ -203,6 +200,19 @@ import { EventBus } from "../../js/event-bus.js";
                     let year = date.substring(0, 4);
                     return day + "/" + month + "/" + year;
                 }
+            },
+            // Column Hide 
+            showColumns(){
+                Util.showColumns('ModalColumns','ModalBackground');
+            },
+            clickBackground(){
+                Util.clickBackground('ModalColumns','ModalBackground');
+            },
+            showTableHeader(data){
+                Util.showTableHeader(data);
+            },
+            clickShowAllColumn(data){
+                Util.clickShowAllColumn(data);
             },
         }
     }
