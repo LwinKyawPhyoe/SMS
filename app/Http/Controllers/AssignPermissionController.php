@@ -32,6 +32,12 @@ class AssignPermissionController extends Controller
     public function find($id)
     {
         $staffid = Role::where('id', $id)->count();
+        $role = Role::where('id', $id)->get('name');
+        return response()->json(['count' =>$staffid , 'name' => $role ]);
+    }
+
+    public function findRole($id){
+        $staffid = Role::where('id', $id)->get('name');
         return response()->json($staffid);
     }
 

@@ -3,10 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\AcademicYear;
-use App\Hostel;
+use App\StaffTimeline;
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 
-class HostelController extends Controller
+class StaffTimelineController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -17,11 +18,11 @@ class HostelController extends Controller
     {
         //
         $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
-        $hostels = Hostel::where('is_active', 'yes')
+        $staffs = StaffTimeline::where('is_active', 'yes')->with('staffs')
             ->where('domain', 'TS')
             ->where('session_id', $sessionid[0]->id)
             ->orderBy('id', 'DESC')->get()->toArray();
-        return array_reverse($hostels);
+        return array_reverse($staffs);
     }
 
     /**
@@ -42,33 +43,29 @@ class HostelController extends Controller
      */
     public function store(Request $request)
     {
-
         $session = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get();
         for ($i = 0; $i < count($session); $i++) {
-            $hostel = new Hostel([
-                'hostel_name' => $request->input('hostel_name'),
-                'type'        => $request->input('type'),
-                'address'     => $request->input('address'),
-                'intake'      => $request->input('intake'),
+            $staffTimeline = new StaffTimeline([
+                'staff_id' => $request->staff_id,
+                'title' => $request->input('title'),
+                'timeline_date' => $request->date,
                 'description' => $request->input('description'),
                 'session_id'  => $session[$i]['id'],
                 'domain'  => 'TS',
                 'is_active' => 'yes'
             ]);
-            $hostel->save();
-            return response()->json(['text' => 'Hostel added successfully', 'type' => 'success']);
+            $staffTimeline->save();
+            return response()->json(['text' => 'Staff Timeline added successfully', 'type' => 'success']);
         }
-
-        // }
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  \App\Hostel  $hostel
+     * @param  \App\StaffTimeline  $staffTimeline
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show(StaffTimeline $staffTimeline)
     {
         //
     }
@@ -76,53 +73,34 @@ class HostelController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Hostel  $hostel
+     * @param  \App\StaffTimeline  $staffTimeline
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(StaffTimeline $staffTimeline)
     {
         //
-        $hostel = Hostel::find($id);
-        return response()->json($hostel);
     }
 
     /**
      * Update the specified resource in storage.
      *
      * @param  \Illuminate\Http\Request  $request
-     * @param  \App\Hostel  $hostel
+     * @param  \App\StaffTimeline  $staffTimeline
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, StaffTimeline $staffTimeline)
     {
         //
-        $hostel = Hostel::find($id);
-        $hostel->update($request->all());
-        return response()->json(['text' => 'Hostel updated successfully', 'type' => 'success']);
     }
 
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Hostel  $hostel
+     * @param  \App\StaffTimeline  $staffTimeline
      * @return \Illuminate\Http\Response
      */
-    public function delete($id)
+    public function destroy(StaffTimeline $staffTimeline)
     {
-        $hostel = Hostel::find($id);
-        $hostel->update([
-            "is_active" => "delete"
-        ]);
-        return response()->json(['text' => 'Hostel deleted successfully', 'type' => 'success']);
-    }
-    public function search($data)
-    {
-        $hostel = Hostel::where('hostel_name', 'like', '%' . $data . '%')
-            ->orWhere('type', 'like', '%' . $data . '%')
-            ->orWhere('address', 'like', '%' . $data . '%')
-            ->orWhere('intake', 'like', '%' . $data . '%')
-            ->orderBy('id', 'desc')
-            ->get()->toArray();
-        return array_reverse($hostel);
+        //
     }
 }

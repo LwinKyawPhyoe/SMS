@@ -24,7 +24,7 @@
                   <strong>*</strong>
                 </label>
                 <input
-                autocomplete="off"
+                  autocomplete="off"
                   type="text"
                   class="inputbox"
                   v-model="hostel.hostel_name"
@@ -63,17 +63,29 @@
               </div>
               <div class="col-12 end">
                 <label for="description">Description</label>
-                <textarea autocomplete="off" class="textareas" v-model="hostel.description" rows="3"></textarea>
+                <textarea
+                  autocomplete="off"
+                  class="textareas"
+                  v-model="hostel.description"
+                  rows="3"
+                ></textarea>
               </div>
               <div class="col-12">
                 <!--- store -->
                 <button
+                  id="globalSave"
                   v-if="this.isEdit == false"
                   @click="addHostel()"
                   type="button"
                   class="save"
                 >Save</button>
-                <button v-else @click="updateHostel()" type="button" class="save">Save</button>
+                <button
+                  id="globalSave"
+                  v-else
+                  @click="updateHostel()"
+                  type="button"
+                  class="save"
+                >Save</button>
               </div>
             </form>
           </div>
@@ -143,7 +155,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(hos) in hostels" v-bind:key="hos.id" class="active">
+                  <div v-if="isEmpty == true" class="NoData">No Data</div>
+                  <tr v-else v-for="(hos) in hostels" v-bind:key="hos.id" class="active">
                     <td class="all" nowrap>
                       <p class="toolText">
                         {{hos.hostel_name}}
@@ -213,6 +226,7 @@ export default {
       url: "",
       id: "",
       isEdit: false,
+      isEmpty: false,
       noMatch: false,
       delurl: "",
       msg: {
@@ -226,15 +240,16 @@ export default {
     };
   },
   mounted() {
+    EventBus.$emit("onLoad");
     this.getHostels();
   },
   created() {
     EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
-       (this.deletemsg.text = response.text),
-       (this.deletemsg.type = response.type);
-       Util.workAlert("#delalertmsg");
-       this.getHostels();
+      (this.deletemsg.text = response.text),
+        (this.deletemsg.type = response.type);
+      Util.workAlert("#delalertmsg");
+      this.getHostels();
     });
     this.getHostels();
   },
@@ -243,9 +258,16 @@ export default {
      * GET DATA
      */
     getHostels() {
-      this.axios
-        .get("/api/hostels")
-        .then(response => (this.hostels = response.data));
+      this.axios.get("/api/hostels").then(response => {
+        this.hostels = response.data;
+        if(this.hostels.length > 0){
+          this.isEmpty = false;
+        }
+        else{
+          this.isEmpty = true;
+        }
+        EventBus.$emit("onLoadEnd");
+      });
     },
     /**
      * STORE DATA

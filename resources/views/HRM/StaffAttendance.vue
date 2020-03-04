@@ -8,13 +8,15 @@
       </h4>
     </div>
     <hr />
-    <confirm v-if="makeAsHoliCheck == false" :url="props"></confirm>
-    <Loading> </Loading>
+    <Loading></Loading>
+    <confirm :url="props"></confirm>
+
     <div class="card">
       <div class="card-header">
         <h6>Select Attendance</h6>
       </div>
       <div class="card-body">
+        <message :alertmessage="msg" id="alertmsg" />
         <div class="row" id="row" style="margin: 0px;">
           <div class="col-lg-6 col-md-6 col-sm-6 col-12 textbox">
             <label for="class">
@@ -22,21 +24,10 @@
               <strong>*</strong>
             </label>
             <select
-              v-model="search_by_role"
+              v-model="model.search_by_role"
               id="search_role_id"
-              @keyup="onValidate(
-                                    search_by_role,
-                                    'search_role_id',
-                                    'search_rolemsg'
-                                )
-                            "
-              v-on:blur="
-                                onValidate(
-                                    search_by_role,
-                                    'search_role_id',
-                                    'search_rolemsg'
-                                )
-                            "
+              @keyup="onValidate(model.search_by_role,'search_role_id','search_rolemsg')"
+              v-on:blur="onValidate(model.search_by_role,'search_role_id','search_rolemsg')"
               class="inputbox"
             >
               <option value>Select</option>
@@ -46,27 +37,7 @@
           </div>
           <div class="col-lg-6 col-md-6 col-sm-6 col-12 textbox">
             <label for="name">Attendance Date</label>
-            <vue-ctk-date-time-picker
-              v-model="model.date"
-              :only-date="true"
-              :color="'#1b5e20'"
-              :button-color="'#1b5e20'"
-              :auto-close="true"
-              :format="'YYYY/MM/DD'"
-               :formatted="'YYYY/MM/DD'"
-            >
-              <input
-                id="date_id"
-                @keyup="
-                                    onValidate(model.date, 'date_id', 'datemsg')
-                                "
-                v-on:blur="
-                                    onValidate(model.date, 'date_id', 'datemsg')
-                                "
-                class="inputbox"
-                autocomplete="off"
-              />
-            </vue-ctk-date-time-picker>
+            <datepicker v-model="model.date"></datepicker>
             <span id="datemsg" class="error_message">Attendance Date is required</span>
           </div>
           <div class="col-12 column-12">
@@ -80,7 +51,13 @@
       <div class="card-header">
         <h6>Staff List</h6>
       </div>
-      <div class="card-body">
+      <div v-if="isEmpty == true" class="card-body">
+        <div class="NoData">No Data</div>
+      </div>
+      <div v-else class="card-body">
+        <div v-if="isedit == true" style="margin: 10px;" class="alert alert-success" role="alert">
+          <b>Attendance Already Submitted You Can Edit Record</b>
+        </div>
         <label
           data-toggle="modal"
           data-target="#exampleModalCenter"
@@ -102,7 +79,7 @@
         >Save Attendance</a>
         <div class="row" id="row" style="width:100%;">
           <div class="table-responsive">
-            <table class="table table-hover table-striped" id="studenttable">
+            <table class="table table-hover" id="studenttable">
               <thead>
                 <tr>
                   <th class="all" nowrap>No</th>
@@ -116,7 +93,7 @@
               <tbody>
                 <tr v-for="staff in staffs" :key="staff.id" class="active">
                   <td class="all" nowrap>1</td>
-                  <td class="all" nowrap>9001</td>
+                  <td class="all" nowrap>{{staff.id}}</td>
                   <td class="all" nowrap>{{ staff.name }}</td>
                   <td class="all" nowrap>{{ staff.role.name }}</td>
                   <td class="all" nowrap v-for="type in attendance_type" :key="type.id">
@@ -125,17 +102,11 @@
                       type="radio"
                       :id="staff.id + type.type"
                       :name="staff.id"
-                      :checked="isSelected"
-                      @click="
-                                                toggleValue(staff.id, type.id)
-                                            "
+                      :value="type.id"
+                      v-model="staff.attendance_type_id"
                       :disabled="disabled == 1"
                     />
-                    <label :for="staff.id + type.type">
-                      {{
-                      type.type
-                      }}
-                    </label>
+                    <label :for="staff.id + type.type">{{type.type}}</label>
                   </td>
                   <td>
                     <input type="text" class="note" :disabled="disabled == 1" v-model="staff.note" />
@@ -149,7 +120,6 @@
     </div>
   </div>
 </template>
-
 <script>
 /**
  *  COMPONENTS
@@ -160,19 +130,25 @@ import { EventBus } from "../../js/event-bus.js";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import moment from "moment";
 import Loading from "../LoadingController.vue";
-
-
+import datepicker from "../datepicker.vue";
+import { Util } from "../../js/util";
 export default {
   components: {
     VueCtkDateTimePicker,
     confirm,
     message,
-    Loading
+    Loading,
+    datepicker
   },
   data() {
     return {
+      color: "#222",
       props: {
         url: "",
+        type: ""
+      },
+      msg: {
+        text: "",
         type: ""
       },
       roles: [],
@@ -182,31 +158,32 @@ export default {
       model: {},
       type: "",
       present: "",
-      search_by_role: "",
       selection: {},
       status: 0,
       disabled: 0,
       isSelected: true,
       makeAsHoliCheck: false,
       showForm: false,
+      isEmpty: false,
       confirmUrl: "",
-      attendance_type: []
+      attendance_type: [],
+      isedit: false
     };
+  },
+  mounted() {
+    EventBus.$emit("ThemeClicked");
+    EventBus.$emit("onLoad");
   },
   created() {
     EventBus.$emit("ThemeClicked");
-    EventBus.$emit("clicked");
     EventBus.$on("clicked", response => {
       console.log("-->" + JSON.stringify(response.check));
       this.makeAsHoliCheck = response.check;
       this.disabled = response.disabled;
     });
-    this.axios.get("/api/attendancetypes").then(response => {
-      this.attendance_type = response.data;
-      console.log("Attendance" + JSON.stringify(this.attendance_type));
-    });
+
     this.getRoles();
-    this.getStaffs();
+    // this.getStaffs();
   },
   methods: {
     toggleValue(id, type_id) {
@@ -219,16 +196,17 @@ export default {
         }
       }
     },
-    getStaffs() {
-      this.axios.get("/api/staffs").then(response => {
-        console.log(JSON.stringify(response.data));
-        this.staffs = response.data;
-        console.log("Hello ==>" + JSON.stringify(this.staffs));
-      });
-    },
+    // getStaffs() {
+    //   this.axios.get("/api/staffs").then(response => {
+    //     console.log(JSON.stringify(response.data));
+    //     this.staffs = response.data;
+    //     console.log("Hello ==>" + JSON.stringify(this.staffs));
+    //   });
+    // },
     getRoles() {
-      this.axios.get("/api/roles").then(response =>{
+      this.axios.get("/api/roles").then(response => {
         this.roles = response.data;
+        EventBus.$emit("onLoadEnd");
       });
     },
     attendanceData() {
@@ -236,20 +214,22 @@ export default {
       if (this.makeAsHoliCheck) {
         /**Holiday */
         this.formData.data = [];
-        for (var s = 0; s < this.staffs.length; s++){
+        for (var s = 0; s < this.staffs.length; s++) {
           this.formData.data.push({
             date: this.model.date,
             staff_id: this.staffs[s].id,
             staff_attendance_type_id: 5,
-            note: this.staffs[s].note,
-            
+            note: this.staffs[s].note
           });
         }
       } else {
+        console.log("Staffs" + JSON.stringify(this.staffs));
+
         for (var i = 0; i < this.staffs.length; i++) {
           if (this.staffs[i].attendance_type) {
           } else {
             /**Present */
+            alert("present");
             console.log(
               "Type Empty column ==>" + JSON.stringify(this.staffs[i])
             );
@@ -257,19 +237,19 @@ export default {
           }
         }
         this.formData.data = [];
-
         for (var s = 0; s < this.staffs.length; s++) {
           /**Other Type */
+          alert("other");
           this.formData.data.push({
             date: this.model.date,
             staff_id: this.staffs[s].id,
-            staff_attendance_type_id: this.staffs[s].attendance_type,
+            staff_attendance_type_id: this.staffs[s].attendance_type_id,
             note: this.staffs[s].note
           });
         }
       }
     },
-    submit(){
+    submit() {
       this.attendanceData();
       EventBus.$emit("onLoad");
       setTimeout(() => {
@@ -277,7 +257,13 @@ export default {
           .post(`/api/staffattendance/store`, this.formData)
           .then(response => {
             console.log("===>" + JSON.stringify(response.data));
+            this.showForm = false;
             EventBus.$emit("onLoadEnd");
+            Util.scrollToTop();
+            this.model = {};
+            this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
           });
       }, 100);
     },
@@ -294,15 +280,54 @@ export default {
     },
     searchByRole() {
       if (this.checkValidate()) {
-          EventBus.$emit("onLoad");
+        EventBus.$emit("onLoad");
+        if (this.makeAsHoliCheck == true) {
+          this.makeAsHoliCheck = false;
+        }
         this.axios
-          .get(`/api/staffdirectory/search_by_role/${this.search_by_role}`)
+          .get(
+            `/api/staffattendance/search_by_role/${this.model.search_by_role}/${this.model.date}`
+          )
           .then(response => {
-            this.staffs = response.data;
-            for (var i = 0; i < this.staffs.length; i++) {
-              this.staffs[i].note = "";
+            this.axios.get("/api/attendancetypes").then(response => {
+              this.attendance_type = response.data;
+              console.log("Attendance" + JSON.stringify(this.attendance_type));
+            });
+            this.staffs = response.data.data;
+            console.log("Staffs" + JSON.stringify(this.staffs));
+            console.log(
+              "Attendances" + JSON.stringify(response.data.attendance)
+            );
+            var attendance = response.data.attendance;
+            if (this.staffs.length > 0) {
+              this.isEmpty = false;
+              for (var i = 0; i < this.staffs.length; i++) {
+                this.staffs[i].note = "";
+                if (response.data.status == "update") {
+                  for (var t = 0; t < attendance.length; t++) {
+                    attendance[t].staff_attendance_type_id =
+                      attendance[i].staff_attendance_type_id;
+                    this.staffs[i].attendance_type_id =
+                      attendance[i].staff_attendance_type_id;
+                    if (attendance[t].staff_attendance_type_id == 5) {
+                      this.makeAsHoliCheck = true;
+                    } else {
+                    }
+                  }
+                  this.isedit = true;
+                } else {
+                  this.staffs[i].attendance_type_id = 1;
+                  this.isedit = false;
+                }
+              }
+              console.log("Attendance Staffs" + JSON.stringify(this.staffs));
+            } else {
+              this.isEmpty = true;
             }
+
+            console.log("Staffs" + JSON.stringify(this.staffs));
             this.showForm = true;
+            EventBus.$emit("ThemeClicked");
             EventBus.$emit("onLoadEnd");
           });
       }
@@ -319,13 +344,12 @@ export default {
         document.getElementById(megId).style.display = "none";
       }
     },
-
     onValidateMessage(inputId, megId) {
       document.getElementById(inputId).style.border = "solid 1px red";
       document.getElementById(megId).style.display = "block";
     },
     checkValidate() {
-      if (!this.search_by_role) {
+      if (!this.model.search_by_role) {
         this.onValidateMessage("search_role_id", "search_rolemsg");
         return false;
       }

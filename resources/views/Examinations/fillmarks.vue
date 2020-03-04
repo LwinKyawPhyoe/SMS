@@ -171,6 +171,7 @@
 </template>
 <script>
 import { EventBus } from "../../js/event-bus.js";
+import store from "store2";
 export default {
   data() {
     return {
@@ -257,6 +258,7 @@ export default {
         });
       this.idsArray = [];
       setTimeout(() => {
+        EventBus.$emit("ThemeClicked");
         this.display = true;
       }, 1000);
     },
@@ -268,6 +270,7 @@ export default {
         .then(response => {
           this.$router.push({ name: "MarkRegister" });
         });
+        store.set("msg","save");
     },
     checkA(event, Obj) {
       if (event.target.checked) {

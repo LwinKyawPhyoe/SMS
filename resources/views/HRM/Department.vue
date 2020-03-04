@@ -17,7 +17,7 @@
           </div>
           <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
             <form @submit.prevent="addDepartment">
-              <message :alertmessage="msg" id="alertmsg"/>
+              <message :alertmessage="msg" id="alertmsg" />
               <div class="col-12">
                 <label for="name">
                   Name
@@ -35,8 +35,14 @@
               </div>
               <div class="col-12">
                 <!--- store -->
-                <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
-                <button v-else @click="updateDepartment()" type="button" class="save">Save</button>
+                <button v-if="this.isEdit == false" type="submit" id="globalSave" class="save">Save</button>
+                <button
+                  v-else
+                  @click="updateDepartment()"
+                  type="button"
+                  id="globalSave"
+                  class="save"
+                >Save</button>
               </div>
             </form>
           </div>
@@ -84,7 +90,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(des) in departments" v-bind:key="des.id" class="active">
+                  <div v-if="isEmpty == true" class="NoData">No Data</div>
+                  <tr v-else v-for="(des) in departments" v-bind:key="des.id" class="active">
                     <td class="all" nowrap>{{des.department_name}}</td>
                     <td style="text-align: right;">
                       <i @click="editDepartment(des)" class="fa fa-pencil pen">
@@ -135,37 +142,43 @@ export default {
       department: {},
       departments: [],
       isEdit: false,
+      isEmpty: false,
       delurl: "",
       msg: {
         text: "",
         type: ""
       },
-        deletemsg: {
+      deletemsg: {
         text: "",
         type: ""
       }
     };
   },
   mounted() {
+    EventBus.$emit('onLoad');
     this.getDepartments();
   },
   created() {
     EventBus.$emit("ThemeClicked");
-
     EventBus.$on("clicked", response => {
       this.getDepartments();
-       (this.deletemsg.text = response.text),
+      (this.deletemsg.text = response.text),
         (this.deletemsg.type = response.type);
       Util.workAlert("#delalertmsg");
-
     });
     this.getDepartments();
   },
   methods: {
     getDepartments() {
-      this.axios
-        .get("/api/departments")
-        .then(response => (this.departments = response.data));
+      this.axios.get("/api/departments").then(response => {
+        this.departments = response.data;
+        if (this.departments.length > 0) {
+          this.isEmpty = false;
+        } else {
+          this.isEmpty = true;
+        }
+        EventBus.$emit('onLoadEnd');
+      });
     },
     addDepartment() {
       console.log(JSON.stringify(this.department));
@@ -175,14 +188,12 @@ export default {
           .post("/api/department/store", this.department)
           .then(response => {
             this.getDepartments();
-             this.department = {};
-             EventBus.$emit("onLoadEnd");
-               Util.scrollToTop();
-              (this.msg.text = response.data.text),
-                (this.msg.type = response.data.type);
+            this.department = {};
+            EventBus.$emit("onLoadEnd");
+            Util.scrollToTop();
+            (this.msg.text = response.data.text),
+              (this.msg.type = response.data.type);
             Util.workAlert("#alertmsg");
-
-        
           })
           .catch(error => console.log(error));
       }

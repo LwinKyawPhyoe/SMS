@@ -25,7 +25,7 @@
                   <strong>*</strong>
                 </label>
                 <input
-                autocomplete="off"
+                  autocomplete="off"
                   id="name_id"
                   @keyup="onValidate(designation.designation_name, 'name_id', 'namemsg')"
                   v-on:blur="onValidate(designation.designation_name, 'name_id', 'namemsg')"
@@ -37,8 +37,14 @@
               </div>
               <div class="col-12">
                 <!--- store -->
-                <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
-                <button v-else @click="updateDesignation()" type="button" class="save">Save</button>
+                <button v-if="this.isEdit == false" type="submit" id="globalSave" class="save">Save</button>
+                <button
+                  v-else
+                  @click="updateDesignation()"
+                  type="button"
+                  id="globalSave"
+                  class="save"
+                >Save</button>
               </div>
             </form>
           </div>
@@ -86,7 +92,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(des) in designations" v-bind:key="des.id" class="active">
+                  <div v-if="isEmpty == true" class="NoData">No Data</div>
+                  <tr v-else v-for="(des) in designations" v-bind:key="des.id" class="active">
                     <td class="all" nowrap>{{des.designation_name}}</td>
                     <td style="text-align: right;">
                       <i @click="editDesignation(des)" class="fa fa-pencil pen">
@@ -137,6 +144,7 @@ export default {
       designation: {},
       designations: [],
       isEdit: false,
+      isEmpty: false,
       delurl: "",
       msg: {
         text: "",
@@ -155,7 +163,7 @@ export default {
     EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
       this.getDesignations();
-       (this.deletemsg.text = response.text),
+      (this.deletemsg.text = response.text),
         (this.deletemsg.type = response.type);
       Util.workAlert("#delalertmsg");
     });
@@ -163,9 +171,17 @@ export default {
   },
   methods: {
     getDesignations() {
-      this.axios
-        .get("/api/designations")
-        .then(response => (this.designations = response.data));
+      EventBus.$emit('onLoad');
+      this.axios.get("/api/designations").then(response => {
+        this.designations = response.data;
+        if(this.designations.length > 0){
+          this.isEmpty = false;
+        }
+        else{
+          this.isEmpty = true;
+        }
+        EventBus.$emit('onLoadEnd');
+      });
     },
     addDesignation() {
       console.log(JSON.stringify(this.designation));
@@ -175,7 +191,7 @@ export default {
           .post("/api/designation/store", this.designation)
           .then(response => {
             this.getDesignations();
-             this.msg.text = response.data.text;
+            this.msg.text = response.data.text;
             this.msg.type = response.data.type;
             Util.workAlert("#alertmsg");
             EventBus.$emit("onLoadEnd");

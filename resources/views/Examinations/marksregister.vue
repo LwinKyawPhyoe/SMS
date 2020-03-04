@@ -131,6 +131,7 @@
         <router-link to="/fillmarks" onclick="showForm()" class="add">Add</router-link>
       </div>
       <div class="card-body">
+        <message :alertmessage="msg" id="alertmsg" />
         <div class="row" id="row" style="margin: 0px;">
           <div class="col-lg-4 col-md-4 col-12 textbox">
             <label for="name">
@@ -301,7 +302,13 @@
 </template>
 <script>
 import { EventBus } from "../../js/event-bus.js";
+import { Util } from "../../js/util";
+import message from '../Alertmessage/message.vue';
+import store from "store2";
 export default {
+   components: {
+          message
+        },
   data() {
     return {
       examNames: [],
@@ -326,13 +333,30 @@ export default {
       Result: "",
       oldId: "",
       oldValue: "",
-      oldNumber: ""
+      oldNumber: "",
+      msg: {
+        text: "",
+        type: ""
+      },
     };
   },
   created() {
     EventBus.$emit("ThemeClicked");
     this.getExamNames();
     this.getClass();
+
+    var message = store.get("msg");
+    if (message != null) {
+      if (message == "save") {
+        this.msg.text = "Exam Schadule added successfully";
+        this.msg.type = "success";
+      } else {
+        this.msg.text = "Exam Schadule updated successfully";
+        this.msg.type = "success";
+      }
+      Util.workAlert("#alertmsg");
+    }
+    store.clearAll();
   },
   methods: {
     getExamNames() {
@@ -391,6 +415,7 @@ export default {
           }
         });
       setTimeout(() => {
+        EventBus.$emit("ThemeClicked");
         this.display = true;
       }, 1000);
     },

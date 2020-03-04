@@ -111,7 +111,7 @@ class HostelRoomController extends Controller
     {
         $hostelroom = HostelRoom::find($id);
         $hostelroom->update([
-            "is_active" => "no"
+            "is_active" => "delete"
         ]);
         return response()->json(['text' => 'Hostel Room deleted successfully', 'type' => 'success']);
 

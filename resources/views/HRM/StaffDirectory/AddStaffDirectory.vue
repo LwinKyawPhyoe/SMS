@@ -13,14 +13,11 @@
     </div>
     <hr />
     <Loading></Loading>
-
     <div
       class="alert alert-success"
       role="alert"
-    >Staff email is their login username, password is generated automatically and send to staff email. Superadmin can change staff password on their staff profile page.</div>
-
+    > Staff email is their login username, password is generated automatically and send to staff email. Superadmin can change staff password on their staff profile page.</div>
     <message :alertmessage="msg" id="alertmsg" />
-
     <div class="card">
       <form @submit.prevent="addStaffDirectory" enctype="multipart/form-data">
         <div class="card-header">
@@ -163,46 +160,20 @@
                 Date Of Birth
                 <strong>*</strong>
               </label>
-              <VueCtkDateTimePicker
-                v-model="staff.dob"
-                :only-date="true"
-                :color="'#1b5e20'"
-                :button-color="'#1b5e20'"
-                :auto-close="true"
-                :format="'YYYY/MM/DD'"
-                :formatted="'YYYY/MM/DD'"
-              >
-                <input
-                  v-model="staff.dob"
-                  @keyup="onValidate(staff.dob, 'dob_id', 'dobmsg')"
-                  v-on:blur="onValidate(staff.dob, 'dob_id', 'dobmsg')"
-                  class="inputbox"
-                  autocomplete="off"
-                />
-              </VueCtkDateTimePicker>
+              <datepicker v-model="staff.dob"></datepicker>
               <span id="dobmsg" class="error_message">Date Of Birth is required</span>
             </div>
             <div class="textbox">
               <label for="Emergency">Date Of Joining</label>
-              <VueCtkDateTimePicker
-                v-model="staff.doj"
-                :only-date="true"
-                :color="'#1b5e20'"
-                :button-color="'#1b5e20'"
-                :auto-close="true"
-                :format="'YYYY/MM/DD'"
-                :formatted="'YYYY/MM/DD'"
-              >
-                <input class="inputbox" autocomplete="off" :value="staff.doj" />
-              </VueCtkDateTimePicker>
+            <datepicker v-model="staff.doj"></datepicker>
             </div>
             <div class="textbox">
               <label for="Phone">Phone</label>
-              <input v-model="staff.phone" type="text" class="inputbox" />
+              <input v-model="staff.phone" type="number" class="inputbox" />
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-12" style="padding: 5px;">
               <label for="Emergency">Emergency Contact Number</label>
-              <input v-model="staff.emergency_contact_no" type="text" class="inputbox" />
+              <input v-model="staff.emergency_contact_no" type="number" class="inputbox" />
             </div>
             <div class="textbox">
               <label for="Marital">Marital Status</label>
@@ -214,19 +185,8 @@
               </select>
             </div>
             <div class="textbox">
-              <label for="Photo">
-                Photo
-                <strong>*</strong>
-              </label>
-              <input
-                id="image_id"
-                @keyup="onValidate(staff.image, 'image_id', 'imagemsg')"
-                v-on:blur="onValidate(staff.image, 'image_id', 'imagemsg')"
-                v-on:change="onImageChange"
-                type="file"
-                class="inputbox"
-              />
-              <span id="imagemsg" class="error_message">Photo is required</span>
+              <label for="Photo">Photo</label>
+              <input v-on:change="onImageChange" type="file" class="inputbox" />
             </div>
             <div class="col-lg-6 col-md-6 col-sm-6 col-12" style="padding:5px;">
               <label for="Current">Current Address</label>
@@ -467,10 +427,10 @@ import Loading from "../../LoadingController.vue";
 import { EventBus } from "../../../js/event-bus.js";
 import { Util } from "../../../js/util";
 import message from "../../Alertmessage/message.vue";
-
+import datepicker from "../../datepicker.vue";
 export default {
   components: {
-    VueCtkDateTimePicker,
+    datepicker,
     Loading,
     message
   },
@@ -496,7 +456,10 @@ export default {
         qualification: "",
         work_exp: "",
         note: "",
-        password: ""
+        password: "",
+        resume: "",
+        joining_letter: "",
+        other_document: "",
       },
 
       staffDirectorys: [],
@@ -511,17 +474,19 @@ export default {
       }
     };
   },
-  mounted() {},
+  mounted() {
+    EventBus.$emit("onLoad");
+  },
   created() {
     EventBus.$emit("ThemeClicked");
     console.log(this.$route.path);
-    if (this.$route.path == "/stadirectory/edit") {
+    if (this.$route.path == `/staffdirectory/edit/${this.$route.params.id}`) {
       this.checkroute = true;
     }
     this.axios
       .get(`/api/staffdirectory/edit/${this.$route.params.id}`)
       .then(response => {
-        this.model = response.data;
+        this.staff = response.data;
         console.log("Staff" + JSON.stringify(response));
       });
     this.getRoles();
@@ -532,6 +497,7 @@ export default {
     getRoles() {
       this.axios.get("/api/roles").then(response => {
         this.roles = response.data;
+        EventBus.$emit('onLoadEnd');
       });
     },
     getDesignations() {
@@ -572,7 +538,6 @@ export default {
       this.staff.other_document = e.target.files[0];
     },
     addStaffDirectory(e) {
-      alert(this.staff.mother_name);
       if (this.checkValidate()) {
         EventBus.$emit("onLoad");
         (this.staff.dob = new Date().toISOString().slice(0, 10)),
@@ -581,7 +546,6 @@ export default {
         const config = {
           headers: { "content-type": "multipart/form-data" }
         };
-
         let formData = new FormData();
         formData.append("staff_id", this.staff.staff_id);
         formData.append("role_id", this.staff.role_id);
@@ -757,10 +721,6 @@ export default {
       }
       if (!this.staff.dob) {
         this.onValidateMessage("dob_id", "dobmsg");
-        return false;
-      }
-      if (!this.staff.image) {
-        this.onValidateMessage("image_id", "imagemsg");
         return false;
       } else {
         return true;

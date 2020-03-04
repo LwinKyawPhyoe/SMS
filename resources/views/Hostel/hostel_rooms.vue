@@ -25,7 +25,7 @@
                   <strong>*</strong>
                 </label>
                 <input
-                autocomplete="off"
+                  autocomplete="off"
                   id="name_id"
                   @keyup="onValidate(hostelroom.room_no, 'name_id', 'namemsg')"
                   v-on:blur="onValidate(hostelroom.room_no, 'name_id', 'namemsg')"
@@ -85,7 +85,7 @@
                   <strong>*</strong>
                 </label>
                 <input
-                autocomplete="off"
+                  autocomplete="off"
                   id="nob_id"
                   @keyup="onValidate(hostelroom.no_of_bed, 'nob_id', 'nobmsg')"
                   v-on:blur="onValidate(hostelroom.no_of_bed, 'nob_id', 'nobmsg')"
@@ -101,7 +101,7 @@
                   <strong>*</strong>
                 </label>
                 <input
-                autocomplete="off"
+                  autocomplete="off"
                   id="cpb_id"
                   @keyup="onValidate(hostelroom.cost_per_bed, 'cpb_id', 'cpbmsg')"
                   v-on:blur="onValidate(hostelroom.cost_per_bed, 'cpb_id', 'cpbmsg')"
@@ -113,11 +113,22 @@
               </div>
               <div class="col-12 end">
                 <label for="description">Description</label>
-                <textarea autocomplete="off" v-model="hostelroom.description" class="textareas" rows="3"></textarea>
+                <textarea
+                  autocomplete="off"
+                  v-model="hostelroom.description"
+                  class="textareas"
+                  rows="3"
+                ></textarea>
               </div>
               <div class="col-12">
-                <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
-                <button v-else @click="updateHostelRoom()" type="button" class="save">Save</button>
+                <button v-if="this.isEdit == false" type="submit" id="globalSave" class="save">Save</button>
+                <button
+                  v-else
+                  @click="updateHostelRoom()"
+                  type="button"
+                  id="globalSave"
+                  class="save"
+                >Save</button>
               </div>
             </form>
           </div>
@@ -130,7 +141,7 @@
             <h6>Hostel Room List</h6>
           </div>
           <div class="card-body">
-            <message :alertmessage="deletemsg" id="delalertmsg"/>
+            <message :alertmessage="deletemsg" id="delalertmsg" />
             <input
               v-model="search"
               @input="searchData()"
@@ -175,7 +186,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(room) in hostelrooms" v-bind:key="room.id" class="active">
+                  <div v-if="isEmpty == true" class="NoData">No Data</div>
+                  <tr v-else v-for="(room) in hostelrooms" v-bind:key="room.id" class="active">
                     <td class="all" nowrap>
                       <p class="toolText">
                         {{room.room_no}}
@@ -237,7 +249,7 @@ export default {
         type: ""
       },
       hostelroom: {},
-       msg: {
+      msg: {
         text: "",
         type: ""
       },
@@ -250,10 +262,12 @@ export default {
       hostel_table: [],
       roomtypes: [],
       isEdit: false,
+      isEmpty: false,
       noMatc: false
     };
   },
   mounted() {
+    EventBus.$emit("onLoad");
     this.getHostels();
     this.getRoomTypes();
     this.getHostelRooms();
@@ -261,11 +275,9 @@ export default {
   created() {
     EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
-
       (this.deletemsg.text = response.text),
-      (this.deletemsg.type = response.type);
+        (this.deletemsg.type = response.type);
       Util.workAlert("#delalertmsg");
-
       this.getHostels();
       this.getRoomTypes();
       this.getHostelRooms();
@@ -281,6 +293,12 @@ export default {
     getHostelRooms() {
       this.axios.get("/api/hostelrooms").then(response => {
         this.hostelrooms = response.data;
+        if (this.hostelrooms.length > 0) {
+          this.isEmpty = false;
+        } else {
+          this.isEmpty = true;
+        }
+        EventBus.$emit("onLoadEnd");
         console.log("GetHostelRooms" + JSON.stringify(response.data));
       });
     },
@@ -298,7 +316,6 @@ export default {
             this.msg.type = response.data.type;
             Util.workAlert("#alertmsg");
             Util.scrollToTop();
-
           })
           .catch(error => console.log(error));
       }
@@ -325,7 +342,7 @@ export default {
             this.getHostelRooms();
             this.isEdit = false;
             this.hostelroom = "";
-            EventBus.$emit('onLoadEnd');
+            EventBus.$emit("onLoadEnd");
             this.msg.text = response.data.text;
             this.msg.type = response.data.type;
             Util.workAlert("#alertmsg");

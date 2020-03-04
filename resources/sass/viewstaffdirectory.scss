@@ -3,13 +3,17 @@
     border: none !important;
     background-color: transparent !important;
     text-align: right;
-    color: green;
+    color: var(--info);
     font-weight: 600;
   }
   #row {
     margin-top: -1rem;
     margin: -1rem;
     padding: 0;
+    /**#efc347 **/
+    .sta-disable{
+      // background-color: #efc347;
+    }
     .tableCard {
       .Profile {
         padding: 1rem;
@@ -21,6 +25,19 @@
           display: block;
           border: 3px solid #1b5e2033;
           padding: 3px;
+        }
+        .disableIcon{
+          position: absolute;
+          right: 50%;
+          left: 54%;
+          top: 28%;
+          width: 24px;
+          padding: 3px;
+          background: white;
+          border: 1px solid #d1dfd2;
+          color: red !important;
+          border-radius: 50%;
+          text-align: -webkit-center;
         }
         .name {
           text-align: center !important;
@@ -70,6 +87,8 @@
     .detailsCard {
       padding: 0;
       .buttonCard {
+        overflow: auto;
+        white-space: nowrap;
         height: 103%;
         .tab,
         .tab1,
@@ -183,119 +202,111 @@
         text-align: center;
       }
     }
-    .timelinebody {
+    .TimeLine {
       padding-top: 1rem;
       .add {
         margin-top: -5px;
         height: 25px;
         width: 60px;
-        background: #1b5e1fee;
+        background: #3e4e5b;
         color: rgba(255, 255, 255, 0.61);
       }
       .add:active,
       .add:hover {
-        background: #1b5e20;
+        background: #3e4e5b;
         color: white;
       }
-      .TimeLine {
-        span {
-          color: white;
-          background-color: var(--success);
-          padding: 3px;
-          display: inline-block;
-          border-radius: 5px;
-          font-size: 13px;
-          margin-left: 10px;
-        }
-        .timeline {
-          position: relative;
-          margin: 0 auto;
-          color: white;
-          padding-right: 20px;
-        }
-
-        /* The actual timeline (the vertical ruler) */
-        .timeline::after {
-          content: "";
+      span {
+        color: white;
+        background-color: var(--info);
+        padding: 3px;
+        display: inline-block;
+        border-radius: 5px;
+        font-size: 13px;
+        margin-left: 10px;
+      }
+      .timeline {
+        position: relative;
+        margin-right: 1rem;
+        padding: 8px;
+        color: white;
+      }
+      .timeline::after {
+        content: "";
+        position: absolute;
+        width: 4px;
+        background-color: var(--info);
+        top: 0;
+        bottom: 0;
+        margin-left: 36px;
+      }
+      .container {
+        padding: 10px 0px 10px 40px;
+        position: relative;
+        background-color: none;
+        width: 90%;
+      }
+      // .right::before {
+      //   content: " ";
+      //   height: 0;
+      //   position: absolute;
+      //   top: 22px;
+      //   width: 0;
+      //   z-index: 1;
+      //   left: 30px;
+      //   border: medium solid white;
+      //   border-width: 10px 10px 10px 0;
+      //   border-color: transparent var(--info) transparent transparent;
+      // }
+      .right::after {
+        left: -16px;
+      }
+      .right {
+        background-color: white;
+        margin-left: 42px;
+      }
+      .content {
+        position: relative;
+        border-radius: 6px;
+        background-color: #12b0ca5e;
+        .timeIcon {
           position: absolute;
-          width: 6px;
-          background-color: #1b5e20;
-          top: 0;
-          bottom: 0;
-          // left: 50%;
-          margin-left: 36px;
-        }
-
-        /* Container around content */
-        .container {
-          padding: 10px 0px 10px 40px;
-          position: relative;
-          background-color: none;
-          width: 90%;
-        }
-
-        /* The circles on the timeline */
-        .container::after {
-          content: "";
-          position: absolute;
-          width: 25px;
-          height: 25px;
-          right: -17px;
-          background-color: white;
-          border: 1px solid black;
-          top: 15px;
+          background: whitesmoke;
+          z-index: 1;
+          box-shadow: 0 0 0 2px var(--info), inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05);
+          padding: 10px;
+          zoom: 1.2;
           border-radius: 50%;
+          margin-left: -3.4rem;
+          color: black;
+        }
+
+        h6 {
+          width: 100%;
+          color: white;
+          background-color: var(--info);
+          padding: 10px;
+          border-top-right-radius: 3px;
+          border-top-left-radius: 3px;
+        }
+        p {
+          margin-top: -8px;
+          padding: 10px;
+          color: black;
+          border-bottom-right-radius: 3px;
+          border-bottom-left-radius: 3px;
+        }
+      }
+      .timelineBottom {
+        .timeIcon {
+          background: whitesmoke;
           z-index: 1;
-        }
-
-        /* Add arrows to the right container (pointing left) */
-        .right::before {
-          content: " ";
-          height: 0;
-          position: absolute;
-          top: 22px;
-          width: 0;
-          z-index: 1;
-          left: 30px;
-          border: medium solid white;
-          border-width: 10px 10px 10px 0;
-          border-color: transparent #1b5e20 transparent transparent;
-        }
-
-        /* Fix the circle for containers on the right side */
-        .right::after {
-          left: -16px;
-        }
-        .right {
-          background-color: white;
-          margin-left: 42px;
-          padding-right: 1rem;
-        }
-
-        /* The actual content */
-        .content {
-          // padding: 0px 30px;
-          // background-color: gray;
-          position: relative;
-          border-radius: 6px;
-          background-color: #ddd;
-
-          h6 {
-            width: 100%;
-            color: white;
-            background-color: #1b5e20;
-            padding: 10px;
-            border-top-right-radius: 3px;
-            border-top-left-radius: 3px;
-            // margin: 0;
-          }
-          p {
-            margin-top: -8px;
-            padding: 10px;
-            color: black;
-            border-bottom-right-radius: 3px;
-            border-bottom-left-radius: 3px;
-          }
+          box-shadow: 0 0 0 2px var(--info), inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05);
+          padding: 10px;
+          zoom: 1.2;
+          border-radius: 50%;
+          color: black;
+          margin: 0 0 1rem 20px;
         }
       }
     }

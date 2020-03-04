@@ -39,7 +39,8 @@ class RoomTypeController extends Controller
                 'room_type' => $request->input('room_type'),
                 'description' => $request->input('description'),
                 'session_id'  => $session[$i]['id'],
-                'domain'  => 'TS'
+                'domain'  => 'TS',
+                'is_active' => 'yes',
             ]);
             $roomtype->save();
             return response()->json(['text' => 'RoomType added successfully', 'type' => 'success']);
@@ -81,7 +82,7 @@ class RoomTypeController extends Controller
     {
         $roomtype = RoomType::find($id);
         $roomtype->update([
-            "is_active" => "no"
+            "is_active" => "delete"
         ]);
         return response()->json(['text' => 'RoomType deleted successfully', 'type' => 'success']);
     }

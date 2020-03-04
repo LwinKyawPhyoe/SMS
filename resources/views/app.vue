@@ -359,7 +359,7 @@
               </router-link>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="role">
+              <router-link to="/role">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Roles Permissions
               </router-link>
             </div>
@@ -752,7 +752,7 @@
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="role" class="nav-list" id="nav-list">
+                        <router-link to="/role" class="nav-list" id="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Roles Permissions
                         </router-link>
                       </li>
@@ -1114,7 +1114,7 @@
                       General Setting
                     </li>
                   </router-link>
-                  <router-link to="role" class="smallLink">
+                  <router-link to="/role" class="smallLink">
                     <li class="smLink">
                       <i class="fa fa-angle-double-right smIcon"></i>
                       Roles Permission
@@ -1333,6 +1333,11 @@ export default {
           for (color = 0; color < dark.length; color++) {
             dark[color].style.background = "#044604";
           }
+          var dark = document.getElementsByClassName("confirm-modal-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#044604";
+          }
           var dark = document.getElementsByClassName("item-body");
           var color;
           for (color = 0; color < dark.length; color++) {
@@ -1423,6 +1428,11 @@ export default {
           var color;
           for (color = 0; color < dark.length; color++) {
             dark[color].style.border = "2px solid rgb(252, 239, 44)";
+          }
+          var dark = document.getElementsByClassName("confirm-modal-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkred";
           }
           var dark = document.getElementsByClassName("item-body");
           var color;
@@ -1515,6 +1525,11 @@ export default {
           var color;
           for (color = 0; color < dark.length; color++) {
             dark[color].style.border = "2px solid rgb(252, 239, 44)";
+          }
+          var dark = document.getElementsByClassName("confirm-modal-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e5e";
           }
           var dark = document.getElementsByClassName("item-body");
           var color;
@@ -1613,6 +1628,11 @@ export default {
           for (color = 0; color < dark.length; color++) {
             dark[color].style.borderTop = "solid currentColor 1px";
           }
+          var dark = document.getElementsByClassName("confirm-modal-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "black";
+          }
           var dark = document.getElementsByClassName("router");
           var color;
           for (color = 0; color < dark.length; color++) {
@@ -1704,6 +1724,12 @@ export default {
           var dark = document.getElementsByClassName("router");
           var color;
           for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("confirm-modal-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#dee3de";
             dark[color].style.color = "black";
           }
           var dark = document.getElementsByClassName("item-body");
@@ -1850,7 +1876,7 @@ export default {
           }
         }
       });
-    },
+    }
   }
 };
 </script>

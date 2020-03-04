@@ -4,7 +4,7 @@
       :active.sync="isLoading"
       :is-full-page="fullPage"
       :background-color="'#222'"
-      :color="'#1b5e20'"
+      :color="'#ffffff'"
     ></loading>
   </div>
 </template>
@@ -16,7 +16,7 @@ export default {
   data() {
     return {
       isLoading: false,
-      fullPage: true
+      fullPage: true,
     };
   },
   components: {

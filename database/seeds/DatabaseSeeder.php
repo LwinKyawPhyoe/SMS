@@ -81,17 +81,17 @@ class DatabaseSeeder extends Seeder
         $roles = [
             [
                 'name' => "Admin",
-                'is_active' => "No",
-                "domain"  => "sms"
+                'is_active' => "yes",
+                "domain"  => "TS"
             ],
             [
                 'name' => "Teacher",
-                'is_active' => "No",
+                'is_active' => "TS",
                 "domain"  => "sms"
             ],
             [
                 'name' => "Parent",
-                'is_active' => "No",
+                'is_active' => "TS",
                 "domain"  => "sms"
             ],
         ];
@@ -127,5 +127,14 @@ class DatabaseSeeder extends Seeder
             'language' => 'English',
             'schoollogo' => 'download.jpg',
         ]);
+
+
+                /**Create Dummy data */
+                factory(App\RoomType::class, 100)->create();
+                factory(App\Hostel::class, 100)->create();
+                factory(App\HostelRoom::class, 100)->create();
+                factory(App\Department::class, 100)->create();
+                factory(App\Designation::class, 100)->create();
+                factory(App\StaffDirectory::class, 30)->create();
     }
 }

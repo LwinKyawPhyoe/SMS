@@ -103,7 +103,7 @@ class DesignationController extends Controller
     {
         $designation = Designation::find($id);
         $designation->update([
-            "is_active" => "no"
+            "is_active" => "delete"
         ]);
         return response()->json(['text' => 'Designation deleted successfully', 'type' => 'success']);
     }
