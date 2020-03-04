@@ -83,7 +83,13 @@
                   nowrap
                   v-for="tablehead in tableHead"
                   :key="tablehead.id"
-                >{{tablehead.subject}} (TH:{{tablehead.passing_marks}}/{{tablehead.full_marks}})</th>
+                >
+                <label v-if="tablehead.passing_marks > 0" for="" style="margin:0">{{tablehead.subject}} (TH:{{tablehead.passing_marks}}/{{tablehead.full_marks}})</label>
+                <label v-else for="" style="margin:0">{{tablehead.subject}} <i
+                  class="fa fa-times"
+                  style="color:red; margin-left:10px;"
+                ></i></label>
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -109,6 +115,13 @@
                           @click="checkA($event,Subjects)"
                         />
                         <input
+                        disabled
+                         v-else-if="Subjects.passing_marks == null"
+                          type="checkbox"
+                          value="A"
+                          autocomplete="off"
+                        />
+                        <input
                           v-else
                           type="checkbox"
                           value="A"
@@ -122,9 +135,17 @@
                     <input
                       v-if="Subjects.start_time == 'A'"
                       disabled
-                      type="text"
+                      type="number"
                       class="inputbox"
                       placeholder="Enter Marks"
+                      v-model="Subjects.note"
+                    />
+                    <input
+                      v-else-if="Subjects.passing_marks == null"
+                      disabled
+                      type="number"
+                      class="inputbox"
+                      placeholder="No Exam"
                       v-model="Subjects.note"
                     />
                     <input

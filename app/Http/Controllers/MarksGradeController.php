@@ -160,7 +160,7 @@ class MarksGradeController extends Controller
                 if(count($assign_subject) > 0){
                     foreach($assign_subject as $assign_subject1){
                         $exam_schadule = examSchadule::where('is_active','yes')->where('domain','TS')->where('session_id',$academicYearID)->where('exam_id',$idsArray[0])->where('assign_subject_id',$assign_subject1->id)->get();
-                        if(count($exam_schadule) > 0){
+                        
                             foreach($exam_schadule as $exam_schadule1){  
                                 $examResultsObj = [];
                                 $exam_results = examResults::where('is_active','yes')->where('domain','TS')->where('session_id',$academicYearID)->where('exam_schadule_id',$exam_schadule1->id)->where('admission_no',$students1->admission_no)->get();
@@ -179,16 +179,17 @@ class MarksGradeController extends Controller
                                 }
                             }
                             }
-                        }else{
-                            $returnResult = 'no';
-                        }
                     }
                 }else{
                     $returnResult = 'no';
                 }
     
-                $StudentExam->subjects = $ExamSchaduleObj;
-                array_push($returnArrayStudentExam,$StudentExam);
+                if(count($ExamSchaduleObj) >0){
+                    $StudentExam->subjects = $ExamSchaduleObj;
+                    array_push($returnArrayStudentExam,$StudentExam);
+                }else{
+                    $returnResult = 'no';
+                }
     
             }
             }else{

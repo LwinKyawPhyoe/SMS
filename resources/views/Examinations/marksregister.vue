@@ -35,7 +35,12 @@
                         nowrap
                         v-for="tablehead in tableHead"
                         :key="tablehead.id"
-                      >{{tablehead.subject}} (TH:{{tablehead.passing_marks}}/{{tablehead.full_marks}})</th>
+                      > <label for="" v-if="tablehead.passing_marks > 0" style="margin:0">{{tablehead.subject}} (TH:{{tablehead.passing_marks}}/{{tablehead.full_marks}})</label>
+                        <label for="" v-else style="margin:0">{{tablehead.subject}} <i
+                  class="fa fa-times"
+                  style="color:red; margin-left:10px;"
+                ></i></label>
+                       </th>
                     </tr>
                   </thead>
                   <tbody>
@@ -56,6 +61,13 @@
                                 @click="checkA($event,editStudentExam)"
                               />
                               <input
+                                v-else-if="editStudentExam.get_marks == null || editStudentExam.get_marks == 'No Marks'"
+                                type="checkbox"
+                                disabled
+                                value="A"
+                                autocomplete="off"
+                              />
+                              <input
                                 v-else
                                 type="checkbox"
                                 value="A"
@@ -73,6 +85,13 @@
                             class="inputbox"
                             placeholder="Enter Marks"
                             v-model="editStudentExam.get_marks"
+                          />
+                          <input
+                            v-else-if="editStudentExam.get_marks == null || editStudentExam.get_marks == 'No Marks'"
+                            disabled
+                            type="text"
+                            class="inputbox"
+                            placeholder="No Data"
                           />
                           <input
                             v-on:keyup="checkFullMarks($event,editStudentExam.full_marks,index)"
@@ -214,7 +233,12 @@
                   nowrap
                   v-for="tablehead in tableHead"
                   :key="tablehead.id"
-                >{{tablehead.subject}} (TH:{{tablehead.passing_marks}}/{{tablehead.full_marks}})</th>
+                > <label v-if="tablehead.passing_marks > 0" for="" style="margin:0">{{tablehead.subject}} (TH:{{tablehead.passing_marks}}/{{tablehead.full_marks}})</label>
+                  <label v-else for="" style="margin:0">{{tablehead.subject}} <i
+                  class="fa fa-times"
+                  style="color:red; margin-left:10px;"
+                ></i></label>
+                 </th>
                 <th class="all" nowrap>Grade Total</th>
                 <th class="all" nowrap>Percent(%)</th>
                 <th class="all" nowrap>Result</th>
@@ -237,8 +261,9 @@
                   v-for="ExamSubjects in StudentExam.subjects"
                   :key="ExamSubjects.id"
                 >
-                  <label for v-if="ExamSubjects.attendence == 'A'">{{ExamSubjects.attendence}}</label>
-                  <label for v-else>{{ExamSubjects.get_marks}}</label>
+                  <label for v-if="ExamSubjects.attendence == 'A'" style="margin-bottom:0px">{{ExamSubjects.attendence}}</label>
+                  <label for v-else-if="ExamSubjects.get_marks == null || ExamSubjects.get_marks == 'No Marks'" style="margin-bottom:0">No Marks</label>
+                  <label for v-else style="margin-bottom:0px">{{ExamSubjects.get_marks}}</label>
                 </td>
                 <td class="all" nowrap>{{StudentExam.grand_total}}/{{grandTotal}}</td>
                 <td class="all" nowrap>{{StudentExam.percent}} %</td>
@@ -252,7 +277,7 @@
                   <a
                     v-if="StudentExam.Result == 'failed'"
                     href="#"
-                    style="text-decoration:none;"
+                    style="text-decoration:none;" 
                     class="btn-danger btn-sm"
                   >{{StudentExam.Result}}</a>
                 </td>
@@ -349,7 +374,9 @@ export default {
           var ReturnData = response.data;
           var TotalMarks = 0;
           for (var i = 0; i < ReturnData.length; i++) {
-            TotalMarks = TotalMarks + parseInt(ReturnData[i].full_marks);
+            if(ReturnData[i].full_marks != null){
+              TotalMarks = TotalMarks + parseInt(ReturnData[i].full_marks);
+            }
           }
           this.grandTotal = TotalMarks;
         });
@@ -417,8 +444,10 @@ export default {
       var changeTotal = 0;
       var changeResult = "pass";
       for (var i = 0; i < this.editStudentExamData.length; i++) {
-        changeTotal =
+          if(this.editStudentExamData[i].get_marks != null){
+            changeTotal =
           changeTotal + parseInt(this.editStudentExamData[i].get_marks);
+          }
         if (
           this.editStudentExamData[i].get_marks <
           this.editStudentExamData[i].passing_marks

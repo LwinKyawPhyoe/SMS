@@ -169,8 +169,8 @@
                         <span class="tooltipLabel">{{MarksGrade.description}}</span>
                       </p>
                     </td>
-                    <td class="all" nowrap>{{MarksGrade.mark_from}}</td>
-                    <td class="all" nowrap>{{MarksGrade.marks_upto}}</td>
+                    <td class="all" nowrap>{{MarksGrade.mark_from}}%</td>
+                    <td class="all" nowrap>{{MarksGrade.marks_upto}}%</td>
                     <td>
                       <i class="fa fa-pencil pen" @click="EditMarksGrade(MarksGrade.id)">
                         <span class="penLabel">Edit</span>

@@ -94,35 +94,46 @@ class ExamResultsController extends Controller
                     foreach($examSchaduleArray as $examSchaduleArray1){
                         $fullMarks = $fullMarks + (int)$examSchaduleArray1->full_marks;
                         $exam_results = examResults::where('is_active','yes')->where('domain','TS')->where('session_id',$academicYearId)->where('exam_schadule_id',$examSchaduleArray1->id)->where('admission_no',$students1->admission_no)->get();
-                        if(count($exam_results) > 0){
-                            foreach($exam_results as $exam_results1){
-                                $studentExamDataSubjectsObj = new StudentExamDataSubjects();
-                                $studentExamDataSubjectsObj->get_marks = $exam_results1->get_marks;
-                                $studentExamDataSubjectsObj->passing_marks = $examSchaduleArray1->passing_marks;
-                                $studentExamDataSubjectsObj->exam_schadule_id = $exam_results1->exam_schadule_id;
-                                $studentExamDataSubjectsObj->attendence = $exam_results1->attendence;
-                                $studentExamDataSubjectsObj->full_marks = $examSchaduleArray1->full_marks;
-                                $studentExamDataSubjectsObj->id = $examSchaduleArray1->id;
-                                array_push($studentExamDataSubjects,$studentExamDataSubjectsObj);
-                                $grandTotal = $grandTotal + (int)$exam_results1->get_marks;
-                                if($exam_results1->get_marks < $examSchaduleArray1->passing_marks){
-                                    $result = 'failed';
+                        
+                            if(count($exam_results) > 0){
+                                foreach($exam_results as $exam_results1){
+                                    $studentExamDataSubjectsObj = new StudentExamDataSubjects();
+                                    $studentExamDataSubjectsObj->get_marks = $exam_results1->get_marks;
+                                    $studentExamDataSubjectsObj->passing_marks = $examSchaduleArray1->passing_marks;
+                                    $studentExamDataSubjectsObj->exam_schadule_id = $exam_results1->exam_schadule_id;
+                                    $studentExamDataSubjectsObj->attendence = $exam_results1->attendence;
+                                    $studentExamDataSubjectsObj->full_marks = $examSchaduleArray1->full_marks;
+                                    $studentExamDataSubjectsObj->id = $examSchaduleArray1->id;
+                                    array_push($studentExamDataSubjects,$studentExamDataSubjectsObj);
+                                    $grandTotal = $grandTotal + (int)$exam_results1->get_marks;
+                                    if($exam_results1->get_marks < $examSchaduleArray1->passing_marks){
+                                        $result = 'failed';
+                                    }
                                 }
+                            }else{
+                                $studentExamDataSubjectsObj = new StudentExamDataSubjects();
+                                    $studentExamDataSubjectsObj->get_marks = 'No Marks';
+                                    $studentExamDataSubjectsObj->passing_marks = $examSchaduleArray1->passing_marks;
+                                    $studentExamDataSubjectsObj->exam_schadule_id = $exam_results1->exam_schadule_id;
+                                    $studentExamDataSubjectsObj->attendence = $exam_results1->attendence;
+                                    $studentExamDataSubjectsObj->full_marks = $examSchaduleArray1->full_marks;
+                                    $studentExamDataSubjectsObj->id = $examSchaduleArray1->id;
+                                    array_push($studentExamDataSubjects,$studentExamDataSubjectsObj);
                             }
-                        }else{
-                            $returnResult = 'no';
-                        }
                     }
-                    $StudentExamData->subjects = $studentExamDataSubjects;
-                    $StudentExamData->grand_total = $grandTotal;
-                    $perCent = $grandTotal/$fullMarks * 100;
-                    $stringPercent = (string)$perCent;
-                    $subStringPercent = substr($stringPercent,0,5);
-                    $StudentExamData->Result = $result;
-                    $StudentExamData->percent = $subStringPercent;
-                    
-        
-                    array_push($returnStudentExamData,$StudentExamData);
+                    if(count($studentExamDataSubjects) >0 ){
+                        $StudentExamData->subjects = $studentExamDataSubjects;
+                        $StudentExamData->grand_total = $grandTotal;
+                        $perCent = $grandTotal/$fullMarks * 100;
+                        $stringPercent = (string)$perCent;
+                        $subStringPercent = substr($stringPercent,0,5);
+                        $StudentExamData->Result = $result;
+                        $StudentExamData->percent = $subStringPercent;
+                        
+                        array_push($returnStudentExamData,$StudentExamData);
+                    }else{
+                        $returnResult = 'no';
+                    }
         
                 }
             }else{
