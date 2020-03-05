@@ -3,11 +3,12 @@
     <div class="toplink">
       <h2 class="stuName">Examinations</h2>
       <h4 class="stuLink">
-        <router-link to="/home" class="home">Home</router-link>>
+        <router-link to="/dashboard" class="home">Home</router-link>>
         <router-link to="/examschadule" class="home">Exam Schedule</router-link>> Add Examinations
       </h4>
     </div>
     <hr />
+    <Loading></Loading>
     <div class="card">
       <div class="card-header">
         <h6>Select Exam</h6>
@@ -121,8 +122,9 @@ import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
 import { EventBus } from "../../js/event-bus.js";
 import store from "store2";
+import Loading from "../LoadingController.vue";
 export default {
-  components: { DatePicker },
+  components: { DatePicker,Loading },
   data() {
     return {
       exams: [],
@@ -145,15 +147,19 @@ export default {
       data: false
     };
   },
-  created() {
-    EventBus.$emit("ThemeClicked");
+  mounted(){
+    EventBus.$emit('onLoad');
     this.getExamName();
     this.getClass();
+  },
+  created() {
+    EventBus.$emit("ThemeClicked");
   },
   methods: {
     getClass() {
       this.axios.get(`/api/getClasses`).then(response => {
         this.Class = response.data;
+        EventBus.$emit('onLoadEnd');
       });
     },
     getExamName() {
@@ -179,6 +185,7 @@ export default {
       this.display = false;
     },
     Search() {
+      EventBus.$emit('onLoad');
       this.mainExamSubjects = [];
       this.arrayClassSectionExam.push(this.id1);
       this.arrayClassSectionExam.push(this.id2);
@@ -189,10 +196,7 @@ export default {
           // this.Subjects = response.data;
           this.mainExamSubjects = response.data;
           this.arrayClassSectionExam = [];
-        });
-
-      setTimeout(() => {
-        var dataValue;
+          var dataValue;
         EventBus.$emit("ThemeClicked");
         for (var i = 0; i < this.mainExamSubjects.length; i++) {
           dataValue = this.mainExamSubjects[i].subject;
@@ -202,9 +206,9 @@ export default {
         } else {
           this.data = true;
         }
-
+        EventBus.$emit('onLoadEnd');
         this.display = true;
-      }, 500);
+        });
     },
     allData() {
       for (var i = 0; i < this.mainExamSubjects.length; i++) {

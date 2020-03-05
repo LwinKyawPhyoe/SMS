@@ -8,8 +8,8 @@
       aria-labelledby="exampleModalCenterTitle"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="width:653px;">
+      <div class="modal-dialog modal-dialog-centered" role="document" style="width:100% !important;padding-right: 17px;">
+        <div class="modal-content" style="width:100% !important;">
           <div class="modal-body" style="padding:0;">
             <div class="card-header" style="width: 100%;margin-left: 0;">
               <h6>Examinations</h6>
@@ -120,11 +120,11 @@
     <div class="toplink">
       <h2 class="stuName">Examinations</h2>
       <h4 class="stuLink">
-        <router-link to="/home" class="home">Home</router-link>> Marks Register
+        <router-link to="/dashboard" class="home">Home</router-link>> Marks Register
       </h4>
     </div>
     <hr />
-
+  <Loading></Loading>
     <div class="card">
       <div class="card-header">
         <h6>Select Marks Register</h6>
@@ -305,9 +305,11 @@ import { EventBus } from "../../js/event-bus.js";
 import { Util } from "../../js/util";
 import message from '../Alertmessage/message.vue';
 import store from "store2";
+import Loading from "../LoadingController.vue";
 export default {
    components: {
-          message
+          message,
+          Loading
         },
   data() {
     return {
@@ -340,6 +342,9 @@ export default {
       },
     };
   },
+  mounted(){
+    EventBus.$emit('onLoad');
+  },
   created() {
     EventBus.$emit("ThemeClicked");
     this.getExamNames();
@@ -371,6 +376,7 @@ export default {
     getClass() {
       this.axios.get(`/api/getClasses`).then(response => {
         this.Classes = response.data;
+        EventBus.$emit('onLoadEnd');
       });
     },
     getSection(event) {
@@ -387,6 +393,7 @@ export default {
       this.id3 = eventS.target.value;
     },
     Search() {
+      EventBus.$emit('onLoad');
       this.idsArray = [];
       this.idsArray.push(this.id1);
       this.idsArray.push(this.id2);
@@ -413,11 +420,10 @@ export default {
             this.data = true;
             this.tableBodyStudentExam = response.data;
           }
+          EventBus.$emit("ThemeClicked");
+          this.display = true;
+          EventBus.$emit('onLoadEnd');
         });
-      setTimeout(() => {
-        EventBus.$emit("ThemeClicked");
-        this.display = true;
-      }, 1000);
     },
     searchTable() {
       var input, filter, found, table, tr, td, i, j;
@@ -450,7 +456,6 @@ export default {
     },
     getAllData() {
       for (var i = 0; i < this.editStudentExamData.length; i++) {
-        // console.log(this.editStudentExamData[i].exam_schadule_id);
         this.editExmaResult.Examresult.push({
           admission_no: this.Admission_number,
           exam_schadule_id: this.editStudentExamData[i].exam_schadule_id,

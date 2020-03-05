@@ -8,8 +8,8 @@
       aria-labelledby="exampleModalCenterTitle"
       aria-hidden="true"
     >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="width:653px;">
+      <div class="modal-dialog modal-dialog-centered" role="document" style="width:100% !important;padding-right: 17px;">
+        <div class="modal-content" style="width:100% !important;">
           <div class="modal-body" style="padding:0;">
             <div class="card-header" style="width: 100%;margin-left: 0;">
               <h6>Exam {{this.examName}}</h6>
@@ -58,11 +58,11 @@
     <div class="toplink">
       <h2 class="stuName">Examinations</h2>
       <h4 class="stuLink">
-        <router-link to="/home" class="home">Home</router-link>> Examinations
+        <router-link to="/dashboard" class="home">Home</router-link>> Examinations
       </h4>
     </div>
     <hr />
-
+  <Loading></Loading>
     <div class="card">
       <div class="card-header">
         <h6>Examinations</h6>
@@ -128,8 +128,8 @@
               </tr>
             </thead>
             <tbody id="myTable">
-              <tr class="active" v-for="examnames in examNames" :key="examnames.id">
-                <td>1</td>
+              <tr class="active" v-for="(examnames,index) in examNames" :key="examnames.id">
+                <td>{{index + 1}}</td>
                 <td class="all" nowrap>
                   <p class="toolText" v-if="examnames.is_active == 'yes'">
                     {{examnames.name}}
@@ -169,11 +169,14 @@ import { EventBus } from "../../js/event-bus.js";
 import store from "store2";
 import message from '../Alertmessage/message.vue';
 import { Util } from "../../js/util";
+import Loading from "../LoadingController.vue";
 export default {
   components: {
-          message
+          message,
+          Loading
         },
   data() {
+    
     return {
       Class: [],
       Sections: [],
@@ -195,10 +198,12 @@ export default {
       TestArray: []
     };
   },
+  mounted(){
+    EventBus.$emit("onLoad");
+    this.getClass();
+  },
   created() {
     EventBus.$emit("ThemeClicked");
-    this.getClass();
-
     var message = store.get("msg");
     if (message != null) {
       if (message == "save") {
@@ -216,27 +221,25 @@ export default {
     getClass() {
       this.axios.get(`/api/getClasses`).then(response => {
         this.Class = response.data;
+        EventBus.$emit("onLoadEnd");
       });
     },
-    getClassName(class_name) {
-      console.log(class_name);
-    },
-    getSectionName(section_name) {
-      console.log(section_name);
-    },
     getSection(event) {
+      this.display = false;
       this.axios
         .get(`/api/getClassSection/${event.target.value}`)
         .then(response => {
           this.Sections = response.data;
           this.id1 = event.target.value;
+          
         });
     },
     getSectionId(eventS) {
+      this.display = false;
       this.id2 = eventS.target.value;
     },
     Search(Class_id, Section_id) {
-      
+      EventBus.$emit("onLoad");
       this.array.push(Class_id);
       this.array.push(Section_id);
       this.axios.get(`/api/getClassSectionId/${this.array}`).then(response => {
@@ -265,9 +268,7 @@ export default {
         .get(`/api/examSchadules/getSectionName/${Section_id}`)
         .then(response => {
           this.Section_name = response.data;
-        });
-      setTimeout(() => {
-        EventBus.$emit("ThemeClicked");
+          EventBus.$emit("ThemeClicked");
         var dataValue;
         for (var i = 0; i < this.examNames.length; i++) {
           dataValue = this.examNames[i].name;
@@ -278,11 +279,12 @@ export default {
           this.data = true;
         }
         this.display = true;
-        
-      }, 500);
+        EventBus.$emit("onLoadEnd");
+        });
       this.array = [];
     },
     GetExamData(class_id, section_id, exam_id, exam_name) {
+      EventBus.$emit("onLoad");
       this.getExamData.push(class_id);
       this.getExamData.push(section_id);
       this.getExamData.push(exam_id);
@@ -292,6 +294,7 @@ export default {
         .get(`/api/examSchadules/getExamData/${this.getExamData}`)
         .then(response => {
           this.receiveExamData = response.data;
+          EventBus.$emit("onLoadEnd");
         });
       this.getExamData = [];
     },
@@ -316,11 +319,6 @@ export default {
         }
       }
     },
-    Test() {
-      for (var i = 0; i < this.TestArray.length; i++) {
-        console.log(this.TestArray[i].name);
-      }
-    }
   }
 };
 </script>

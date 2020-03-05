@@ -3,7 +3,7 @@
     <div class="toplink">
       <h2 class="stuName">Examinations</h2>
       <h4 class="stuLink">
-        <router-link to="/home" class="home">Home</router-link>> Exam List
+        <router-link to="/dashboard" class="home">Home</router-link>> Exam List
       </h4>
     </div>
     <hr />
@@ -163,12 +163,15 @@ import { Util } from "../../js/util";
                 data : false
             }
         },
+        mounted(){
+          EventBus.$emit("onLoad");
+          this.getdata();
+        },
         created() {
-            this.getdata();
-            EventBus.$emit("ThemeClicked");
-            EventBus.$on("onLoad", response => {
-            this.getdata();
             
+            EventBus.$emit("ThemeClicked");
+            EventBus.$on("clicked", response => {
+            this.getdata();
             this.deletemsg.text = 'Deleted Successfully',
             this.deletemsg.type = 'success'
             Util.workAlert("#delalertmsg");
@@ -185,13 +188,13 @@ import { Util } from "../../js/util";
                     }else{
                       this.data = false;
                     }
+                    EventBus.$emit("onLoadEnd");
                 });
-            },Test(para){
-              console.log(para);
             },
             addExam() {
               if(this.checkValidate())
               {
+                EventBus.$emit("onLoad");
                 // EventBus.$emit("clicked");
                 if(this.saveexam.remark==null){
                 this.saveexam.remark='No Description'
@@ -203,9 +206,10 @@ import { Util } from "../../js/util";
                 
                 this.saveexam = {"id":"","name":"","session_id":"","remark":"","is_active":'',"domain":'', "created_at":"","updated_at":""},
                 this.getdata(),
-                this.msg.text = 'Saved Successfully',
+                this.msg.text = response.data,
                 this.msg.type = 'success',
-                Util.workAlert("#alertmsg")
+                Util.workAlert("#alertmsg"),
+                EventBus.$emit("onLoadEnd")
                 ))
               .catch(error => {            
                 console.log("err->" + JSON.stringify(error));         
@@ -272,10 +276,6 @@ import { Util } from "../../js/util";
             return true;
         }
         return false;
-    },Test(){
-      this.axios.get(`/api/ExamList`).then(response=>{
-        console.log(response.data);
-      })
     }
   }
   }

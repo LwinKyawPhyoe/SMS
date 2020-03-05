@@ -8,7 +8,7 @@
       </h4>
     </div>
     <hr />
-
+    <Loading></Loading>
     <div class="card">
       <div class="card-header">
         <h6>Select Fill Marks</h6>
@@ -172,7 +172,11 @@
 <script>
 import { EventBus } from "../../js/event-bus.js";
 import store from "store2";
+import Loading from "../LoadingController.vue";
 export default {
+  components:{
+    Loading
+  },
   data() {
     return {
       examNames: [],
@@ -192,6 +196,9 @@ export default {
       oldId: ""
     };
   },
+  mounted(){
+    EventBus.$emit('onLoad');
+  },
   created() {
     EventBus.$emit("ThemeClicked");
     this.getExamNames();
@@ -210,6 +217,7 @@ export default {
     getClass() {
       this.axios.get(`/api/getClasses`).then(response => {
         this.Classes = response.data;
+        EventBus.$emit('onLoadEnd');
       });
     },
     getSection(event) {
@@ -238,6 +246,7 @@ export default {
       }
     },
     Search() {
+      EventBus.$emit('onLoad');
       this.idsArray.push(this.id1);
       this.idsArray.push(this.id2);
       this.idsArray.push(this.id3);
@@ -255,12 +264,10 @@ export default {
             this.data = true;
             this.StudentExam = response.data;
           }
+          EventBus.$emit("ThemeClicked");
+          this.display = true;
+          EventBus.$emit('onLoadEnd');
         });
-      this.idsArray = [];
-      setTimeout(() => {
-        EventBus.$emit("ThemeClicked");
-        this.display = true;
-      }, 1000);
     },
     Test() {},
     SaveExamResults() {

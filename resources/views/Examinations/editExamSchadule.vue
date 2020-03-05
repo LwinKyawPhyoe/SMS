@@ -3,10 +3,11 @@
         <div class="toplink">
             <h2 class="stuName">Examinations</h2>
             <h4 class="stuLink">
-                <router-link to="/home" class="home">Home </router-link> > <router-link to="/examschadule" class="home">Exam Schedule</router-link> > Add Examinations
+                <router-link to="/dashboard" class="home">Home </router-link> > <router-link to="/examschadule" class="home">Exam Schedule</router-link> > Add Examinations
             </h4>
         </div>
         <hr>
+        <Loading></Loading>
         <div class="card" v-if="this.display == true">
             <div class="card-header">
                 <h6>Reuse Exam</h6>
@@ -56,11 +57,12 @@
 
 <script>
   import DatePicker from 'vue2-datepicker';
+  import Loading from "../LoadingController.vue";
   import 'vue2-datepicker/index.css';
   import {EventBus} from "../../js/event-bus";
   import store from "store2";
   export default {
-    components: { DatePicker },
+    components: { DatePicker,Loading },
     data() {
       return {
         exams: [],
@@ -84,14 +86,17 @@
         newExamId : '',
         alertMessage:''
       };
-    },created(){
+    },mounted(){
+        EventBus.$emit('onLoad');
+    },
+    created(){
+        EventBus.$emit("ThemeClicked");
         this.id1 = this.$route.params.exam_id;
         this.id2 = this.$route.params.class_id;
         this.id3 = this.$route.params.section_id;
         this.Search();
         this.getExamName();
         this.getClass();
-        EventBus.$emit("ThemeClicked");
         this.getSection();
         
         setTimeout(() => {
@@ -113,13 +118,13 @@
                 });
         },getSectionId(eventS){
       this.id3 = eventS.target.value;
-      console.log(this.id1 + this.id2 + this.id3);
     },getExamId(event){
             this.newExamId=event.target.value;
         },getClassId(event){
             this.id2 = event.target.value;
         }
         ,Search(){
+        EventBus.$emit("ThemeClicked");
         this.mainExamSubjects = [];
         this.arrayClassSectionExam.push(this.id1);
         this.arrayClassSectionExam.push(this.id2);
@@ -130,10 +135,6 @@
             // this.Subjects = response.data;
             this.mainExamSubjects = response.data;
             this.arrayClassSectionExam = [];
-        })
-        ;
-        
-        setTimeout(() => {
             var dataValue ;
             for(var i = 0;i<this.mainExamSubjects.length;i++){
                 dataValue = this.mainExamSubjects[i].subject;
@@ -143,9 +144,9 @@
             }else{
                 this.data = true;
             }
-
+            EventBus.$emit('onLoadEnd');
             this.display = true;
-        }, 500);
+        });
         
     },
     allData(){

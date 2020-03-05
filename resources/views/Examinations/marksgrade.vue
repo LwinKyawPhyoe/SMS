@@ -3,12 +3,12 @@
     <div class="toplink">
       <h2 class="stuName">Examinations</h2>
       <h4 class="stuLink">
-        <router-link to="/home" class="home">Home</router-link>> Marks Grade
+        <router-link to="/dashboard" class="home">Home</router-link>> Marks Grade
       </h4>
     </div>
     <hr />
-    <confirm :url="props"></confirm>
     <Loading></Loading>
+    <confirm :url="props"></confirm>
     <div class="row rowContainer" style="align-items: end !important;margin:0;">
       <div class="col-lg-5 col-md-12" style="padding:0;">
         <div class="card">
@@ -230,10 +230,13 @@ export default {
       data : false
     };
   },
+  mounted(){
+    EventBus.$emit('onLoad');
+  },
   created() {
     EventBus.$emit("ThemeClicked");
     this.getmarksGrades();
-    EventBus.$on("onLoad", response => {
+    EventBus.$on("clicked", response => {
             this.getmarksGrades();
             this.deletemsg.text = 'Deleted Successfully',
             this.deletemsg.type = 'success'
@@ -259,11 +262,13 @@ export default {
                     }else{
                       this.data = false;
                     }
+                    EventBus.$emit('onLoadEnd');
       });
     },
     SaveMarksGrade() {
       this.checkValidate();
       if (this.check == true) {
+        EventBus.$emit('onLoad');
         this.successAlertmsg = "exam Added Successfully";
         if (
           this.saveMarksGrade.description == undefined ||
@@ -276,7 +281,7 @@ export default {
           .then(response => {
             this.saveMarksGrade = {};
             this.getmarksGrades();
-            this.msg.text = 'Saved Successfully',
+            this.msg.text = response.data,
                 this.msg.type = 'success',
                 Util.workAlert("#alertmsg")
           });
@@ -347,9 +352,6 @@ export default {
         this.check = true;
       }
       this.arrayError = [];
-    },
-    Test() {
-      console.log("test");
     },
     DeleteMarksGrade(id) {
         var funName = "deleteMarksGrade";
