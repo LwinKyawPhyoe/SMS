@@ -57,7 +57,7 @@ img {
   text-align: center;
   h3 {
     color: white;
-    margin-right: 24%;
+    margin-top: -28px;
   }
   .btnsidebar {
     margin-top: 10px;
@@ -94,9 +94,13 @@ img {
       background: #f5f3f3;
       .image {
         width: 84px;
+        height: 84px;
+        border-radius: 50%;
+        box-shadow: 0px 0px 5px grey;
+        border: 1px solid #d6d6d6;
       }
       .aboutAdmin {
-        margin-top: 22px;
+        margin: 10px 0px 0px 20px;
       }
     }
   }

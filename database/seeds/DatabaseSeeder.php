@@ -58,8 +58,8 @@ class DatabaseSeeder extends Seeder
                 'session_id' => '1'
             ]
         ];
-        
-    
+
+
 
         foreach ($items as $item) {
             DB::table('attendance_types')->insert([
@@ -82,21 +82,25 @@ class DatabaseSeeder extends Seeder
             [
                 'name' => "Admin",
                 'is_active' => "yes",
-                "domain"  => "TS"
+                "domain"  => "TS",
+                "session_id" => '2'
             ],
             [
                 'name' => "Teacher",
-                'is_active' => "TS",
-                "domain"  => "sms"
+                'is_active' => "yes",
+                "domain"  => "TS",
+                "session_id" => '2'
+
             ],
             [
                 'name' => "Parent",
-                'is_active' => "TS",
-                "domain"  => "sms"
+                'is_active' => "yes",
+                "domain"  => "TS",
+                "session_id" => '2'
             ],
         ];
 
-       
+
         foreach ($roles as $item) {
             DB::table('roles')->insert([
                 'name' => $item['name'],
@@ -114,14 +118,14 @@ class DatabaseSeeder extends Seeder
         ]);
         /***end code of Wai Yan Soe */
         DB::table('generals')->insert([
-            'color'=> 'defaultColor'
+            'color' => 'defaultColor'
         ]);
         DB::table('school_details')->insert([
             'school_name' => 'SSMS',
             'school_code' => 'MM-294905',
             'address' => 'Myanmar, Mogok',
             'phone' => '09284958284',
-            'email' =>'tastysoft1234@gmail.com',
+            'email' => 'tastysoft1234@gmail.com',
             'session' => '2019-20',
             'session_month' => 'July',
             'language' => 'English',
@@ -129,12 +133,12 @@ class DatabaseSeeder extends Seeder
         ]);
 
 
-                /**Create Dummy data */
-                factory(App\RoomType::class, 100)->create();
-                factory(App\Hostel::class, 100)->create();
-                factory(App\HostelRoom::class, 100)->create();
-                factory(App\Department::class, 100)->create();
-                factory(App\Designation::class, 100)->create();
-                factory(App\StaffDirectory::class, 30)->create();
+        /**Create Dummy data */
+        factory(App\RoomType::class, 100)->create();
+        factory(App\Hostel::class, 100)->create();
+        factory(App\HostelRoom::class, 100)->create();
+        factory(App\Department::class, 100)->create();
+        factory(App\Designation::class, 100)->create();
+        factory(App\StaffDirectory::class, 30)->create();
     }
 }

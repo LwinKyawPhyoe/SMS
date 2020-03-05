@@ -85,18 +85,18 @@ class StaffDirectoryController extends Controller
                 $resume  = '';
                 $joining_letter = '';
                 $other_document = '';
-                // if ($request->resume) {
-                //     $resume = time() . $request->staff_id . "resume" . '.' . $request->resume->getClientOriginalExtension();
-                //     $request->resume->move(public_path('staff_images'), $resume);
-                // }
-                // if ($request->joining_letter) {
-                //     $joining_letter = time() . $request->staff_id . "joiningletter" . '.' .  $request->joining_letter->getClientOriginalExtension();
-                //     $request->joining_letter->move(public_path('staff_images'), $joining_letter);
-                // }
-                // if ($request->other_document) {
-                //     $other_document = time() . $request->staff_id . "otherdocument" .  '.' . $request->other_document->getClientOriginalExtension();
-                //     $request->other_document->move(public_path('staff_images'), $other_document);
-                // }
+                if ($request->resume) {
+                    $resume = time() . $request->staff_id . "resume" . '.' . $request->resume->getClientOriginalExtension();
+                    $request->resume->move(public_path('staff_images'), $resume);
+                }
+                if ($request->joining_letter) {
+                    $joining_letter = time() . $request->staff_id . "joiningletter" . '.' .  $request->joining_letter->getClientOriginalExtension();
+                    $request->joining_letter->move(public_path('staff_images'), $joining_letter);
+                }
+                if ($request->other_document) {
+                    $other_document = time() . $request->staff_id . "otherdocument" .  '.' . $request->other_document->getClientOriginalExtension();
+                    $request->other_document->move(public_path('staff_images'), $other_document);
+                }
 
                 $staffDirectory = new StaffDirectory([
                     "staff_id"         => $request->staff_id,
@@ -190,9 +190,9 @@ class StaffDirectoryController extends Controller
         for ($i = 0; $i < count($session); $i++) {
             $staffDirectory = StaffDirectory::find($id);
             $filename = public_path() . '/staff_images/' . $request->image;
-            $resumefilename = public_path() . '/staff_images' . $request->resume;
-            $jlfilename = public_path() . '/staff_images' . $request->joining_letter;
-            $odfilename = public_path() . '/staff_images' . $request->joining_letter;
+            $resumefilename = public_path() . '/staff_images/' . $request->resume;
+            $jlfilename = public_path() . '/staff_images/' . $request->joining_letter;
+            $odfilename = public_path() . '/staff_images/' . $request->joining_letter;
             // echo $filename;
             /**
              * Name OF File
@@ -201,115 +201,95 @@ class StaffDirectoryController extends Controller
             $resume  = '';
             $joining_letter = '';
             $other_document = '';
-          
-
-            if (File::exists($filename) || File::exists($resumefilename) ||   File::exists($jlfilename) ||  File::exists($odfilename)) {
-                echo "exists";
-                $staffDirectory->update([
-                    "staff_id"         => $request->staff_id,
-                    "role_id"          => $request->role_id,
-                    "designation_id"   => $request->designation_id,
-                    "department_id"    => $request->department_id,
-                    "name"             => $request->name,
-                    "father_name"   => $request->father_name,
-                    "mother_name"   => $request->mother_name,
-                    "email"         => $request->email,
-                    "gender"   => $request->gender,
-                    "dob"   => $request->dob,
-                    "phone"   => $request->phone,
-                    "emergency_contact_no"   => $request->emergency_contact_no,
-                    "marital_status"   => $request->marital_status,
-                    "image"   => $request->image,
-                    "current_address"   => $request->current_address,
-                    "permanent_address"   => $request->permanent_address,
-                    "qualification"   => $request->qualification,
-                    "work_exp"   => $request->work_exp,
-                    "note"   => $request->note,
-                    "password"   => $request->password,
-                    "epf_no"   => $request->epf_no,
-                    "basic_salary"   => $request->basic_salary,
-                    "contract_type"   => $request->contract_type,
-                    "work_shift"   => $request->work_shift,
-                    "location"   => $request->location,
-                    "medical_leave"   => $request->medical_leave,
-                    "casual_leave"   => $request->casual_leave,
-                    "maternity_leave"   => $request->maternity_leave,
-                    "account_title"   => $request->account_title,
-                    "bank_account_no"   => $request->bank_account_no,
-                    "ifsc_code"   => $request->ifsc_code,
-                    "bank_branch_name"   => $request->bank_branch_name,
-                    "facebook"   => $request->facebook,
-                    "twitter"   => $request->twitter,
-                    "instagram"   => $request->instagram,
-                    "linkedin"   => $request->linkedin,
-                    "date_of_joining"   => $request->doj,
-                    'session_id'  => $session[$i]['id'],
-                    'domain'  => 'TS'
-                ]);
+            /**Image */
+            if (File::exists($filename)) {
+                $imageName = $request->image;
             } else {
-                // File::delete($filename);
-                if ($request->image) {
+                if ($request->image != "") {
                     $imageName = time() . '.' . $request->image->getClientOriginalExtension();
                     $request->image->move(public_path('staff_images'), $imageName);
                 }
-                if ($request->resume) {
-                    $resume = time() . $request->staff_id . "resume" . $request->resume->getClientOriginalExtension();
+            }
+            /**Documents */
+            if (File::exists($resumefilename)) {
+                $resume = $request->resume;
+            } else {
+                if ($request->resume != "") {
+                    $resume = time() . $request->staff_id . "resume" . '.' . $request->resume->getClientOriginalExtension();
                     $request->resume->move(public_path('staff_images'), $resume);
                 }
-                if ($request->joining_letter) {
-                    $joining_letter = time() . $request->staff_id . "joiningletter" . $request->joining_letter->getClientOriginalExtension();
+            }
+
+            if (File::exists($jlfilename)) {
+                $joining_letter = $request->joining_letter;
+            } else {
+                if ($request->joining_letter != "") {
+                    $joining_letter = time() . $request->staff_id . "joiningletter" . '.' .  $request->joining_letter->getClientOriginalExtension();
                     $request->joining_letter->move(public_path('staff_images'), $joining_letter);
                 }
-                if ($request->other_document) {
-                    $other_document = time() . $request->staff_id . "otherdocument" . $request->other_document->getClientOriginalExtension();
+            }
+
+
+            if (File::exists($odfilename)) {
+                $other_document = $request->other_document;
+            } else {
+                if ($request->other_document != "") {
+                    $other_document = time() . $request->staff_id . "otherdocument" .  '.' . $request->other_document->getClientOriginalExtension();
                     $request->other_document->move(public_path('staff_images'), $other_document);
                 }
-                $staffDirectory->update([
-                    "staff_id"         => $request->staff_id,
-                    "role_id"          => $request->role_id,
-                    "designation_id"   => $request->designation_id,
-                    "department_id"    => $request->department_id,
-                    "name"             => $request->name,
-                    "father_name"   => $request->father_name,
-                    "mother_name"   => $request->mother_name,
-                    "email"         => $request->email,
-                    "gender"   => $request->gender,
-                    "dob"   => $request->dob,
-                    "phone"   => $request->phone,
-                    "emergency_contact_no"   => $request->emergency_contact_no,
-                    "marital_status"   => $request->marital_status,
-                    "image"   => $imageName,
-                    "current_address"   => $request->current_address,
-                    "permanent_address"   => $request->permanent_address,
-                    "qualification"   => $request->qualification,
-                    "work_exp"   => $request->work_exp,
-                    "note"   => $request->note,
-                    "password"   => $request->password,
-                    "epf_no"   => $request->epf_no,
-                    "basic_salary"   => $request->basic_salary,
-                    "contract_type"   => $request->contract_type,
-                    "work_shift"   => $request->work_shift,
-                    "location"   => $request->location,
-                    "medical_leave"   => $request->medical_leave,
-                    "casual_leave"   => $request->casual_leave,
-                    "maternity_leave"   => $request->maternity_leave,
-                    "account_title"   => $request->account_title,
-                    "bank_account_no"   => $request->bank_account_no,
-                    "ifsc_code"   => $request->ifsc_code,
-                    "bank_branch_name"   => $request->bank_branch_name,
-                    "facebook"   => $request->facebook,
-                    "twitter"   => $request->twitter,
-                    "instagram"   => $request->instagram,
-                    "linkedin"   => $request->linkedin,
-                    "resume"   => $resume,
-                    "joining_letter"   => $joining_letter,
-                    "other_document"   => $other_document,
-                    "date_of_joining"   => $request->doj,
-                    "is_active"   => "yes",
-                    'session_id'  => $session[$i]['id'],
-                    'domain'  => 'TS'
-                ]);
             }
+
+
+            // File::delete($filename);
+
+
+
+
+            $staffDirectory->update([
+                "staff_id"         => $request->staff_id,
+                "role_id"          => $request->role_id,
+                "designation_id"   => $request->designation_id,
+                "department_id"    => $request->department_id,
+                "name"             => $request->name,
+                "father_name"   => $request->father_name,
+                "mother_name"   => $request->mother_name,
+                "email"         => $request->email,
+                "gender"   => $request->gender,
+                "dob"   => $request->dob,
+                "phone"   => $request->phone,
+                "emergency_contact_no"   => $request->emergency_contact_no,
+                "marital_status"   => $request->marital_status,
+                "image"   => $imageName,
+                "current_address"   => $request->current_address,
+                "permanent_address"   => $request->permanent_address,
+                "qualification"   => $request->qualification,
+                "work_exp"   => $request->work_exp,
+                "note"   => $request->note,
+                "password"   => $request->password,
+                "epf_no"   => $request->epf_no,
+                "basic_salary"   => $request->basic_salary,
+                "contract_type"   => $request->contract_type,
+                "work_shift"   => $request->work_shift,
+                "location"   => $request->location,
+                "medical_leave"   => $request->medical_leave,
+                "casual_leave"   => $request->casual_leave,
+                "maternity_leave"   => $request->maternity_leave,
+                "account_title"   => $request->account_title,
+                "bank_account_no"   => $request->bank_account_no,
+                "ifsc_code"   => $request->ifsc_code,
+                "bank_branch_name"   => $request->bank_branch_name,
+                "facebook"   => $request->facebook,
+                "twitter"   => $request->twitter,
+                "instagram"   => $request->instagram,
+                "linkedin"   => $request->linkedin,
+                "resume"   => $resume,
+                "joining_letter"   => $joining_letter,
+                "other_document"   => $other_document,
+                "date_of_joining"   => $request->doj,
+                "is_active"   => "yes",
+                'session_id'  => $session[$i]['id'],
+                'domain'  => 'TS'
+            ]);
             return response()->json(['text' => 'Staff Directory updated successfully', 'type' => 'success']);
 
             // $staffDirectory = StaffDirectory::find($id);

@@ -16,7 +16,7 @@
     <div
       class="alert alert-success"
       role="alert"
-    > Staff email is their login username, password is generated automatically and send to staff email. Superadmin can change staff password on their staff profile page.</div>
+    >Staff email is their login username, password is generated automatically and send to staff email. Superadmin can change staff password on their staff profile page.</div>
     <message :alertmessage="msg" id="alertmsg" />
     <div class="card">
       <form @submit.prevent="addStaffDirectory" enctype="multipart/form-data">
@@ -165,7 +165,7 @@
             </div>
             <div class="textbox">
               <label for="Emergency">Date Of Joining</label>
-            <datepicker v-model="staff.doj"></datepicker>
+              <datepicker v-model="staff.doj"></datepicker>
             </div>
             <div class="textbox">
               <label for="Phone">Phone</label>
@@ -459,7 +459,7 @@ export default {
         password: "",
         resume: "",
         joining_letter: "",
-        other_document: "",
+        other_document: ""
       },
 
       staffDirectorys: [],
@@ -483,12 +483,16 @@ export default {
     if (this.$route.path == `/staffdirectory/edit/${this.$route.params.id}`) {
       this.checkroute = true;
     }
-    this.axios
-      .get(`/api/staffdirectory/edit/${this.$route.params.id}`)
-      .then(response => {
-        this.staff = response.data;
-        console.log("Staff" + JSON.stringify(response));
-      });
+    if (this.checkroute == true) {
+      this.axios
+        .get(`/api/staffdirectory/edit/${this.$route.params.id}`)
+        .then(response => {
+          this.staff = {};
+          this.staff = response.data;
+          console.log("Staff" + JSON.stringify(response));
+        });
+    }
+
     this.getRoles();
     this.getDesignations();
     this.getDepartments();
@@ -497,7 +501,7 @@ export default {
     getRoles() {
       this.axios.get("/api/roles").then(response => {
         this.roles = response.data;
-        EventBus.$emit('onLoadEnd');
+        EventBus.$emit("onLoadEnd");
       });
     },
     getDesignations() {
@@ -609,7 +613,10 @@ export default {
       }
     },
     updateStaffDirectory(e) {
+
       if (this.checkValidate()) {
+        EventBus.$emit("onLoad");
+
         this.staff.dob = new Date().toISOString().slice(0, 10);
         // e.preventDefault();
         let currentObj = this;
@@ -669,7 +676,11 @@ export default {
           )
           .then(response => {
             console.log("-->" + JSON.stringify(response));
-
+            this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
+            EventBus.$emit("onLoadEnd");
+            Util.scrollToTop();
             this.$router.push({ name: "staffdirectory" });
           });
       }

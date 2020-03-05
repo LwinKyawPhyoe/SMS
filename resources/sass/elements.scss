@@ -427,7 +427,7 @@ input[type="file"] {
   margin-bottom: 0;
   float: right;
   outline: none;
-  color: black;
+  color: black !important;
   background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 5));
   height: 30px;
   border: 1px solid rgba(128, 128, 128, 0.219);
@@ -493,7 +493,7 @@ input[type="file"] {
 .navList:after,
 #nav-list:after,
 .tableLink:after,
-.tableLinks:after {
+.tableLinkActive:after {
   content: "";
   background: #9494947c;
   display: block;
@@ -513,7 +513,7 @@ input[type="file"] {
 .navList:active:after,
 #nav-list:active:after,
 .tableLink:active:after,
-.tableLinks:active:after {
+.tableLinkActive:active:after {
   padding: 0;
   margin: 0;
   opacity: 1;
@@ -559,7 +559,6 @@ input[type="file"] {
     margin-bottom: 0px !important;
   }
   .tableLink {
-    background: #1b5e20;
     color: white;
   }
   .tableLinkActive {
