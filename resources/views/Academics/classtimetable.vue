@@ -300,7 +300,8 @@ export default {
             {
                 EventBus.$emit("ThemeClicked");
                 this.axios.post('api/ClassTimeTable/search', this.ClassTimeTableObj).then(response => {                    
-                    this.showTimeTbl = true;                    
+                    this.showTimeTbl = true;
+                    EventBus.$emit("ThemeClicked");
                     this.classTimeTbl = [
                         {"id": "", "day": "Monday", "time_from": "", "time_to": "", "room_no": ""},
                         {"id": "", "day": "Tuesday", "time_from": "", "time_to": "", "room_no": ""},

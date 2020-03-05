@@ -359,7 +359,7 @@
               </router-link>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="role">
+              <router-link to="/role">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Roles Permissions
               </router-link>
             </div>
@@ -381,16 +381,23 @@
           <div class="header">
             <div class="row sidebar_header">
               <div class="col-12">
-                <h5 style="font-size: 18pt;margin: 0;" class="projectName">{{this.school.school_name}}</h5>
+                <h5
+                  style="font-size: 18pt;margin: 0;"
+                  class="projectName"
+                >{{this.school.school_name}}</h5>
               </div>
             </div>
 
             <div class="body_content" id="body_content">
               <ul class="additional-menu">
                 <li class="dashboardLink">
-                    <router-link class="routerLink navList" id="globalLink globalList" to="/dashboard">
-                      <i class="fa fa-credit-card" id="sidebarIcon"></i>Dashboard
-                    </router-link>
+                  <router-link
+                    class="routerLink navList"
+                    id="globalLink globalList"
+                    to="/dashboard"
+                  >
+                    <i class="fa fa-credit-card" id="sidebarIcon"></i>Dashboard
+                  </router-link>
                 </li>
                 <li>
                   <a @click="dropdown('link','dropIcon')" class="navList" id="globalList">
@@ -745,7 +752,7 @@
                         </router-link>
                       </li>
                       <li class="nav-list">
-                        <router-link to="role" class="nav-list" id="nav-list">
+                        <router-link to="/role" class="nav-list" id="nav-list">
                           <i class="fa fa-angle-double-right listItem" id="listItem"></i>Roles Permissions
                         </router-link>
                       </li>
@@ -1107,7 +1114,7 @@
                       General Setting
                     </li>
                   </router-link>
-                  <router-link to="role" class="smallLink">
+                  <router-link to="/role" class="smallLink">
                     <li class="smLink">
                       <i class="fa fa-angle-double-right smIcon"></i>
                       Roles Permission
@@ -1125,7 +1132,7 @@
           </ul>
         </div>
       </div>
-    </div>    
+    </div>
 
     <div
       class="modal fade"
@@ -1147,9 +1154,13 @@
               ></i>
             </div>
             <div class="textbox" style="width: 100% !important;padding: 1rem 1rem;">
-              <label>Session</label>              
-              <select class="inputbox" v-model="session_id">                              
-                  <option v-for="session in sessionList" :key="session.id" :value="session.id">{{session.session}}</option>                
+              <label>Session</label>
+              <select class="inputbox" v-model="session_id">
+                <option
+                  v-for="session in sessionList"
+                  :key="session.id"
+                  :value="session.id"
+                >{{session.session}}</option>
               </select>
             </div>
           </div>
@@ -1164,9 +1175,11 @@
       <div class="content_header pc">
         <i class="fa fa-bars" id="list" onclick="changeBar()"></i>
         <div class="sessions row" id="sessions" style="margin-top: 5px;">
-          <h5 class="session" data-toggle="modal" data-target="#exampleModalCenter1">
-            Current Session : {{session}}
-          </h5>          
+          <h5
+            class="session"
+            data-toggle="modal"
+            data-target="#exampleModalCenter1"
+          >Current Session : {{session}}</h5>
         </div>
         <div class="Items">
           <div class="userTitle">
@@ -1220,38 +1233,42 @@ export default {
     this.getAllSession();
     this.axios.get("/api/schools").then(response => {
       this.school = response.data;
-    });    
+    });
   },
   methods: {
-    getAllSession() {      
-        this.sessionList = [];
-        this.axios.get("/api/academicyr").then(response => {                        
-            for(let i=0; i<response.data.length; i++){
-              if(response.data[i].is_active != 'delete'){
-                this.sessionList.push(response.data[i]);
-              }
-            }
+    getAllSession() {
+      this.sessionList = [];
+      this.axios.get("/api/academicyr").then(response => {
+        for (let i = 0; i < response.data.length; i++) {
+          if (response.data[i].is_active != "delete") {
+            this.sessionList.push(response.data[i]);
+          }
+        }
 
-            const found = this.sessionList.find(element => element.is_active == "yes");            
-            this.session_id = found.id;
-            this.session = found.session;
-            console.log("session >>"+ this.session + "id >>>"+ this.session_id);
-        });
+        const found = this.sessionList.find(
+          element => element.is_active == "yes"
+        );
+        this.session_id = found.id;
+        this.session = found.session;
+        console.log("session >>" + this.session + "id >>>" + this.session_id);
+      });
     },
 
-    goSave(){
-      const found = this.sessionList.find(element => element.is_active == "yes");            
+    goSave() {
+      const found = this.sessionList.find(
+        element => element.is_active == "yes"
+      );
       var oldid = found.id;
-      var AcademicYr = {"updateid": this.session_id, "oldid": oldid};
+      var AcademicYr = { updateid: this.session_id, oldid: oldid };
       this.axios
         .post("/api/AcademicYear/update", AcademicYr)
-        .then(response => {           
-           this.getAllSession();
-           $('#exampleModalCenter1').modal('hide');
-           window.location = window.location.href;
+        .then(response => {
+          this.getAllSession();
+          $("#exampleModalCenter1").modal("hide");
+          window.location = window.location.href;
         })
         .catch(error => {
-            console.log("err->" + JSON.stringify(this.error.response));
+          console.log("err->" + JSON.stringify(this.error.response));
         });
     },
 
@@ -1316,6 +1333,11 @@ export default {
           for (color = 0; color < dark.length; color++) {
             dark[color].style.background = "#044604";
           }
+          var dark = document.getElementsByClassName("confirm-modal-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#044604";
+          }
           var dark = document.getElementsByClassName("item-body");
           var color;
           for (color = 0; color < dark.length; color++) {
@@ -1336,10 +1358,11 @@ export default {
           for (color = 0; color < dark.length; color++) {
             dark[color].style.background = "#1b5e20";
           }
-          var dark = document.getElementsByClassName("block1");
+          var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
-            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+            dark[color].style.background = "#1b5e20";
+            dark[color].style.color = "white";
           }
           var dark = document.getElementsByClassName("content");
           var color;
@@ -1402,10 +1425,16 @@ export default {
             dark[color].style.background = "#1b5e20";
           }
         } else if (this.colors.color == "redColor") {
-          var dark = document.getElementsByClassName("block2");
+          var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
-            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+            dark[color].style.background = "darkred";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("confirm-modal-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkred";
           }
           var dark = document.getElementsByClassName("item-body");
           var color;
@@ -1494,10 +1523,16 @@ export default {
             dark[color].style.background = "#5e1b1b";
           }
         } else if (this.colors.color == "blueColor") {
-          var dark = document.getElementsByClassName("block3");
+          var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
-            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+            dark[color].style.background = "darkcyan";
+            dark[color].style.color = "#1b5e20";
+          }
+          var dark = document.getElementsByClassName("confirm-modal-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e5e";
           }
           var dark = document.getElementsByClassName("item-body");
           var color;
@@ -1586,15 +1621,21 @@ export default {
             dark[color].style.background = "#1b5e5e";
           }
         } else if (this.colors.color == "darkColor") {
-          var dark = document.getElementsByClassName("block4");
+          var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
-            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+            dark[color].style.background = "#212529";
+            dark[color].style.color = "white";
           }
           var dark = document.getElementsByClassName("item-body");
           var color;
           for (color = 0; color < dark.length; color++) {
             dark[color].style.borderTop = "solid currentColor 1px";
+          }
+          var dark = document.getElementsByClassName("confirm-modal-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "black";
           }
           var dark = document.getElementsByClassName("router");
           var color;
@@ -1679,14 +1720,21 @@ export default {
             dark[color].style.background = "black";
           }
         } else if (this.colors.color == "lightColor") {
-          var dark = document.getElementsByClassName("block5");
+          var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
-            dark[color].style.border = "2px solid rgb(252, 239, 44)";
+            dark[color].style.background = "#e1e1e1";
+            dark[color].style.color = "black";
           }
           var dark = document.getElementsByClassName("router");
           var color;
           for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("confirm-modal-header");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#dee3de";
             dark[color].style.color = "black";
           }
           var dark = document.getElementsByClassName("item-body");

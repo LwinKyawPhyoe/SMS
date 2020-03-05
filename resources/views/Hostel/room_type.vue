@@ -40,8 +40,14 @@
               </div>
               <div class="col-12">
                 <!--- store -->
-                <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
-                <button v-else @click="updateRoomType()" type="button" class="save">Save</button>
+                <button v-if="this.isEdit == false" type="submit" id="globalSave" class="save">Save</button>
+                <button
+                  v-else
+                  @click="updateRoomType()"
+                  type="button"
+                  id="globalSave"
+                  class="save"
+                >Save</button>
               </div>
             </form>
           </div>
@@ -55,7 +61,7 @@
           <div class="card-body">
             <message :alertmessage="deletemsg" id="delalertmsg" />
             <input
-            autocomplete="off"
+              autocomplete="off"
               v-model="search"
               @input="searchData()"
               type="text"
@@ -85,8 +91,7 @@
                 </div>
               </div>
             </div>
-           
-           
+
             <div class="table-responsive" id="print">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
@@ -96,7 +101,13 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(roomType) in roomtypes" v-bind:key="roomType.id" class="active">
+                  <div v-if="isEmpty == true" class="NoData">No Data</div>
+                  <tr
+                    v-else
+                    v-for="(roomType) in roomtypes"
+                    v-bind:key="roomType.id"
+                    class="active"
+                  >
                     <td class="all" nowrap>
                       <p class="toolText">
                         {{roomType.room_type}}
@@ -157,6 +168,7 @@ export default {
       room: {},
       roomtypes: [],
       isEdit: false,
+      isEmpty: false,
       delurl: "",
       msg: {
         text: "",
@@ -169,9 +181,10 @@ export default {
     };
   },
   mounted() {
+    EventBus.$emit("onLoad");
     this.getRoomTypes();
   },
-  created(){
+  created() {
     EventBus.$emit("ThemeClicked");
     EventBus.$on("clicked", response => {
       (this.deletemsg.text = response.text),
@@ -186,6 +199,12 @@ export default {
       this.axios.get("/api/roomtypes").then(response => {
         console.log(JSON.stringify(response.data));
         this.roomtypes = response.data;
+        if (this.roomtypes.length > 0) {
+          this.isEmpty = false;
+        } else {
+          this.isEmpty = true;
+        }
+        EventBus.$emit("onLoadEnd");
       });
     },
     addRoomType() {
@@ -212,7 +231,7 @@ export default {
       }
     },
     editRoomType(data) {
-    Util.scrollToTop();
+      Util.scrollToTop();
       this.room = {};
       this.room.id = data.id;
       this.room.room_type = data.room_type;

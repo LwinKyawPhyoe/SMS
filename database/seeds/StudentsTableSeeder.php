@@ -57,7 +57,7 @@ class StudentsTableSeeder extends Seeder
                 'disable_at' => '-',
                 'domain' => 'TS',
                 'is_active' => 'yes',
-                'session_id' => '1',
+                'session_id' => '2',
                 'race' => 'nepali',
             ],
             [
@@ -105,7 +105,7 @@ class StudentsTableSeeder extends Seeder
                 'disable_at' => '-',
                 'domain' => 'TS',
                 'is_active' => 'yes',
-                'session_id' => '1',
+                'session_id' => '2',
                 'race' => 'nepali',
             ],
             [
@@ -153,7 +153,7 @@ class StudentsTableSeeder extends Seeder
                 'disable_at' => '-',
                 'domain' => 'TS',
                 'is_active' => 'yes',
-                'session_id' => '1',
+                'session_id' => '2',
                 'race' => 'nepali',
             ],
             [
@@ -201,7 +201,7 @@ class StudentsTableSeeder extends Seeder
                 'disable_at' => '-',
                 'domain' => 'TS',
                 'is_active' => 'yes',
-                'session_id' => '1',
+                'session_id' => '2',
                 'race' => 'Burma',
             ],
             [
@@ -249,7 +249,7 @@ class StudentsTableSeeder extends Seeder
                 'disable_at' => '-',
                 'domain' => 'TS',
                 'is_active' => 'yes',
-                'session_id' => '1',
+                'session_id' => '2',
                 'race' => 'nepali',
             ],
             [
@@ -297,7 +297,7 @@ class StudentsTableSeeder extends Seeder
                 'disable_at' => '-',
                 'domain' => 'TS',
                 'is_active' => 'yes',
-                'session_id' => '1',
+                'session_id' => '2',
                 'race' => 'nepali',
             ],
             [
@@ -345,7 +345,7 @@ class StudentsTableSeeder extends Seeder
                 'disable_at' => '-',
                 'domain' => 'TS',
                 'is_active' => 'yes',
-                'session_id' => '1',
+                'session_id' => '2',
                 'race' => 'nepali',
             ],
             ];

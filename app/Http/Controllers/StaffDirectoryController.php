@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\AcademicYear;
 use App\Mail\SendMail;
+use App\StaffAttendance;
 use App\StaffDirectory;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\File;
@@ -59,37 +60,43 @@ class StaffDirectoryController extends Controller
             $check_phone    = StaffDirectory::where('phone', $request->phone)->count();
 
             if ($check_staff_id > 0) {
-                return response()->json('Staff ID already exists!');
+                return response()->json(['text' => 'Staff ID already exists!', 'type' => "error"]);
             }
             if ($check_email > 0) {
-                return response()->json('Email already exists!');
+                return response()->json(['text' => 'Email already exists!', 'type' => "error"]);
             }
             if ($check_phone > 0) {
-                return response()->json('Phone Number already exists!');
+                return response()->json(['text' => 'Phone Number already exists!', 'type' => "error"]);
             } else {
                 /**
                  * NAME OF IMAGE 
                  */
-                $imageName = time() . '.' . $request->image->getClientOriginalExtension();
-                $request->image->move(public_path('staff_images'), $imageName);
+                $imageName = "";
+                if ($request->image) {
+                    $imageName = time() . '.' . $request->image->getClientOriginalExtension();
+                    $request->image->move(public_path('staff_images'), $imageName);
+                } else {
+                    $imageName = "";
+                }
+
                 /**
                  * Name OF File
                  */
                 $resume  = '';
                 $joining_letter = '';
                 $other_document = '';
-                if ($request->resume != 'undefined') {
-                    $request->resume->move(public_path('staff_images'), 'Resume');
-                    $resume = "Resume";
-                }
-                if ($request->joining_letter != 'undefined') {
-                    $request->joining_letter->move(public_path('staff_images'), 'Joining Letter');
-                    $joining_letter = "Joining Letter";
-                }
-                if ($request->other_document != 'undefined') {
-                    $request->other_document->move(public_path('staff_images'), 'Other Documents');
-                    $other_document = "Other Documents";
-                }
+                // if ($request->resume) {
+                //     $resume = time() . $request->staff_id . "resume" . '.' . $request->resume->getClientOriginalExtension();
+                //     $request->resume->move(public_path('staff_images'), $resume);
+                // }
+                // if ($request->joining_letter) {
+                //     $joining_letter = time() . $request->staff_id . "joiningletter" . '.' .  $request->joining_letter->getClientOriginalExtension();
+                //     $request->joining_letter->move(public_path('staff_images'), $joining_letter);
+                // }
+                // if ($request->other_document) {
+                //     $other_document = time() . $request->staff_id . "otherdocument" .  '.' . $request->other_document->getClientOriginalExtension();
+                //     $request->other_document->move(public_path('staff_images'), $other_document);
+                // }
 
                 $staffDirectory = new StaffDirectory([
                     "staff_id"         => $request->staff_id,
@@ -183,8 +190,20 @@ class StaffDirectoryController extends Controller
         for ($i = 0; $i < count($session); $i++) {
             $staffDirectory = StaffDirectory::find($id);
             $filename = public_path() . '/staff_images/' . $request->image;
+            $resumefilename = public_path() . '/staff_images' . $request->resume;
+            $jlfilename = public_path() . '/staff_images' . $request->joining_letter;
+            $odfilename = public_path() . '/staff_images' . $request->joining_letter;
             // echo $filename;
-            if (File::exists($filename)) {
+            /**
+             * Name OF File
+             */
+            $imageName = '';
+            $resume  = '';
+            $joining_letter = '';
+            $other_document = '';
+          
+
+            if (File::exists($filename) || File::exists($resumefilename) ||   File::exists($jlfilename) ||  File::exists($odfilename)) {
                 echo "exists";
                 $staffDirectory->update([
                     "staff_id"         => $request->staff_id,
@@ -223,17 +242,28 @@ class StaffDirectoryController extends Controller
                     "twitter"   => $request->twitter,
                     "instagram"   => $request->instagram,
                     "linkedin"   => $request->linkedin,
-                    "resume"   => "",
-                    "joining_letter"   => "",
-                    "other_document"   => ".",
                     "date_of_joining"   => $request->doj,
                     'session_id'  => $session[$i]['id'],
                     'domain'  => 'TS'
                 ]);
             } else {
                 // File::delete($filename);
-                $imageName = time() . '.' . $request->image->getClientOriginalExtension();
-                $request->image->move(public_path('staff_images'), $imageName);
+                if ($request->image) {
+                    $imageName = time() . '.' . $request->image->getClientOriginalExtension();
+                    $request->image->move(public_path('staff_images'), $imageName);
+                }
+                if ($request->resume) {
+                    $resume = time() . $request->staff_id . "resume" . $request->resume->getClientOriginalExtension();
+                    $request->resume->move(public_path('staff_images'), $resume);
+                }
+                if ($request->joining_letter) {
+                    $joining_letter = time() . $request->staff_id . "joiningletter" . $request->joining_letter->getClientOriginalExtension();
+                    $request->joining_letter->move(public_path('staff_images'), $joining_letter);
+                }
+                if ($request->other_document) {
+                    $other_document = time() . $request->staff_id . "otherdocument" . $request->other_document->getClientOriginalExtension();
+                    $request->other_document->move(public_path('staff_images'), $other_document);
+                }
                 $staffDirectory->update([
                     "staff_id"         => $request->staff_id,
                     "role_id"          => $request->role_id,
@@ -271,9 +301,9 @@ class StaffDirectoryController extends Controller
                     "twitter"   => $request->twitter,
                     "instagram"   => $request->instagram,
                     "linkedin"   => $request->linkedin,
-                    "resume"   => "",
-                    "joining_letter"   => "",
-                    "other_document"   => ".",
+                    "resume"   => $resume,
+                    "joining_letter"   => $joining_letter,
+                    "other_document"   => $other_document,
                     "date_of_joining"   => $request->doj,
                     "is_active"   => "yes",
                     'session_id'  => $session[$i]['id'],
@@ -297,33 +327,6 @@ class StaffDirectoryController extends Controller
         //
     }
 
-    /**
-     * FIND with Role
-     */
-    // public function search_by_role($id)
-    // {
-    //     $sessionid = AcademicYear::where('is_active', 'yes')
-    //     ->where('domain', 'TS')->get('id');
-    //     $staffs = StaffDirectory::where('role_id', $id)
-    //         ->where('is_active', 'yes')
-    //         ->where('domain', 'TS')
-    //         ->where('session_id', $sessionid[0]->id)
-    //         ->orderBy('id', 'DESC')->get()->toArray();
-    //     return array_reverse($staffs);
-    // }
-
-    // public function search_by_other($id)
-    // {
-    //     $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
-    //     $staffs = StaffDirectory::with('role', 'department', 'designation')
-    //         ->where('staff_id', 'like', '%' . $id . '%')
-    //         ->orWhere('name', 'like', '%' . $id . '%')->where('is_active', 'yes')
-    //         ->where('domain', 'TS')
-    //         ->where('session_id', $sessionid[0]->id)
-    //         ->orderBy('id', 'DESC')->get()->toArray();
-    //     return array_reverse($staffs);
-    // }
-
 
     /**
      * FIND with Role
@@ -337,7 +340,6 @@ class StaffDirectoryController extends Controller
             ->get()->toArray();
         return array_reverse($staffs);
     }
-
     public function search_by_other($id)
     {
         $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
@@ -348,5 +350,48 @@ class StaffDirectoryController extends Controller
             ->get()
             ->toArray();
         return array_reverse($staffs);
+    }
+
+    public function search_staff_lists($id)
+    {
+        $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
+        $staffs = StaffDirectory::with('role', 'department', 'designation')
+            ->where('session_id', $sessionid[0]->id)
+            ->where('role_id', $id)
+            ->where('is_active', 'yes')
+            ->get()
+            ->toArray();
+        return array_reverse($staffs);
+    }
+
+
+    /***Disable record */
+
+    public function disable($id)
+    {
+        $data = StaffDirectory::find($id);
+        $data->update([
+            'is_active' => 'no'
+        ]);
+        return response()->json(['text' => 'Staff Directory added successfully', 'type' => 'success']);
+    }
+    /***Enable record */
+
+    public function enable($id)
+    {
+        $data = StaffDirectory::find($id);
+        $data->update([
+            'is_active' => 'yes'
+        ]);
+        return response()->json(['text' => 'Staff Directory added successfully', 'type' => 'success']);
+    }
+    /** Delete Staff */
+    public function delete($id)
+    {
+        $data = StaffDirectory::find($id);
+        $data->update([
+            'is_active' => 'delete'
+        ]);
+        return response()->json(['text' => 'Staff Directory deleted successfully', 'type' => 'success']);
     }
 }

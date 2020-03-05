@@ -5,69 +5,75 @@
             <h6>Add Homework</h6>
             <i class="fa fa-times time modal_close_btn" data-dismiss="modal"></i>
         </div>
-            <div class="modal-body" style="padding: 10px 0px;">
-                <div class="row" id="row" style="margin: 0px;">
-                    <div class="col-lg-4 col-12">
-                        <label for="name" class="title">Class
-                            <strong>*</strong>
-                        </label>
-                        <select id="class_id" class="inputbox" @change="selectClass(objData.class,'class_id','class_msg')" name="class" v-model="objData.class">
-                            <option disabled value="">Select Class</option>
-                            <option v-for="item in ClassList" :value="item.id">{{item.class}}</option>
-                        </select>
-                        <span id="class_msg" class="error_message">Class is required</span>
-                    </div>
-                    <div class="col-lg-4 col-12">
-                        <label for="name" class="title">Section
-                            <strong>*</strong>
-                        </label>
-                        <select id="section_id" class="inputbox" @change="selectSection(objData.section,'section_id','section_msg')" name="class" v-model="objData.section">
-                            <option disabled value="">Select Section</option>
-                            <option v-for="item in SectionList" :value="item.id">{{item.section}}</option>
-                        </select>
-                        <span id="section_msg" class="error_message">Section is required</span>
-                    </div>
-                    <div class="col-lg-4 col-12">
-                        <label for="name" class="title">Subject
-                            <strong>*</strong>
-                        </label>
-                        <select id="subject_id" class="inputbox" @change="selectSubject(objData.subject,'subject_id','subject_msg')" name="class" v-model="objData.subject">
-                            <option disabled value="">Select Subject</option>
-                            <option v-for="item in SubjectList" :value="item.id">{{item.name}}</option>
-                        </select>
-                        <span id="subject_msg" class="error_message">Subject is required</span>
-                    </div>
-                    <div class="col-lg-4 col-12">
-                        <label for="HomeworkDate">Homework Date</label>
-                        <input type="date" class="inputbox" id="HomeworkDate" v-model="objData.homework_date">
-                    </div>
-                    <div class="col-lg-4 col-12">
-                        <label for="SubmissionDate">Submission Date</label>
-                        <input type="date" class="inputbox" id="SubmissionDate" v-model="objData.submission_date">
-                    </div>
-                    <div class="col-lg-4 col-12">
-                        <label for="faPhoto">Attach Document</label>
-                        <input type="file" class="inputbox" id="faPhoto" ref="documentFile">
-                    </div>
-                    <div  class="col-sm-12 col-lg-12 col-12" style="margin-top: 10px">
-                        <label for="name" class="title">Description
-                            <strong>*</strong>
-                        </label>
-                        <Vueditor ref="editor1"></Vueditor>
-                        <span id="description_msg" class="error_message">Description is required</span>
-                    </div>
+        <div class="modal-body" style="padding: 10px 0px;">
+            <div class="row" id="row" style="margin: 0px;">
+                <div class="col-lg-4 col-12">
+                    <label for="name" class="title">Class
+                        <strong>*</strong>
+                    </label>
+                    <select id="class_id" class="inputbox" @change="selectClass(objData.class,'class_id','class_msg')" name="class" v-model="objData.class">
+                        <option disabled value="">Select Class</option>
+                        <option v-for="item in ClassList" :value="item.id">{{item.class}}</option>
+                    </select>
+                    <span id="class_msg" class="error_message">Class is required</span>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <label for="name" class="title">Section
+                        <strong>*</strong>
+                    </label>
+                    <select id="section_id" class="inputbox" @change="selectSection(objData.section,'section_id','section_msg')" name="class" v-model="objData.section">
+                        <option disabled value="">Select Section</option>
+                        <option v-for="item in SectionList" :value="item.id">{{item.section}}</option>
+                    </select>
+                    <span id="section_msg" class="error_message">Section is required</span>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <label for="name" class="title">Subject
+                        <strong>*</strong>
+                    </label>
+                    <select id="subject_id" class="inputbox" @change="selectSubject(objData.subject,'subject_id','subject_msg')" name="class" v-model="objData.subject">
+                        <option disabled value="">Select Subject</option>
+                        <option v-for="item in SubjectList" :value="item.id">{{item.name}}</option>
+                    </select>
+                    <span id="subject_msg" class="error_message">Subject is required</span>
+                </div>
+                <div class="col-lg-4 col-12">
+                    <label for="HomeworkDate">Homework Date</label>
+                    <input type="date" class="inputbox" id="HomeworkDate" v-model="objData.homework_date">
+                    <!-- <datepicker v-model="objData.homework_date"></datepicker> -->
+                </div>
+                <div class="col-lg-4 col-12">
+                    <label for="SubmissionDate">Submission Date</label>
+                    <!-- <datepicker v-model="objData.submission_date"></datepicker> -->
+                    <input type="date" class="inputbox" id="SubmissionDate" v-model="objData.submission_date"> 
+                </div>
+                <div class="col-lg-4 col-12">
+                    <label for="faPhoto">Attach Document</label>
+                    <input type="file" class="inputbox" id="faPhoto" ref="documentFile">
+                </div>
+                <div  class="col-sm-12 col-lg-12 col-12" style="margin-top: 10px">
+                    <label for="name" class="title">Description
+                        <strong>*</strong>
+                    </label>
+                    <Vueditor ref="editor1"></Vueditor>
+                    <span id="description_msg" class="error_message">Description is required</span>
                 </div>
             </div>
-            <div class="modal-footer" style="padding: 10px 15px;"> 
-                <button class="save btn-dark" style="margin: 0px;" @click="addHomework()" id="globalSave">Save</button>
-            </div>
+        </div>
+        <div class="modal-footer" style="padding: 10px 15px;"> 
+            <button class="save btn-dark" style="margin: 0px;" @click="addHomework()" id="globalSave">Save</button>
+        </div>
     </div>
 </div>
 </template>
 <script>
 import { EventBus } from "../../js/event-bus.js";
+import datepicker from "../datepicker.vue";
 import {Util} from '../../js/util';
 export default {
+    components: {
+        datepicker,
+    },
     data() {
         return {
             objData: {
@@ -219,7 +225,7 @@ export default {
             let month = date.substring(5, 7);
             let day = date.substring(8, 10);
             return year + month + day;
-        }
+        },
     } 
 };
 </script>

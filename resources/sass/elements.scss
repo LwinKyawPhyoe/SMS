@@ -139,7 +139,7 @@ label {
 }
 // Search Bar & PDF Print
 
-.metaBtn {  
+.metaBtn {
   color: white;
   border: none;
   padding: 5px;
@@ -263,6 +263,7 @@ strong {
 .home {
   text-decoration: none;
   color: #1b5e20;
+  margin-right: 5px;
 }
 
 //Choose Photo File css
@@ -693,7 +694,7 @@ input[type="file"] {
 
 //Synister for Dashboard
 .info-box {
-  transition: all .3s cubic-bezier(.25,.8,.25,1);
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
   display: block;
   cursor: pointer;
 }
@@ -703,14 +704,14 @@ input[type="file"] {
   min-height: 90px;
   background: #fff;
   width: 100%;
-  box-shadow: 0 1px 1px rgba(0,0,0,0.1);
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
   border-radius: 2px;
   margin-bottom: 15px;
 }
 
 .info-box:hover {
-  background-color: #fff; 
-  box-shadow: 0 5px 10px rgba(0,0,0,.25), 0 10px 10px rgba(0,0,0,.22);
+  background-color: #fff;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.25), 0 10px 10px rgba(0, 0, 0, 0.22);
 }
 
 .info-box a {
@@ -734,7 +735,7 @@ input[type="file"] {
   font-size: 45px;
   color: #fff;
   line-height: 90px;
-  background: rgba(0,0,0,0.2);
+  background: rgba(0, 0, 0, 0.2);
 }
 
 .info-box-content {
@@ -754,11 +755,142 @@ input[type="file"] {
 
 .info-box-number {
   display: block;
-  font-family: 'Dosis';
+  font-family: "Dosis";
   font-weight: bold;
   font-size: 14px;
 }
 
-.bg-green{
-  background-color: #66aa18 !important;
+.bg-green {
+  background: none;
+}
+
+/***RIGHT SIDE MENU **/
+
+.sta-menu-open {
+  i {
+    font-size: 20px;
+  }
+  i:hover {
+    color: var(--info);
+  }
+}
+
+.right-side-menu {
+  position: fixed;
+  right: 0;
+
+  margin-top: -10px;
+  width: 250px;
+  height: 100%;
+  margin-right: -250px;
+  background-color: rgb(255, 255, 255);
+  box-shadow: -10px 3px 12px 0 rgba(0, 0, 0, 0.26);
+  transition: all 0.3s;
+  z-index: 1;
+  .statop {
+    .statopfixed {
+      position: relative;
+      z-index: 2;
+      width: 250px;
+      .classtap {
+        background: #a71704;
+        color: #fff;
+        font-size: 16px;
+        margin-bottom: 0;
+        padding: 10px;
+        .staclose {
+          float: right;
+        }
+      }
+      .scrollmenu {
+        background: #535050;
+        overflow: auto;
+        white-space: nowrap;
+      }
+
+      div.scrollmenu a {
+        display: inline-block;
+        color: white;
+        text-align: center;
+        padding: 10px;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      div.scrollmenu a:hover {
+        background-color: #777;
+      }
+      div.scrollmenu .sta-active {
+        background-color: #777;
+      }
+    }
+  }
+  .sta-content {
+    position: relative;
+    height: 100%;
+    padding-bottom: 20px;
+    overflow-y: auto;
+
+    .sta-name {
+      cursor: default;
+      position: relative;
+      border-bottom: 1px solid #ddd;
+      display: block;
+      overflow: hidden;
+      background: #fff;
+      width: 250px;
+      a {
+        display: block;
+        color: #000;
+        padding-left: 5px;
+        padding-right: 5px;
+        padding-top: 4px;
+      }
+      .icon {
+        float: left;
+        padding-left: 5px;
+      }
+      img {
+        width: 30px;
+        height: 30px;
+        border-radius: 25px;
+        margin-bottom: 4px;
+      }
+      .sta-title {
+        line-height: 24px;
+        padding-left: 50px;
+      }
+    }
+
+    /*Create ripple effec*/
+
+    .ripple {
+      position: relative;
+      overflow: hidden;
+      transform: translate3d(0, 0, 0);
+    }
+
+    .ripple:after {
+      content: "";
+      display: block;
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      top: 0;
+      left: 0;
+      pointer-events: none;
+      background-image: radial-gradient(circle, rgba(37, 37, 37, 0.884) 10%, transparent 10.01%);
+      background-repeat: no-repeat;
+      background-position: 50%;
+      transform: scale(10, 10);
+      opacity: 0;
+      transition: transform 0.5s, opacity 1s;
+    }
+
+    .ripple:active:after {
+      transform: scale(0, 0);
+      opacity: 0.3;
+      transition: 0s;
+    }
+  }
 }

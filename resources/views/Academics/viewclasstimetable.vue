@@ -69,7 +69,10 @@
                         </div>
                     </div>
                 </div>
-                <div class="table-responsive" id="print">
+                <div v-if="ClassTimeTblList.length == 0">
+                    <h1 class="NoData">No Data</h1>
+                </div>
+                <div v-if="ClassTimeTblList.length != 0" class="table-responsive" id="print">
                     <table class="table table-hover" id="studenttable">
                         <thead>
                             <tr>
@@ -263,6 +266,7 @@ export default {
                     });
                     this.sortClassTimeTblList(array);
                     this.showRecord = true;
+                    EventBus.$emit("ThemeClicked");
                 });
             }
         },

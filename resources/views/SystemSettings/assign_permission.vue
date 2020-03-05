@@ -3,8 +3,8 @@
     <div class="toplink">
       <h2 class="stuName">System Settings</h2>
       <h4 class="stuLink">
-        <router-link class="home" to="/Student">Home</router-link>/
-        <router-link class="home" to="/role">Role Permissions</router-link>/ Assign Permissions
+        <router-link class="home" to="/Student">Home</router-link>>
+        <router-link class="home" to="/role">Role Permissions</router-link>> Assign Permissions
       </h4>
     </div>
     <hr />
@@ -12,9 +12,13 @@
     <div style="padding-left:2px;">
       <div class="card">
         <div class="card-header">
-          <h6>Add Designation</h6>
+          <h6>
+            Assign Permission
+            <span>  ({{role_name}})</span>
+          </h6>
         </div>
         <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
+          <message :alertmessage="msg" id="alertmsg" />
           <div class="table-responsive">
             <table class="table">
               <thead>
@@ -28,7 +32,7 @@
                 </tr>
               </thead>
               <tbody>
-                <tr v-for="(val) in features">
+                <tr v-for="(val ,i ) in features" :key="i">
                   <td v-html="val.module"></td>
                   <td>{{val.feature}}</td>
                   <td>
@@ -57,7 +61,13 @@
               </tbody>
             </table>
           </div>
-          <button style="margin-right: 10px;" @click="save()" type="button" class="save">Save</button>
+          <button
+            style="margin-right: 10px;"
+            @click="save()"
+            type="button"
+            class="save"
+            id="globalSave"
+          >Save</button>
         </div>
       </div>
     </div>
@@ -67,11 +77,13 @@
 /***Components */
 import Loading from "../LoadingController.vue";
 import { EventBus } from "../../js/event-bus.js";
-
+import { Util } from "../../js/util";
+import message from "../Alertmessage/message.vue";
 
 export default {
   components: {
-    Loading
+    Loading,
+    message
   },
   data() {
     return {
@@ -83,14 +95,23 @@ export default {
       currentUserPermissions: [],
       addMore: false,
       guardianRelation: "",
+      role_name: "",
       count: 0,
-      pseudo: {}
+      pseudo: {},
+      msg: {
+        text: "",
+        type: ""
+      }
     };
+  },
+  mounted() {
+    EventBus.$emit("onLoad");
   },
   created() {
     EventBus.$emit("ThemeClicked");
     this.getUserPermission();
     this.findUser();
+    this.findRoleName();
   },
   methods: {
     getUserPermission() {
@@ -105,7 +126,6 @@ export default {
       this.axios.get("/api/features").then(response => {
         /** List For Permissions Features */
         this.features = response.data;
-
         for (var i = 0; i < this.features.length; i++) {
           console.log("Permission" + JSON.stringify(this.features[i]));
           for (var ii = 0; ii < this.currentUserPermissions.length; ii++) {
@@ -120,10 +140,10 @@ export default {
               this.features[i].delete = this.currentUserPermissions[
                 ii
               ].can_delete;
-
               break;
             }
           }
+          EventBus.$emit("onLoadEnd");
         }
       });
     },
@@ -132,10 +152,23 @@ export default {
         .get(`/api/assign/find/${this.$route.params.id}`)
         .then(response => {
           console.log("-->" + JSON.stringify(response.data));
-          if (response.data == 0) {
+          var name = response.data.name;
+          for (var i = 0; i < i < name.length; i++) {
+            this.role_name = name[i].name;
+          }
+          if (response.data.count == 0) {
             this.$router.push({ name: "role" });
           } else {
           }
+        });
+    },
+    findRoleName() {
+      this.axios
+        .get(`/api/assign/findrole/${this.$route.params.id}`)
+        .then(response => {
+          alert(this.response.data);
+
+          this.role_name = this.response.data;
         });
     },
     say(id, feature, checked, type) {
@@ -173,7 +206,7 @@ export default {
       console.log(this.addMore);
     },
     save() {
-      EventBus.$emit("onLoad", "hello");
+      EventBus.$emit("onLoad");
       for (var i = 0; i < this.features.length; i++) {
         this.permissions.ary.push({
           role_id: this.$route.params.id,
@@ -186,10 +219,15 @@ export default {
         });
       }
 
-      this.axios.post(
-        `/api/assign/store/${this.$route.params.id}`,
-        this.permissions
-      );
+      this.axios
+        .post(`/api/assign/store/${this.$route.params.id}`, this.permissions)
+        .then(response => {
+          EventBus.$emit("onLoadEnd");
+          Util.scrollToTop();
+          this.msg.text = response.data.text;
+          this.msg.type = response.data.type;
+          Util.workAlert("#alertmsg");
+        });
       console.log(JSON.stringify(this.permissions.ary));
     },
     checkGuardian(type) {

@@ -120,7 +120,7 @@
 import DatePicker from "vue2-datepicker";
 import "vue2-datepicker/index.css";
 import { EventBus } from "../../js/event-bus.js";
-
+import store from "store2";
 export default {
   components: { DatePicker },
   data() {
@@ -193,6 +193,7 @@ export default {
 
       setTimeout(() => {
         var dataValue;
+        EventBus.$emit("ThemeClicked");
         for (var i = 0; i < this.mainExamSubjects.length; i++) {
           dataValue = this.mainExamSubjects[i].subject;
         }
@@ -231,6 +232,7 @@ export default {
           this.message = response.data;
           this.$router.push({name:'examschadule'})
         });
+        store.set("msg","save");
     }
   }
 };

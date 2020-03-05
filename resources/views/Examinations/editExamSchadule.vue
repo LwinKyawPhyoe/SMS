@@ -45,7 +45,7 @@
                     </table>
                 </div>
                 <div style="width: 100%;">
-                    <button class="save" style="margin:10px 1rem 1rem 0px" type="button" @click="updateExamSchadule()"><router-link to="examschadule" style="color:white" class="submit">Update</router-link></button>
+                    <button class="save" id="globalSave" style="margin:10px 1rem 1rem 0px" type="button" @click="updateExamSchadule()"><router-link to="" style="color:white" class="submit">Update</router-link></button>
                 </div>
                 </div>
             </div>
@@ -58,6 +58,7 @@
   import DatePicker from 'vue2-datepicker';
   import 'vue2-datepicker/index.css';
   import {EventBus} from "../../js/event-bus";
+  import store from "store2";
   export default {
     components: { DatePicker },
     data() {
@@ -183,6 +184,8 @@
         }
         )
         }
+        this.$router.push({name: 'examschadule'});
+        store.set("msg","update");
     }
     }
   };

@@ -164,7 +164,7 @@
                     </div>
                     <div style="padding: 5px 0px;">
                         <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
-                            <span style="font-weight: bold">Subject:</span> {{passData.class}}
+                            <span style="font-weight: bold">Subject:</span> {{passData.subject}}
                         </p>
                     </div>
                     <div v-if="passData.document" style="padding: 5px 0px;">
@@ -175,7 +175,8 @@
                     </div>
                     <div style="padding: 5px 0px;">
                         <p style="padding: 0px;margin: 0px !important;font-size: 14px;">
-                            <span style="font-weight: bold">Description:</span> {{passData.description}}
+                            <span style="font-weight: bold">Description:</span>
+                            <span v-html="passData.description"></span>
                         </p>
                     </div>
                 </div>
@@ -217,6 +218,7 @@ export default {
     },
     methods: {
         getStudent(){
+            EventBus.$emit("onLoad");
             let data = new FormData();
             data.append("id", this.passData.class_section_id);
             this.axios.post('/api/homework/showStudent', data)
@@ -237,13 +239,13 @@ export default {
                     }else{
                         this.checkForUpdate = true;
                         this.ObjData.id = result.data[0].id;
+                        this.ObjData.showSummaryDate = result.data[0].date;
                         if(result.data[0].com_admission_no == "" 
                         || result.data[0].com_admission_no == null){
                             for(let i = 0;i < response.data.length;i++){
                                 this.showStudents.push({"id": response.data[i].id,"name": response.data[i].name,"active": false});
                             }
                         }else{
-                            this.ObjData.showSummaryDate = result.data[0].date;
                             var arrayData = [];
                             arrayData = result.data[0].com_admission_no.split(',');
                             for(let i = 0;i < response.data.length;i++){
@@ -260,6 +262,8 @@ export default {
                             }
                         }
                     }
+                    EventBus.$emit("onLoadEnd");
+                    //aaaa
                 }).catch(error => {            
                     console.log("err->" + JSON.stringify(this.error.response));
                 });

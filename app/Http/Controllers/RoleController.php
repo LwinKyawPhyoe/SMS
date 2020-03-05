@@ -107,7 +107,7 @@ class RoleController extends Controller
         //
         $role = Role::find($id);
         $role->update([
-            "is_active" => "No"
+            "is_active" => "delete"
         ]);
         return response()->json(['text' => 'Role deleted successfully', 'type' => 'success']);
     }

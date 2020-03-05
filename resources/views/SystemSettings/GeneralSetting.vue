@@ -8,7 +8,7 @@
     </div>
     <div
       class="modal fade"
-      id="exampleModalCenter"
+      id="schoolDetails"
       tabindex="-1"
       role="dialog"
       aria-labelledby="exampleModalCenterTitle"
@@ -41,7 +41,15 @@
                       School Name
                       <strong>*</strong>
                     </label>
-                    <input type="text" v-model="school.school_name" class="inputbox" />
+                    <input
+                      type="text"
+                      id="schoolid"
+                      v-model="school.school_name"
+                      class="inputbox"
+                      @keyup="onValidate(school.school_name, 'schoolid', 'schoolmsg')"
+                      v-on:blur="onValidate(school.school_name, 'schoolid', 'schoolmsg')"
+                    />
+                    <span id="schoolmsg" class="error_message">School Name is required</span>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12">
@@ -58,10 +66,14 @@
                     </label>
                     <textarea
                       rows="2"
+                      id="addressid"
                       v-model="school.address"
                       autocomplete="off"
                       class="textareas"
+                      @keyup="onValidate(school.address, 'addressid', 'addressmsg')"
+                      v-on:blur="onValidate(school.address, 'addressid', 'addressmsg')"
                     ></textarea>
+                    <span class="error_message" id="addressmsg">Address is required</span>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12">
@@ -70,7 +82,15 @@
                       Phone
                       <strong>*</strong>
                     </label>
-                    <input type="number" v-model="school.phone" class="inputbox" />
+                    <input
+                      type="number"
+                      id="phoneid"
+                      v-model="school.phone"
+                      class="inputbox"
+                      @keyup="onValidate(school.phone, 'phoneid', 'phonemsg')"
+                      v-on:blur="onValidate(school.phone, 'phoneid', 'phonemsg')"
+                    />
+                    <span class="error_message" id="phonemsg">Phone is required</span>
                   </div>
                 </div>
                 <div class="col-lg-6 col-md-6 col-sm-6 col-12">
@@ -79,7 +99,15 @@
                       Email
                       <strong>*</strong>
                     </label>
-                    <input type="text" v-model="school.email" class="inputbox" />
+                    <input
+                      type="email"
+                      id="emailid"
+                      v-model="school.email"
+                      class="inputbox"
+                      @keyup="onValidate(school.email, 'emailid', 'emailmsg')"
+                      v-on:blur="onValidate(school.email, 'emailid', 'emailmsg')"
+                    />
+                    <span class="error_message" id="emailmsg">Email is required</span>
                   </div>
                 </div>
                 <div class="col-lg-3 col-md-6 col-sm-6 col-12">
@@ -126,53 +154,86 @@
                 <div class="curTheme">
                   <b>Current Theme</b>
                 </div>
-                <form>
-                  <div class="row" id="ThemeColor">
-                    <div class="col-md-3 col-sm-6 col-xs-6 col-12">
-                      <div class="blockColor" @click="changeTheme('defaultColor')">
-                        <div class="backColor" id="default" style="background:#1b5e20;">
-                          <p class="default" id="defaultText">Default</p>
-                        </div>
+                <div class="row" id="ThemeColor">
+                  <div class="col-md-3 col-sm-6 col-xs-6 col-12">
+                    <div class="blockColor" @click="changeTheme('defaultColor')">
+                      <div class="backColor" id="default" style="background:#1b5e20;">
+                        <i
+                          class="fa fa-check-circle circle"
+                          v-if="this.color == 'defaultColor'"
+                          id="defaultCircle"
+                        ></i>
+                        <p
+                          class="default"
+                          v-if="this.color != 'defaultColor'"
+                          id="defaultText"
+                        >Default</p>
                       </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-6 col-12">
-                      <div class="blockColor" @click="changeTheme('redColor')">
-                        <div class="backColor" id="red" style="background:darkred;">
-                          <p class="default" id="redText">Red</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-6 col-12">
-                      <div class="blockColor" @click="changeTheme('blueColor')">
-                        <div class="backColor" id="blue" style="background:darkcyan;">
-                          <p class="default" id="blueText">Blue</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-6 col-12">
-                      <div class="blockColor" @click="changeTheme('darkColor')">
-                        <div class="backColor" id="dark" style="background:currentColor;">
-                          <p class="default" id="darkText">Dark</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-md-3 col-sm-6 col-xs-6 col-12">
-                      <div class="blockColor" @click="changeTheme('lightColor')">
-                        <div class="backColor" id="light" style="background:#edeeef;">
-                          <p class="default" id="lightText" style="color:black;">Light</p>
-                        </div>
-                      </div>
-                    </div>
-                    <div class="col-12">
-                      <button
-                        class="save"
-                        id="globalSave"
-                        @click="themeColor()"
-                        style="margin:5px 0 1rem 0;"
-                      >Save</button>
                     </div>
                   </div>
-                </form>
+                  <div class="col-md-3 col-sm-6 col-xs-6 col-12">
+                    <div class="blockColor" @click="changeTheme('redColor')">
+                      <div class="backColor" id="red" style="background:darkred;">
+                        <i
+                          class="fa fa-check-circle circle"
+                          v-if="this.color == 'redColor'"
+                          id="redCircle"
+                        ></i>
+                        <p class="default" id="redText" v-if="this.color != 'redColor'">Red</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-sm-6 col-xs-6 col-12">
+                    <div class="blockColor" @click="changeTheme('blueColor')">
+                      <div class="backColor" id="blue" style="background:darkcyan;">
+                        <i
+                          class="fa fa-check-circle circle"
+                          v-if="this.color == 'blueColor'"
+                          id="blueCircle"
+                        ></i>
+                        <p class="default" v-if="this.color != 'blueColor'" id="blueText">Blue</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-sm-6 col-xs-6 col-12">
+                    <div class="blockColor" @click="changeTheme('darkColor')">
+                      <div class="backColor" id="dark" style="background:currentColor;">
+                        <i
+                          class="fa fa-check-circle circle"
+                          v-if="this.color == 'darkColor'"
+                          id="darkCircle"
+                        ></i>
+                        <p class="default" id="darkText" v-if="this.color != 'darkColor'">Dark</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-md-3 col-sm-6 col-xs-6 col-12">
+                    <div class="blockColor" @click="changeTheme('lightColor')">
+                      <div class="backColor" id="light" style="background:#edeeef;">
+                        <i
+                          class="fa fa-check-circle circle"
+                          id="lightCircle"
+                          v-if="this.color == 'lightColor'"
+                          style="color:black;"
+                        ></i>
+                        <p
+                          class="default"
+                          id="lightText"
+                          v-if="this.color != 'lightColor'"
+                          style="color:black;"
+                        >Light</p>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-12">
+                    <button
+                      class="save"
+                      id="globalSave"
+                      @click="themeColor()"
+                      style="margin:5px 0 1rem 0;"
+                    >Save</button>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -189,7 +250,7 @@
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="width:653px !important;">
+        <div class="modal-content" style="width:500px !important;">
           <div class="modal-body" style="padding:0;">
             <div class="card-header" id="globalcardHeader" style="width: 100%;margin-left: 0;">
               <h6>Edit Logo</h6>
@@ -205,10 +266,11 @@
               >
                 <div style="width: 80%;height: 80%;border: 1px dotted #7c98fd;margin-top: 1rem;">
                   <i
-                    class="fa fa-image" v-if="!school.schoollogo"
+                    class="fa fa-image"
+                    v-if="noImage"
                     style="margin: 5px 0px 1px 3px;width: 90%;zoom: 5;display: flex;justify-content: center;"
                   ></i>
-                  <h3 v-if="!school.schoollogo" style="font-size: 13pt;text-align: center;">Pick Your Images</h3>
+                  <h3 v-if="noImage" style="font-size: 13pt;text-align: center;">Pick Your Images</h3>
                   <input
                     type="file"
                     id="upload"
@@ -218,8 +280,9 @@
                   />
                 </div>
                 <img
-                  id="schoolLogo"
                   :src="'SettingImages/'+school.schoollogo"
+                  id="schoolLogo"
+                  v-if="!noImage"
                   style="margin-top: 1.4rem;position: absolute;height: 52%;width: 70%;z-index: 0;"
                 />
               </div>
@@ -230,8 +293,8 @@
     </div>
     <hr />
 
-    <div class="row rowContainer" style="align-items: end !important;margin:0;">
-      <div class="col-lg-4 col-12" style="padding:0 5px;">
+    <div class="row rowContainer" style="align-items: end !important;margin:0;margin-top:-1rem;">
+      <div class="col-lg-4 col-12" style="padding:5px;">
         <div class="card" id="globalCard">
           <div class="card-header" id="globalcardHeader">
             <h6>Edit Logo</h6>
@@ -261,7 +324,7 @@
               class="editSm"
               @click="getData()"
               data-toggle="modal"
-              data-target="#exampleModalCenter"
+              data-target="#schoolDetails"
             >Edit</button>
           </div>
           <div class="card-body tableCard" id="globalcardBody">
@@ -316,7 +379,7 @@
                     </td>
                     <td class="all" nowrap>{{this.school.language}}</td>
                   </tr>
-                  <tr>
+                  <tr v-for="color in colors" :key="color.id">
                     <td class="all" nowrap>
                       <b>Current Theme</b>
                     </td>
@@ -324,22 +387,47 @@
                       <span class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="themeBlock block1" style="background:#1b5e20;"></div>
                         <label for="default">Default</label>
+                        <i
+                          class="fa fa-check"
+                          v-if="color.color == 'defaultColor'"
+                          style="color:#1b5e20;margin-left:5px;"
+                        ></i>
                       </span>
                       <span class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="themeBlock block2" style="background:darkred;"></div>
                         <label for="theme1">Theme 1</label>
+                        <i
+                          class="fa fa-check"
+                          v-if="color.color == 'redColor'"
+                          style="color:darkred;margin-left:5px;"
+                        ></i>
                       </span>
                       <span class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="themeBlock block3" style="background:darkcyan;"></div>
                         <label for="theme2">Theme 2</label>
+                        <i
+                          class="fa fa-check"
+                          style="color:darkcyan;margin-left:5px;"
+                          v-if="color.color == 'blueColor'"
+                        ></i>
                       </span>
                       <span class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="themeBlock block4" style="background:black;"></div>
                         <label for="theme3">Theme 3</label>
+                        <i
+                          class="fa fa-check"
+                          v-if="color.color == 'darkColor'"
+                          style="color:black;margin-left:5px;"
+                        ></i>
                       </span>
                       <span class="col-lg-4 col-md-6 col-sm-6 col-12">
                         <div class="themeBlock block5" style="background:whitesmoke;"></div>
                         <label for="theme4">Theme 4</label>
+                        <i
+                          class="fa fa-check"
+                          v-if="color.color == 'lightColor'"
+                          style="color:#cacaca;margin-left:5px;"
+                        ></i>
                       </span>
                     </td>
                   </tr>
@@ -354,6 +442,7 @@
 </template>
 <script>
 import { EventBus } from "../../js/event-bus.js";
+import { Util } from "../../js/util";
 export default {
   data() {
     return {
@@ -362,11 +451,14 @@ export default {
       passColor: [],
       sessions: [],
       school: {},
-      dismiss: false
+      dismiss: false,
+      noImage: false
     };
   },
-  created() {
+  mounted() {
     EventBus.$emit("ThemeClicked");
+  },
+  created() {
     this.axios.get("/api/color").then(response => {
       this.colors = response.data;
     });
@@ -380,154 +472,61 @@ export default {
   methods: {
     Preview_image(event) {
       var reader = new FileReader();
-      reader.onload = function() {
-        var output = document.getElementById("schoolLogo");
-        output.src = reader.result;
-      };
       reader.readAsDataURL(event.target.files[0]);
       this.school.schoollogo = event.target.files[0];
-      const config = {
-        headers: { "content-type": "multipart/form-data" }
-      };
-      let formData = new FormData();
-      formData.append("schoollogo", this.school.schoollogo);
-      this.axios
-        .post(`/api/school/updatePhoto/${this.school.id}`, formData, config)
-        .then(response => {
+      if (this.school.schoollogo.size > 150000) {
+        alert(
+          `Sorry, Your File Size ${this.school.schoollogo.size} Greater than 1.5MB`
+        );
+        this.noImage = true;
+        this.axios.get("/api/schools").then(response => {
           this.school = response.data;
-          $("#profileModal").modal("hide");
-          window.location = window.location.href;
         });
+      } else {
+        reader.onload = function() {
+          var output = document.getElementById("schoolLogo");
+          output.src = reader.result;
+        };
+        const config = {
+          headers: { "content-type": "multipart/form-data" }
+        };
+        let formData = new FormData();
+        formData.append("schoollogo", this.school.schoollogo);
+        this.axios
+          .post(`/api/school/updatePhoto/${this.school.id}`, formData, config)
+          .then(response => {
+            this.school = response.data;
+            $("#profileModal").modal("hide");
+            window.location = window.location.href;
+          });
+        console.log(this.school.schoollogo.size);
+      }
     },
     changeTheme(id) {
+      this.color = id;
       if (id == "defaultColor") {
-        this.color = id;
-        document.getElementById("default").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("red").style.border = "none";
-        document.getElementById("blue").style.border = "none";
-        document.getElementById("dark").style.border = "none";
-        document.getElementById("light").style.border = "none";
-        document.getElementById("defaultText").style.filter = "opacity(1)";
-        document.getElementById("redText").style.filter = "opacity(0.5)";
-        document.getElementById("blueText").style.filter = "opacity(0.5)";
-        document.getElementById("darkText").style.filter = "opacity(0.5)";
-        document.getElementById("lightText").style.filter = "opacity(0.5)";
+        this.defaultColor();
       } else if (id == "redColor") {
-        this.color = id;
-        document.getElementById("red").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("blue").style.border = "none";
-        document.getElementById("dark").style.border = "none";
-        document.getElementById("light").style.border = "none";
-        document.getElementById("default").style.border = "none";
-        document.getElementById("redText").style.filter = "opacity(1)";
-        document.getElementById("defaultText").style.filter = "opacity(0.5)";
-        document.getElementById("blueText").style.filter = "opacity(0.5)";
-        document.getElementById("darkText").style.filter = "opacity(0.5)";
-        document.getElementById("lightText").style.filter = "opacity(0.5)";
+        this.redColor();
       } else if (id == "blueColor") {
-        this.color = id;
-        document.getElementById("blue").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("red").style.border = "none";
-        document.getElementById("default").style.border = "none";
-        document.getElementById("dark").style.border = "none";
-        document.getElementById("light").style.border = "none";
-        document.getElementById("blueText").style.filter = "opacity(1)";
-        document.getElementById("defaultText").style.filter = "opacity(0.5)";
-        document.getElementById("redText").style.filter = "opacity(0.5)";
-        document.getElementById("darkText").style.filter = "opacity(0.5)";
-        document.getElementById("lightText").style.filter = "opacity(0.5)";
+        this.blueColor();
       } else if (id == "darkColor") {
-        this.color = id;
-        document.getElementById("dark").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("default").style.border = "none";
-        document.getElementById("red").style.border = "none";
-        document.getElementById("light").style.border = "none";
-        document.getElementById("blue").style.border = "none";
-        document.getElementById("darkText").style.filter = "opacity(1)";
-        document.getElementById("defaultText").style.filter = "opacity(0.5)";
-        document.getElementById("redText").style.filter = "opacity(0.5)";
-        document.getElementById("blueText").style.filter = "opacity(0.5)";
-        document.getElementById("lightText").style.filter = "opacity(0.5)";
+        this.darkColor();
       } else if (id == "lightColor") {
-        this.color = id;
-        document.getElementById("light").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("dark").style.border = "none";
-        document.getElementById("default").style.border = "none";
-        document.getElementById("red").style.border = "none";
-        document.getElementById("blue").style.border = "none";
-        document.getElementById("lightText").style.filter = "opacity(1)";
-        document.getElementById("defaultText").style.filter = "opacity(0.5)";
-        document.getElementById("redText").style.filter = "opacity(0.5)";
-        document.getElementById("blueText").style.filter = "opacity(0.5)";
-        document.getElementById("darkText").style.filter = "opacity(0.5)";
+        this.lightColor();
       }
     },
     focusTheme() {
       if (this.passColor.color == "defaultColor") {
-        document.getElementById("default").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("red").style.border = "none";
-        document.getElementById("blue").style.border = "none";
-        document.getElementById("dark").style.border = "none";
-        document.getElementById("light").style.border = "none";
-        document.getElementById("defaultText").style.filter = "opacity(1)";
-        document.getElementById("redText").style.filter = "opacity(0.5)";
-        document.getElementById("blueText").style.filter = "opacity(0.5)";
-        document.getElementById("darkText").style.filter = "opacity(0.5)";
-        document.getElementById("lightText").style.filter = "opacity(0.5)";
+        this.defaultColor();
       } else if (this.passColor.color == "redColor") {
-        document.getElementById("red").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("blue").style.border = "none";
-        document.getElementById("dark").style.border = "none";
-        document.getElementById("light").style.border = "none";
-        document.getElementById("default").style.border = "none";
-        document.getElementById("redText").style.filter = "opacity(1)";
-        document.getElementById("defaultText").style.filter = "opacity(0.5)";
-        document.getElementById("blueText").style.filter = "opacity(0.5)";
-        document.getElementById("darkText").style.filter = "opacity(0.5)";
-        document.getElementById("lightText").style.filter = "opacity(0.5)";
+        this.redColor();
       } else if (this.passColor.color == "blueColor") {
-        document.getElementById("blue").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("red").style.border = "none";
-        document.getElementById("default").style.border = "none";
-        document.getElementById("dark").style.border = "none";
-        document.getElementById("light").style.border = "none";
-        document.getElementById("blueText").style.filter = "opacity(1)";
-        document.getElementById("defaultText").style.filter = "opacity(0.5)";
-        document.getElementById("redText").style.filter = "opacity(0.5)";
-        document.getElementById("darkText").style.filter = "opacity(0.5)";
-        document.getElementById("lightText").style.filter = "opacity(0.5)";
+        this.blueColor();
       } else if (this.passColor.color == "darkColor") {
-        document.getElementById("dark").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("default").style.border = "none";
-        document.getElementById("red").style.border = "none";
-        document.getElementById("light").style.border = "none";
-        document.getElementById("blue").style.border = "none";
-        document.getElementById("darkText").style.filter = "opacity(1)";
-        document.getElementById("defaultText").style.filter = "opacity(0.5)";
-        document.getElementById("redText").style.filter = "opacity(0.5)";
-        document.getElementById("blueText").style.filter = "opacity(0.5)";
-        document.getElementById("lightText").style.filter = "opacity(0.5)";
+        this.darkColor();
       } else if (this.passColor.color == "lightColor") {
-        document.getElementById("light").style.border =
-          "3px solid rgb(105, 105, 105)";
-        document.getElementById("dark").style.border = "none";
-        document.getElementById("default").style.border = "none";
-        document.getElementById("red").style.border = "none";
-        document.getElementById("blue").style.border = "none";
-        document.getElementById("lightText").style.filter = "opacity(1)";
-        document.getElementById("defaultText").style.filter = "opacity(0.5)";
-        document.getElementById("redText").style.filter = "opacity(0.5)";
-        document.getElementById("blueText").style.filter = "opacity(0.5)";
-        document.getElementById("darkText").style.filter = "opacity(0.5)";
+        this.lightColor();
       }
     },
     getColors() {
@@ -542,23 +541,93 @@ export default {
       });
     },
     themeColor() {
-      if (this.passColor.id == "1") {
-        this.axios
-          .post(`api/school/update/${this.school.id}`, this.school)
-          .then(response => {
-            this.school = response.data;
-          });
-        this.axios.post(`api/setting/update/${this.color}`);
+      if (this.checkValidate()) {
+        if (this.passColor.id == "1") {
+          this.axios
+            .post(`api/school/update/${this.school.id}`, this.school)
+            .then(response => {
+              window.location = window.location.href;
+            });
+          this.axios.post(`api/setting/update/${this.color}`);
+        }
       }
     },
     getData() {
+      this.getColors();
       for (var i = 0; i < this.colors.length; i++) {
-        this.getColors();
         if (this.colors[i].id == "1") {
           this.passColor = this.colors[i];
+          this.color = this.colors[i].color;
+          console.log(this.color);
           this.focusTheme();
         }
       }
+    },
+    onValidate(value, inputId, megId) {
+      Util.onValidate(value, inputId, megId);
+    },
+    checkValidate() {
+      var returnValue = true;
+      if (
+        this.school.school_name == "" ||
+        this.school.school_name == undefined
+      ) {
+        Util.onValidateMessage("schoolid", "schoolmsg");
+        returnValue = false;
+      }
+      if (this.school.address == "" || this.school.address == undefined) {
+        Util.onValidateMessage("addressid", "addressmsg");
+        returnValue = false;
+      }
+      if (this.school.phone == "" || this.school.phone == undefined) {
+        Util.onValidateMessage("phoneid", "phonemsg");
+        returnValue = false;
+      }
+      if (this.school.email == "" || this.school.email == undefined) {
+        Util.onValidateMessage("emailid", "emailmsg");
+        returnValue = false;
+      }
+      return returnValue;
+    },
+    defaultColor() {
+      document.getElementById("default").style.border =
+        "3px solid rgb(105, 105, 105)";
+      document.getElementById("red").style.border = "none";
+      document.getElementById("blue").style.border = "none";
+      document.getElementById("dark").style.border = "none";
+      document.getElementById("light").style.border = "none";
+    },
+    redColor() {
+      document.getElementById("red").style.border =
+        "3px solid rgb(105, 105, 105)";
+      document.getElementById("blue").style.border = "none";
+      document.getElementById("dark").style.border = "none";
+      document.getElementById("light").style.border = "none";
+      document.getElementById("default").style.border = "none";
+    },
+    blueColor() {
+      document.getElementById("blue").style.border =
+        "3px solid rgb(105, 105, 105)";
+      document.getElementById("red").style.border = "none";
+      document.getElementById("default").style.border = "none";
+      document.getElementById("dark").style.border = "none";
+      document.getElementById("light").style.border = "none";
+    },
+    darkColor() {
+      document.getElementById("dark").style.border =
+        "3px solid rgb(105, 105, 105)";
+      document.getElementById("default").style.border = "none";
+      document.getElementById("red").style.border = "none";
+      document.getElementById("light").style.border = "none";
+      document.getElementById("blue").style.border = "none";
+    },
+    lightColor() {
+      document.getElementById("light").style.border =
+        "3px solid rgb(105, 105, 105)";
+      document.getElementById("dark").style.border = "none";
+      document.getElementById("default").style.border = "none";
+      document.getElementById("red").style.border = "none";
+      document.getElementById("blue").style.border = "none";
     }
   }
 };

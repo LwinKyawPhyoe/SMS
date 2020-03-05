@@ -52,7 +52,8 @@ class HostelController extends Controller
                 'intake'      => $request->input('intake'),
                 'description' => $request->input('description'),
                 'session_id'  => $session[$i]['id'],
-                'domain'  => 'TS'
+                'domain'  => 'TS',
+                'is_active' => 'yes'
             ]);
             $hostel->save();
             return response()->json(['text' => 'Hostel added successfully', 'type' => 'success']);
@@ -110,7 +111,7 @@ class HostelController extends Controller
     {
         $hostel = Hostel::find($id);
         $hostel->update([
-            "is_active" => "no"
+            "is_active" => "delete"
         ]);
         return response()->json(['text' => 'Hostel deleted successfully', 'type' => 'success']);
     }

@@ -7,6 +7,7 @@
       </h6>
     </div>
     <hr />
+    <Loading></Loading>
     <div class="card">
       <div class="card-header">
         <h6>Select Criteria</h6>
@@ -68,9 +69,13 @@
       </div>
 
       <div class="stucard-body" v-if="view === true">
-        <input type="text" placeholder="Search..." class="searchText" />
-        <div class="copyRows">
-          <div class="row" id="copyRow">
+        <div v-if="isEmpty == true" class="NoData">
+          No Data
+        </div>
+        <div v-else>
+           <input type="text" placeholder="Search..." class="searchText" />
+            <div  class="copyRows">
+            <div class="row" id="copyRow">
             <div class="col-3">
               <a href="#" title="Excel">
                 <i class="fa fa-file-excel-o"></i>
@@ -86,8 +91,8 @@
                 <i class="fa fa-columns"></i>
               </a>
             </div>
-          </div>
-        </div>
+           </div>
+         </div>
         <div class="table-responsive">
           <table class="table table-hover table-striped">
             <thead>
@@ -121,20 +126,16 @@
             </tbody>
           </table>
         </div>
+        </div>
       </div>
       <div class="stucard-body view" v-else>
-        <div
-          v-if="isEmpty !== false"
-          style="margin: 25px;"
-          class="alert alert-success"
-          role="alert"
-        >No Record Found</div>
-        <div>
-          <div class="row main">
+        <div v-if="isEmpty == true" class="NoData">No Data</div>
+          <div v-else class="row main">
             <div class="imgcard" v-for="(staff) in staffs" :key="staff.id">
               <div class="staffinfo-box">
                 <div class="staffleft-box">
-                  <img :src="'/staff_images/'+ staff.image" alt />
+                  <img :src="'/staff_images/'+ staff.image" alt v-if="staff.image" />
+                  <img v-else src="/noimage.jpg" />
                 </div>
                 <div class="staffleft-content">
                   <h5>
@@ -142,22 +143,22 @@
                       data-toggle="tooltip"
                       title="Name"
                       data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"
-                    >{{staff.name}}</span>
+                    >{{staff.name | truncate(15)}}</span>
                   </h5>
                   <p>{{staff.staff_id}}</p>
                   <p>{{staff.phone}}</p>
-                  <p>Ground Floor, {{staff.department.department_name}}</p>
+                  <p>{{staff.department.department_name | truncate(20)}}</p>
                   <p class="staffsub">
                     <span
                       data-toggle="tooltip"
                       title="Role"
                       data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"
-                    >{{staff.role.name}}</span>
+                    >{{staff.role.name | truncate(15)}}</span>
                     <span
                       data-toggle="tooltip"
                       title="Designation"
                       data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"
-                    >{{staff.designation.designation_name}}</span>
+                    >{{staff.designation.designation_name | truncate(10)}}</span>
                   </p>
                 </div>
                 <div class="overlay3">
@@ -184,7 +185,11 @@
 </template>
 <script>
 import { EventBus } from "../../../js/event-bus.js";
+import Loading from "../../LoadingController.vue";
 export default {
+  components: {
+    Loading
+  },
   data() {
     return {
       view: true,
@@ -194,6 +199,17 @@ export default {
       roles: [],
       isEmpty: false
     };
+  },
+  filters:{
+    truncate(value, limit){
+      if (value.length > limit) {
+      value = value.substring(0, (limit - 3)) + '...';
+     }
+     return value;
+    }
+  },
+  mounted(){
+   EventBus.$emit('onLoad');
   },
   created() {
     EventBus.$emit("ThemeClicked");
@@ -207,6 +223,13 @@ export default {
       this.axios.get("/api/staffs").then(response => {
         console.log(JSON.stringify(response.data));
         this.staffs = response.data;
+        if(this.staffs.length > 0){
+          this.isEmpty = false;
+        }
+        else{
+          this.isEmpty = true;
+        }
+        EventBus.$emit('onLoadEnd');
       });
     },
     getRoles() {
@@ -223,32 +246,35 @@ export default {
     editStaff(data) {},
     searchByRole() {
       if (this.checkValidate()) {
+        EventBus.$emit("onLoad");
         this.axios
           .get(`/api/staffdirectory/search_by_role/${this.search_by_role}`)
           .then(response => {
             console.log("-->" + JSON.stringify(response));
             this.staffs = response.data;
             this.isEmpty = false;
+            EventBus.$emit("onLoadEnd");
           });
       }
     },
     searchByOther() {
       if (!this.search_by_other) {
-        this.getStaffs();
+        // this.getStaffs();
       } else {
+        EventBus.$emit("onLoad");
         this.axios
           .get(`/api/staffdirectory/search_by_other/${this.search_by_other}`)
           .then(response => {
             console.log("-->" + JSON.stringify(response));
             this.staffs = response.data;
-            if (response.data == "") {
-              this.isEmpty = true;
-            } else {
+            if (response.data.length > 0) {
               this.isEmpty = false;
+            } else {
+              alert('isempty')
+              this.isEmpty = true;
             }
-            setTimeout(() => {
-              this.search_by_other = "";
-            }, 100);
+            EventBus.$emit('onLoadEnd');
+            this.search_by_other = "";
           });
       }
     },

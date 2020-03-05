@@ -43,14 +43,16 @@ class StaffAttendanceController extends Controller
         //     ->get();
         // return response()->json($data);
     }
+
+    /***Get Year from db */
     public function getYears()
     {
+        $years = StaffAttendance::selectRaw('YEAR(date) as year')
+            ->orderBy('date', 'ASC')
+            ->distinct()
+            ->get();
 
-        // $years = StaffAttendance::distinct('created_at')->get('created_at')
-        //     ->groupBy(function ($val) {
-        //         return  Carbon::parse($val->created_at)->format('YYYY');
-        //     });
-        // return response()->json($years);
+        return $years;
     }
     /**
      * Show the form for creating a new resource.
@@ -75,31 +77,42 @@ class StaffAttendanceController extends Controller
         $curdate = strtotime($formData[0]['date']);
         $date = date('Y-m-d', $curdate);
         $data = "";
-        $data = StaffAttendance::where('staff_id', $formData[0]['staff_id'])->where('date', $date)->get('id');
-        if(count($data) > 0 ) {
-            echo "edit";
+        $data = StaffAttendance::where('date', $date)->get('id');
+        if (count($data) > 0) {
+            for ($i = 0; $i < count($formData); $i++) {
+                $session = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get();
+                for ($ii = 0; $ii < count($session); $ii++) {
+                    $staffAttendance = StaffAttendance::find($data);
+                    $input = [
+                        'date'         => $formData[$i]['date'],
+                        'staff_id'     => $formData[$i]['staff_id'],
+                        'staff_attendance_type_id'     => $formData[$i]['staff_attendance_type_id'],
+                        'note'        => $formData[$i]['note'],
+                        'session_id'  => $session[$ii]['id'],
+                        'domain'  => 'TS'
+                    ];
+                    $staffAttendance[$i]->update($input);
+                    // echo $staffAttendance;
+                    break;
+                }
+            }
+        } else {
+            for ($i = 0; $i < count($formData); $i++) {
+                $session = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get();
+                for ($ii = 0; $ii < count($session); $ii++) {
+                    $staffAttendance = new StaffAttendance([
+                        'date'         => $formData[$i]['date'],
+                        'staff_id'     => $formData[$i]['staff_id'],
+                        'staff_attendance_type_id'     => $formData[$i]['staff_attendance_type_id'],
+                        'note'        => $formData[$i]['note'],
+                        'session_id'  => $session[$ii]['id'],
+                        'domain'  => 'TS'
+                    ]);
+                }
+                $staffAttendance->save();
+            }
         }
-        else{
-            echo "add";
-        }
-        for ($i = 0; $i < count($formData); $i++) {
-          
-            // $session = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get();
-            // for ($ii = 0; $ii < count($session); $ii++) {
-            //     $staffAttendance = new StaffAttendance([
-            //         'date'         => $formData[$i]['date'],
-            //         'staff_id'     => $formData[$i]['staff_id'],
-            //         'staff_attendance_type_id'     => $formData[$i]['staff_attendance_type_id'],
-            //         'note'        => $formData[$i]['note'],
-            //         'session_id'  => $session[$ii]['id'],
-            //         'domain'  => 'TS'
-            //     ]);
-            // }
-            // $staffAttendance->save();
-        }
-        echo ($data);
 
-     
 
         return response()->json(['data' => $data, 'text' => 'Staff Attendance added successfully', 'type' => 'success']);
     }
@@ -183,5 +196,29 @@ class StaffAttendanceController extends Controller
     public function destroy(StaffAttendance $staffAttendance)
     {
         //
+    }
+    public function search_by_role($id, $date)
+    {
+        $curdate = strtotime($date);
+        $res = date('Y-m-d', $curdate);
+        $data = "";
+        $data = StaffAttendance::where('date', $res)->get();
+        /***Update  */
+        if (count($data) > 0) {
+            $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
+            $staffs = StaffDirectory::with('role', 'department', 'designation')
+                ->where('role_id', $id)
+                ->where('session_id', $sessionid[0]->id)
+                ->get()->toArray();
+            return response()->json(['status' => 'update', 'data' => $staffs, 'attendance' => $data]);
+        } else {
+            /***New */
+            $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
+            $staffs = StaffDirectory::with('role', 'department', 'designation')
+                ->where('role_id', $id)
+                ->where('session_id', $sessionid[0]->id)
+                ->get()->toArray();
+            return response()->json(['status' => 'new', 'data' => $staffs]);
+        }
     }
 }

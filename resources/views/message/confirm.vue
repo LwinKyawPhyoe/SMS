@@ -5,7 +5,8 @@
     tabindex="-1"
     role="dialog"
     aria-labelledby="exampleModalCenterTitle"
-    aria-hidden="true">
+    aria-hidden="true"
+  >
     <div class="modal-dialog modal-dialog-centered modal-sm" role="document">
       <div class="modal-content">
         <form @submit.prevent="deleteData">
@@ -14,19 +15,18 @@
             <i data-dismiss="modal" class="fa fa-close confirm-q" aria-hidden="true"></i>
           </div>
           <div class="confirm-body">
-            <h6 v-if="url.type != 'OK'" class="modal-title">Are you sure?</h6>
-            <h6 v-if="url.type === 'OK'" class="modal-title">{{url.url}}</h6>
+            <h6 class="modal-title">Are you sure?</h6>
           </div>
           <div class="modal-footer confirm-modal-footer">
-            <button v-if="url.type != 'OK'"
+            <button
+              id="globalSave"
               @click="yes()"
               type="submit"
-              class="confirmBtn"
+              class="save"
               style="text-align:center;"
               data-dismiss="modal"
             >Yes</button>
-            <button v-if="url.type != 'OK'" type="button" class="confirmBtn-outline" data-dismiss="modal">No</button>
-            <button v-if="url.type == 'OK'" type="button" class="confirmBtn-outline" data-dismiss="modal">OK</button>
+            <button id="globalSave" type="button" class="confirmBtn-outline ripple" data-dismiss="modal">No</button>
           </div>
         </form>
       </div>

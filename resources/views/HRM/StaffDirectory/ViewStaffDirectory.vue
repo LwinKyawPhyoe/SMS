@@ -1,5 +1,49 @@
 <template>
   <div class="form ViewStaffDirectory" id="bar">
+    <!-- right side menu -->
+    <div class="sta-menu-open ripple" style="position: fixed;right: 2rem;top: 5rem;z-index: 1;">
+      <i @click="showRightSideMenu()" class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+    <div class="right-side-menu" id="right-side-menu">
+      <div class="statop">
+        <div class="statopfixed">
+          <p class="classtap">
+            Staff
+            <a @click="closeRightSideMenu()" class="staclose">
+              <i class="fa fa-times"></i>
+            </a>
+          </p>
+          <div class="scrollmenu ripple">
+            <a
+              class="ripple"
+              v-for="(role,i) in roles"
+              :key="i"
+              :class="{ 'sta-active': activeItem ===  role.id }"
+              @click="selectItem(role.id)"
+            >{{role.name}}</a>
+          </div>
+        </div>
+      </div>
+      <div class="sta-content">
+        <div v-if="nodata == true" class="NoData">No Data</div>
+        <div
+          v-else
+          class="sta-name ripple"
+          v-for="(staff, s) in stafflists"
+          :key="s"
+          @click="clickStaff(staff.id)"
+        >
+          <a>
+            <div class="icon">
+              <img :src="'/staff_images/'+ staff.image" alt v-if="staff.image" />
+              <img v-else src="/noimage.jpg" />
+            </div>
+            <div class="sta-title">{{staff.name}}</div>
+          </a>
+        </div>
+      </div>
+    </div>
+    <!--end of right side menu -->
     <div class="toplink">
       <h4 style="color:var(--primary);margin-bottom:5px;">HRM</h4>
       <h6>
@@ -8,16 +52,82 @@
       </h6>
     </div>
     <hr />
+    <confirm :url="props"></confirm>
     <Loading></Loading>
+    <!-- Timeline modal -->
+    <div
+      class="modal fade"
+      id="addTimeline"
+      tabindex="-1"
+      role="dialog"
+      aria-labelledby="exampleModalCenterTitle"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content" style="width:653px;">
+          <form @submit.prevent="addStaffTimeline()">
+            <div class="modal-body" style="padding:0;">
+              <div class="card-header" id="globalcardHeader" style="width: 100%;margin-left: 0;">
+                <h6>Add Timeline</h6>
+                <i
+                  class="fa fa-close"
+                  data-dismiss="modal"
+                  style="cursor: pointer;padding: 0 10px;position: absolute;right: 5px;"
+                ></i>
+              </div>
+              <div class="textbox" style="width: 100% !important;padding: 0 1rem;">
+                <label>Title</label>
+                <input v-model="form.title" type="text" class="inputbox" name="title" />
+              </div>
+              <div class="textbox" style="width: 100% !important;padding: 0 1rem;">
+                <label>
+                  Date
+                  <strong>*</strong>
+                </label>
+                <datepicker v-model="form.date"></datepicker>
+              </div>
+              <div class="text" style="width: 100% !important;padding: 0 1rem;">
+                <label for="description">Description</label>
+                <textarea v-model="form.description" class="textareas" rows="3"></textarea>
+              </div>
+              <div class="text" style="width: 100% !important;padding: 0 1rem;">
+                <label for="attach">Attach Document</label>
+                <input type="file" class="inputbox" id="attach" />
+              </div>
+              <div class="text" style="width: 100% !important;padding: 1rem;">
+                <label for="visible" style="display: flex;align-items: center;">
+                  Visible to this person
+                  <input type="checkbox" />
+                </label>
+              </div>
+            </div>
+            <div class="modal-footer" style="padding-top: 0;">
+              <button type="submit" id="globalSave" class="save">Save</button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
     <div class="row" id="row">
       <div class="col-lg-4 col-md-12">
         <div class="card" id="globalCard">
           <div class="card-header" id="globalcardHeader">
             <h6>Staff Profiles</h6>
           </div>
-          <div class="card-body tableCard" id="globalcardBody">
+          <div
+            class="card-body tableCard"
+            id="globalcardBody"
+            :class="{ 'sta-disable': staffs.is_active ===  'no' }"
+          >
             <div class="Profile">
-              <img :src="'/staff_images/'+ image" alt />
+              <img :src="'/staff_images/'+ image" alt v-if="image" />
+              <img v-else src="/noimage.jpg" />
+              <i
+                v-if="staffs.is_active == 'no'"
+                title="Staff is Disabled"
+                class="fa fa-ban disableIcon"
+                aria-hidden="true"
+              ></i>
               <h5 class="name">{{name}}</h5>
             </div>
             <div class="table-responsive">
@@ -108,6 +218,35 @@
                 onclick="toggleBtn('timeline','profile','document','attendance')"
                 @click="showForm('timeline')"
               >Timeline</button>
+            </div>
+            <div style="position: absolute; right : 20px;">
+              <router-link :to="{name: 'editstadirectory', params: { id: $route.params.id }}">
+                <i class="fa fa-pencil"></i>
+              </router-link>
+              <i title="Change Password" class="fa fa-key"></i>
+              <i
+                v-if="staffs.is_active == 'no'"
+                @click="enableRecord()"
+                title="Enable"
+                class="fa fa-thumbs-up"
+                aria-hidden="true"
+              ></i>
+              <i
+                v-if="staffs.is_active == 'no'"
+                @click="deleteRecord()"
+                title="Enable"
+                class="fa fa-trash"
+                aria-hidden="true"
+                data-toggle="modal"
+                data-target="#exampleModalCenter"
+              ></i>
+              <i
+                v-else
+                @click="disableRecord()"
+                title="Disable"
+                class="fa fa-thumbs-o-down"
+                aria-hidden="true"
+              ></i>
             </div>
           </div>
           <div class="card-body" id="globalcardBody" v-if="profile === true">
@@ -233,7 +372,11 @@
           <div class="card-body attendanceBody" id="globalcardBody" v-if="attendance === true">
             <div class="attendance">
               <div class="row">
-                <div class="col-lg-4 col-md-4 col-sm-6 col-12" v-for="(data) in count_attendances">
+                <div
+                  class="col-lg-4 col-md-4 col-sm-6 col-12"
+                  v-for="(data , i) in count_attendances"
+                  :key="i"
+                >
                   <div class="attendanceCard">
                     <h4 class="day">Total {{data.name}}</h4>
                     <b class="number" v-if="data.name == 'Late'" style="color: red;">{{data.data}}</b>
@@ -249,10 +392,13 @@
                     @change="searchAttendanceByDate()"
                     class="inputbox"
                   >
-                    <option selected disabled>Select Year</option>
-                    <option value="2018">2018</option>
-                    <option value="2019">2019</option>
-                    <option value="2020">2020</option>
+                    <!-- <option value selected disabled>Select Year</option> -->
+                    <option
+                      selected
+                      v-for="(data,i) in years"
+                      :key="i"
+                      :value="data.year"
+                    >{{data.year}}</option>
                   </select>
                 </div>
                 <div class="col-lg-8 col-12 text">
@@ -263,31 +409,12 @@
                 </div>
               </div>
             </div>
-            <div class="copyRows">
-              <div class="row" id="copyRow" style="margin-bottom:1rem;margin-top:0px;">
-                <div class="col-2">
-                  <a href="#" title="Excel">
-                    <i class="fa fa-file-excel-o"></i>
-                  </a>
-                </div>
-                <div class="col-2">
-                  <a href="#" title="Print">
-                    <i class="fa fa-print"></i>
-                  </a>
-                </div>
-                <div class="col-2">
-                  <a href="#" title="Columns">
-                    <i class="fa fa-columns"></i>
-                  </a>
-                </div>
-              </div>
-            </div>
             <div class="table-responsive" style="height: 70vh;padding: 0;">
               <table class="table table-hover table-striped">
                 <thead>
                   <tr nowrap class="active">
                     <th nowrap>Month | Date</th>
-                    <th class="table_header" nowrap v-for="(day) in days">{{day.day}}</th>
+                    <th class="table_header" nowrap v-for="(day ,i) in days" :key="i">{{day.day}}</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -302,8 +429,9 @@
                       style="width: 50px;text-align:center;"
                       nowrap
                       v-for="(day, day_index) in days"
+                      :key="day_index"
                     >
-                      <span v-for="(type) in ary">
+                      <span v-for="(type ,i) in ary" :key="i">
                         <span v-if="type.month == month.month && type.date == day.day">
                           <b v-html="type.data" :title="type.note"></b>
                         </span>
@@ -317,7 +445,7 @@
           <div class="card-body documentbody" id="globalcardBody" v-if="document === true">
             <div class="document">
               <div class="row">
-                <p v-if="documentempty == true">No Data</p>
+                <div class="NoData" v-if="documentempty == true">No Data</div>
                 <div v-if="staffs.resume" class="col-lg-4 col-md-4 col-sm-6 col-12">
                   <div class="attendanceCard">
                     <h4 class="day">{{staffs.resume}}</h4>
@@ -348,29 +476,23 @@
               </div>
             </div>
           </div>
-          <div class="card-body timelinebody" id="globalcardBody" v-if="timeline === true">
-            <button class="add">Add</button>
-            <div class="TimeLine">
-              <span>09-09-2000</span>
+          <div class="card-body TimeLine" v-if="timeline === true">
+            <button class="add" data-toggle="modal" data-target="#addTimeline">Add</button>
+            <div v-for="(time, i) in timelines" :key="i">
+              <span>{{time.timeline_date}}</span>
               <div class="timeline">
                 <div class="container right">
                   <div class="content" style="height: fit-content;">
-                    <h6>Won Chess Championship Award</h6>
-                    <p>Edward has won 1st Place in Inter school chess championship award.</p>
+                    <i class="fa fa-list-alt timeIcon"></i>
+                    <h6>{{time.title}}</h6>
+                    <p>{{time.description}}</p>
                   </div>
                 </div>
               </div>
             </div>
-            <div class="TimeLine">
-              <span>09-09-2000</span>
-              <div class="timeline">
-                <div class="container right">
-                  <div class="content" style="height: fit-content;">
-                    <h6>Won Chess Championship Award</h6>
-                    <p>Edward has won 1st Place in Inter school chess championship award.</p>
-                  </div>
-                </div>
-              </div>
+
+            <div class="timelineBottom">
+              <i class="fa fa-calendar timeIcon"></i>
             </div>
           </div>
         </div>
@@ -382,12 +504,23 @@
 import moment from "moment";
 import Loading from "../../LoadingController.vue";
 import { EventBus } from "../../../js/event-bus.js";
+import confirm from "../../message/confirm.vue";
+import datepicker from "../../datepicker.vue";
+
 export default {
   components: {
-    Loading
+    Loading,
+    confirm,
+    datepicker
   },
   data() {
     return {
+      props: {
+        url: "",
+        type: ""
+      },
+      id: null,
+      activeItem: null,
       countcomment: "",
       search_by_year: "",
       profile: true,
@@ -395,29 +528,39 @@ export default {
       document: false,
       timeline: false,
       documentempty: false,
+      nodata: false,
       count_attendances: [],
       attendance_type: [],
       months: [],
       days: [],
       documents: [],
+      roles: [],
       staffs: {},
+      stafflists: [],
+      years: [],
+      timelines: [],
       image: "",
       name: "",
-      present: 0,
-      late: 0,
-      absent: 0,
-      halfday: 0,
-      holiday: 0,
       countDown: { data: [] },
       ary: [],
-      ary_types: []
+      ary_types: [],
+      form: {}
     };
   },
-  created() {
+  mounted() {
+    EventBus.$emit("onLoad");
     EventBus.$emit("ThemeClicked");
+  },
+  created() {
+    EventBus.$on("clicked", response => {
+      this.$router.push({ name: "staffdirectory" });
+    });
+    this.id = this.$route.params.id;
     this.getProfile();
+    this.getRoles();
     this.countAttendance();
     this.getMonth();
+    this.getTimeLines();
     this.axios.get("/api/attendance_types").then(response => {
       this.attendance_type = response.data;
       console.log("Attendance" + JSON.stringify(this.attendance_type));
@@ -431,9 +574,6 @@ export default {
         this.document = false;
         this.timeline = false;
       } else if (name == "attendance") {
-        this.axios.get(`/api/getYears`).then(response => {
-          console.log("Years" + JSON.stringify(response.data));
-        });
         this.searchAttendanceByDate();
 
         this.profile = false;
@@ -452,8 +592,21 @@ export default {
         this.timeline = true;
       }
     },
+    selectItem(i) {
+      this.activeItem = i;
+      this.getStaffLists();
+    },
+    showRightSideMenu() {
+      document.getElementById("right-side-menu").style.marginRight = "0px";
+    },
+    closeRightSideMenu() {
+      document.getElementById("right-side-menu").style.marginRight = "-250px";
+    },
     searchAttendanceByDate() {
       EventBus.$emit("onLoad");
+      this.axios.get(`/api/getyears`).then(response => {
+        this.years = response.data;
+      });
       this.axios
         .get(`/api/searchDate/${this.$route.params.id}/${this.search_by_year}`)
         .then(response => {
@@ -488,23 +641,41 @@ export default {
     /***
      * FETCH DATA
      */
-    getProfile() {
+    getRoles() {
       this.axios
-        .get(`/api/staffdirectory/show/${this.$route.params.id}`)
+        .get("/api/roles")
+        .then(response => (this.roles = response.data));
+    },
+    getStaffLists() {
+      this.axios
+        .get(`/api/staffdirectory/search_staff_lists/${this.activeItem}`)
         .then(response => {
-          this.documents = response.data;
-          this.staffs = response.data;
-          this.image = response.data.image;
-          this.name = response.data.name;
-
-          if (
-            !this.staffs.resume &&
-            !this.staffs.joining_letter &&
-            !this.staffs.other_document
-          ) {
-            this.documentempty = true;
+          this.stafflists = response.data;
+          if (this.stafflists.length < 1) {
+            this.nodata = true;
+          } else {
+            this.nodata = false;
           }
+          console.log(JSON.stringify(response.data));
         });
+    },
+    getProfile() {
+      this.axios.get(`/api/staffdirectory/show/${this.id}`).then(response => {
+        this.documents = response.data;
+        this.staffs = response.data;
+        this.image = response.data.image;
+        this.name = response.data.name;
+        this.activeItem = this.staffs.role_id;
+        this.getStaffLists();
+        if (
+          !this.staffs.resume &&
+          !this.staffs.joining_letter &&
+          !this.staffs.other_document
+        ) {
+          this.documentempty = true;
+        }
+        EventBus.$emit("onLoadEnd");
+      });
     },
     getMonth() {
       this.axios.get("/api/months").then(response => {
@@ -523,6 +694,53 @@ export default {
           console.log("-->" + JSON.stringify(response.data));
           this.count_attendances = response.data;
         });
+    },
+    getTimeLines() {
+      this.axios.get("/api/staffdirectory/gettimelines").then(response => {
+        this.timelines = response.data;
+      });
+    },
+
+    /***
+     * Advanced Options
+     */
+    clickStaff(id) {
+      EventBus.$emit("onLoad");
+      this.$router.push({ path: `/staffdirectory/profile/${id}` });
+      this.id = this.$route.params.id;
+      this.getProfile();
+      this.countAttendance();
+    },
+
+    disableRecord() {
+      EventBus.$emit("onLoad");
+      this.axios
+        .post(`/api/staffdirectory/staffdisable/${this.$route.params.id}`)
+        .then(response => {
+          this.getProfile();
+        });
+    },
+    enableRecord() {
+      EventBus.$emit("onLoad");
+      this.axios
+        .post(`/api/staffdirectory/staffenable/${this.$route.params.id}`)
+        .then(response => {
+          this.getProfile();
+        });
+    },
+    deleteRecord(id) {
+      var funName = "delete"; /**Delete function */
+      this.props.type = "delete";
+      this.props.url = `staffdirectory/delete/${this.$route.params.id}`;
+    },
+    /**
+     Time Line Options
+    */
+    addStaffTimeline() {
+      this.form.staff_id = this.$route.params.id;
+      this.axios
+        .post("/api/staffdirectory/addtimeline", this.form)
+        .then(response => {});
     }
   }
 };

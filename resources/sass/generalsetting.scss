@@ -29,6 +29,12 @@
           justify-content: center;
           transition: all 0.6s;
           align-items: center;
+          .circle {
+            position: absolute;
+            z-index: 1;
+            zoom: 2;
+            color: white;
+          }
           .default {
             margin: 0px;
             font-size: 15px;
@@ -38,7 +44,7 @@
           }
         }
         .backColor:hover {
-          border: 35px solid #adadad38 !important;
+          border: 48px solid #adadad38 !important;
           p {
             filter: opacity(1) !important;
             color: white;

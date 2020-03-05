@@ -7,7 +7,8 @@
       </h4>
     </div>
     <hr />
-    <confirm :url="delurl"></confirm>
+    <confirm :url="props"></confirm>
+    <Loading></Loading>
     <div class="row rowContainer" style="align-items: end !important;">
       <div class="col-lg-5 col-md-12" style="padding-left:2px;">
         <div class="card">
@@ -15,6 +16,7 @@
             <h6>Add Role</h6>
           </div>
           <div class="card-body" style="padding:1rem 0;border-bottom: 1px solid #8080808c;">
+            <message :alertmessage="msg" id="alertmsg" />
             <form @submit.prevent="addRole">
               <div class="col-12">
                 <label for="name">
@@ -33,8 +35,8 @@
               </div>
               <div class="col-12">
                 <!--- store -->
-                <button v-if="this.isEdit == false" type="submit" class="save">Save</button>
-                <button v-else @click="updateRole()" type="button" class="save">Save</button>
+                <button v-if="this.isEdit == false" type="submit" class="save" id="globalSave">Save</button>
+                <button v-else @click="updateRole()" type="button" class="save" id="globalSave">Save</button>
               </div>
             </form>
           </div>
@@ -46,6 +48,7 @@
             <h6>Role List</h6>
           </div>
           <div class="card-body">
+            <message :alertmessage="deletemsg" id="delalertmsg" />
             <input type="text" placeholder="Search..." class="searchText" />
             <div class="copyRows">
               <div class="row" id="copyRow">
@@ -76,7 +79,8 @@
                   </tr>
                 </thead>
                 <tbody>
-                  <tr v-for="(rol) in roles" v-bind:key="rol.id" class="active">
+                  <div v-if="isEmpty == true" class="NoData">No Data</div>
+                  <tr v-else v-for="(rol) in roles" v-bind:key="rol.id" class="active">
                     <td class="all" nowrap>{{rol.name}}</td>
                     <td class="all" nowrap>{{rol.type}}</td>
                     <td style="text-align: right;">
@@ -89,14 +93,12 @@
                         <span class="penLabel">Edit</span>
                       </i>
                       <i
-                        v-if="checkDelete == true"
+                        v-if="rol.type == 'Custom'"
                         data-toggle="modal"
                         data-target="#exampleModalCenter"
                         @click="deleteRole(rol.id)"
                         class="fa fa-trash time"
-                      >
-                        <span class="timeLabel">Delete</span>
-                      </i>
+                      ></i>
                     </td>
                   </tr>
                 </tbody>
@@ -114,48 +116,80 @@
  */
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js";
+
+import Loading from "../LoadingController.vue";
+import message from "../Alertmessage/message.vue";
+import { Util } from "../../js/util";
+
+
 export default {
   components: {
-    confirm
+    confirm,
+    Loading,
+    message
   },
   data() {
     return {
+      props: {
+        url: "",
+        type: ""
+      },
       search: "",
       model: {},
       roles: [],
+      msg: {
+        text: "",
+        type: ""
+      },
+      deletemsg: {
+        text: "",
+        type: ""
+      },
       isEdit: false,
-      checkDelete: false,
-      delurl: ""
+      isEmpty: false,
+      checkDelete: false
     };
   },
   mounted() {
+    EventBus.$emit("onLoad");
     this.getRoles();
   },
   created() {
     EventBus.$emit("ThemeClicked");
-    EventBus.$on("clicked", clickCount => {
+    EventBus.$on("clicked", response => {
+      (this.deletemsg.text = response.text),
+        (this.deletemsg.type = response.type);
+      Util.workAlert("#delalertmsg");
       this.getRoles();
     });
     this.getRoles();
   },
   methods: {
     getRoles() {
-      this.axios
-        .get("/api/roles")
-        .then(response => (this.roles = response.data));
+      this.axios.get("/api/roles").then(response => {
+        this.roles = response.data;
+        if (this.roles.length > 0) {
+          this.isEmpty = false;
+        } else {
+          this.isEmpty = true;
+        }
+        EventBus.$emit("onLoadEnd");
+      });
     },
     addRole() {
+      EventBus.$emit("onLoad");
       console.log(JSON.stringify(this.model));
       if (this.checkValidate()) {
         this.axios
           .post("/api/role/store", this.model)
           .then(response => {
+            this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
             this.getRoles();
-            setTimeout(() => {
-              this.model = {};
-            }, 100);
-          })
-          .catch(error => console.log(error));
+            this.model = {};
+            EventBus.$emit("onLoadEnd");
+          });
       }
     },
     editRole(data) {
@@ -176,19 +210,27 @@ export default {
     },
     updateRole() {
       console.log(JSON.stringify(this.model));
-      this.axios
-        .post(`/api/role/update/${this.model.id}`, this.model)
-        .then(res => {
-          this.isEdit = false;
-          this.checkDelete = false;
-          this.model = {};
-          this.getRoles();
-          console.log(JSON.stringify(res));
-        });
+      EventBus.$emit("onLoad");
+      if (this.checkValidate()) {
+        this.axios
+          .post(`/api/role/update/${this.model.id}`, this.model)
+          .then(response => {
+            this.isEdit = false;
+            this.checkDelete = false;
+            this.model = {};
+            this.getRoles();
+            this.msg.text = response.data.text;
+            this.msg.type = response.data.type;
+            Util.workAlert("#alertmsg");
+            console.log(JSON.stringify(res));
+            EventBus.$emit("onLoadEnd");
+          });
+      }
     },
     deleteRole(id) {
       var funName = "delete"; /**Delete function */
-      this.delurl = `role/${funName}/${id}`;
+      this.props.type = "delete";
+      this.props.url = `role/${funName}/${id}`;
     },
     searchData() {
       if (this.search == "") {

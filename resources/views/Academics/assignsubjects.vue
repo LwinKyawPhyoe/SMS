@@ -292,7 +292,8 @@ export default {
             for(let i=0; i<response.data.length; i++){
               this.AssSubObj.push({aID: response.data[i].AssSubId, itemid: i+1,SubCaption: "Subject",SubValue: response.data[i].subject_id,TeacherCaption: "Teacher",TeacherValue: response.data[i].staff_id});
             }
-          }          
+          }
+          EventBus.$emit("ThemeClicked");
         });
       }
     },

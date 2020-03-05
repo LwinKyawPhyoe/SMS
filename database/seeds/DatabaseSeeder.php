@@ -81,17 +81,17 @@ class DatabaseSeeder extends Seeder
         $roles = [
             [
                 'name' => "Admin",
-                'is_active' => "No",
-                "domain"  => "sms"
+                'is_active' => "yes",
+                "domain"  => "TS"
             ],
             [
                 'name' => "Teacher",
-                'is_active' => "No",
+                'is_active' => "TS",
                 "domain"  => "sms"
             ],
             [
                 'name' => "Parent",
-                'is_active' => "No",
+                'is_active' => "TS",
                 "domain"  => "sms"
             ],
         ];
@@ -117,7 +117,7 @@ class DatabaseSeeder extends Seeder
             'color'=> 'defaultColor'
         ]);
         DB::table('school_details')->insert([
-            'school_name' => 'Private School',
+            'school_name' => 'SSMS',
             'school_code' => 'MM-294905',
             'address' => 'Myanmar, Mogok',
             'phone' => '09284958284',
@@ -125,7 +125,16 @@ class DatabaseSeeder extends Seeder
             'session' => '2019-20',
             'session_month' => 'July',
             'language' => 'English',
-            'schoollogo' => 'download.jpg',
+            'schoollogo' => 'titleImage.png',
         ]);
+
+
+                /**Create Dummy data */
+                factory(App\RoomType::class, 100)->create();
+                factory(App\Hostel::class, 100)->create();
+                factory(App\HostelRoom::class, 100)->create();
+                factory(App\Department::class, 100)->create();
+                factory(App\Designation::class, 100)->create();
+                factory(App\StaffDirectory::class, 30)->create();
     }
 }

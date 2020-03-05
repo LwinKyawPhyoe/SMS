@@ -225,8 +225,12 @@ class ExamsController extends Controller
                     $SubjectsGetMarks->full_marks = $exam_schadule3->full_marks;
                     $SubjectsGetMarks->passing_marks = $exam_schadule3->passing_marks;
 
-                    $totalGetMarks = (int)$exam_result2[0]->get_marks + $totalGetMarks;
-                    $totalFullMarks = (int)$exam_schadule3->full_marks + $totalFullMarks;
+                    if((int)$exam_result2[0]->get_marks>0){
+                        $totalGetMarks = (int)$exam_result2[0]->get_marks + $totalGetMarks;
+                    }
+                    if((int)$exam_schadule3->full_marks > 0){
+                        $totalFullMarks = (int)$exam_schadule3->full_marks + $totalFullMarks;
+                    }
 
                     if($exam_result2[0]->get_marks >= $exam_schadule3->passing_marks){
                         $SubjectsGetMarks->result = 'passed';

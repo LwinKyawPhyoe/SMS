@@ -109,6 +109,11 @@ Route::group(['prefix' => 'staffdirectory'], function () {
     Route::get('search/{data}', 'StaffDirectoryController@search');
     Route::get('search_by_role/{id}', 'StaffDirectoryController@search_by_role');
     Route::get('search_by_other/{id}', 'StaffDirectoryController@search_by_other');
+    Route::get('search_staff_lists/{id}', 'StaffDirectoryController@search_staff_lists');
+    Route::post('staffdisable/{id}', 'StaffDirectoryController@disable');
+    Route::post('staffenable/{id}', 'StaffDirectoryController@enable');
+    Route::post('addtimeline', 'StaffTimelineController@store');
+    Route::get('gettimelines', 'StaffTimelineController@index');
 });
 
 
@@ -122,6 +127,7 @@ Route::group(['prefix' => 'staffattendance'], function () {
     Route::get('edit/{id}', 'StaffAttendanceController@edit');
     Route::post('update/{id}', 'StaffAttendanceController@update');
     Route::delete('delete/{id}', 'StaffAttendanceController@delete');
+    Route::get('search_by_role/{id}/{date}', 'StaffAttendanceController@search_by_role');
 });
 
 
@@ -130,6 +136,7 @@ Route::group(['prefix' => 'staffattendance'], function () {
  */
 Route::get('months', "ActivityController@month");
 Route::get('searchDate/{id}/{year}', 'StaffAttendanceController@index');
+Route::get('getyears', 'StaffAttendanceController@getYears');
 Route::get('attendance_types', 'AttendanceTypeController@getTypes');
 
 
@@ -139,6 +146,7 @@ Route::get('attendance_types', 'AttendanceTypeController@getTypes');
 Route::get('features', 'ActivityController@index');
 Route::group(['prefix' => 'assign'], function () {
     Route::get('find/{id}', 'AssignPermissionController@find');
+    Route::get('findrole/{id}', 'AssignPermissionController@findRole');
     Route::get('show/{id}', 'AssignPermissionController@show');
 
 
@@ -191,6 +199,7 @@ Route::group(['prefix' => 'student'], function() {
     Route::get('studentReport3/{class_id}','StudentController@studentReport3');
     Route::get('studentReport4/{gender}','StudentController@studentReport4');
     Route::get('studentHostel/{hostem_room_id}','StudentController@searchHostel');
+    Route::get('addSibling/{sibling_id}','StudentController@searchsibling');
 });
 Route::get('studentsibling', 'StudentSiblingController@index');
 Route::group(['prefix' => 'studentsiblings'], function () {
@@ -235,47 +244,46 @@ Route::group(['prefix' => 'TranVehicle'], function () {
 });
 
 Route::get('vehicleroute', 'VehicleRoutesController@index');
-Route::group(['prefix' => 'VehicleRoute'], function() {
-    Route::post('save','VehicleRoutesController@store');
-    Route::get('edit/{id}','VehicleRoutesController@edit');
-    Route::delete('delete/{id}','VehicleRoutesController@destroy');
+Route::group(['prefix' => 'VehicleRoute'], function () {
+    Route::post('save', 'VehicleRoutesController@store');
+    Route::get('edit/{id}', 'VehicleRoutesController@edit');
+    Route::delete('delete/{id}', 'VehicleRoutesController@destroy');
 });
 
 //Thein Htike Aung
-Route::group(['prefix'=>'examResults'],function(){
-    Route::post('addExamResults','ExamResultsController@store');
-    Route::get('getExamResultData/{idsArray}','ExamResultsController@getExamResultData');
-    Route::post('editExamResult','ExamResultsController@update');
+Route::group(['prefix' => 'examResults'], function () {
+    Route::post('addExamResults', 'ExamResultsController@store');
+    Route::get('getExamResultData/{idsArray}', 'ExamResultsController@getExamResultData');
+    Route::post('editExamResult', 'ExamResultsController@update');
 });
-Route::get('ExamList','ExamsController@index');
-Route::get('ExamTest','ExamsController@getAcademicActiveId');
-Route::group(['prefix' => 'exams'], function() {
-    Route::post('addexam','ExamsController@store');
-    Route::get('editexam/{id}','ExamsController@edit');
-    Route::get('deleteexam/{id}','ExamsController@destroy');
-    Route::get('getStudentExam/{id}','ExamsController@getStudentExam');
+Route::get('ExamList', 'ExamsController@index');
+Route::get('ExamTest', 'ExamsController@getAcademicActiveId');
+Route::group(['prefix' => 'exams'], function () {
+    Route::post('addexam', 'ExamsController@store');
+    Route::get('editexam/{id}', 'ExamsController@edit');
+    Route::get('deleteexam/{id}', 'ExamsController@destroy');
+    Route::get('getStudentExam/{id}', 'ExamsController@getStudentExam');
 });
-Route::group(['prefix' => 'examSchadules'], function() {
-    Route::post('addExamSchadule','ExamSchaduleController@store');
-    Route::get('getExamData/{gettingArrays}','ExamSchaduleController@getExamData');
-    Route::get('getClassName/{id}','ExamSchaduleController@getClassName');
-    Route::get('getSectionName/{id}','ExamSchaduleController@getSectionName');
-    Route::post('updateExamSchadule/{id}','ExamSchaduleController@update');
-
+Route::group(['prefix' => 'examSchadules'], function () {
+    Route::post('addExamSchadule', 'ExamSchaduleController@store');
+    Route::get('getExamData/{gettingArrays}', 'ExamSchaduleController@getExamData');
+    Route::get('getClassName/{id}', 'ExamSchaduleController@getClassName');
+    Route::get('getSectionName/{id}', 'ExamSchaduleController@getSectionName');
+    Route::post('updateExamSchadule/{id}', 'ExamSchaduleController@update');
 });
-Route::group(['prefix' => 'marksGrade'], function() {
-    Route::get('getMarksGrade','MarksGradeController@index');
-    Route::post('addMarksGrade','MarksGradeController@store');
-    Route::get('deleteMarksGrade/{id}','MarksGradeController@destroy');
-    Route::get('editMarksGrade/{id}','MarksGradeController@edit');
-    Route::get('getSearchData/{idsArray}','MarksGradeController@getSearchData');
-    Route::get('getExamSubject/{idsArray}','MarksGradeController@getExamSubject');
-    Route::get('getStudentExam/{idsArray}','MarksGradeController@GetStudentAndExam');
+Route::group(['prefix' => 'marksGrade'], function () {
+    Route::get('getMarksGrade', 'MarksGradeController@index');
+    Route::post('addMarksGrade', 'MarksGradeController@store');
+    Route::get('deleteMarksGrade/{id}', 'MarksGradeController@destroy');
+    Route::get('editMarksGrade/{id}', 'MarksGradeController@edit');
+    Route::get('getSearchData/{idsArray}', 'MarksGradeController@getSearchData');
+    Route::get('getExamSubject/{idsArray}', 'MarksGradeController@getExamSubject');
+    Route::get('getStudentExam/{idsArray}', 'MarksGradeController@GetStudentAndExam');
 });
 Route::get('activeacademicyr', 'AcademicYearController@activeAcademic');
 Route::get('getClasses', 'ExamsController@Theinindex');
 Route::get('getSections', 'ExamsController@Zheinindex');
-Route::get('getClassSectionId/{arrayids}','ExamsController@getAssignSub_id');
+Route::get('getClassSectionId/{arrayids}', 'ExamsController@getAssignSub_id');
 Route::get('getClassSection/{id}', 'ExamsController@CSZTheinindex');
 Route::get('searchExamSchadule/{arrayClassSectionExam}', 'ExamSchaduleController@index');
 // End Thei Htike Aung Section
@@ -283,118 +291,118 @@ Route::get('searchExamSchadule/{arrayClassSectionExam}', 'ExamSchaduleController
 //Lwin Kyaw Phyo
 //Academic Year Route
 Route::get('academicyr', 'AcademicYearController@index');
-Route::group(['prefix' => 'AcademicYear'], function() {
-    Route::post('save','AcademicYearController@store');
-    Route::post('update','AcademicYearController@update');
-    Route::get('edit/{id}','AcademicYearController@edit');
-    Route::delete('delete/{id}','AcademicYearController@destroy');
+Route::group(['prefix' => 'AcademicYear'], function () {
+    Route::post('save', 'AcademicYearController@store');
+    Route::post('update', 'AcademicYearController@update');
+    Route::get('edit/{id}', 'AcademicYearController@edit');
+    Route::delete('delete/{id}', 'AcademicYearController@destroy');
 });
 
 //Section Route
 Route::get('section', 'SectionController@index');
-Route::group(['prefix' => 'Section'], function() {
-    Route::post('save','SectionController@store');
-    Route::get('edit/{id}','SectionController@edit');
-    Route::delete('delete/{id}','SectionController@destroy');
+Route::group(['prefix' => 'Section'], function () {
+    Route::post('save', 'SectionController@store');
+    Route::get('edit/{id}', 'SectionController@edit');
+    Route::delete('delete/{id}', 'SectionController@destroy');
 });
 
 //Class Route
 Route::get('class', 'ClassesController@index');
-Route::group(['prefix' => 'Class'], function() {
-    Route::post('save','ClassesController@store');
-    Route::get('search/{id}','ClassesController@searchWithSession');
-    Route::get('edit/{id}','ClassesController@edit');
-    Route::delete('delete/{id}','ClassesController@destroy');
+Route::group(['prefix' => 'Class'], function () {
+    Route::post('save', 'ClassesController@store');
+    Route::get('search/{id}', 'ClassesController@searchWithSession');
+    Route::get('edit/{id}', 'ClassesController@edit');
+    Route::delete('delete/{id}', 'ClassesController@destroy');
 });
 
 //Subject Route
 Route::get('subject', 'SubjectController@index');
-Route::group(['prefix' => 'Subject'], function() {
-    Route::post('save','SubjectController@store');
-    Route::get('edit/{id}','SubjectController@edit');
-    Route::delete('delete/{id}','SubjectController@destroy');
+Route::group(['prefix' => 'Subject'], function () {
+    Route::post('save', 'SubjectController@store');
+    Route::get('edit/{id}', 'SubjectController@edit');
+    Route::delete('delete/{id}', 'SubjectController@destroy');
 });
 
 //Assign Class Teacher Route
 Route::get('classTeacher', 'AssignclassteacherController@index');
-Route::group(['prefix' => 'ClassTeacher'], function() {
-    Route::post('save','AssignclassteacherController@store');
-    Route::post('search','AssignclassteacherController@search');
-    Route::get('edit/{id}','AssignclassteacherController@edit');
-    Route::delete('delete/{id}','AssignclassteacherController@destroy');
+Route::group(['prefix' => 'ClassTeacher'], function () {
+    Route::post('save', 'AssignclassteacherController@store');
+    Route::post('search', 'AssignclassteacherController@search');
+    Route::get('edit/{id}', 'AssignclassteacherController@edit');
+    Route::delete('delete/{id}', 'AssignclassteacherController@destroy');
 });
 
 //Assign Subject Route
 Route::get('asssubject', 'AssignSubjectController@index');
-Route::group(['prefix' => 'AssSubject'], function() {
-    Route::post('save','AssignSubjectController@store');
-    Route::post('search','AssignSubjectController@search');
-    Route::post('edit','AssignSubjectController@edit');
-    Route::get('editsearch/{id}','AssignSubjectController@editsearch');    
-    Route::delete('delete/{id}','AssignSubjectController@destroy');
+Route::group(['prefix' => 'AssSubject'], function () {
+    Route::post('save', 'AssignSubjectController@store');
+    Route::post('search', 'AssignSubjectController@search');
+    Route::post('edit', 'AssignSubjectController@edit');
+    Route::get('editsearch/{id}', 'AssignSubjectController@editsearch');
+    Route::delete('delete/{id}', 'AssignSubjectController@destroy');
 });
 
 //Class Time Table Route
 Route::get('classtimetbl', 'ClassTimetableController@index');
-Route::group(['prefix' => 'ClassTimeTable'], function() {
-    Route::post('save','ClassTimetableController@store');
-    Route::post('search','ClassTimetableController@search');
-    Route::post('viewsearch','ClassTimetableController@viewsearch');
-    Route::get('edit/{id}','ClassTimetableController@edit');
-    Route::delete('delete/{id}','ClassTimetableController@destroy');
+Route::group(['prefix' => 'ClassTimeTable'], function () {
+    Route::post('save', 'ClassTimetableController@store');
+    Route::post('search', 'ClassTimetableController@search');
+    Route::post('viewsearch', 'ClassTimetableController@viewsearch');
+    Route::get('edit/{id}', 'ClassTimetableController@edit');
+    Route::delete('delete/{id}', 'ClassTimetableController@destroy');
 });
 
 //Student Promote Route
 Route::get('studPromote', 'studentPromoteController@index');
-Route::group(['prefix' => 'StudPromote'], function() {
-    Route::post('promote','studentPromoteController@promote');
+Route::group(['prefix' => 'StudPromote'], function () {
+    Route::post('promote', 'studentPromoteController@promote');
 });
 //Lwin Kyaw Phyo
 
 // Sai Kaung Htet General Setting
-Route::get('settings','GeneralController@index');
-Route::get('color','GeneralController@getColor');
-Route::group(['prefix' => 'setting'],function() {
+Route::get('settings', 'GeneralController@index');
+Route::get('color', 'GeneralController@getColor');
+Route::group(['prefix' => 'setting'], function () {
     Route::post('store/{id}', 'GeneralController@store');
     Route::post('update/{color}', 'GeneralController@update');
     Route::delete('delete/{id}', 'GeneralController@delete');
 });
 
 // General Setting -> School Detials
-Route::get('schools','SchoolDetailController@index');
-Route::group(['prefix'=>'school'],function(){
-    Route::post('store','SchoolDetailController@store');
-    Route::post('update/{id}','SchoolDetailController@update');
-    Route::delete('delete/{id}','SchoolDetailController@delete');
-    Route::post('updatePhoto/{image}','SchoolDetailController@updatePhoto');
+Route::get('schools', 'SchoolDetailController@index');
+Route::group(['prefix' => 'school'], function () {
+    Route::post('store', 'SchoolDetailController@store');
+    Route::post('update/{id}', 'SchoolDetailController@update');
+    Route::delete('delete/{id}', 'SchoolDetailController@delete');
+    Route::post('updatePhoto/{image}', 'SchoolDetailController@updatePhoto');
 });
 
 // Start Home work
 Route::get('homework', 'HomeworkController@index');
-Route::group(['prefix' => 'homework'], function() {
-    Route::post('save','HomeworkController@store');
-    Route::post('edit','HomeworkController@edit');
-    Route::get('show','HomeworkController@show');
-    Route::post('showStudent','HomeworkController@showStudent');
-    Route::post('searchHomework','HomeworkController@searchHomework');
-    Route::post('searchHomeworkSub','HomeworkController@searchHomeworkSub');
-    Route::delete('delete/{id}','HomeworkController@destroy');
+Route::group(['prefix' => 'homework'], function () {
+    Route::post('save', 'HomeworkController@store');
+    Route::post('edit', 'HomeworkController@edit');
+    Route::get('show', 'HomeworkController@show');
+    Route::post('showStudent', 'HomeworkController@showStudent');
+    Route::post('searchHomework', 'HomeworkController@searchHomework');
+    Route::post('searchHomeworkSub', 'HomeworkController@searchHomeworkSub');
+    Route::delete('delete/{id}', 'HomeworkController@destroy');
 });
 
 // Start Content
 Route::get('content', 'ContentController@index');
-Route::group(['prefix' => 'content'], function() {
-    Route::post('save','ContentController@store');
-    Route::post('show','ContentController@show');
-    Route::delete('delete/{id}','ContentController@destroy');
+Route::group(['prefix' => 'content'], function () {
+    Route::post('save', 'ContentController@store');
+    Route::post('show', 'ContentController@show');
+    Route::delete('delete/{id}', 'ContentController@destroy');
 });
 
 // Start Homework Evaluation
 Route::get('homework_evaluation', 'HomeworkEvaluationController@index');
-Route::group(['prefix' => 'homework_evaluation'], function() {
-    Route::post('save','HomeworkEvaluationController@store');
-    Route::post('show','HomeworkEvaluationController@show');
-    Route::post('update','HomeworkEvaluationController@update');
-    Route::post('searchEvaluation','HomeworkEvaluationController@searchEvaluation');
-    Route::post('searchEvaluationSub','HomeworkEvaluationController@searchEvaluationSub');
+Route::group(['prefix' => 'homework_evaluation'], function () {
+    Route::post('save', 'HomeworkEvaluationController@store');
+    Route::post('show', 'HomeworkEvaluationController@show');
+    Route::post('update', 'HomeworkEvaluationController@update');
+    Route::post('searchEvaluation', 'HomeworkEvaluationController@searchEvaluation');
+    Route::post('searchEvaluationSub', 'HomeworkEvaluationController@searchEvaluationSub');
 });

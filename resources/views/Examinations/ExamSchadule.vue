@@ -69,6 +69,7 @@
         <router-link to="/saveexamschdule" class="add">Add</router-link>
       </div>
       <div class="card-body">
+        <message :alertmessage="msg" id="alertmsg" />
         <div class="row" id="row">
           <div class="col-lg-6 col-md-6 col-sm-6 textbox">
             <label>
@@ -142,7 +143,7 @@
                     style="color:white;margin-left:5px;"
                   >
                     <i class="fa fa-pencil pen">
-                      <span class="penLabel">Edit</span>
+                      <span class="penLabel" >Edit</span>
                     </i>
                   </router-link>
                   <button
@@ -165,7 +166,13 @@
 </template>
 <script>
 import { EventBus } from "../../js/event-bus.js";
+import store from "store2";
+import message from '../Alertmessage/message.vue';
+import { Util } from "../../js/util";
 export default {
+  components: {
+          message
+        },
   data() {
     return {
       Class: [],
@@ -181,12 +188,29 @@ export default {
       receiveExamData: [],
       display: false,
       data: false,
+      msg: {
+        text: "",
+        type: ""
+      },
       TestArray: []
     };
   },
   created() {
     EventBus.$emit("ThemeClicked");
     this.getClass();
+
+    var message = store.get("msg");
+    if (message != null) {
+      if (message == "save") {
+        this.msg.text = "Exam Schadule added successfully";
+        this.msg.type = "success";
+      } else {
+        this.msg.text = "Exam Schadule updated successfully";
+        this.msg.type = "success";
+      }
+      Util.workAlert("#alertmsg");
+    }
+    store.clearAll();
   },
   methods: {
     getClass() {
@@ -212,6 +236,7 @@ export default {
       this.id2 = eventS.target.value;
     },
     Search(Class_id, Section_id) {
+      
       this.array.push(Class_id);
       this.array.push(Section_id);
       this.axios.get(`/api/getClassSectionId/${this.array}`).then(response => {
@@ -242,6 +267,7 @@ export default {
           this.Section_name = response.data;
         });
       setTimeout(() => {
+        EventBus.$emit("ThemeClicked");
         var dataValue;
         for (var i = 0; i < this.examNames.length; i++) {
           dataValue = this.examNames[i].name;
@@ -252,6 +278,7 @@ export default {
           this.data = true;
         }
         this.display = true;
+        
       }, 500);
       this.array = [];
     },

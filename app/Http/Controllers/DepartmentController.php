@@ -103,7 +103,7 @@ class DepartmentController extends Controller
         //
         $department = Department::find($id);
         $department->update([
-            "is_active" => "no"
+            "is_active" => "delete"
         ]);
         return response()->json(['text' => 'Department deleted successfully', 'type' => 'success']);
     }

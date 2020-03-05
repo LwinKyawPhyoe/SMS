@@ -10,6 +10,7 @@
                 </h4>
             </div>
             <hr style="margin-bottom: -0.5rem;">
+            <Loading></Loading>
 
             <div class="card">
                 <div class="card-header">
@@ -69,28 +70,29 @@
                                 </a>
                             </div>
                             <div class="col-3">
-                                <a title="Columns" onclick="showColumns('columns','backgroundColumn')">
+                                <a title="Columns" @click="showColumns()">
                                 <i class="fa fa-columns"></i>
                                 </a>
                                 
                                 <div id="columns" class="columns">
                                     <div v-for="item in arrayTableColumns">
-                                        <p @click="clickHideColumn(item)" :id="item.Id" class="tableLink">
+                                        <p @click="showTableHeader(item)" :id="item.Id" class="tableLink">
                                             <span>{{item.Name}}</span>
                                         </p>
                                     </div>
                                     <div>
-                                        <p @click="clickShowColumn(arrayTableColumns)" class="tableLinkActive">
+                                        <p @click="clickShowAllColumn(arrayTableColumns)" class="tableLinkActive">
                                             <span>Restore visibility</span>
                                         </p>
                                     </div>
                                 </div>
-                                <div onclick="clickBackground('columns','backgroundColumn')" id="backgroundColumn" style="top: 0;left: 0;width: 100%;height: 100%;background: transparent;"></div>
+                                <div @click="clickBackground()" id="backgroundColumn" style="top: 0;left: 0;width: 100%;height: 100%;background: transparent;"></div>
                             </div>
                         </div>
                     </div>
+                    <h1 class="NoData" v-if="homeworkList.length==0">No Data</h1>
                     <div class="table-responsive">            
-                        <table class="table table-hover table-striped" id="studenttable">
+                        <table class="table table-hover table-striped" id="studenttable" v-if="homeworkList.length!=0">
                             <thead>
                                 <tr>
                                     <th :class="arrayTableColumns[0].class" nowrap>Subject</th>
@@ -141,9 +143,11 @@
     import detailmodal from "../Homework/detail_evaluation_modal.vue";
     import { EventBus } from "../../js/event-bus.js";
     import {Util} from '../../js/util';
+    import Loading from "../LoadingController.vue";
     export default {
         components: {
-            detailmodal
+            detailmodal,
+            Loading,
         },
         data() {
             return {
@@ -163,6 +167,9 @@
                 SubjectList: [],
             };
         },
+        mounted() {
+            EventBus.$emit("onLoad");
+        },
         created() {
             EventBus.$emit("ThemeClicked");
             this.getHomeworkList();
@@ -170,9 +177,10 @@
         },
         methods: {
             getHomeworkList(){
+                EventBus.$emit("onLoad");
                 this.axios.get('/api/homework/show').then(response => {
                     this.homeworkList = response.data;
-                    console.log(JSON.stringify(response.data));
+                    EventBus.$emit("onLoadEnd");
                 });
             },
             // Get Class and Section
@@ -240,6 +248,7 @@
             // Search
             SearchData(){
                 if(this.checkValidation()){
+                    EventBus.$emit("onLoad");
                     let formData = new FormData();
                     formData.append("class", this.objData.class);
                     formData.append("section", this.objData.section);
@@ -248,11 +257,13 @@
                         this.axios.post('/api/homework_evaluation/searchEvaluation', formData)
                         .then(result => {
                             this.homeworkList = result.data;
+                            EventBus.$emit("onLoadEnd");
                         });
                     }else{
                         this.axios.post('/api/homework_evaluation/searchEvaluationSub', formData)
                         .then(result => {
                             this.homeworkList = result.data;
+                            EventBus.$emit("onLoadEnd");
                         });
                     }
                 }
@@ -272,12 +283,6 @@
             // Open Model
             openEvaluation(data){
                 EventBus.$emit("openEvaluation", data);
-            },
-            clickHideColumn(data){
-                showTableHeader(data);
-            },
-            clickShowColumn(data){
-                clickShowAllColumn(data);
             },
             returnRatio(data){
                 var array1 = [];
@@ -309,6 +314,19 @@
                     let year = date.substring(0, 4);
                     return day + "/" + month + "/" + year;
                 }
+            },
+            // Column Hide 
+            showColumns(){
+                Util.showColumns('columns','backgroundColumn');
+            },
+            clickBackground(){
+                Util.clickBackground('columns','backgroundColumn');
+            },
+            showTableHeader(data){
+                Util.showTableHeader(data);
+            },
+            clickShowAllColumn(data){
+                Util.clickShowAllColumn(data);
             },
         }
     }

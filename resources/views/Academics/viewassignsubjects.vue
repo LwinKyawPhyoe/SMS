@@ -93,9 +93,11 @@
             </div>
           </div>
         </div>
-        <div class="table-responsive">
-          <div v-if="AssSubList.length == 0">no data</div>
-          <table v-if="AssSubList.length != 0" class="table table-hover" id="studenttable">
+        <div v-if="AssSubList.length == 0">
+            <h1 class="NoData">No Data</h1>
+        </div>
+        <div v-if="AssSubList.length != 0" class="table-responsive">          
+          <table class="table table-hover" id="studenttable">
             <thead>
               <tr>
                 <th class="all" nowrap>Class</th>
@@ -344,15 +346,14 @@ export default {
   methods: {
     getAllSubject() {
       this.axios.get("/api/subject").then(response => {
-        for (let i = 0; i < response.data.length; i++) {
+        for (let i=0; i<response.data.length; i++) {
           this.SubjectList.push({
             id: response.data[i].id,
             name: response.data[i].name,
             type: response.data[i].type
           });
         }
-        this.AssSubObj[0].SubValue = this.SubjectList[0].id;
-        this.AssSubObj[0].TeacherValue = this.TeacherList[0].id;
+        if(this.SubjectList.length != 0)    this.AssSubObj[0].SubValue = this.SubjectList[0].id;
       });
     },
 
@@ -363,6 +364,7 @@ export default {
                   this.TeacherList.push({"id": response.data[i].id, "name": response.data[i].designation_name, "checked": false});
               }
               console.log(JSON.stringify(this.TeacherList));
+              if(this.TeacherList.length != 0)  this.AssSubObj[0].TeacherValue = this.TeacherList[0].id;
           });
     },
 

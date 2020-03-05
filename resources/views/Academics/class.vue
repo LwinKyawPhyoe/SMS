@@ -6,7 +6,7 @@
                 <router-link to="/home" class="home">Home</router-link>> Class
             </h4>
         </div>
-        <hr />
+        <hr style="margin-bottom: -0.5rem;" />
 
         <confirm :url="props"></confirm>
         <Loading></Loading>
@@ -77,7 +77,10 @@
                             </div>
                         </div>
                     </div>
-                    <div class="table-responsive" id="print">
+                    <div v-if="ClassList.length == 0">
+                        <h1 class="NoData">No Data</h1>
+                    </div>
+                    <div v-if="ClassList.length != 0" class="table-responsive" id="print">
                         <table class="table table-hover table-striped" id="studenttable">
                             <thead>
                                 <tr>
