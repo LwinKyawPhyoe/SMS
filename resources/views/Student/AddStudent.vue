@@ -1,16 +1,17 @@
 
 <template>
-  <div id="bar" class="Student form">
-    <div class="toplink">
+  <div id="bar" class="Student" style="transition:all 0.5s;">
+    <div class="toplink" style="margin-top:0px">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
-        <router-link to="/Student" class="home">Home</router-link>> Student Admission
+        <router-link to="/Student">Home</router-link>> Student Admission
       </h6>
     </div>
     <hr />
-    <message :alertmessage="message" id="savedmsg"/>
-    <form @submit.prevent="save" enctype="multipart/form-data" >
+    <br />
+      <Loading></Loading>
     
+    <form @submit.prevent="save" enctype="multipart/form-data" >
     <div class="card">
       <!-- Modal start -->
       <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="exampleModalCenter">
@@ -18,7 +19,7 @@
         <div class="modal-content"
         style="background:none;border:none;width:100% !important;padding: 1rem;"
         >
-            <div class="stucard-header">
+            <div class="card-header">
               <h6 style="width:100%">
                 Add Sibling
                 <i
@@ -101,7 +102,7 @@
           </table>
               </div>
               <div class="col-12">
-                <button class="modalbtn" style="text-align:center;margin-top:10px;" type="button" @click="saveSibling()" data-dismiss="modal">Save</button>
+                <button class="save" style="text-align:center;margin-bottom:10px;margin-top:-10px;" type="button" @click="saveSibling()" data-dismiss="modal" id="globalSave">Save</button>
               </div>
             </div>
         </div>
@@ -112,6 +113,7 @@
         <h6>Student Admission</h6>
       </div>
       <div class="card-body">
+        <message :alertmessage="msg" id="savedmsg"/>
   
   <!-- <div v-if="student.image === null">
     <h2>Select an image</h2>
@@ -201,30 +203,12 @@
               Date Of Birth
               <strong>*</strong>
             </label>
-            <VueCtkDateTimePicker
-            label="Select date Range"
-              v-model="student.dob"
-              :only-date="true"
-              :color="'#1b5e20'"
-              :button-color="'#1b5e20'"
-              :auto-close="true"
-              :format="'YYYY-MM-DD'"
-              :formatted="'YYYY/MM/DD'"
-              >
-              <input
-                  id="stubirthday"
+                 <datepicker v-model="student.dob"
+                 id="stubirthday"
                   @keyup="onValidate(student.dob, 'stubirthday', 'dob_msg')"
                   v-on:blur="onValidate(student.dob, 'stubirthday', 'dob_msg')"
-                  class="inputbox"
-                  autocomplete="off"
-                />
-                </VueCtkDateTimePicker>
-            <!-- <date-picker class="inputbox" id="stubirthday"></date-picker> -->
-            <!-- <input type="date" class="inputbox" id="stubirthday" v-model="student.dob" /> -->
-            <!-- <datepicker v-model="student.dob" id="stubirthday" name="birthday"
-            @keyup="onValidate(student.dob, 'stubirthday', 'dob_msg')"
-            v-on:blur="onValidate(student.dob, 'stubirthday', 'dob_msg')"
-            ></datepicker> -->
+                 ></datepicker>
+            
             <span id="dob_msg" class="error_message">Date of birth is required.</span>
           </div>
           <div class="textbox">
@@ -246,7 +230,7 @@
           <div class="textbox">
             <label for="admDate">Admission Date</label>
             <!-- <input type="date" class="inputbox" id="admDate" v-model="student.admission_date"/> -->
-            <VueCtkDateTimePicker
+            <!-- <VueCtkDateTimePicker
               v-model="student.admission_date"
               :only-date="true"
               :color="'#1b5e20'"
@@ -260,7 +244,8 @@
                   class="inputbox"
                   autocomplete="off"
                 />
-                </VueCtkDateTimePicker>
+                </VueCtkDateTimePicker> -->
+                <datepicker v-model="student.admission_date" id="admDate"></datepicker>
             <!-- <datepicker v-model="student.admission_date" id="admDate" name="admission_date"></datepicker> -->
           </div>
           <div class="textbox" id="photo">
@@ -301,7 +286,7 @@
           <div class="textbox">
             <label for="regDate">Register Date</label>
             <!-- <input type="date" class="inputbox" id="regDate" v-model="student.register_date"/> -->
-            <VueCtkDateTimePicker
+            <!-- <VueCtkDateTimePicker
                 v-model="student.register_date"
                  :only-date="true"
               :color="'#1b5e20'"
@@ -315,7 +300,8 @@
                   class="inputbox"
                   autocomplete="off"
                 />
-                </VueCtkDateTimePicker>
+                </VueCtkDateTimePicker> -->
+                <datepicker v-model="student.register_date" id="regDate"></datepicker>
             <!-- <datepicker v-model="student.register_date" id="regDate" name="register_date"></datepicker> -->
           </div>
           <div class="textbox">
@@ -631,7 +617,7 @@
       </div>
 
       <div class="footer" id="footer">
-        <button type="submit" id="globalSave" class="save" style="margin-right:15px;">Save</button>
+        <button type="submit" class="searchButton">Save</button>
       </div>
       </div>
 </form>
@@ -646,11 +632,13 @@ import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
 import {Util} from '../../js/util';
 import message from "../Alertmessage/message.vue";
 import Loading from "../LoadingController.vue";
+import datepicker from "../datepicker.vue";
 export default {
   components: {
     VueCtkDateTimePicker,
     message,
     Loading,
+    datepicker
   },
   name:'app',
   success:'',
@@ -662,8 +650,8 @@ export default {
       guardian_src:'',
       routeList : [],
       msg: {
-        text: "",
-        type: ""
+        text: '',
+        type: ''
       },
       session:{},
       hostelList:[],
@@ -683,8 +671,6 @@ export default {
       title4:'',
       document4:'',
       file4:'',
-
-      
       classList:[],
       sectionList:[],
       sibling_section_id:'',
@@ -770,6 +756,9 @@ export default {
       guardianRelation: "",
 
     };
+  },
+  mounted(){
+    EventBus.$emit("onLoad");
   },
   created() {
     this.allData();
@@ -898,12 +887,15 @@ export default {
         $('#file4').val('');
     },
     saveSibling(){
+
       if(this.sibling_id){
+        EventBus.$emit("onLoad");
         this.axios
         .get(`/api/student/addSibling/${this.sibling_id}`)
         .then(response=>{
           this.studentsiblings =response.data;
           this.sibling_name = this.studentsiblings[0].name
+          EventBus.$emit("onLoadEnd");
         })
       }
       var data=[];
@@ -936,6 +928,7 @@ export default {
         document.getElementById('moPhone').disabled = true;
         document.getElementById('moNrc').disabled = true;
         document.getElementById('moJob').disabled = true;
+        alert('work');
         }
       })
       }
@@ -950,6 +943,7 @@ export default {
           this.hostelList = response.data.hostel;
           this.routeList = response.data.routes;
           this.student.session_id = response.data.session[0].id;
+          EventBus.$emit("onLoadEnd");
         });
        
     },
@@ -1239,6 +1233,7 @@ export default {
       }
     },
     addStudent(){
+      EventBus.$emit("onLoad");
       const config = {
         headers: { "content-type": "multipart/form-data" }
       };
@@ -1301,13 +1296,22 @@ export default {
           .post('/api/student/add', formData,config)
           .then(response=> {
             if(response.data =="admission_no"){
-              alert("This admission number already exists");
+              this.msg.text = "Admission number already exists.";
+              this.msg.type = 'error';
+              Util.workAlert('#savedmsg');
+              // Util.scrollToTop()
             }
             else if(response.data =="email"){
-              alert("This email alreay exists");
+              this.msg.text = "Email already exists.";
+              this.msg.type = 'error';
+              Util.workAlert('#savedmsg');
+              // Util.scrollToTop();
             }
             else if(response.data =="phone"){
-               alert("This mobile number alreay exists");
+               this.msg.text = "Phone number already exists.";
+              this.msg.type = 'error';
+              Util.workAlert('#savedmsg');
+              // Util.scrollToTop();
             }
             else{
               this.addSessions();
@@ -1315,9 +1319,11 @@ export default {
               this.addDocument();
               this.refreshForm();
               this.allData();
-              this.message.text = "Saved successfully.";
-              this.message.type = 'success';
+              this.msg.text = "Saved successfully.";
+              this.msg.type = 'success';
               Util.workAlert('#savedmsg');
+              Util.scrollToTop();
+              EventBus.$emit("onLoadEnd");
             }
           })
           .catch(errors=>{

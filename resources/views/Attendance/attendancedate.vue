@@ -7,7 +7,7 @@
       </h4>
     </div>
     <hr />
-
+    <Loading></Loading>
     <div class="card">
       <div class="card-header">
         <h6>Select Attendance By Date</h6>
@@ -46,7 +46,7 @@
             <label for="admDate">Attendance Date
               <strong>*</strong>
             </label>
-            <VueCtkDateTimePicker
+            <!-- <VueCtkDateTimePicker
               v-model="attendance_date"
               :only-date="true"
               :color="'#1b5e20'"
@@ -62,7 +62,11 @@
                   @keyup="onValidate(attendance_date, 'admDate', 'admDate_msg')"
                   v-on:blur="onValidate(attendance_date, 'admDate', 'admDate_msg')"
                 />
-                </VueCtkDateTimePicker>
+                </VueCtkDateTimePicker> -->
+                <datepicker v-model="attendance_date" id="admDate"
+                  @keyup="onValidate(attendance_date, 'admDate', 'admDate_msg')"
+                  v-on:blur="onValidate(attendance_date, 'admDate', 'admDate_msg')"
+                ></datepicker>
                 <span id="admDate_msg" class="error_message">Attendance date required.</span>
           </div>
           <div class="col-12 column-12">
@@ -185,9 +189,16 @@
 import { EventBus } from "../../js/event-bus.js";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
+import {Util} from '../../js/util';
+import message from "../Alertmessage/message.vue";
+import Loading from "../LoadingController.vue";
+import datepicker from "../datepicker.vue";
 export default {
   components: {
-    VueCtkDateTimePicker
+    VueCtkDateTimePicker,
+    message,
+    datepicker,
+    Loading
   },
   data() {
     return {
@@ -204,15 +215,20 @@ export default {
     };
   },
   created() {
-    this.allData();
     EventBus.$emit("ThemeClicked");
+    this.allData();
     
+  },
+   mounted(){
+    EventBus.$emit("onLoad");
   },
   methods: {
     search(){
+      
       this.view = true;
       this.formViladition();
       if(this.viladition){
+        EventBus.$emit("onLoad");
          var todaydate = this.date;
             this.axios
             .get(`/api/studentattendance/search/${this.class_section_id}/${this.attendance_date}`)
@@ -220,8 +236,8 @@ export default {
               this.attendance = response.data.data;
               // console.log("search data",JSON.stringify(response.data));
              this.attendance_type_id = response.data.data[0].attendance_type_id;
-             this.updatedata.text = response.data.text;
-             this.updatedata.type = response.data.type;
+             EventBus.$emit("onLoadEnd");
+            
             })
             .catch(error=>{
               console.log(error.response)
@@ -260,6 +276,7 @@ export default {
         .get('/api/student')
         .then(response=>{
           this.classList = response.data.class;
+          EventBus.$emit("onLoadEnd");
         });
       },
        selectClass(e){

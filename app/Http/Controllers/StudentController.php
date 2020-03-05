@@ -11,7 +11,7 @@ class StudentController extends Controller
     public function index()
     {   
         $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
-        $allHostel = DB::select('select * from hostels where is_active="Yes" session_id=? domain="TS"',[$sessionid[0]->id]);
+        $allHostel = DB::select('select * from hostels where is_active="Yes" and  session_id=? and domain="TS"',[$sessionid[0]->id]);
         $allClass = DB::select('select * from classes where is_active="yes"  and domain="TS" and session_id=? ', [$sessionid[0]->id]);
         $route = DB::select('select * from routes where is_active="Yes"  and domain="TS" and session_id=? ',[$sessionid[0]->id]);
         return ['class'=>$allClass,'hostel'=>$allHostel,'routes'=>$route,'session'=>$sessionid];
@@ -128,7 +128,7 @@ class StudentController extends Controller
     public function selectClassSection($id){
         $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         $classSection = DB::select('SELECT * FROM class_sections WHERE id = ? and domain="TS" and session_id=?',[$id,$sessionid[0]->id,$sessionid[0]->id]);
-        $classes = DB::select('SELECT * FROM classes WHERE id = ? and domain="TS" and session_id=?',[$classSection[0]->class_id,$sessionid[0]->id]);
+        $classes = DB::select('SELECT * FROM classes WHERE id = ? and domain="TS" and session_id = ?',[$classSection[0]->class_id,$sessionid[0]->id]);
         // print_r($classes);
         $sections = DB::select('SELECT * FROM sections WHERE id = ? and session_id=? and domain="TS"',[$classSection[0]->section_id,$sessionid[0]->id]);
         return ['classes'=>$classes,'sections'=>$sections];

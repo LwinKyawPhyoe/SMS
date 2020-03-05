@@ -7,12 +7,13 @@
       </h4>
     </div>
     <hr />
-
+<Loading></Loading>
     <div class="card">
       <div class="card-header">
         <h6>Select Attendance</h6>
       </div>
       <div class="card-body">
+        <message :alertmessage="msg" id="savedmsg"/>
         <div class="row" id="row" style="margin: 0px;">
           <div class="col-lg-4 col-md-4 col-12 textbox">
             <label for="section" class="title">
@@ -46,7 +47,7 @@
             <label for="admDate">Attendance Date
               <strong>*</strong>
             </label>
-            <VueCtkDateTimePicker
+            <!-- <VueCtkDateTimePicker
               v-model="attendance_date"
               :only-date="true"
               :color="'#1b5e20'"
@@ -62,11 +63,15 @@
                   @keyup="onValidate(attendance_date, 'admDate', 'admDate_msg')"
                   v-on:blur="onValidate(attendance_date, 'admDate', 'admDate_msg')"
                 />
-                </VueCtkDateTimePicker>
+                </VueCtkDateTimePicker> -->
+                <datepicker v-model="attendance_date" id="admDate"
+                  @keyup="onValidate(attendance_date, 'admDate', 'admDate_msg')"
+                  v-on:blur="onValidate(attendance_date, 'admDate', 'admDate_msg')"
+                ></datepicker>
                 <span id="admDate_msg" class="error_message">Attendance date required.</span>
           </div>
           <div class="col-12">
-            <button class="searchButton" @click="search()">Search</button>
+            <button class="searchButton" @click="search()" id="globalSearch">Search</button>
           </div>
         </div>
       </div>
@@ -76,6 +81,15 @@
         <h6>Student List</h6>
       </div>
       <div class="card-body" >
+        <div style="padding:10px;">
+          <div v-if="attendance_type_id==5" class="alert alert-success" role="alert">
+          <b>{{updatedata.text}}</b>
+        </div>
+        <div v-else-if="updatedata.text" class="alert alert-success" role="alert">
+          <b>Attendance Already Submitted You Can Edit Record</b>
+        </div>
+        </div>
+        
         <div v-if="attendance.length ==0">
           <h1 class="NoData" style="margin-top:0px;">No Data</h1>
         </div>
@@ -137,13 +151,25 @@
 <script>
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
+import { EventBus } from "../../js/event-bus.js";
+import Loading from "../LoadingController.vue";
+import {Util} from '../../js/util';
+import message from "../Alertmessage/message.vue";
+import datepicker from "../datepicker.vue";
 export default {
 
   components: {
-    VueCtkDateTimePicker
+    VueCtkDateTimePicker,
+    Loading,
+    datepicker,
+    message,
   },
   data() {
             return {
+              msg: {
+                text: '',
+                type: ''
+              },
               view:false,
               attendance:[],
               attendance_date: new Date().toISOString().slice(0, 10),
@@ -158,11 +184,17 @@ export default {
               isholiday:false,
               attendance_type_id:'',
               message:[],
-              updatedata:[],
+              updatedata:{
+
+              },
               viladition:true,
             }
         },
+        mounted(){
+    EventBus.$emit("onLoad");
+  },
         created() {
+          EventBus.$emit("ThemeClicked");
             this.allData();
             this.axios
                 .get('/api/attendancetypes')
@@ -172,6 +204,7 @@ export default {
                     for(let i =0; i <this.student.length; i++){
                       this.student[i].attendance = this.attendance_type[this.attendance_type.length-1].id;
                     }
+                    EventBus.$emit("onLoadEnd");
                 });
 
         },
@@ -179,6 +212,7 @@ export default {
           
           checkHoliday(env){
             if(env.target.checked){
+
               this.attendance_type_id="5";
               for(let i =0;i<this.attendance.length;i++){
                 this.attendance[i].attendance_type_id = "5";
@@ -186,6 +220,7 @@ export default {
               // $("#attendancetype").attr('disabled','disabled');
               // $("#attendancetype").prop('disabled',true);
               $("#attendancetype *").prop('disabled',true);
+
             }else{
               this.attendance_type_id="";
               for(let i =0;i<this.attendance.length;i++){
@@ -226,13 +261,15 @@ export default {
       },
         
           Save(){
-            console.log(JSON.stringify(this.attendance))
+            EventBus.$emit("onLoad");
             for(let i =0;i<this.attendance.length;i++){
               this.axios
               .post(`/api/studentattendance/add`,this.attendance[i])
               .then(response=>{
-                this.message.text = response.data.text;
-                this.message.type = response.data.type;
+                this.msg.text = response.data.text;
+                this.msg.type = response.data.type;
+                EventBus.$emit("onLoadEnd");
+                Util.workAlert("#savedmsg");
               })
             }
             this.attendance=[];
@@ -242,9 +279,11 @@ export default {
             this.view = false;
           },
           search(){
+            this.updatedata ={};
             this.formViladition();
             if(this.viladition){
-              var todaydate = this.date;
+              EventBus.$emit("onLoad");
+            var todaydate = this.date;
             this.axios
             .get(`/api/studentattendance/show/${this.class_section_id}/${this.attendance_date}`)
             .then(response=>{
@@ -253,15 +292,16 @@ export default {
               this.view = true;
              this.attendance_type_id = response.data.data[0].attendance_type_id;
              this.updatedata.text = response.data.text;
-             this.updatedata.type = response.data.type;
+             this.updatedata.type = "success";
+             EventBus.$emit("onLoadEnd");
             })
             .catch(error=>{
               console.log(error.response)
+              EventBus.$emit("onLoadEnd");
             });
             
             }
-            
-            
+            EventBus.$emit("ThemeClicked");
           },
           onValidate(value, inputId, megId) {
       if (value == "" || value == undefined)

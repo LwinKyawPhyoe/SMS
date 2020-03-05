@@ -7,6 +7,7 @@
       </h6>
     </div>
     <hr />
+    <Loading></Loading>
     <div class="card">
       <div class="card-header">
         <h6>Student Criteria</h6>
@@ -83,6 +84,7 @@
           </button>
         </div>
         <div class="stucard-body" v-if="view === true">
+          <div v-if="studentList.length>0">
           <input type="text" placeholder="Search..." class="searchText" />
           <div class="copyRows">
             <div class="row" id="copyRow">
@@ -105,9 +107,9 @@
           </div>
           <div class="table-responsive">
             <table
-              class="table table-hover table-striped table-bordered table-sm"
+              class="table table-hover table-striped table-sm"
               id="selectedColumn"
-              v-if="check"
+              
             >
               <thead>
                 <tr class="active" nowrap>
@@ -156,17 +158,15 @@
                 </tr>
               </tbody>
             </table>
-            <table v-else class="table table-hover table-striped table-bordered table-sm">
-              <tbody>
-                <tr>
-                  <td colspan="100">No Data</td>
-                </tr>
-              </tbody>
-            </table>
+            
           </div>
+          </div>
+          <div v-else>
+             <h1 class="NoData" style="margin-top:0px;">No Data</h1>
+            </div>
         </div>
         <div class="stucard-body view" v-else>
-          <div v-if="check">
+          <div v-if="studentList.length>0">
             <div v-for="list in studentList" :key="list.id">
               <div class="infoFooter">
                 <router-link :to="{ name: 'viewstudent', params: { id: list.id }}">
@@ -231,17 +231,8 @@
               </div>
             </div>
           </div>
-          <div v-else class="table-responsive">
-            <table
-              class="table table-hover table-striped table-bordered table-sm"
-              style="margin-top:30px;"
-            >
-              <tbody>
-                <tr>
-                  <td colspan="100">No Data</td>
-                </tr>
-              </tbody>
-            </table>
+          <div v-else>
+             <h1 class="NoData" style="margin-top:0px;">No Data</h1>
           </div>
         </div>
       </div>
@@ -251,7 +242,11 @@
 
 <script>
 import { EventBus } from "../../js/event-bus.js";
+import Loading from "../LoadingController.vue";
 export default {
+  components: {
+    Loading,
+  },
   data() {
     return {
       viladition: true,
@@ -265,29 +260,29 @@ export default {
       class_section_id: "",
       keyword: "",
       studentList: [],
-      check: false
     };
   },
   created() {
     EventBus.$emit("ThemeClicked");
     this.allData();
   },
+    mounted(){
+    EventBus.$emit("onLoad");
+  },
 
   methods: {
     searchByKeyWord() {
+      EventBus.$emit("onLoad");
+      this.search = false;
       if (this.keyword) {
         this.axios
           .get(`/api/student/keyword/${this.keyword}`)
           .then(response => {
-            this.search = true;
+            
             var student = response.data;
             console.log("-->" + JSON.stringify(student));
             var studentArray = [];
-            if (student.length == 0) {
-              this.check = false;
-            } else {
-              this.check = true;
-            }
+           
 
             console.log("student array" + JSON.stringify(studentArray));
             for (let i = 0; i < student.length; i++) {
@@ -316,11 +311,27 @@ export default {
                     guardian_phone: student[i].guardian_phone,
                     current_address: student[i].current_address
                   });
+                  // studentArray[i].id = student[i].id;
+                  // studentArray[i].admission_no = student[i].admission_no;
+                  // studentArray[i].image = student[i].image;
+                  // studentArray[i].name = student[i].name;
+                  // studentArray[i].father_name = student[i].father_name;
+                  // studentArray[i].mother_name = student[i].mother_name;
+                  // studentArray[i].guardian_name = student[i].guardian_name;
+                  // studentArray[i].dob = student[i].dob;
+                  // studentArray[i].gender = student[i].gender;
+                  // studentArray[i].class = student[i].classes;
+                  // studentArray[i].mobileno = student[i].mobileno;
+                  // studentArray[i].guardian_phone = student[i].guardian_phone;
+                  // studentArray[i].current_address = student[i].current_address;
                 });
-              this.studentList = studentArray;
             }
+            this.studentList = studentArray;
+            EventBus.$emit("onLoadEnd");
           });
+          
       }
+      this.search = true;
       EventBus.$emit("ThemeClicked");
     },
     selectClass(e) {
@@ -347,26 +358,20 @@ export default {
     allData() {
       this.axios.get("/api/student").then(response => {
         this.classList = response.data.class;
+        EventBus.$emit("onLoadEnd");
       });
     },
     searchBySectionId() {
+        EventBus.$emit("onLoad");
+      this.search = false;
       this.formViladition();
       if (this.viladition == true) {
         EventBus.$emit("clicked");
         this.axios
           .get(`/api/student/sibling/${this.class_section_id}`)
           .then(response => {
-            this.search = true;
             var student = response.data;
-
             var studentArray = [];
-
-            if (student.length == 0) {
-              this.check = false;
-            } else {
-              this.check = true;
-            }
-
             console.log("student array" + JSON.stringify(studentArray));
             for (let i = 0; i < student.length; i++) {
               this.axios
@@ -395,10 +400,13 @@ export default {
                     current_address: student[i].current_address
                   });
                 });
-              this.studentList = studentArray;
+
             }
+             this.studentList = studentArray;
+             EventBus.$emit("onLoadEnd");
           });
       }
+      this.search = true;
       EventBus.$emit("ThemeClicked");
     },
     listView() {

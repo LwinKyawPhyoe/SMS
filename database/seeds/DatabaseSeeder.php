@@ -38,25 +38,18 @@ class DatabaseSeeder extends Seeder
             ],
             [
                 'type' => 'Half',
-                'key_value' => '<b class="text-warning">F<b>',
+                'key_value' => '<b class="text-primary">F<b>',
                 'is_active' => 'yes',
                 'domain' => 'all',
                 'session_id' => '1'
             ],
             [
                 'type' => 'Holiday',
-                'key_value' => '<b class="text-danger">A<b>',
+                'key_value' => '<b class="text-secondary">A<b>',
                 'is_active' => 'no',
                 'domain' => 'all',
                 'session_id' => '1'
             ],
-            [
-                'type' => 'Absent',
-                'key_value' => '<b class="text-danger">A<b>',
-                'is_active' => 'yes',
-                'domain' => 'all',
-                'session_id' => '1'
-            ]
         ];
 
 

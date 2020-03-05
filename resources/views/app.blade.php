@@ -233,7 +233,7 @@ function clickShowAllColumns(data){
                 all_col[a].style.display="table-cell";
                 }   
             }
-        } else if (this.colors[i].color == "darkColor") {
+        } else if (this.colors[i].color == "lightColor") {
             for(let i = 0; i < data.length;i++){
             document.getElementById(data[i].Id).style.background = "white";
             document.getElementById(data[i].Id).style.color = "black";

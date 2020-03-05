@@ -76,7 +76,7 @@ class StudentAttendanceController extends Controller
     public function show($class_section_id,$date)
     {
         $data=[];
-        $sessionid = DB::select('select * from academic_years where is_active="yes"',[]);
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         $check = DB::select('select * from student_attendances WHERE class_section_id=? and date=? and session_id=?',[$class_section_id,$date,$sessionid[0]->id]);
         if(count($check)>0){
            for($i=0;$i<count($check);$i++){
@@ -116,7 +116,7 @@ class StudentAttendanceController extends Controller
     }
     public function search($class_section_id,$date){
         $data=[];
-        $sessionid = DB::select('select * from academic_years where is_active="yes"',[]);
+        $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
         $check = DB::select('select * from student_attendances WHERE class_section_id=? and date=? and session_id=?',[$class_section_id,$date,$sessionid[0]->id]);
         if(count($check)>0){
            for($i=0;$i<count($check);$i++){
