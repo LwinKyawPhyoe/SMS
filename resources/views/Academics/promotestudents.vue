@@ -91,7 +91,10 @@
                     </div>
                 </div>
 
-                <div class="row" id="row" style="width:100%;padding:0;">
+                <div v-if="PromoteObj.length == 0">
+                    <h1 class="NoData">No Data</h1>
+                </div>
+                <div v-if="PromoteObj.length != 0" class="row" id="row" style="width:100%;padding:0;">
                     <div class="table-responsive">            
                         <table class="table table-hover table-striped" style="margin-bottom: 0;" id="studenttable">
                             <thead>
@@ -193,6 +196,7 @@ export default {
     },
     methods: {        
         getAllClass() {
+            EventBus.$emit("onLoad");
             this.axios.get("/api/class").then(response => {
                 let array = response.data.sort((a, b) => {
                     if (a.sectionid > b.sectionid) {
@@ -296,7 +300,7 @@ export default {
 
         goSearch(){
             if(this.checkSearchValidate()){
-                this.showStudRecord = true;
+                EventBus.$emit("onLoad");
                 this.PromoteStudObj.class_id = this.PromoteClassList[0].id;
                 this.PromoteStudObj.section_id = this.PromoteSectionList[0].id;
                 EventBus.$emit("ThemeClicked");
@@ -314,15 +318,30 @@ export default {
                     for(let s=0; s<this.PromoteObj.length; s++){
                         this.PromoteObj[s].result = "Pass";
                         this.PromoteObj[s].session_status = "Continue";
-                    }                    
+                    }
+                    this.showStudRecord = true;
                     // console.log("Stud List >>"+ JSON.stringify(this.PromoteObj));
+                    EventBus.$emit("onLoadEnd");
                 });
             }            
         },
 
         goSearchByKeyword(){
-            this.axios.get(`/api/student/keyword/${this.searchKeyword}`).then(response => {
-                console.log("Keyword >>>"+JSON.stringify(response.data));
+            EventBus.$emit("onLoad");
+            EventBus.$emit("ThemeClicked"); 
+            this.PromoteStudObj.class_id = this.PromoteClassList[0].id;
+            this.PromoteStudObj.section_id = this.PromoteSectionList[0].id;               
+            this.PromoteObj = [];
+            this.axios.get(`/api/student/keyword/${this.searchKeyword}`).then(response => {                    
+                console.log("Search >>"+JSON.stringify(response.data));
+                this.PromoteObj = response.data;                    
+                for(let s=0; s<this.PromoteObj.length; s++){
+                    this.PromoteObj[s].result = "Pass";
+                    this.PromoteObj[s].session_status = "Continue";
+                }
+                EventBus.$emit("ThemeClicked");
+                this.showStudRecord = true;                
+                EventBus.$emit("onLoadEnd");
             });
         },
 
@@ -334,7 +353,7 @@ export default {
                         this.sessionList.push(response.data[i]);
                     }
                 }
-                this.PromoteStudObj.promote_session = this.sessionList[0].id;                                
+                this.PromoteStudObj.promote_session = this.sessionList[0].id;
             });
         },        
 
@@ -409,6 +428,8 @@ export default {
         },
 
         sortPromoteClassList(aList){            
+            this.PromoteSectionList = [];
+            this.PromoteSectionList =  [{"id":0,"section":"Class Section"}];
             for(let i=0; i < aList.length; i++){
                 if(this.PromoteClassList == [] || this.PromoteClassList.length == 0){
                     let obj = [];
@@ -484,10 +505,15 @@ export default {
 
         goPromote(){
             if(this.checkPromoteValidate()){                
-                this.PromoteStudObj.promoteStudList = this.PromoteObj;
-                // console.log("Result >>>"+JSON.stringify(this.PromoteStudObj));
+                this.PromoteStudObj.promoteStudList = this.PromoteObj;                
                 this.axios.post('/api/StudPromote/promote', this.PromoteStudObj).then(response => {
                     console.log("Result >>>"+JSON.stringify(response.data));
+                    this.getAllClass();
+                    this.getAllSession();
+                    this.showStudRecord = false;
+                    this.msg.text = response.data.text;
+                    this.msg.type = response.data.type;
+                    Util.workAlert('#alertmsg');
                 })
                 .catch(error => {            
                     console.log("err->" + JSON.stringify(this.error.response));

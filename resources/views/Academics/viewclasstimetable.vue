@@ -253,6 +253,7 @@ export default {
         goSearch(){            
             if(this.checkValidate())
             {
+                EventBus.$emit("onLoad");
                 EventBus.$emit("ThemeClicked");
                 this.axios.post('api/ClassTimeTable/viewsearch', this.ClassTimeTableObj).then(response => {                    
                     let array = response.data.sort((a, b) => {
@@ -266,6 +267,7 @@ export default {
                     });
                     this.sortClassTimeTblList(array);
                     this.showRecord = true;
+                    EventBus.$emit("onLoadEnd");
                     EventBus.$emit("ThemeClicked");
                 });
             }

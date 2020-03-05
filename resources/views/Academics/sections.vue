@@ -151,6 +151,7 @@ export default {
     },
     methods: {
         getAllSection(){
+            EventBus.$emit("onLoad");
             this.axios
                 .get('/api/section')
                 .then(response => {            

@@ -481,23 +481,26 @@ export default {
 
     goSearch() {
       if (this.checkValidate()) {
+        EventBus.$emit("onLoad");
         EventBus.$emit("ThemeClicked");
         this.showall = true;
         this.axios
           .post("/api/AssSubject/search", this.AssSubject)
           .then(response => {
-            this.AssSubSort(response.data);
+            this.AssSubSort(response.data);            
           });
       }
     },
 
     ShowAll() {
+      EventBus.$emit("onLoad");
       this.axios.get("/api/asssubject").then(response => {
         this.AssSubSort(response.data);
         this.showall = true;
         EventBus.$emit("ThemeClicked");
         this.AssSubject.class_id = this.ClassList[0].id;
         this.AssSubject.section_id = this.SectionList[0].id;
+        EventBus.$emit("onLoadEnd");
       });
     },
 
@@ -551,6 +554,7 @@ export default {
           }
         }
       }
+      EventBus.$emit("onLoadEnd");
     },
 
     goDetail(aObj) {

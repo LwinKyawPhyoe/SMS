@@ -179,6 +179,7 @@ export default {
         },
 
         getAllClass(){
+            EventBus.$emit("onLoad");
             this.ClassList = [];
             this.axios
             .get('/api/class')

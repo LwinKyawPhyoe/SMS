@@ -278,6 +278,7 @@ export default {
     goSearch() {
       if(this.checkValidate())
       {
+        EventBus.$emit("onLoad");
         EventBus.$emit("ThemeClicked");
         this.axios.post('/api/AssSubject/search', this.AssSubject).then(response => {        
           if(response.data == "" || response.data == [])
@@ -293,6 +294,7 @@ export default {
               this.AssSubObj.push({aID: response.data[i].AssSubId, itemid: i+1,SubCaption: "Subject",SubValue: response.data[i].subject_id,TeacherCaption: "Teacher",TeacherValue: response.data[i].staff_id});
             }
           }
+          EventBus.$emit("onLoadEnd");
           EventBus.$emit("ThemeClicked");
         });
       }

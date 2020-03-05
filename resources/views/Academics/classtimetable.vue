@@ -298,6 +298,7 @@ export default {
         goSearch(){            
             if(this.checkValidate())
             {
+                EventBus.$emit("onLoad");
                 EventBus.$emit("ThemeClicked");
                 this.axios.post('api/ClassTimeTable/search', this.ClassTimeTableObj).then(response => {                    
                     this.showTimeTbl = true;
@@ -317,7 +318,8 @@ export default {
                                 this.classTimeTbl[a] = {"id": response.data[i].id, "day": response.data[i].day, "time_from": response.data[i].time_from, "time_to": response.data[i].time_to, "room_no": response.data[i].room_no};
                             }
                         }
-                    }                    
+                    } 
+                    EventBus.$emit("onLoadEnd");                   
                 });
             }
         },

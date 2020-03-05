@@ -247,13 +247,14 @@ export default {
         },
 
         getAssClassTeacher(){
-            this.AssClassTeacherList = [];
-            EventBus.$emit("onLoadEnd");
+            EventBus.$emit("onLoad");
+            this.AssClassTeacherList = [];            
             this.axios.get("/api/classTeacher").then(response => {                          
                 for(let i=0; i < response.data.length; i++){
                     let staffAry = [];
                     staffAry = response.data[i].staff_id.split(",");
                     this.AssClassTeacherList.push({"id": response.data[i].id, "class_id": response.data[i].class_id, "staff_id": staffAry, "section_id": response.data[i].section_id});                    
+                    EventBus.$emit("onLoadEnd");
                 }          
             });  
         },

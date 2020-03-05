@@ -165,6 +165,7 @@ export default {
     },
     methods: {
         getAllSubject(){
+            EventBus.$emit("onLoad");
             this.axios
                 .get('/api/subject')
                 .then(response => {

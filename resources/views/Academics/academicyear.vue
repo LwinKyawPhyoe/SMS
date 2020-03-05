@@ -161,7 +161,8 @@ export default {
         EventBus.$emit("onLoad");
     },
     methods: {
-        getAllSession() {            
+        getAllSession() {    
+            EventBus.$emit("onLoad");
             this.axios.get("/api/academicyr").then(response => {
                 this.SessionList = response.data;
                 EventBus.$emit("onLoadEnd");

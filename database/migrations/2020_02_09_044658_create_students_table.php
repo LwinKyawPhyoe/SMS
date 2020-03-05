@@ -61,6 +61,8 @@ class CreateStudentsTable extends Migration
             $table->string('is_active')->nullable();/*45 */
             $table->string('session_id')->nullable();/* 46 */
             $table->string('race')->nullable();
+            $table->string('result')->nullable();
+            $table->string('session_status')->nullable();
             $table->timestamps();
         });
     }
