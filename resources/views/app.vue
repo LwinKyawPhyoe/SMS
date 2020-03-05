@@ -6,10 +6,9 @@
         <div class="line"></div>
         <div class="line"></div>
       </div>
-      <!-- <h3>School Name</h3> -->
+      <h3>{{this.school.school_name}}</h3>
       <!-- <span>Haha</span> -->
     </div>
-
     <div class="shadow" id="shadow" @click="closeSidebar()"></div>
     <div class="sidebarM" id="sidebar">
       <div class="top-section">
@@ -18,11 +17,16 @@
             for
             class="fontColour"
             style="font-size:16px;color:white"
-          >Current Session: 2020_2021</label>
-          <i class="fa fa-pencil pen fontColour" style="margin-left:10px;color:white"></i>
+            data-toggle="modal"
+            data-target="#exampleModalCenter1"
+          >Current Session: {{session}}</label>
+          <i class="fa fa-pencil pen fontColour" style="margin-left:10px;color:white"
+          data-toggle="modal"
+          data-target="#exampleModalCenter1"
+          ></i>
         </div>
         <div class="row profile">
-          <img src="/account.jpg" alt class="image" />
+          <img :src="'SettingImages/'+school.schoollogo" alt class="image" id="image" />
           <div class="aboutAdmin">
             <label for>Admin name</label>
             <br />
@@ -32,9 +36,10 @@
       </div>
       <div class="nav-content">
         <div class="item" @click="closeSidebar()">
-          <router-link to="dashboard">
+          <div @click="goToLink('dashboard')">
+          <router-link to="">
             <i class="fa fa-credit-card" id="Icons"></i>Dashboard
-          </router-link>
+          </router-link></div>
         </div>
         <div class="item" id="StudentItem">
           <div @click="openDropDown('Student','StudentItem')">
@@ -44,14 +49,18 @@
           </div>
           <div class="item-body" id="Student">
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="StudentInformation">
+              <div @click="goToLink('StudentInformation')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Student Details
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="AddStudent">
+              <div @click="goToLink('AddStudent')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Student Admission
               </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -64,14 +73,18 @@
           </div>
           <div class="item-body" id="Attendance">
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="stuattendance">
+              <div @click="goToLink('stuattendance')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Student Attendance
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="attendancedate">
+              <div @click="goToLink('attendancedate')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Attendance By Date
               </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -84,24 +97,32 @@
           </div>
           <div class="item-body" id="Examination">
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="ExamList">
+              <div @click="goToLink('ExamList')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>ExamList
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="examschadule">
+              <div @click="goToLink('examschadule')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Exam Schadule
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="markgrade">
+              <div @click="goToLink('markgrade')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Marks Grade
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="MarkRegister">
+              <div @click="goToLink('MarkRegister')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Marks Register
               </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -114,44 +135,60 @@
           </div>
           <div class="item-body" id="Academics">
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="viewtimetable">
+              <div @click="goToLink('viewtimetable')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Class TimeTable
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="classteacher">
+              <div @click="goToLink('classteacher')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Assign Class Teacher
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="viewasssubjects">
+              <div @click="goToLink('viewasssubjects')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Assign Subjects
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="prostudents">
+              <div @click="goToLink('prostudents')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Promote Student
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="subjects">
+              <div @click="goToLink('subjects')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Subjects
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="class">
+              <div @click="goToLink('class')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Class
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="sections">
+              <div @click="goToLink('sections')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Sections
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="academicyear">
+              <div @click="goToLink('academicyear')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Academic Year
               </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -164,24 +201,32 @@
           </div>
           <div class="item-body" id="HRM">
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="staffdirectory">
+              <div @click="goToLink('staffdirectory')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Staff Directory
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="staattendance">
+              <div @click="goToLink('staattendance')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Staff Attendence
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="department">
+              <div @click="goToLink('department')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Department
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="designation">
+              <div @click="goToLink('designation')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i> Designation
               </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -194,29 +239,39 @@
           </div>
           <div class="item-body" id="Download">
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="uploadcontent">
+              <div @click="goToLink('uploadcontent')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Upload Content
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="assignment">
+              <div @click="goToLink('assignment')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Assignments
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="stumaterial">
+              <div @click="goToLink('stumaterial')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Study Material
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="syllabus">
+              <div @click="goToLink('syllabus')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i> Syllabus
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="othdownload">
+              <div @click="goToLink('othdownload')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i> Other Downloads
               </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -229,14 +284,18 @@
           </div>
           <div class="item-body" id="HomeWork">
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="homework">
+              <div @click="goToLink('homework')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Add HomeWork
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="evaluation_report">
+              <div @click="goToLink('evaluation_report')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Evaluation Report
               </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -249,19 +308,25 @@
           </div>
           <div class="item-body" id="Transport">
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="routes">
+              <div @click="goToLink('routes')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i> Routes
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="vehicle">
+              <div @click="goToLink('vehicle')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Vehicles
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="assvehicle">
+              <div @click="goToLink('assvehicle')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Assign Vehicles
               </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -274,19 +339,25 @@
           </div>
           <div class="item-body" id="Hostel">
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="hostelroom">
+              <div @click="goToLink('hostelroom')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i> Hostel Rooms
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="roomtype">
+              <div @click="goToLink('roomtype')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Room Types
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="hostel">
+              <div @click="goToLink('hostel')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Hostel
               </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -299,49 +370,67 @@
           </div>
           <div class="item-body" id="Reports">
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="stureport">
+              <div @click="goToLink('stureport')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i> Student Reports
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to>
+              <div @click="goToLink('')">
+                <router-link to>
                 <i class="fa fa-angle-double-right" id="Icons"></i>Student Guardians
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="studenthistory">
+              <div @click="goToLink('studenthistory')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Student History
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="attendancereport">
+              <div @click="goToLink('attendancereport')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Attendence Reports
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="MarkRegister">
+              <div @click="goToLink('MarkRegister')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Exam Marks Reports
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to>
+              <div @click="goToLink('')">
+                <router-link to>
                 <i class="fa fa-angle-double-right" id="Icons"></i>Close Academic
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="staattreport">
+              <div @click="goToLink('staattreport')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Stuff Attendence Report
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="stutransportreport">
+              <div @click="goToLink('stutransportreport')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Student Transport Report
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="stuhostelreport">
+              <div @click="goToLink('stuhostelreport')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Student Hostel Reports
               </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -354,19 +443,25 @@
           </div>
           <div class="item-body" id="SystemSetting">
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="gensetting">
+              <div @click="goToLink('gensetting')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i> General Setting
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="/role">
+              <div @click="goToLink('role')">
+                <router-link to="">
                 <i class="fa fa-angle-double-right" id="Icons"></i>Roles Permissions
               </router-link>
+              </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
-              <router-link to="users">
+              <div @click="goToLink('users')">
+                <router-link to=''>
                 <i class="fa fa-angle-double-right" id="Icons"></i>Users
               </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -1236,6 +1331,9 @@ export default {
     });
   },
   methods: {
+    goToLink(names){
+      this.$router.push({name: names});
+    },
     getAllSession() {
       this.sessionList = [];
       this.axios.get("/api/academicyr").then(response => {
