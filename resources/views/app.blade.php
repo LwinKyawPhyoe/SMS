@@ -48,7 +48,7 @@ function changeBar() {
             document.getElementById('sessions').style.marginLeft = '21rem';
         } else {
             document.getElementById('bar').style.marginLeft = '5.25rem';
-            document.getElementById('sessions').style.marginLeft = '8rem';
+            document.getElementById('sessions').style.marginLeft = '6.5rem';
             document.getElementById('bigBar').style.display = 'none';
             document.getElementById('list').style.display = 'none';
             document.getElementById('smallBar').style.display = 'block';
@@ -56,7 +56,7 @@ function changeBar() {
 }
 function showForm() {
     if (document.getElementById('bigBar').style.display == 'none') {
-        document.getElementById('sessions').style.marginLeft = '8rem';
+        document.getElementById('sessions').style.marginLeft = '6.5rem';
         document.getElementById('bar').style.marginLeft = '5.25rem';
     } else {
         document.getElementById('bar').style.marginLeft = '16rem';
@@ -102,5 +102,148 @@ function clickBackground(id,idBg){
     document.getElementById(id).style.display = "none";
     document.getElementById(idBg).style.display = "none";
     this.checkColumns = false;
+}
+
+function showTableHeaders(data) {
+    this.axios.get("/api/color").then(response => {
+      this.colors = response.data;
+      for (var i = 0; i< this.colors.length;i++){
+        if (this.colors[i].color == "defaultColor") {
+            if (document.getElementById(data.Id).style.background == "rgb(213, 220, 215)") {
+            document.getElementById(data.Id).style.background = "#1b5e20";
+            document.getElementById(data.Id).style.color = "white";
+            var all_col=document.getElementsByClassName(data.class);
+            for(var i=0;i<all_col.length;i++){
+                all_col[i].style.display="table-cell";
+                }
+            } else {
+            document.getElementById(data.Id).style.background = "rgb(213, 220, 215)";
+            document.getElementById(data.Id).style.color = "black";
+            var all_col=document.getElementsByClassName(data.class);
+            for(var i=0;i<all_col.length;i++){
+                all_col[i].style.display="none";
+                }
+            }
+        } else if (this.colors[i].color == "redColor") {
+            if (document.getElementById(data.Id).style.background == "rgb(213, 220, 215)") {
+            document.getElementById(data.Id).style.background = "darkred";
+            document.getElementById(data.Id).style.color = "white";
+            var all_col=document.getElementsByClassName(data.class);
+            for(var i=0;i<all_col.length;i++){
+                all_col[i].style.display="table-cell";
+                }
+            } else {
+            document.getElementById(data.Id).style.background = "rgb(213, 220, 215)";
+            document.getElementById(data.Id).style.color = "black";
+            var all_col=document.getElementsByClassName(data.class);
+            for(var i=0;i<all_col.length;i++){
+                all_col[i].style.display="none";
+                }
+            }
+        } else if (this.colors[i].color == "blueColor") {
+            if (document.getElementById(data.Id).style.background == "rgb(213, 220, 215)") {
+            document.getElementById(data.Id).style.background = "darkcyan";
+            document.getElementById(data.Id).style.color = "white";
+            var all_col=document.getElementsByClassName(data.class);
+            for(var i=0;i<all_col.length;i++){
+                all_col[i].style.display="table-cell";
+                }
+            } else {
+            document.getElementById(data.Id).style.background = "rgb(213, 220, 215)";
+            document.getElementById(data.Id).style.color = "black";
+            var all_col=document.getElementsByClassName(data.class);
+            for(var i=0;i<all_col.length;i++){
+                all_col[i].style.display="none";
+                }
+            }
+        } else if (this.colors[i].color == "darkColor") {
+            if (document.getElementById(data.Id).style.background == "rgb(213, 220, 215)") {
+            document.getElementById(data.Id).style.background = "#212529";
+            document.getElementById(data.Id).style.color = "white";
+            var all_col=document.getElementsByClassName(data.class);
+            for(var i=0;i<all_col.length;i++){
+                all_col[i].style.display="table-cell";
+                }
+            } else {
+            document.getElementById(data.Id).style.background = "rgb(213, 220, 215)";
+            document.getElementById(data.Id).style.color = "black";
+            var all_col=document.getElementsByClassName(data.class);
+            for(var i=0;i<all_col.length;i++){
+                all_col[i].style.display="none";
+                }
+            }
+        } else if (this.colors[i].color == "lightColor") {
+            if (document.getElementById(data.Id).style.background == "rgb(213, 220, 215)") {
+            document.getElementById(data.Id).style.background = "white";
+            document.getElementById(data.Id).style.color = "black";
+            var all_col=document.getElementsByClassName(data.class);
+            for(var i=0;i<all_col.length;i++){
+                all_col[i].style.display="table-cell";
+                }
+            } else {
+            document.getElementById(data.Id).style.background = "rgb(213, 220, 215)";
+            document.getElementById(data.Id).style.color = "black";
+            var all_col=document.getElementsByClassName(data.class);
+            for(var i=0;i<all_col.length;i++){
+                all_col[i].style.display="none";
+                }
+            }
+        }
+      }
+    });
+}
+
+function clickShowAllColumns(data){
+    this.axios.get("/api/color").then(response => {
+      this.colors = response.data;
+      for (var i = 0; i< this.colors.length;i++){
+        if (this.colors[i].color == "defaultColor") {
+            for(let i = 0; i < data.length;i++){
+            document.getElementById(data[i].Id).style.background = "#1b5e20";
+            document.getElementById(data[i].Id).style.color = "white";
+            var all_col=document.getElementsByClassName(data[i].class);
+            for(var a = 0;a<all_col.length;a++){
+                all_col[a].style.display="table-cell";
+                }   
+            }
+        } else if (this.colors[i].color == "redColor") {
+            for(let i = 0; i < data.length;i++){
+            document.getElementById(data[i].Id).style.background = "darkred";
+            document.getElementById(data[i].Id).style.color = "white";
+            var all_col=document.getElementsByClassName(data[i].class);
+            for(var a = 0;a<all_col.length;a++){
+                all_col[a].style.display="table-cell";
+                }   
+            }
+        } else if (this.colors[i].color == "blueColor") {
+            for(let i = 0; i < data.length;i++){
+            document.getElementById(data[i].Id).style.background = "darkcyan";
+            document.getElementById(data[i].Id).style.color = "white";
+            var all_col=document.getElementsByClassName(data[i].class);
+            for(var a = 0;a<all_col.length;a++){
+                all_col[a].style.display="table-cell";
+                }   
+            }
+        } else if (this.colors[i].color == "darkColor") {
+            for(let i = 0; i < data.length;i++){
+            document.getElementById(data[i].Id).style.background = "#212529";
+            document.getElementById(data[i].Id).style.color = "white";
+            var all_col=document.getElementsByClassName(data[i].class);
+            for(var a = 0;a<all_col.length;a++){
+                all_col[a].style.display="table-cell";
+                }   
+            }
+        } else if (this.colors[i].color == "darkColor") {
+            for(let i = 0; i < data.length;i++){
+            document.getElementById(data[i].Id).style.background = "white";
+            document.getElementById(data[i].Id).style.color = "black";
+            var all_col=document.getElementsByClassName(data[i].class);
+            for(var a = 0;a<all_col.length;a++){
+                all_col[a].style.display="table-cell";
+                }   
+            }
+        }
+    }
+    });
 }
 </script>

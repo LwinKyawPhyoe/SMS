@@ -209,10 +209,10 @@
                 Util.clickBackground('ModalColumns','ModalBackground');
             },
             showTableHeader(data){
-                Util.showTableHeader(data);
+                showTableHeaders(data);
             },
             clickShowAllColumn(data){
-                Util.clickShowAllColumn(data);
+                clickShowAllColumns(data);
             },
         }
     }

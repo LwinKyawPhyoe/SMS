@@ -277,6 +277,7 @@
                     title="Profile Images"
                     @change="Preview_image($event)"
                     style="position: absolute;top: 3rem;z-index: 1;margin-top: 1rem;height: 57%;opacity: 0;cursor: auto;"
+                    accept="image/*"
                   />
                 </div>
                 <img

@@ -386,10 +386,10 @@ export default {
             Util.clickBackground('columns','backgroundColumn');
         },
         showTableHeader(data){
-            Util.showTableHeader(data);
+            showTableHeaders(data);
         },
         clickShowAllColumn(data){
-           Util.clickShowAllColumn(data);
+           clickShowAllColumns(data);
         },
     }
 };
