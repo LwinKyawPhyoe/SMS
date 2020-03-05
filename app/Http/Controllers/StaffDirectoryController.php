@@ -52,6 +52,13 @@ class StaffDirectoryController extends Controller
             $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
             $password = substr($random, 0, 8);
             // Mail::to('waiyansoe4421@gmail.com')->send(new SendMail($password));
+
+            $details = [
+                'title' => 'Mail from ItSolutionStuff.com',
+                'body' => 'This is for testing email using smtp'
+            ];
+
+            Mail::to('waiyansoe4421@gmail.com')->send(new SendMail($details));
             /**
              * COUNT DATA
              */
@@ -338,7 +345,7 @@ class StaffDirectoryController extends Controller
         $staffs = StaffDirectory::with('role', 'department', 'designation')
             ->where('session_id', $sessionid[0]->id)
             ->where('role_id', $id)
-            ->where('is_active', 'yes')
+            ->where('is_active', '<>', 'delete')
             ->get()
             ->toArray();
         return array_reverse($staffs);
@@ -353,6 +360,10 @@ class StaffDirectoryController extends Controller
         $data->update([
             'is_active' => 'no'
         ]);
+        $attendanc = StaffAttendance::where('staff_id', $id);
+        $attendanc->update([
+            'is_active' => 'no'
+        ]);
         return response()->json(['text' => 'Staff Directory added successfully', 'type' => 'success']);
     }
     /***Enable record */
@@ -363,6 +374,10 @@ class StaffDirectoryController extends Controller
         $data->update([
             'is_active' => 'yes'
         ]);
+        $attendanc = StaffAttendance::where('staff_id', $id);
+        $attendanc->update([
+            'is_active' => 'yes'
+        ]);
         return response()->json(['text' => 'Staff Directory added successfully', 'type' => 'success']);
     }
     /** Delete Staff */
@@ -370,6 +385,10 @@ class StaffDirectoryController extends Controller
     {
         $data = StaffDirectory::find($id);
         $data->update([
+            'is_active' => 'delete'
+        ]);
+        $attendanc = StaffAttendance::where('staff_id', $id);
+        $attendanc->update([
             'is_active' => 'delete'
         ]);
         return response()->json(['text' => 'Staff Directory deleted successfully', 'type' => 'success']);

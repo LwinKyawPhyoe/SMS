@@ -202,14 +202,17 @@ class StaffAttendanceController extends Controller
         $curdate = strtotime($date);
         $res = date('Y-m-d', $curdate);
         $data = "";
-        $data = StaffAttendance::where('date', $res)->get();
-        $attendance_staff_id = StaffAttendance::where('date', $res)->get('staff_id');
+        $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
+        $data = StaffAttendance::where('date', $res)->where('is_active', 'yes')->get();
+        $attendance_staff_id = StaffAttendance::where('date', $res)
+            ->where('is_active', 'yes')
+            ->where('session_id', $sessionid[0]->id)
+            ->get('staff_id');
         $ary = [];
         /***Update  */
         if (count($data) > 0) {
             $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
             for ($i = 0; $i < count($attendance_staff_id); $i++) {
-                // $staffs = DB::select('select * from staff_directories where staff_id=? and session_id=? and domain="TS" and is_active="yes"',  [$attendance_staff_id[$i]->staff_id, $sessionid[0]->id]);
                 $staffs = StaffDirectory::with('role', 'department', 'designation')
                     ->where('role_id', $id)
                     ->where('is_active', 'yes')

@@ -663,6 +663,9 @@ export default {
       this.axios.get(`/api/staffdirectory/show/${this.id}`).then(response => {
         this.documents = response.data;
         this.staffs = response.data;
+        this.staffs.resume = "Resume";
+        this.staffs.joining_letter = "Joining Letter";
+        this.staffs.other_cocument = "Other Document"
         this.image = response.data.image;
         this.name = response.data.name;
         this.activeItem = this.staffs.role_id;

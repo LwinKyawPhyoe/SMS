@@ -613,10 +613,9 @@ export default {
       }
     },
     updateStaffDirectory(e) {
+      console.log(JSON.stringify(this.staff));
 
       if (this.checkValidate()) {
-        EventBus.$emit("onLoad");
-
         this.staff.dob = new Date().toISOString().slice(0, 10);
         // e.preventDefault();
         let currentObj = this;
@@ -676,12 +675,8 @@ export default {
           )
           .then(response => {
             console.log("-->" + JSON.stringify(response));
-            this.msg.text = response.data.text;
-            this.msg.type = response.data.type;
-            Util.workAlert("#alertmsg");
-            EventBus.$emit("onLoadEnd");
-            Util.scrollToTop();
-            this.$router.push({ name: "staffdirectory" });
+
+            // this.$router.push({ name: "staffdirectory" });
           });
       }
     },
