@@ -203,20 +203,32 @@ class StaffAttendanceController extends Controller
         $res = date('Y-m-d', $curdate);
         $data = "";
         $data = StaffAttendance::where('date', $res)->get();
+        $attendance_staff_id = StaffAttendance::where('date', $res)->get('staff_id');
+        $ary = [];
         /***Update  */
         if (count($data) > 0) {
             $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
-            $staffs = StaffDirectory::with('role', 'department', 'designation')
-                ->where('role_id', $id)
-                ->where('session_id', $sessionid[0]->id)
-                ->get()->toArray();
-            return response()->json(['status' => 'update', 'data' => $staffs, 'attendance' => $data]);
+            for ($i = 0; $i < count($attendance_staff_id); $i++) {
+                // $staffs = DB::select('select * from staff_directories where staff_id=? and session_id=? and domain="TS" and is_active="yes"',  [$attendance_staff_id[$i]->staff_id, $sessionid[0]->id]);
+                $staffs = StaffDirectory::with('role', 'department', 'designation')
+                    ->where('role_id', $id)
+                    ->where('is_active', 'yes')
+                    ->where('domain', 'TS')
+                    ->where('id', $attendance_staff_id[$i]->staff_id)
+                    ->where('session_id', $sessionid[0]->id)
+                    ->get()
+                    ->toArray();
+                array_push($ary, $staffs[0]);
+            }
+            return response()->json(['status' => 'update', 'data' => $ary, 'attendance' => $data]);
         } else {
             /***New */
             $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
             $staffs = StaffDirectory::with('role', 'department', 'designation')
                 ->where('role_id', $id)
+                ->where('is_active', 'yes')
                 ->where('session_id', $sessionid[0]->id)
+                ->where('domain', 'TS')
                 ->get()->toArray();
             return response()->json(['status' => 'new', 'data' => $staffs]);
         }

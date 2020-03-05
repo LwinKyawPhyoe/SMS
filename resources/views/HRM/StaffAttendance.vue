@@ -224,12 +224,10 @@ export default {
         }
       } else {
         console.log("Staffs" + JSON.stringify(this.staffs));
-
         for (var i = 0; i < this.staffs.length; i++) {
           if (this.staffs[i].attendance_type) {
           } else {
             /**Present */
-            alert("present");
             console.log(
               "Type Empty column ==>" + JSON.stringify(this.staffs[i])
             );
@@ -305,10 +303,7 @@ export default {
                 this.staffs[i].note = "";
                 if (response.data.status == "update") {
                   for (var t = 0; t < attendance.length; t++) {
-                    attendance[t].staff_attendance_type_id =
-                      attendance[i].staff_attendance_type_id;
-                    this.staffs[i].attendance_type_id =
-                      attendance[i].staff_attendance_type_id;
+                    this.staffs[i].attendance_type_id = attendance[i].staff_attendance_type_id;
                     if (attendance[t].staff_attendance_type_id == 5) {
                       this.makeAsHoliCheck = true;
                     } else {

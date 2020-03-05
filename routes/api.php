@@ -176,30 +176,30 @@ Route::group(['prefix' => 'studentattendance'], function () {
     Route::get('edit/{id}', 'StudentAttendanceController@edit');
     Route::post('update/{id}', 'StudentAttendanceController@update');
     Route::delete('delete/{id}', 'StudentAttendanceController@destroy');
-    Route::get('search/{class_section_id}/{date}' ,'StudentAttendanceController@search');
+    Route::get('search/{class_section_id}/{date}', 'StudentAttendanceController@search');
 });
-Route::get('student','StudentController@index');
-Route::group(['prefix' => 'student'], function() {
-    Route::post('add','StudentController@store');
-    Route::get('show','StudentController@show');
-    Route::get('edit/{id}','StudentController@edit');
-    Route::post('update/{id}','StudentController@update');
-    Route::delete('delete/{id}','StudentController@destroy');
-    Route::get('section/{para}','StudentController@section');
-    Route::get('class_section/{class_id}/{section_id}','StudentController@classSection');
-    Route::get('sibling/{id}','StudentController@selectStudent');
-    Route::get('siblings/{id}','StudentController@selectSibling');
-    Route::get('rooms/{id}','StudentController@selectHostel');
-    Route::get('selectsection/{id}','StudentController@selectClassSection');
-    Route::get('hostelroom/{hostel_id}/{room_id}','StudentController@selecthostelroom');
-    Route::get('keyword/{keyword}','StudentController@selectByKeyword');
-    Route::get('studentReport/{class_id}/{section_id}/{gender}','StudentController@studentReport');
-    Route::get('studentReport1/{class_id}/{section_id}','StudentController@studentReport1');
-    Route::get('studentReport2/{class_id}/{gender}','StudentController@studentReport2');
-    Route::get('studentReport3/{class_id}','StudentController@studentReport3');
-    Route::get('studentReport4/{gender}','StudentController@studentReport4');
-    Route::get('studentHostel/{hostem_room_id}','StudentController@searchHostel');
-    Route::get('addSibling/{sibling_id}','StudentController@searchsibling');
+Route::get('student', 'StudentController@index');
+Route::group(['prefix' => 'student'], function () {
+    Route::post('add', 'StudentController@store');
+    Route::get('show', 'StudentController@show');
+    Route::get('edit/{id}', 'StudentController@edit');
+    Route::post('update/{id}', 'StudentController@update');
+    Route::delete('delete/{id}', 'StudentController@destroy');
+    Route::get('section/{para}', 'StudentController@section');
+    Route::get('class_section/{class_id}/{section_id}', 'StudentController@classSection');
+    Route::get('sibling/{id}', 'StudentController@selectStudent');
+    Route::get('siblings/{id}', 'StudentController@selectSibling');
+    Route::get('rooms/{id}', 'StudentController@selectHostel');
+    Route::get('selectsection/{id}', 'StudentController@selectClassSection');
+    Route::get('hostelroom/{hostel_id}/{room_id}', 'StudentController@selecthostelroom');
+    Route::get('keyword/{keyword}', 'StudentController@selectByKeyword');
+    Route::get('studentReport/{class_id}/{section_id}/{gender}', 'StudentController@studentReport');
+    Route::get('studentReport1/{class_id}/{section_id}', 'StudentController@studentReport1');
+    Route::get('studentReport2/{class_id}/{gender}', 'StudentController@studentReport2');
+    Route::get('studentReport3/{class_id}', 'StudentController@studentReport3');
+    Route::get('studentReport4/{gender}', 'StudentController@studentReport4');
+    Route::get('studentHostel/{hostem_room_id}', 'StudentController@searchHostel');
+    Route::get('addSibling/{sibling_id}', 'StudentController@searchsibling');
 });
 Route::get('studentsibling', 'StudentSiblingController@index');
 Route::group(['prefix' => 'studentsiblings'], function () {
@@ -208,8 +208,7 @@ Route::group(['prefix' => 'studentsiblings'], function () {
     Route::get('edit/{id}', 'StudentSiblingController@edit');
     Route::post('update/{id}', 'StudentSiblingController@update');
     Route::delete('delete/{id}', 'StudentSiblingController@destroy');
-    Route::get('/siblings/{id}','StudentSiblingController@selectStudentSiblings');
-
+    Route::get('/siblings/{id}', 'StudentSiblingController@selectStudentSiblings');
 });
 Route::get('session', 'StudentSessionController@index');
 Route::group(['prefix' => 'sessions'], function () {

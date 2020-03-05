@@ -169,4 +169,13 @@ export const Util = {
             }
         }
     },
+
+    scrollToTop(){
+        let to = this.moveToDown ? this.$refs.description.offsetTop - 60 : 0;
+      window.scroll({
+        top: to,
+        left: 0,
+        behavior: "smooth"
+      });
+    }
 };

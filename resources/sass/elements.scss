@@ -427,7 +427,7 @@ input[type="file"] {
   margin-bottom: 0;
   float: right;
   outline: none;
-  color: black;
+  color: black !important;
   background-image: linear-gradient(rgba(255, 255, 255, 0), rgba(255, 255, 255, 5));
   height: 30px;
   border: 1px solid rgba(128, 128, 128, 0.219);
