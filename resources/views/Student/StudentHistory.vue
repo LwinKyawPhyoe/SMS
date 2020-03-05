@@ -3,7 +3,7 @@
     <div class="toplink">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
-        <router-link to="/Student">Home</router-link>> Student History
+        <router-link to="/Student" class="home">Home</router-link>> Student History
       </h6>
     </div>
     <hr />

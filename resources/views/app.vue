@@ -824,7 +824,7 @@
               <li>
                 <i class="fa fa-clipboard smallIcon" style="zoom:1.2 !important;"></i>
                 <ul class="smallLists">
-                  <router-link to="/attendancedate" class="smallLink">
+                  <router-link to="/ExamList" class="smallLink">
                     <li class="smLink">
                       <i class="fa fa-angle-double-right smIcon"></i>
                       Exam List
@@ -1328,6 +1328,17 @@ export default {
         this.colors = response.data;
         if (this.colors.color == "defaultColor") {
           document.getElementById("schoolName").style.background = "#1b5e20";
+          var dark = document.getElementsByClassName("tableLink");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("inputbtn");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "#1b5e20";
+          }
           var dark = document.getElementsByClassName("dropdownForm");
           var color;
           for (color = 0; color < dark.length; color++) {
@@ -1425,6 +1436,17 @@ export default {
             dark[color].style.background = "#1b5e20";
           }
         } else if (this.colors.color == "redColor") {
+          var dark = document.getElementsByClassName("tableLink");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkred";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("inputbtn");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "darkred";
+          }
           var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
@@ -1527,7 +1549,18 @@ export default {
           var color;
           for (color = 0; color < dark.length; color++) {
             dark[color].style.background = "darkcyan";
-            dark[color].style.color = "#1b5e20";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("inputbtn");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "darkcyan";
+          }
+          var dark = document.getElementsByClassName("tableLink");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkcyan";
+            dark[color].style.color = "white";
           }
           var dark = document.getElementsByClassName("confirm-modal-header");
           var color;
@@ -1627,6 +1660,17 @@ export default {
             dark[color].style.background = "#212529";
             dark[color].style.color = "white";
           }
+          var dark = document.getElementsByClassName("inputbtn");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "#212529";
+          }
+          var dark = document.getElementsByClassName("tableLink");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#212529";
+            dark[color].style.color = "white";
+          }
           var dark = document.getElementsByClassName("item-body");
           var color;
           for (color = 0; color < dark.length; color++) {
@@ -1720,6 +1764,17 @@ export default {
             dark[color].style.background = "black";
           }
         } else if (this.colors.color == "lightColor") {
+          var dark = document.getElementsByClassName("tableLink");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "whitesmoke";
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("inputbtn");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.color = "#d0cfcf";
+          }
           var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {

@@ -493,7 +493,7 @@ input[type="file"] {
 .navList:after,
 #nav-list:after,
 .tableLink:after,
-.tableLinks:after {
+.tableLinkActive:after {
   content: "";
   background: #9494947c;
   display: block;
@@ -513,7 +513,7 @@ input[type="file"] {
 .navList:active:after,
 #nav-list:active:after,
 .tableLink:active:after,
-.tableLinks:active:after {
+.tableLinkActive:active:after {
   padding: 0;
   margin: 0;
   opacity: 1;
@@ -559,7 +559,6 @@ input[type="file"] {
     margin-bottom: 0px !important;
   }
   .tableLink {
-    background: #1b5e20;
     color: white;
   }
   .tableLinkActive {

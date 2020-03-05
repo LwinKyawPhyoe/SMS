@@ -4,11 +4,10 @@
     <div class="toplink">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
-        <router-link to="/Student">Home</router-link> > <router-link to="/StudentInformation">Student Details</router-link> > Student Admission
+        <router-link to="/Student" class="home">Home</router-link> > <router-link class="home" to="/StudentInformation">Student Details</router-link> > Student Admission
       </h6>
     </div>
     <hr />
-    <br />
     <form @submit.prevent="save" enctype="multipart/form-data" >
     
     <div class="card">
