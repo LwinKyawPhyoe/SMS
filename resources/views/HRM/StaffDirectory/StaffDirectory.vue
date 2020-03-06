@@ -111,8 +111,10 @@
                 <td nowrap>{{staff.staff_id}}</td>
                 <td nowrap>{{staff.name}}</td>
                 <td nowrap>{{staff.role.name}}</td>
-                <td nowrap>{{staff.department.department_name}}</td>
-                <td nowrap>{{staff.designation.designation_name}}</td>
+                <td nowrap v-if="staff.department">{{staff.department.department_name}}</td>
+                <td v-else></td>
+                <td nowrap v-if="staff.designation">{{staff.designation.designation_name}}</td>
+                <td v-else></td>
                 <td nowarp>{{staff.phone}}</td>
                 <td>
                   <router-link :to="{name: 'viewstaffdirectory', params: { id: staff.id }}">
@@ -147,14 +149,16 @@
                   </h5>
                   <p>{{staff.staff_id}}</p>
                   <p>{{staff.phone}}</p>
-                  <p>{{staff.department.department_name | truncate(20)}}</p>
+                  <p v-if="staff.department"> {{staff.department.department_name | truncate(20)}}</p>
                   <p class="staffsub">
                     <span
+                    v-if="staff.role.name"
                       data-toggle="tooltip"
                       title="Role"
                       data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"
                     >{{staff.role.name | truncate(15)}}</span>
                     <span
+                    v-if="staff.designation"
                       data-toggle="tooltip"
                       title="Designation"
                       data-loading-text="<i class='fa fa-circle-o-notch fa-spin'></i> Processing"
@@ -270,7 +274,6 @@ export default {
             if (response.data.length > 0) {
               this.isEmpty = false;
             } else {
-              alert('isempty')
               this.isEmpty = true;
             }
             EventBus.$emit('onLoadEnd');

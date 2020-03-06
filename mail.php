@@ -29,7 +29,7 @@ return [
     |
     */
 
-    'host' => env('MAIL_HOST', 'smtp.googlemail.com'),
+    'host' => env('MAIL_HOST', 'smtp.mailgun.org'),
 
     /*
     |--------------------------------------------------------------------------
@@ -56,8 +56,8 @@ return [
     */
 
     'from' => [
-        'address' => env('MAIL_FROM_ADDRESS', 'example@gmail.com'),
-        'name' => env('MAIL_FROM_NAME', 'Laravel'),
+        'address' => env('MAIL_FROM_ADDRESS', 'hello@example.com'),
+        'name' => env('MAIL_FROM_NAME', 'Example'),
     ],
 
     /*
@@ -84,9 +84,9 @@ return [
     |
     */
 
-    'username' => 'waiyansoe4421@gmail.com',
+    'username' => env('MAIL_USERNAME'),
 
-    'password' => 'vfvummajsypwtnvc',
+    'password' => env('MAIL_PASSWORD'),
 
     /*
     |--------------------------------------------------------------------------
@@ -98,7 +98,9 @@ return [
     | been provided here, which will work well on most of your systems.
     |
     */
+
     'sendmail' => '/usr/sbin/sendmail -bs',
+
     /*
     |--------------------------------------------------------------------------
     | Markdown Mail Settings

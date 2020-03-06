@@ -21,7 +21,8 @@ class StaffDirectoryController extends Controller
     {
         //
         $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
-        $staffs = StaffDirectory::where('is_active', 'yes')->with('role', 'department', 'designation')
+        $staffs = StaffDirectory::with('role', 'department', 'designation')
+            ->where('is_active', 'yes')
             ->where('domain', 'TS')
             ->where('session_id', $sessionid[0]->id)
             ->orderBy('id', 'DESC')->get()->toArray();
@@ -52,20 +53,20 @@ class StaffDirectoryController extends Controller
             $random = str_shuffle('abcdefghjklmnopqrstuvwxyzABCDEFGHJKLMNOPQRSTUVWXYZ234567890!$%^&!$%^&');
             $password = substr($random, 0, 8);
             // Mail::to('waiyansoe4421@gmail.com')->send(new SendMail($password));
-
             $details = [
-                'title' => 'Mail from ItSolutionStuff.com',
-                'body' => 'This is for testing email using smtp'
+                'title' => `TS`,
+                'body' => "'$password' is your SMS Password code"
             ];
-
-            Mail::to('waiyansoe4421@gmail.com')->send(new SendMail($details));
+            Mail::to($request->email)->send(new SendMail($details));
             /**
              * COUNT DATA
              */
+            $check_phone =0;
             $check_staff_id = StaffDirectory::where('staff_id', $request->staff_id)->count();
             $check_email    = StaffDirectory::where('email', $request->email)->count();
-            $check_phone    = StaffDirectory::where('phone', $request->phone)->count();
-
+            if ($request->phone) {
+                $check_phone    = StaffDirectory::where('phone', $request->phone)->count();
+            }
             if ($check_staff_id > 0) {
                 return response()->json(['text' => 'Staff ID already exists!', 'type' => "error"]);
             }
@@ -85,7 +86,6 @@ class StaffDirectoryController extends Controller
                 } else {
                     $imageName = "";
                 }
-
                 /**
                  * Name OF File
                  */
@@ -96,6 +96,7 @@ class StaffDirectoryController extends Controller
                     $resume = time() . $request->staff_id . "resume" . '.' . $request->resume->getClientOriginalExtension();
                     $request->resume->move(public_path('staff_images'), $resume);
                 }
+
                 if ($request->joining_letter) {
                     $joining_letter = time() . $request->staff_id . "joiningletter" . '.' .  $request->joining_letter->getClientOriginalExtension();
                     $request->joining_letter->move(public_path('staff_images'), $joining_letter);
@@ -104,7 +105,6 @@ class StaffDirectoryController extends Controller
                     $other_document = time() . $request->staff_id . "otherdocument" .  '.' . $request->other_document->getClientOriginalExtension();
                     $request->other_document->move(public_path('staff_images'), $other_document);
                 }
-
                 $staffDirectory = new StaffDirectory([
                     "staff_id"         => $request->staff_id,
                     "role_id"          => $request->role_id,
@@ -248,10 +248,6 @@ class StaffDirectoryController extends Controller
 
 
             // File::delete($filename);
-
-
-
-
             $staffDirectory->update([
                 "staff_id"         => $request->staff_id,
                 "role_id"          => $request->role_id,
@@ -313,7 +309,7 @@ class StaffDirectoryController extends Controller
     {
         //
     }
-
+    /*------------------- Advanced Options ------------------------ */
 
     /**
      * FIND with Role
@@ -323,6 +319,8 @@ class StaffDirectoryController extends Controller
         $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
         $staffs = StaffDirectory::with('role', 'department', 'designation')
             ->where('role_id', $id)
+            ->where('is_active', 'yes')
+            ->where('domain', 'TS')
             ->where('session_id', $sessionid[0]->id)
             ->get()->toArray();
         return array_reverse($staffs);
@@ -330,13 +328,26 @@ class StaffDirectoryController extends Controller
     public function search_by_other($id)
     {
         $sessionid = AcademicYear::where('is_active', 'yes')->where('domain', 'TS')->get('id');
-        $staffs = StaffDirectory::with('role', 'department', 'designation')
+        $staff_lists = StaffDirectory::with('role', 'department', 'designation')
+            ->where('is_active', 'yes')
+            ->where('domain', 'TS')
             ->where('session_id', $sessionid[0]->id)
-            ->where('staff_id', 'like', '%' . $id . '%')
-            ->orWhere('name', 'like', '%' . $id . '%')
-            ->get()
-            ->toArray();
-        return array_reverse($staffs);
+            ->where(function ($query) use ($id) {
+                $query->whereHas('role', function ($query) use ($id) {
+                    $query->where('name', 'LIKE', '%' . $id . '%');
+                })
+                    ->orWhereHas('designation', function ($query) use ($id) {
+                        $query->where('designation_name', 'LIKE', '%' . $id . '%');
+                    })
+                    ->orWhereHas('department', function ($query) use ($id) {
+                        $query->where('department_name', 'LIKE', '%' . $id . '%');
+                    })
+                    ->orWhere('staff_id', 'LIKE', '%' . $id . '%')
+                    ->orWhere('name', 'LIKE', '%' . $id . '%');
+            })
+            ->get()->toArray();
+
+        return array_reverse($staff_lists);
     }
 
     public function search_staff_lists($id)
@@ -350,10 +361,7 @@ class StaffDirectoryController extends Controller
             ->toArray();
         return array_reverse($staffs);
     }
-
-
-    /***Disable record */
-
+    /***Disable record*/
     public function disable($id)
     {
         $data = StaffDirectory::find($id);

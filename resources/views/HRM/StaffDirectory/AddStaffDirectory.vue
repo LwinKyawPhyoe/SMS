@@ -52,7 +52,7 @@
                 v-model="staff.role_id"
                 class="inputbox"
               >
-                <option :value="null" selected disabled>Select Role</option>
+                <option value="" selected disabled>Select Role</option>
                 <option :value="role.id" v-for="(role) in roles" v-bind:key="role.id">{{role.name}}</option>
               </select>
               <span id="role_idmsg" class="error_message">Role is required</span>
@@ -60,16 +60,13 @@
             <div class="textbox">
               <label for="Designation">
                 Designation
-                <strong>*</strong>
               </label>
               <select
                 id="designation_id"
-                @keyup="onValidate(staff.role_id, 'designation_id', 'designationmsg')"
-                v-on:blur="onValidate(staff.role_id, 'designation_id', 'designationmsg')"
                 v-model="staff.designation_id"
                 class="inputbox"
               >
-                <option selected disabled>Select Designation</option>
+                <option value="" selected disabled>Select Designation</option>
                 <option
                   :value="designation.id"
                   v-for="(designation) in designations"
@@ -81,16 +78,13 @@
             <div class="textbox">
               <label for="Department">
                 Department
-                <strong>*</strong>
               </label>
               <select
                 id="department_id"
-                @keyup="onValidate(staff.department_id, 'department_id', 'departmentmsg')"
-                v-on:blur="onValidate(staff.department_id, 'department_id', 'departmentmsg')"
                 v-model="staff.department_id"
                 class="inputbox"
               >
-                <option selected disabled>Select Department</option>
+                <option value="" selected disabled>Select Department</option>
                 <option
                   :value="department.id"
                   v-for="(department) in departments"
@@ -545,7 +539,7 @@ export default {
       if (this.checkValidate()) {
         EventBus.$emit("onLoad");
         (this.staff.dob = new Date().toISOString().slice(0, 10)),
-          e.preventDefault();
+         e.preventDefault();
         let currentObj = this;
         const config = {
           headers: { "content-type": "multipart/form-data" }
@@ -705,14 +699,14 @@ export default {
         this.onValidateMessage("role_id", "role_idmsg");
         return false;
       }
-      if (!this.staff.designation_id) {
-        this.onValidateMessage("designation_id", "designationmsg");
-        return false;
-      }
-      if (!this.staff.department_id) {
-        this.onValidateMessage("department_id", "departmentmsg");
-        return false;
-      }
+      // if (!this.staff.designation_id) {
+      //   this.onValidateMessage("designation_id", "designationmsg");
+      //   return false;
+      // }
+      // if (!this.staff.department_id) {
+      //   this.onValidateMessage("department_id", "departmentmsg");
+      //   return false;
+      // }
       if (!this.staff.name) {
         this.onValidateMessage("name_id", "namemsg");
         return false;
