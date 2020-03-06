@@ -14,10 +14,29 @@
             <div class="card-header" style="width: 100%;margin-left: 0;">
               <h6>Exam {{this.examName}}</h6>
             </div>
-            <div style="padding:1rem;">
+            <div style="padding:1rem;" >
               <div style="height:20px;font-size:20px;">{{Class_Name}} = {{Section_name}}</div>
-              <div class="table-responsive table-striped" style="padding:0;">
-                <table class="table table-hover">
+              <div class="copyRows">
+          <div class="row" id="copyRow" style="margin-top: -20px;">
+            <div class="col-3">
+              <a href="#" title="Excel" @click.prevent="downloadExcel('examSchaduleTable', 'name', 'Marks.xls')">
+                <i class="fa fa-file-excel-o"></i>
+              </a>
+            </div>
+            <div class="col-3">
+              <a href="#" title="Print" @click.prevent="printme('print2')">
+                <i class="fa fa-print"></i>
+              </a>
+            </div>
+            <div class="col-3">
+              <a href="#" title="Columns">
+                <i class="fa fa-columns"></i>
+              </a>
+            </div>
+          </div>
+        </div>
+              <div class="table-responsive table-striped" style="padding:0;" id="print2">
+                <table class="table table-hover" id="examSchaduleTable">
                   <thead>
                     <th nowrap>Subject</th>
                     <th nowrap>Date</th>
@@ -114,11 +133,29 @@
           placeholder="Search..."
           class="searchText"
         />
-
+        <div class="copyRows">
+          <div class="row" id="copyRow">
+            <div class="col-3">
+              <a href="#" title="Excel" @click.prevent="downloadExcel('studenttable', 'name', 'Marks.xls')">
+                <i class="fa fa-file-excel-o"></i>
+              </a>
+            </div>
+            <div class="col-3">
+              <a href="#" title="Print" @click.prevent="printme('print')">
+                <i class="fa fa-print"></i>
+              </a>
+            </div>
+            <div class="col-3">
+              <a href="#" title="Columns">
+                <i class="fa fa-columns"></i>
+              </a>
+            </div>
+          </div>
+        </div>
         <div v-if="data == false">
           <h1 class="NoData">No Data</h1>
         </div>
-        <div class="table-responsive" v-if="data == true">
+        <div class="table-responsive" v-if="data == true" id="print">
           <table class="table table-hover table-striped" id="studenttable">
             <thead>
               <tr>
@@ -319,6 +356,12 @@ export default {
         }
       }
     },
+    printme(table) {
+      Util.printme(table);
+    },
+    downloadExcel(table, name, filename) {
+      Util.downloadExcel(table, name, filename);
+    }
   }
 };
 </script>

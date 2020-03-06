@@ -92,27 +92,17 @@
             />
             <div class="copyRows">
               <div class="row" id="copyRow">
-                <div class="col-2">
-                  <a href="#" title="Copy">
-                    <i class="fa fa-copy"></i>
-                  </a>
-                </div>
-                <div class="col-2">
-                  <a href="#" title="Excel">
+                <div class="col-3">
+                  <a href="#" title="Excel" @click.prevent="downloadExcel('studenttable', 'name', 'MarksGrade.xls')">
                     <i class="fa fa-file-excel-o"></i>
                   </a>
                 </div>
-                <div class="col-2">
-                  <a href="#" title="PDF">
-                    <i class="fa fa-file-pdf-o"></i>
-                  </a>
-                </div>
-                <div class="col-2">
-                  <a href="#" title="Print">
+                <div class="col-3">
+                  <a href="#" title="Print" @click.prevent="printme('print')">
                     <i class="fa fa-print"></i>
                   </a>
                 </div>
-                <div class="col-2">
+                <div class="col-3">
                   <a onclick="showColumns()" title="Columns">
                     <i class="fa fa-columns"></i>
                   </a>
@@ -151,7 +141,7 @@
             <div v-if="data == false">
               <h1 class="NoData">No Data</h1>
             </div>
-            <div v-else class="table-responsive">
+            <div v-else class="table-responsive" id="print">
               <table class="table table-hover table-striped" id="studenttable">
                 <thead>
                   <tr>
@@ -362,6 +352,12 @@ export default {
       this.axios.get(`/api/marksGrade/editMarksGrade/${id}`).then(response => {
         this.saveMarksGrade = response.data;
       });
+    },
+     printme(table) {
+      Util.printme(table);
+    },
+    downloadExcel(table, name, filename) {
+      Util.downloadExcel(table, name, filename);
     }
   }
 };
