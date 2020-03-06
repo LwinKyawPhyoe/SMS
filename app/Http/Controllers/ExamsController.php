@@ -13,6 +13,7 @@ use App\assign_subject;
 use App\SubjectsGetMarks;
 use App\ExamStudent;
 use App\subject;
+use App\student;
 use App\marksGrade;
 use Illuminate\Support\Arr;
 use Illuminate\Http\Request;
@@ -216,7 +217,7 @@ class ExamsController extends Controller
                     
                     $SubjectsGetMarks = new SubjectsGetMarks();
 
-                    $exam_result2 = examResults::where('session_id',$academicYearId)->where('domain','TS')->where('is_active','yes')->where('exam_schadule_id',$exam_schadule3->id)->get();
+                    $exam_result2 = examResults::where('session_id',$academicYearId)->where('domain','TS')->where('is_active','yes')->where('exam_schadule_id',$exam_schadule3->id)->where('admission_no',$admission_no)->get();
                     $assign_subject2 = assign_subject::where('is_active','yes')->where('session_id',$academicYearId)->where('domain','TS')->where('id',$exam_schadule3->assign_subject_id)->get();
                     $subjects2 = subject::where('session_id',$academicYearId)->where('domain','TS')->where('is_active','yes')->where('id',$assign_subject2[0]->subject_id)->get();
 
@@ -246,7 +247,8 @@ class ExamsController extends Controller
                 $ExamStudent->total_get_marks = $totalGetMarks;
                 $ExamStudent->total_full_marks = $totalFullMarks;
                 $totalPercentage = $totalGetMarks/$totalFullMarks * 100;
-                $ExamStudent->percentage = $totalPercentage ;
+                $cutTotalPercentage = substr((string)$totalPercentage,0,5);
+                $ExamStudent->percentage = $cutTotalPercentage ;
                 $totalMarksGrade = '';
                 $marksGrade = marksGrade::where('session_id',$academicYearId)->where('is_active','yes')->where('domain','TS')->get();
                 foreach($marksGrade as $marksGrade1){
@@ -260,6 +262,31 @@ class ExamsController extends Controller
             }
 
         return response($returnArray);
+
+    }
+    public function getSections($id){
+        $academicYearId = $this->getAcademicActiveId();
+        $class_section = class_section::where('session_id',$academicYearId)->where('is_active','yes')->where('domain','TS')->where('id',$id)->get();
+        $class_section1 = class_section::where('session_id',$academicYearId)->where('is_active','yes')->where('domain','TS')->where('class_id',$class_section[0]->class_id)->get();
+        $sections =[];
+        foreach($class_section1 as $class_section2){
+            $Section = Section::where('session_id',$academicYearId)->where('domain','TS')->where('is_active','yes')->where('id',$class_section2->section_id)->get();
+            foreach($Section as $Section1){
+                array_push($sections,$Section1);
+            }
+        }
+        return response($sections);
+    }
+    public function getSectionStudent($arrayids){
+        
+        $academicYearId = $this->getAcademicActiveId();
+        $class_section = class_section::where('is_active','yes')->where('domain','TS')->where('session_id',$academicYearId)->where('id',$arrayids[0])->get();
+        
+        $class_section1 = class_section::where('is_active','yes')->where('domain','TS')->where('session_id',$academicYearId)->where('class_id',$class_section[0]->class_id)->where('section_id',$arrayids[2])->get();
+
+        $student = student::where('is_active','yes')->where('session_id',$academicYearId)->where('domain','TS')->where('class_sections_id',$class_section1[0]->id)->get();
+
+        return response($student);
 
     }
 }

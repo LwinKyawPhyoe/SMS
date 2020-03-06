@@ -90,6 +90,7 @@ class ExamResultsController extends Controller
                     $studentExamDataSubjects = [];
                     $grandTotal = 0;
                     $fullMarks = 0;
+                    $checkIdsArray = [];
                     $result = 'pass';
                     foreach($examSchaduleArray as $examSchaduleArray1){
                         $fullMarks = $fullMarks + (int)$examSchaduleArray1->full_marks;
@@ -105,6 +106,7 @@ class ExamResultsController extends Controller
                                     $studentExamDataSubjectsObj->full_marks = $examSchaduleArray1->full_marks;
                                     $studentExamDataSubjectsObj->id = $examSchaduleArray1->id;
                                     array_push($studentExamDataSubjects,$studentExamDataSubjectsObj);
+                                    array_push($checkIdsArray,$exam_results1->exam_schadule_id);
                                     $grandTotal = $grandTotal + (int)$exam_results1->get_marks;
                                     if($exam_results1->get_marks < $examSchaduleArray1->passing_marks){
                                         $result = 'failed';
@@ -114,14 +116,14 @@ class ExamResultsController extends Controller
                                 $studentExamDataSubjectsObj = new StudentExamDataSubjects();
                                     $studentExamDataSubjectsObj->get_marks = 'No Marks';
                                     $studentExamDataSubjectsObj->passing_marks = $examSchaduleArray1->passing_marks;
-                                    $studentExamDataSubjectsObj->exam_schadule_id = $exam_results1->exam_schadule_id;
-                                    $studentExamDataSubjectsObj->attendence = $exam_results1->attendence;
+                                    $studentExamDataSubjectsObj->exam_schadule_id = '';
+                                    $studentExamDataSubjectsObj->attendence ='';
                                     $studentExamDataSubjectsObj->full_marks = $examSchaduleArray1->full_marks;
                                     $studentExamDataSubjectsObj->id = $examSchaduleArray1->id;
                                     array_push($studentExamDataSubjects,$studentExamDataSubjectsObj);
                             }
                     }
-                    if(count($studentExamDataSubjects) >0 ){
+                    if(count($checkIdsArray) >0 ){
                         $StudentExamData->subjects = $studentExamDataSubjects;
                         $StudentExamData->grand_total = $grandTotal;
                         $perCent = $grandTotal/$fullMarks * 100;

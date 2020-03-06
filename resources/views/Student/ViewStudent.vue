@@ -1,5 +1,50 @@
 <template>
   <div class="ViewStudent form" id="bar">
+
+    <div class="sta-menu-open ripple" style="position: fixed;right: 2rem;top: 5rem;z-index: 1;">
+      <i @click="showRightSideMenu()" class="fa fa-bars" aria-hidden="true"></i>
+    </div>
+
+    <div class="right-side-menu" id="right-side-menu">
+      <div class="statop">
+        <div class="statopfixed">
+          <p class="classtap">
+            Student
+            <a @click="closeRightSideMenu()" class="staclose">
+              <i class="fa fa-times"></i>
+            </a>
+          </p>
+          <div class="scrollmenu ripple">
+            <a
+              class="ripple"
+              v-for="(Sections,i) in sections" :key="i"
+              :class="{ 'sta-active': activeItem ===  Sections.id }"
+              @click="selectItem(Sections.id)"
+            > {{Sections.section}} </a>
+          </div>
+        </div>
+      </div>
+      <div class="sta-content">
+        <div  class="NoData" v-if="sectionStudent.length <= 0">No Data</div>
+        <div
+          v-else
+          class="sta-name ripple"
+          v-for="(student,index) in sectionStudent" :key="index"
+          @click="getDataGyi(student.id)"
+        >
+          <a>
+            <div class="icon">
+              <img :src="'stu_image/'+ student.image" v-if="student.image" />
+              <img v-else src="/noimage.jpg" />
+            </div>
+            <router-link :to="{ name: 'viewstudent', params: { id: student.id }}">
+              <div class="sta-title">{{student.name}}</div>
+            </router-link >
+          </a>
+        </div>
+      </div>
+    </div>
+
     <div class="toplink">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
@@ -496,7 +541,7 @@
         </div>
       </div>
     </div>
-    <!-- <button type="button" @click="ExamList()">TEST</button> -->
+    <!-- <button type="button" @click="Test()">TEST</button> -->
   </div>
 </template>
 <script>
@@ -518,12 +563,26 @@ export default {
       student:[],
       sibling:[],
       documents:[],
-      studentExam : []
+      studentExam : [],
+      sections : [],
+      activeItem: null,
+      sectionStudent : []
     };
   },
   created(){
   EventBus.$emit("ThemeClicked");
-    var id = this.$route.params.id;
+  this.getDataGyi(null);
+  },
+  methods: {
+    
+    getDataGyi(student_id){
+      EventBus.$emit("ThemeClicked");
+      var id = '';
+      if(student_id == null){
+          id = this.$route.params.id;
+      }else{
+          id = student_id;
+      }
     this.axios
     .get(`/api/student/edit/${id}`)
     .then(response=>{
@@ -536,6 +595,8 @@ export default {
         this.section_id = response1.data.sections[0].section;
       })
       this.ExamList();
+      this.Test();
+      this.closeRightSideMenu();
       this.axios
       .get(`api/uploaddocuments/show/${this.student.admission_no}`)
       .then(response2=>{
@@ -563,8 +624,17 @@ export default {
     })
     .catch(error=>{
     });
-  },
-  methods: {
+    },
+    Test(){
+      this.axios.get(`api/exams/getSections/${this.student.class_sections_id}`)
+      .then(response=>{
+        this.sections = response.data;
+        console.log(response.data);
+      })
+    },
+    showRightSideMenu() {
+      document.getElementById("right-side-menu").style.marginRight = "0px";
+    },
     addDocument(){
       const config = {
         headers: { "content-type": "multipart/form-data" }
@@ -602,6 +672,13 @@ export default {
           })
       }
       
+    },
+    closeRightSideMenu() {
+      document.getElementById("right-side-menu").style.marginRight = "-250px";
+    },
+    selectItem(i) {
+      this.activeItem = i;
+      this.getSectionStucent(i);
     },
     clickUpload(){
       this.documentData = {};
@@ -654,7 +731,18 @@ export default {
         this.studentExam = response.data;
       })
       
-    }
+    },
+    getSectionStucent(i){
+      var sendSectionStudentAry = [];
+      sendSectionStudentAry.push(this.student.class_sections_id);
+      sendSectionStudentAry.push(i);
+
+      this.axios.get(`api/exams/getSectionStudent/${sendSectionStudentAry}`)
+      .then(response => {
+        this.sectionStudent = response.data;
+      })
+
+    },
   }
 };
 </script>
