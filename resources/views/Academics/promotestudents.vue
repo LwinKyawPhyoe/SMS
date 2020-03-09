@@ -48,7 +48,7 @@
                             <label for="name" class="title">
                                 Search By Keyword                                
                             </label>
-                            <input type="text" class="inputbox" v-model="searchKeyword" placeholder="Search By Name,Nrc,..etc."/>
+                            <input type="text" class="inputbox" v-model="searchKeyword"  @keyup.enter="goSearchByKeyword()" placeholder="Search By Name,Nrc,..etc."/>
                         </div>
                         <div class="col-12">
                             <button @click="goSearchByKeyword()" class="searchButton" id="globalSearch">Search</button>
