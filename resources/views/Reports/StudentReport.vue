@@ -7,7 +7,7 @@
       </h4>
     </div>
     <hr />
-
+<Loading></Loading>
     <div class="card">
       <div class="card-header">
         <h6>Select Reports</h6>
@@ -44,7 +44,7 @@
             </select>
           </div>
           <div class="col-lg-12 col-md-3 col-12 textbox">
-            <button class="searchButton" style="margin-top: 1.8rem !important;" @click="searchReport()">Search</button>
+            <button class="searchButton" style="margin-top: 1.8rem !important;" @click="searchReport()" id="globalSearch">Search</button>
           </div>
         </div>
       </div>
@@ -53,6 +53,7 @@
         <h6>Student Report</h6>
       </div>
       <div class="card-body">
+        <div v-if="studentList.length>0">
         <input type="text" placeholder="Search..." class="searchText" />
         <div class="copyRows">
           <div class="row" id="copyRow">
@@ -81,6 +82,7 @@
           >
             <thead>
               <tr style="font-size:14px;">
+                <th class="all" nowrap>No.</th>
                 <th class="all" nowrap>Admission Number</th>
                 <th class="all" nowrap>Student Name</th>
                 <th class="all" nowrap>Class</th>
@@ -95,7 +97,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="active" style="border-bottom: 1px solid #ebebeb;" v-for="list in studentList" :key="list.id">
+              <tr class="active" style="border-bottom: 1px solid #ebebeb;" v-for="(list,index) in studentList" :key="list.id">
+                <td nowrap>{{index+1}}.</td>
                 <td class="all" nowrap>{{list.admission_no}}</td>
                 <td class="all" nowrap>{{list.name}}</td>
                 <td class="all" nowrap>{{list.class}}</td>
@@ -112,12 +115,23 @@
           </table>
         </div>
       </div>
+       <div v-else>
+        <h1 class="NoData" style="margin-top:0px;">No Data</h1>
+      </div>
+      </div>
+     
       </div>
     </div>
   </div>
 </template>
 <script>
+import { EventBus } from "../../js/event-bus.js";
+import Loading from "../LoadingController.vue";
+import {Util} from '../../js/util';
 export default {
+    components: {
+    Loading,
+  },
   data() {
     return {
       viladition:true,
@@ -138,7 +152,9 @@ export default {
     EventBus.$emit("ThemeClicked");
     this.allData();
   },
- 
+         mounted(){
+    EventBus.$emit("onLoad");
+  },
  
   methods: {
      selectClass(e){
@@ -151,67 +167,68 @@ export default {
           this.sectionList = response.data;
         })
     },
-    selectSection(e){
-      var id_section = e.target.value;
-      var id_class = this.class_id;
-      
-      var array =[];
-      this.axios
-      .get(`/api/student/class_section/${id_class}/${id_section}`)
-      .then(response=>{
-        array = response.data;
-        this.class_section_id = array[0].id;
-        console.log(this.class_section_id);
-      })
-    },
+
     allData(){
       this.axios
         .get('/api/student')
         .then(response=>{
           this.classList = response.data.class;
           console.log(JSON.stringify(this.classList));
+          EventBus.$emit("onLoadEnd");
         });
     },
     searchReport(){
       this.search = true;
       if(this.class_id && this.section_id && this.gender){
+        EventBus.$emit("onLoad");
         this.axios
       .get(`/api/student/studentReport/${this.class_id}/${this.section_id}/${this.gender}`)
       .then(response=>{
         this.studentList = response.data;
+        EventBus.$emit("onLoadEnd");
       })
       }else if(this.class_id && this.section_id){
+        EventBus.$emit("onLoad");
         this.axios
         .get(`/api/student/studentReport1/${this.class_id}/${this.section_id}`)
         .then(response=>{
           this.studentList = response.data;
+          EventBus.$emit("onLoadEnd");
         })
       }else if(this.class_id && this.gender){
+        EventBus.$emit("onLoad");
         this.axios
         .get(`/api/student/studentReport2/${this.class_id}/${this.gender}`)
         .then(response=>{
           this.studentList = response.data;
+          EventBus.$emit("onLoadEnd");
         })
       }else if(this.class_id){
+        EventBus.$emit("onLoad");
         this.axios
         .get(`/api/student/studentReport3/${this.class_id}`)
         .then(response=>{
           this.studentList = response.data;
+          
+          EventBus.$emit("onLoadEnd");
         })
       }else if(this.gender){
+        EventBus.$emit("onLoad");
         this.axios
         .get(`/api/student/studentReport4/${this.gender}`)
         .then(response=>{
           this.studentList = response.data;
+          EventBus.$emit("onLoadEnd");
         })
       }else{
         this.axios
         .get(`/api/student/show`)
         .then(response=>{
           this.studentList = response.data;
+          EventBus.$emit("onLoadEnd");
         })
       }
-      
+          EventBus.$emit("ThemeClicked");
     },
     onValidate(value, inputId, megId) {
       if (value == "" || value == undefined)

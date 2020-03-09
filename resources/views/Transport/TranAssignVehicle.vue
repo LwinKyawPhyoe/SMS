@@ -3,7 +3,7 @@
         <div class="toplink">
             <h2 class="stuName">Transport</h2>
             <h4 class="stuLink">
-                <router-link to="/home" class="home">Home</router-link>> Assign Vehicle
+                <router-link to="/dashboard" class="home">Home</router-link>> Assign Vehicle
             </h4>
         </div>
         <hr style="margin-bottom: -0.5rem;"/>
@@ -168,12 +168,8 @@ export default {
             this.deletemsg.type = response.type;
             Util.workAlert('#delalertmsg');
             this.routeList = [{'id':0,'route_title':'Select Route'}];
-            this.getRouteList();
-            this.getVehicleList();
-            this.getAssVehicleList();
-        });
-        EventBus.$on("SessionSaved", response => {            
-            console.log(JSON.stringify(response));
+            this.vehicleList = [];
+            this.AssVehicleList = [];
             this.getRouteList();
             this.getVehicleList();
             this.getAssVehicleList();
@@ -186,10 +182,10 @@ export default {
     methods: 
     {
         getAssVehicleList(){
-            EventBus.$emit("onLoad");
-            this.AssVehicleList = [];
+            EventBus.$emit("onLoad");            
             this.axios.get('/api/vehicleroute').then(response => {  
-                this.clickShowAllColumn(this.arrayTableColumns);                                                                                          
+                this.clickShowAllColumn(this.arrayTableColumns);
+                this.AssVehicleList = [];
                 for(let i=0; i < response.data.length; i++){
                     var vehiclenoID = [];
                     vehiclenoID = response.data[i].vehicle_id.split(',');
@@ -218,9 +214,9 @@ export default {
         },
 
         getVehicleList()
-        {
-            this.vehicleList = [];
-            this.axios.get('/api/tranVehicleList').then(response => {                                                    
+        {            
+            this.axios.get('/api/tranVehicleList').then(response => {   
+                this.vehicleList = [];                                                 
                 for(let i=0; i < response.data.length; i++){
                     this.vehicleList.push({"id": response.data[i].id,"vehicle_no": response.data[i].vehicle_no, "checked": false});
                 }                
@@ -228,10 +224,10 @@ export default {
         },
 
         getRouteList()
-        {
-            this.routeList = [{'id':0,'route_title':'Select Route'}];
+        {            
             let list = [];
             this.axios.get('/api/tranRouteList').then(response => {            
+                this.routeList = [{'id':0,'route_title':'Select Route'}];
                 list  = response.data;
                 for(let i = 0; i < list.length; i++)
                 {
@@ -300,6 +296,9 @@ export default {
                         this.getAssVehicleList();
                         this.vehicalRoute = {"id": "","routeid": 0, "vehicleno": ""};
                         this.Vehicle = [];
+                        for(let i=0; i<this.vehicleList.length; i++){
+                            this.vehicleList[i].checked = false;
+                        }
                         this.msg.text = response.data.text;
                         this.msg.type = response.data.type;
                         Util.workAlert('#alertmsg');

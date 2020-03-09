@@ -7,6 +7,7 @@
       </h6>
     </div>
     <hr />
+    <Loading></Loading>
     <div class="card">
       <div class="card-header">
         <h6>Select Criteria</h6>
@@ -52,6 +53,7 @@
         <h6>Student History</h6>
       </div>
       <div class="stucard-body">
+        <div v-if="studentList.length>0">
         <input type="text" placeholder="Search..." class="searchText" />
         <div class="copyRows">
           <div class="row" id="copyRow">
@@ -77,7 +79,7 @@
           <table class="table table-hover table-striped">
             <thead>
               <tr class="active">
-               
+                <th nowrap>No.</th>
                 <th nowrap>Admission Number</th>
                 <th nowrap>Student Name</th>
                 <th nowrap>Admission Date</th>
@@ -90,7 +92,8 @@
               </tr>
             </thead>
             <tbody>
-              <tr class="active" v-for="list in studentList" :key="list.id">
+              <tr class="active" v-for="(list,index) in studentList" :key="list.id">
+                <td nowrap>{{index+1}}.</td>
                 <td nowrap>{{list.admission_no}}</td>
                 <td nowrap>{{list.name}}</td>
                 <td nowrap>{{list.admission_date}}</td>
@@ -101,7 +104,7 @@
                 <td nowrap>{{list.guardian_phone}}</td>
                 
                 <td>
-                  <router-link onclick="showForm()" to="/viewstudent">
+                  <router-link onclick="showForm()" :to="{ name: 'viewstudent', params: { id: list.id }}">
                     <i class="fa fa-list"></i>
                   </router-link>
                   
@@ -111,12 +114,23 @@
           </table>
         </div>
       </div>
+      <div v-else>
+        <h1 class="NoData" style="margin-top:0px;">No Data</h1>
       </div>
+      </div>
+      </div>
+      
     </div>
   </div>
 </template>
 <script>
+import Loading from "../LoadingController.vue";
+import {Util} from '../../js/util';
+import { EventBus } from "../../js/event-bus.js";
 export default {
+  components: {
+    Loading,
+  },
   data() {
     return {
       viladition:true,
@@ -135,6 +149,9 @@ export default {
   created(){
     EventBus.$emit("ThemeClicked");
     this.allData();
+  },
+  mounted(){
+    EventBus.$emit("onLoad");
   },
  
  
@@ -167,11 +184,13 @@ export default {
         .get('/api/student')
         .then(response=>{
           this.classList = response.data.class;
+          EventBus.$emit("onLoadEnd");
         });
     },
     searchBySectionId(){
       this.formViladition();
       if(this.viladition == true){
+        EventBus.$emit("onLoad");
         this.axios
       .get(`/api/student/sibling/${this.class_section_id}`)
       .then(response=>{
@@ -216,9 +235,10 @@ export default {
         })
         this.studentList = studentArray;
         }
+        EventBus.$emit("onLoadEnd");
       })
       }
-      
+      EventBus.$emit("ThemeClicked");
     },
     
     onValidate(value, inputId, megId) {

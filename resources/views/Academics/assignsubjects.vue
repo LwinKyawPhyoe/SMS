@@ -3,7 +3,7 @@
     <div class="toplink">
       <h2 class="stuName">Academics</h2>
       <h4 class="stuLink">
-        <router-link class="home" to="home">Home</router-link> > 
+        <router-link class="home" to="/dashboard">Home</router-link> > 
         <router-link class="home" to="/viewasssubjects">Assign Subject</router-link> > Create Assign Subject
       </h4>
     </div>

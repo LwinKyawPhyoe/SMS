@@ -357,6 +357,7 @@ Route::group(['prefix' => 'ClassTimeTable'], function () {
 Route::get('studPromote', 'studentPromoteController@index');
 Route::group(['prefix' => 'StudPromote'], function () {
     Route::post('promote', 'studentPromoteController@promote');
+    Route::get('searchstud/{keyword}', 'studentPromoteController@SearchByKeyword');
 });
 //Lwin Kyaw Phyo
 

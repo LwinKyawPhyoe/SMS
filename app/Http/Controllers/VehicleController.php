@@ -43,7 +43,12 @@ class VehicleController extends Controller
                                     ->where('session_id', $sessionid[0]->id)->get();
             if($checkActive[0]->is_active == 'delete')
             {
-                $checkActive[0]->fare = $request->input('fare');
+                $checkActive[0]->vehicle_no = $request->input('vehicle_no');
+                $checkActive[0]->vehicle_model = $request->input('vehicle_model');
+                $checkActive[0]->driver_name = $request->input('driver_name');
+                $checkActive[0]->driver_licence = $request->input('driver_licence');
+                $checkActive[0]->driver_contact = $request->input('driver_contact');
+                $checkActive[0]->note = $request->input('note');
                 $checkActive[0]->is_active = 'Yes';
                 $checkActive[0]->save();                
                 return response()->json(['text' => 'Vehicle added successfully', 'type' => 'success']);

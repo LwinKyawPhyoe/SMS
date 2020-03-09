@@ -1,6 +1,6 @@
 
 <template>
-  <div id="bar" class="Student" style="transition:all 0.5s;">
+  <div id="bar" class="Student form" style="transition:all 0.5s;">
     <div class="toplink">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
@@ -8,23 +8,17 @@
       </h6>
     </div>
     <hr />
+    <Loading></Loading>
     <form @submit.prevent="save" enctype="multipart/form-data" >
     
     <div class="card">
-      <!-- Modal start -->
-      <div
-      class="modal fade"
-      id="exampleModalCenter"
-      tabindex="-1"
-      role="dialog"
-      aria-labelledby="exampleModalCenterTitle"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content">
-          <div class="card">
-
-            <div class="stucard-header">
+       <!-- Modal start -->
+      <div class="modal fade bd-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true" id="exampleModalCenter">
+  <div class="modal-dialog modal-lg modal-dialog-centered">
+        <div class="modal-content"
+        style="background:none;border:none;width:100% !important;padding: 1rem;"
+        >
+            <div class="card-header">
               <h6 style="width:100%">
                 Add Sibling
                 <i
@@ -35,7 +29,9 @@
               </h6>
             </div>
             <div class="card-body">
-              <div class="modalinput">
+              <div class="row">
+
+              <div class="col-md-4 textbox">
                 <label for="class">
                   Class
                   <strong>*</strong>
@@ -44,12 +40,12 @@
                 @change="selectSiblingClass($event)"
                 >
                   <option selected disabled>Select class</option>
-              <option v-for="list in classList" :key="list.id" :value="list.id">
-                {{list.class}}
+              <option v-for="data in classList" :key="data.id" :value="data.id">
+                {{data.class}}
               </option>
                 </select>
               </div>
-              <div class="modalinput">
+              <div class="col-md-4 textbox">
                 <label for="section">
                   Section
                   <strong>*</strong>
@@ -57,13 +53,13 @@
                 <select id="section" class="inputbox" v-model="sibling_section_id"
                 @change="selectSiblingSection($event)"
                 >
-                  <option disabled selected>Select section</option>
+                  <option selected disabled>Select section</option>
                   <option v-for="list in siblingSectionList" :key="list.id" :value="list.id">
                     {{list.section}}
                   </option>
                 </select>
               </div>
-              <div class="modalinput">
+              <div class="col-md-4 textbox">
                 <label for="student">
                   Student
                   <strong>*</strong>
@@ -75,19 +71,47 @@
                   </option>
                 </select>
               </div>
-              <div style="width:100%;">
-                <button class="modalbtn" style="text-align:center;" type="button" @click="saveSibling()">Save</button>
+              </div>
+              <!-- <div class="row" v-if="siblings">
+                <div class="col-md-6 showsib"  v-for="list in studentsiblings" :key="list.id">
+                  {{list.name}}
+                  <span class="span" @click="removeSiblings()">X</span>
+                </div>
+              </div> -->
+              <!-- <div class="table-responsive" v-if="studentsiblings.length >0">
+          <table class="table table-hover table-striped" id="studenttable" >
+            <thead>
+              <tr role="row">
+                <th class="all" nowrap>No</th>
+                <th class="all" nowrap>Admission Number</th>
+                <th class="all" nowrap>Name</th>
+                <th class="all" nowrap>Class</th>
+                <th class="all" nowrap>Section</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(list,index) in studentsiblings" :key="list.id">
+                <td nowrap>{{index+1}}</td>
+                <td nowrap>{{list.admission_no}}</td>
+                <td nowarp>{{list.name}}</td>
+                <td nowarp>{{list.class}}</td>
+                <td nowarp>{{list.section}}</td>
+              </tr>
+            </tbody>
+          </table>
+              </div> -->
+              <div class="col-12">
+                <button class="save" style="text-align:center;margin-bottom:10px;margin-top:-10px;" type="button" @click="saveSibling()" data-dismiss="modal" id="globalSave">Save</button>
               </div>
             </div>
-          </div>
         </div>
       </div>
     </div>
     <!-- ----------------------modal end --------------------------- -->
-      <div class="stucard-header">
+      <div class="card-header">
         <h6>Student Admission</h6>
       </div>
-      <div class="stucard-body">
+      <div class="card-body">
   
   <!-- <div v-if="student.image === null">
     <h2>Select an image</h2>
@@ -177,7 +201,7 @@
               Date Of Birth
               <strong>*</strong>
             </label>
-            <VueCtkDateTimePicker
+            <!-- <VueCtkDateTimePicker
               v-model="student.dob"
               :only-date="true"
               :color="'#1b5e20'"
@@ -194,7 +218,12 @@
                   autocomplete="off"
                   v-model="student.dob"
                 />
-                </VueCtkDateTimePicker>
+                </VueCtkDateTimePicker> -->
+                <datepicker v-model="student.dob"
+                 id="stubirthday"
+                  @keyup="onValidate(student.dob, 'stubirthday', 'dob_msg')"
+                  v-on:blur="onValidate(student.dob, 'stubirthday', 'dob_msg')"
+                 ></datepicker>
             <!-- <date-picker class="inputbox" id="stubirthday"></date-picker> -->
             <!-- <input type="date" class="inputbox" id="stubirthday" v-model="student.dob" /> -->
             <!-- <datepicker v-model="student.dob" id="stubirthday" name="birthday"
@@ -222,7 +251,7 @@
           <div class="textbox">
             <label for="admDate">Admission Date</label>
             <!-- <input type="date" class="inputbox" id="admDate" v-model="student.admission_date"/> -->
-            <VueCtkDateTimePicker
+            <!-- <VueCtkDateTimePicker
               v-model="student.admission_date"
               :only-date="true"
               :color="'#1b5e20'"
@@ -237,7 +266,8 @@
                   autocomplete="off"
                   v-model="student.admission_date"
                 />
-                </VueCtkDateTimePicker>
+                </VueCtkDateTimePicker> -->
+                <datepicker v-model="student.admission_date" id="admDate"></datepicker>
             <!-- <datepicker v-model="student.admission_date" id="admDate" name="admission_date"></datepicker> -->
           </div>
           <div class="textbox" id="photo">
@@ -279,7 +309,7 @@
           <div class="textbox">
             <label for="regDate">Register Date</label>
             <!-- <input type="date" class="inputbox" id="regDate" v-model="student.register_date"/> -->
-            <VueCtkDateTimePicker
+            <!-- <VueCtkDateTimePicker
                 v-model="student.register_date"
                  :only-date="true"
               :color="'#1b5e20'"
@@ -294,7 +324,8 @@
                   autocomplete="off"
                   v-model="student.register_date"
                 />
-                </VueCtkDateTimePicker>
+                </VueCtkDateTimePicker> -->
+                <datepicker v-model="student.register_date" id="regDate"></datepicker>
             <!-- <datepicker v-model="student.register_date" id="regDate" name="register_date"></datepicker> -->
           </div>
           <div class="textbox">
@@ -306,10 +337,10 @@
         </div>
       </div>
       <div v-if="sibling">
-      <div class="stusub-header">
+      <div class="sub-header">
         <h6>Sibling</h6>
       </div>
-      <div class="stucard-body">
+      <div class="card-body">
         <div class="row">
           <div class="textarea">
             <div class="sibling">
@@ -341,10 +372,10 @@
         </div>
       </div>
 </div>
-      <div class="stusub-header">
+      <div class="sub-header">
         <h6>Parents Details</h6>
       </div>
-      <div class="stucard-body">
+      <div class="card-body">
         <div class="row">
           <div class="textbox">
             <label for="faName">Father Name</label>
@@ -489,12 +520,12 @@
         </div>
         <div class="breakline"></div>
       
-      <div class="stucard-body" style="padding-top: 15px;">
+      <div class="card-body" style="padding-top: 15px;">
         <div class="card" style="margin: 15px;">
-          <div class="stucard-header">
+          <div class="card-header">
             <h6>Student Address Details</h6>
           </div>
-          <div class="stucard-body">
+          <div class="card-body">
             <div class="row">
 
               <div class="textarea">
@@ -511,10 +542,10 @@
               </div>
             </div>
           </div>
-          <div class="stusub-header">
+          <div class="sub-header">
             <h6>Transport Details</h6>
           </div>
-          <div class="stucard-body">
+          <div class="card-body">
             <div class="row">
               <div class="textarea">
                 <label for="routelist">Route List</label>
@@ -527,10 +558,10 @@
               </div>
             </div>
           </div>
-          <div class="stusub-header">
+          <div class="sub-header">
             <h6>Previous School Details</h6>
           </div>
-          <div class="stucard-body">
+          <div class="card-body">
             <div class="row">
               <div class="textarea">
                 <label for="preSchoool">Previous School</label>
@@ -542,10 +573,10 @@
               </div>
             </div>
           </div>
-          <div class="stusub-header">
+          <div class="sub-header">
             <h6>Hostel Details</h6>
           </div>
-          <div class="stucard-body">
+          <div class="card-body">
             <div class="row">
               <div class="textarea">
                 <label for="hostel">Hostel</label>
@@ -582,13 +613,21 @@
 </template>
 
 <script>
+import { EventBus } from "../../js/event-bus.js";
 import VueCtkDateTimePicker from "vue-ctk-date-time-picker";
 import "vue-ctk-date-time-picker/dist/vue-ctk-date-time-picker.css";
+import {Util} from '../../js/util';
+import message from "../Alertmessage/message.vue";
+import Loading from "../LoadingController.vue";
+import datepicker from "../datepicker.vue";
 export default {
   name:'app',
   success:'',
-  components: {
-    VueCtkDateTimePicker
+    components: {
+    VueCtkDateTimePicker,
+    message,
+    Loading,
+    datepicker
   },
   data() {
     return {
@@ -652,7 +691,11 @@ export default {
 
     };
   },
+  mounted(){
+    EventBus.$emit("onLoad");
+  },
   created() {
+    EventBus.$emit("ThemeClicked");
     this.allData();
     var id = this.$route.params.id;
     this.axios
@@ -825,6 +868,7 @@ export default {
       ];
       var data=[];
       if(this.sibling_id){
+        EventBus.$emit("onLoad");
         this.axios
       .get(`api/student/siblings/${this.sibling_id}`)
       .then(response=>{
@@ -852,6 +896,7 @@ export default {
         document.getElementById('moNrc').disabled = true;
         document.getElementById('moJob').disabled = true;
         }
+        EventBus.$emit("onLoadEnd");
       })
       }
       
@@ -863,6 +908,7 @@ export default {
           this.classList = response.data.class;
           this.hostelList = response.data.hostel;
           this.routeList = response.data.routes;
+          EventBus.$emit("onLoadEnd");
         });
         this.axios
         .get(`/api/`);
@@ -1099,6 +1145,7 @@ export default {
     },
     checkGuardian(type){
       if(type=='mother'){
+        this.student.guardian_relation = "Mother";
         this.student.guardian_image= this.student.mother_image,
         this.student.guardian_name = this.student.mother_name;
       this.student.guardian_photo = this.student.mother_photo;
@@ -1112,8 +1159,25 @@ export default {
       document.getElementById('guReligion').disabled = true;
       document.getElementById('guJob').disabled = true;
       this.imgLink = "mother_image";
+      this.onValidate(this.student.guardian_name, 'guName', 'guName_msg');
+      this.onValidate(this.student.guardian_relation, 'guReligion', 'guReligion_msg');
+      this.onValidate(this.student.guardian_phone, 'guPhone', 'guPhone_msg');
+      
+      if(!this.student.guardian_name){
+        this.onValidationMessage("guName", "guName_msg");
+        this.viladition = false;
+      }
+       if(!this.student.guardian_relation){
+        this.onValidationMessage("guReligion", "guReligion_msg");
+        this.viladition = false;
+      }
+       if(!this.student.guardian_phone){
+        this.onValidationMessage("guPhone", "guPhone_msg");
+        this.viladition = false;
+      }
       }else if(type=='father'){
-        this.student.guardian_image =this.student.father_image;
+      this.student.guardian_relation = "Father";
+      this.student.guardian_image =this.student.father_image;
       this.student.guardian_name = this.student.father_name;
       this.student.guardian_photo = this.student.father_photo;
       this.student.guardian_job = this.student.father_job;
@@ -1126,6 +1190,22 @@ export default {
       document.getElementById('guReligion').disabled = true;
       document.getElementById('guJob').disabled = true;
       this.imgLink = "father_image"
+      this.onValidate(this.student.guardian_name, 'guName', 'guName_msg');
+      this.onValidate(this.student.guardian_relation, 'guReligion', 'guReligion_msg');
+      this.onValidate(this.student.guardian_phone, 'guPhone', 'guPhone_msg');
+      
+      if(!this.student.guardian_name){
+        this.onValidationMessage("guName", "guName_msg");
+        this.viladition = false;
+      }
+       if(!this.student.guardian_relation){
+        this.onValidationMessage("guReligion", "guReligion_msg");
+        this.viladition = false;
+      }
+       if(!this.student.guardian_phone){
+        this.onValidationMessage("guPhone", "guPhone_msg");
+        this.viladition = false;
+      }
       }
     },
     updateStudent(){

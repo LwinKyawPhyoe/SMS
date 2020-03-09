@@ -5,7 +5,7 @@
                 Academics
             </h2>
             <h4 class="stuLink">
-                <router-link to="/home" class="home">Home</router-link> > Sections
+                <router-link to="/dashboard" class="home">Home</router-link> > Sections
             </h4>
         </div>
         <hr style="margin-bottom: -0.5rem;" />

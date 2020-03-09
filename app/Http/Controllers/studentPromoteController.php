@@ -11,7 +11,26 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
 class studentPromoteController extends Controller
-{    
+{
+    public function SearchByKeyword($keyword)
+    {
+        $sessionid = AcademicYear::where('is_active','yes')->where('domain','TS')->get('id');
+        $stud = student::where('session_id', $sessionid[0]['id'])->where('is_active','yes')->where('domain','TS')->get()->count();         
+        if($stud > 0){
+            $query ='SELECT
+                        *
+                    FROM
+                        students
+                    WHERE NAME LIKE
+                        ? OR admission_no LIKE ? OR father_name LIKE ? OR roll_no LIKE ? OR gender LIKE
+                        ? OR religion LIKE ? OR mother_name LIKE ? OR race LIKE ? OR email LIKE ? OR blood_group LIKE
+                        ? OR height LIKE ? OR weight LIKE ? OR guardian_name LIKE ? OR mobileno LIKE
+                        ? AND domain = "TS" AND session_id = ?';
+            $students = DB::select($query,[$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$keyword,$sessionid[0]['id']]);
+            return $students;
+        }        
+    }
+
     public function promote(Request $request)
     {
         // note shi yin update lote yan and search shar yan and

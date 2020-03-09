@@ -53,12 +53,13 @@
           </div>
           <div class="textarea">
             <label for="other">Search By Keyword</label>
-            <textarea
+            <input
+            type="text"
               id="other"
               class="inputbox"
               placeholder="Search By Name,Nrc,..etc."
               v-model="keyword"
-            ></textarea>
+            />
             <button class="searchButton" id="globalSearch" @click="searchByKeyWord()">Search</button>
           </div>
         </div>
@@ -113,6 +114,7 @@
             >
               <thead>
                 <tr class="active" nowrap>
+                  <th nowrap>No.</th>
                   <th nowrap class="th-sm">Admission Number</th>
                   <th nowrap class="th-sm">image</th>
                   <th nowrap class="th-sm">Class</th>
@@ -128,7 +130,8 @@
                 </tr>
               </thead>
               <tbody>
-                <tr class="active" v-for="student in studentList" :key="student.id">
+                <tr class="active" v-for="(student,index) in studentList" :key="student.id">
+                  <td nowrap>{{index+1}}.</td>
                   <td nowrap>{{student.admission_no}}</td>
                   <td nowrap v-if="student.image">
                     <img :src="'stu_image/'+student.image" alt="no image" />
@@ -272,9 +275,10 @@ export default {
 
   methods: {
     searchByKeyWord() {
-      EventBus.$emit("onLoad");
+      
       this.search = false;
       if (this.keyword) {
+        EventBus.$emit("onLoad");
         this.axios
           .get(`/api/student/keyword/${this.keyword}`)
           .then(response => {
@@ -362,10 +366,11 @@ export default {
       });
     },
     searchBySectionId() {
-        EventBus.$emit("onLoad");
+        
       this.search = false;
       this.formViladition();
       if (this.viladition == true) {
+        EventBus.$emit("onLoad");
         EventBus.$emit("clicked");
         this.axios
           .get(`/api/student/sibling/${this.class_section_id}`)

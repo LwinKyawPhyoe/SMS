@@ -3,7 +3,7 @@
         <div class="toplink">
             <h2 class="stuName">Academics</h2>
             <h4 class="stuLink">
-                <router-link to="/home" class="home">Home</router-link>> Academic-Year
+                <router-link to="/dashboard" class="home">Home</router-link>> Academic-Year
             </h4>
         </div>
         <hr style="margin-bottom: -0.5rem;" />

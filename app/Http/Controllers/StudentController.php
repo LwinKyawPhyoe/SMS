@@ -38,12 +38,12 @@ class StudentController extends Controller
                 $data[0]['class_sections_id'] =$students[0]->class_sections_id;
                 for($i=0;$i<count($admission_no);$i++){
                     $student = DB::select('SELECT * FROM students WHERE admission_no =? AND is_active="yes" and domain="TS" and session_id=?',[$admission_no[$i]->sibling_admission_no,$sessionid[0]->id]);
-                    $class_sections = DB::select('SELECT * FROM class_sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$student[$i]->class_sections_id,$sessionid[0]->id]);
+                    $class_sections = DB::select('SELECT * FROM class_sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$student[0]->class_sections_id,$sessionid[0]->id]);
                     $classes = DB::select('SELECT * FROM classes WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_sections[0]->class_id,$sessionid[0]->id]);
                     $sections = DB::select('SELECT * FROM sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_sections[0]->section_id,$sessionid[0]->id]);
-                    $data[$i+1]['id']=$student[$i]->id;
-                    $data[$i+1]['name']=$student[$i]->name;
-                    $data[$i+1]['admission_no']=$student[$i]->admission_no;
+                    $data[$i+1]['id']=$student[0]->id;
+                    $data[$i+1]['name']=$student[0]->name;
+                    $data[$i+1]['admission_no']=$student[0]->admission_no;
                     $data[$i+1]['class']=$classes[0]->class;
                     $data[$i+1]['section'] = $sections[0]->section;
                     $data[$i+1]['class_sections_id'] =$students[0]->class_sections_id;
@@ -62,19 +62,19 @@ class StudentController extends Controller
                 $data[0]['class_sections_id'] =$students[0]->class_sections_id;
                 for($i=0;$i<count($sibling_admission_no);$i++){
                     $student = DB::select('SELECT * FROM students WHERE admission_no =? AND is_active="yes" and domain="TS" and session_id=?',[$sibling_admission_no[$i]->admission_no,$sessionid[0]->id]);
-                    $class_sections = DB::select('SELECT * FROM class_sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$student[$i]->class_sections_id,$sessionid[0]->id]);
+                    $class_sections = DB::select('SELECT * FROM class_sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$student[0]->class_sections_id,$sessionid[0]->id]);
                     $classes = DB::select('SELECT * FROM classes WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_sections[0]->class_id,$sessionid[0]->id]);
                     $sections = DB::select('SELECT * FROM sections WHERE id =? AND is_active="yes" and domain="TS" and session_id=?',[$class_sections[0]->section_id,$sessionid[0]->id]);
-                    $data[$i+1]['id']=$student[$i]->id;
-                    $data[$i+1]['name']=$student[$i]->name;
-                    $data[$i+1]['admission_no']=$student[$i]->admission_no;
+                    $data[$i+1]['id']=$student[0]->id;
+                    $data[$i+1]['name']=$student[0]->name;
+                    $data[$i+1]['admission_no']=$student[0]->admission_no;
                     $data[$i+1]['class']=$classes[0]->class;
                     $data[$i+1]['section'] = $sections[0]->section;
                     $data[$i+1]['class_sections_id'] =$students[0]->class_sections_id;
                 }
                 return $data;
             }else{
-                echo "SAME";
+                
             }
             
         }else{
@@ -223,7 +223,11 @@ class StudentController extends Controller
                     $ext2 = strtolower($file2->getClientOriginalExtension());
                     $fatherImageName = time() . '.' . $ext2;
                     $request->father_photo->move(public_path('father_image'), $fatherImageName);
-                }else if($request->father_photo){
+                }
+                 else if($data[0]->father_photo == $request->father_photo){
+                  $fatherImageName = $data[0]->father_photo;
+                }
+                else if($request->father_photo){
                     $file2 = $request->father_photo;
                     $ext2 = strtolower($file2->getClientOriginalExtension());
                     $fatherImageName = time() . '.' . $ext2;
@@ -244,7 +248,11 @@ class StudentController extends Controller
                     $ext3 = strtolower($file3->getClientOriginalExtension());
                     $motherImageName = time() . '.' . $ext3;
                     $request->mother_photo->move(public_path('mother_image'), $motherImageName);
-                }else if($request->mother_photo){
+                }
+                else if($data[0]->mother_photo == $request->mother_photo){
+                    $motherImageName = $data[0]->mother_photo;
+                }
+                else if($request->mother_photo){
                     $file3 = $request->mother_photo;
                     $ext3 = strtolower($file3->getClientOriginalExtension());
                     $motherImageName = time() . '.' . $ext3;
@@ -264,7 +272,11 @@ class StudentController extends Controller
                     $ext4 = strtolower($file4->getClientOriginalExtension());
                     $guardianImageName = time() . '.' . $ext4;
                     $request->guardian_photo->move(public_path('guardian_image'), $guardianImageName);
-                }else if($request->guardian_photo){
+                }
+                 else if($data[0]->guardian_photo == $request->guardian_photo){
+                    $guardianImageName = $data[0]->guardian_photo;
+                }
+                else if($request->guardian_photo){
                     $file4 = $request->guardian_photo;
                     $ext4 = strtolower($file4->getClientOriginalExtension());
                     $guardianImageName = time() . '.' . $ext4;
@@ -331,8 +343,6 @@ class StudentController extends Controller
             $student->save();
             return response()->json("Saved Success");
             }
-            
-        //   }
         
     }
     public function update(Request $request, $id)
@@ -636,7 +646,7 @@ class StudentController extends Controller
     {
         // print_r($id);
         $sessionid = DB::select('select * from academic_years where is_active="yes" and domain="TS"',[]);
-        $student = DB::select('select * from students where id =? ',[$id]);
+        $student = DB::select('select * from students where id =? and domain="TS" and session_id=?',[$id,$sessionid[0]->id]);
         return $student;
     }
 

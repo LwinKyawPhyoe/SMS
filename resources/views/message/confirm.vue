@@ -16,10 +16,11 @@
             <i data-dismiss="modal" class="fa fa-close confirm-q" aria-hidden="true"></i>
           </div>
           <div class="confirm-body">
-            <h6 class="modal-title">Are you sure?</h6>
+            <h6 v-if="url.type != 'OK'" class="modal-title">Are you sure?</h6>
+            <h6 v-if="url.type === 'OK'" class="modal-title">{{url.url}}</h6>
           </div>
           <div class="modal-footer confirm-modal-footer">
-            <button
+            <button v-if="url.type != 'OK'"
               id="globalSave"
               @click="yes()"
               type="submit"
@@ -27,7 +28,8 @@
               style="text-align:center;"
               data-dismiss="modal"
             >Yes</button>
-            <button id="globalSave" type="button" class="confirmBtn-outline ripple" data-dismiss="modal">No</button>
+            <button v-if="url.type != 'OK'" id="globalSave" type="button" class="confirmBtn-outline ripple" data-dismiss="modal">No</button>            
+            <button v-if="url.type == 'OK'" type="button" class="confirmBtn-outline" data-dismiss="modal">OK</button>
           </div>
         </form>
       </div>

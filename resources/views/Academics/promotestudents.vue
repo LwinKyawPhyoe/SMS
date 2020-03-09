@@ -5,7 +5,7 @@
                 Academics
             </h2>
             <h4 class="stuLink">
-                <a href="" style="text-decoration:none;color:#1b5e20;">Home </a> > Promote Student
+                <router-link to="/dashboard" class="home">Home</router-link> > Promote Student
             </h4>
         </div>
         <hr style="margin-bottom: -0.5rem;">
@@ -327,22 +327,32 @@ export default {
         },
 
         goSearchByKeyword(){
-            EventBus.$emit("onLoad");
-            EventBus.$emit("ThemeClicked"); 
-            this.PromoteStudObj.class_id = this.PromoteClassList[0].id;
-            this.PromoteStudObj.section_id = this.PromoteSectionList[0].id;               
-            this.PromoteObj = [];
-            this.axios.get(`/api/student/keyword/${this.searchKeyword}`).then(response => {                    
-                console.log("Search >>"+JSON.stringify(response.data));
-                this.PromoteObj = response.data;                    
-                for(let s=0; s<this.PromoteObj.length; s++){
-                    this.PromoteObj[s].result = "Pass";
-                    this.PromoteObj[s].session_status = "Continue";
-                }
+            if(this.searchKeyword != '')
+            {
+                EventBus.$emit("onLoad");                
+                this.PromoteStudObj.class_id = this.PromoteClassList[0].id;
+                this.PromoteStudObj.section_id = this.PromoteSectionList[0].id;
+                this.PromoteObj = [];
+                this.axios.get(`/api/StudPromote/searchstud/${this.searchKeyword}`).then(response => {                    
+                    console.log("Search >>"+JSON.stringify(response.data));
+                    this.PromoteObj = response.data;
+                    for(let s=0; s<this.PromoteObj.length; s++){
+                        this.PromoteObj[s].result = "Pass";
+                        this.PromoteObj[s].session_status = "Continue";
+                    }
+                    EventBus.$emit("ThemeClicked");
+                    this.showStudRecord = true;                
+                    EventBus.$emit("onLoadEnd");
+                });
+            }
+            else
+            {
                 EventBus.$emit("ThemeClicked");
+                this.PromoteStudObj.class_id = this.PromoteClassList[0].id;
+                this.PromoteStudObj.section_id = this.PromoteSectionList[0].id;
+                this.PromoteObj = [];
                 this.showStudRecord = true;                
-                EventBus.$emit("onLoadEnd");
-            });
+            }
         },
 
         getAllSession() {

@@ -3,7 +3,7 @@
         <div class="toplink">
             <h2 class="stuName">Academics</h2>
             <h4 class="stuLink">
-                <router-link to="home" class="home">Home</router-link> 
+                <router-link to="/dashboard" class="home">Home</router-link> 
                 > <router-link to="/viewtimetable" class="home">Class TimeTable</router-link> > Create Class TimeTable
             </h4>
         </div>

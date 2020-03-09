@@ -3,7 +3,7 @@
         <div class="toplink">
             <h2 class="stuName">Academics</h2>
             <h4 class="stuLink">
-                <a href style="text-decoration:none;color:#1b5e20;">Home</a> > Class TimeTable
+                <router-link to="/dashboard" class="home">Home</router-link> > Class TimeTable
             </h4>
         </div>
         <hr style="margin-bottom: -0.5rem;" />

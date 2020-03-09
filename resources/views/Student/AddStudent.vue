@@ -4,7 +4,7 @@
     <div class="toplink" style="margin-top:0px">
       <h4 style="color:var(--primary);margin-bottom:5px;">Students</h4>
       <h6>
-        <router-link to="/Student">Home</router-link>> Student Admission
+        <router-link to="/Student" class="home">Home</router-link>> Student Admission
       </h6>
     </div>
     <hr />
@@ -88,15 +88,17 @@
                 <th class="all" nowrap>Name</th>
                 <th class="all" nowrap>Class</th>
                 <th class="all" nowrap>Section</th>
+                <th nowrap>Action</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(list,index) in studentsiblings" :key="list.id">
-                <td nowrap>{{index+1}}</td>
+                <td nowrap>{{index+1}}.</td>
                 <td nowrap>{{list.admission_no}}</td>
                 <td nowarp>{{list.name}}</td>
                 <td nowarp>{{list.class}}</td>
                 <td nowarp>{{list.section}}</td>
+                <td nowarp><i class="fa fa-times"></i></td>
               </tr>
             </tbody>
           </table>
@@ -225,7 +227,11 @@
           </div>
           <div class="textbox">
             <label for="stuEmail">Email</label>
-            <input type="text" class="inputbox" id="stuEmail" v-model="student.email"/>
+            <input type="text" class="inputbox" id="stuEmail" v-model="student.email"
+            @keyup="onValidate(student.email, 'stuEmail', 'email_msg')"
+            v-on:blur="onValidate(student.email, 'stuEmail', 'email_msg')"
+            />
+            <span id="email_msg" class="error_message">Email is required</span>
           </div>
           <div class="textbox">
             <label for="admDate">Admission Date</label>
@@ -245,7 +251,11 @@
                   autocomplete="off"
                 />
                 </VueCtkDateTimePicker> -->
-                <datepicker v-model="student.admission_date" id="admDate"></datepicker>
+                <datepicker v-model="student.admission_date" id="admDate"
+                @keyup="onValidate(student.admission_date, 'admDate', 'adm_msg')"
+            v-on:blur="onValidate(student.admission_date, 'admDate', 'adm_msg')"
+                ></datepicker>
+                <span id="adm_msg" class="error_message">Admission date is required.</span>
             <!-- <datepicker v-model="student.admission_date" id="admDate" name="admission_date"></datepicker> -->
           </div>
           <div class="textbox" id="photo">
@@ -782,7 +792,9 @@ export default {
     // },
     
     refreshForm(){
-      
+      this.addMore = false;
+      this.closeOpen();
+      this.studentsiblings =[];
       this.title1 ='';
       this.title2 ='';
       this.title3='';
@@ -903,8 +915,6 @@ export default {
         this.axios
        .get(`api/student/siblings/${this.sibling_id}`)
        .then(response=>{
-        this.studentsiblings = response.data;
-        console.log(JSON.stringify(this.siblings));
         data = response.data;
         if(data[0].father_name || data[0].father_phone || data[0].father_nrc || data[0].father_job ||data[0].father_photo || data[0].mother_name ||data[0].mother_phone ||data[0].mother_nrc ||data[0].mother_job ||data[0].mother_photo){
         this.student.father_name = data[0].father_name;
@@ -928,11 +938,11 @@ export default {
         document.getElementById('moPhone').disabled = true;
         document.getElementById('moNrc').disabled = true;
         document.getElementById('moJob').disabled = true;
-        alert('work');
+        EventBus.$emit("onLoadEnd");
         }
       })
       }
-      
+      console.log("studentsiblings"+JSON.stringify(this.studentsiblings));
     },
     allData(){
       this.axios
@@ -947,35 +957,38 @@ export default {
         });
        
     },
-    removeSiblings(){
-      this.sibling_id='';
-      this.sibling_class_id ='';
-      this.sibling_section_id ='';
-      this.siblingSectionList =[];
-      this.siblings =[]
-       this.sibling =
-        {};
-         this.student.father_name = '';
-        this.student.father_phone = '';
-        this.student.father_nrc = '';
-        this.student.father_job = '';
-        this.student.father_photo = '';
-        this.studentsiblings =[];
-        // this.sibling.sibling_admission_no = data[0].admission_no;
-        this.student.mother_name = '';
-        this.student.mother_phone = '';
-        this.student.mother_nrc = '';
-        this.student.mother_job = '';
-        this.student.mother_photo = '';
-        document.getElementById('faName').disabled = false;
-        document.getElementById('faPhone').disabled = false;
-        document.getElementById('faNrc').disabled = false;
-        document.getElementById('faJob').disabled = false;
-        document.getElementById('moName').disabled = false;
-        document.getElementById('moPhone').disabled = false;
-        document.getElementById('moNrc').disabled = false;
-        document.getElementById('moJob').disabled = false;
+    removeSiblig(){
+
     },
+    // removeSiblings(){
+    //   this.sibling_id='';
+    //   this.sibling_class_id ='';
+    //   this.sibling_section_id ='';
+    //   this.siblingSectionList =[];
+    //   this.siblings =[]
+    //    this.sibling =
+    //     {};
+    //      this.student.father_name = '';
+    //     this.student.father_phone = '';
+    //     this.student.father_nrc = '';
+    //     this.student.father_job = '';
+    //     this.student.father_photo = '';
+    //     this.studentsiblings =[];
+    //     // this.sibling.sibling_admission_no = data[0].admission_no;
+    //     this.student.mother_name = '';
+    //     this.student.mother_phone = '';
+    //     this.student.mother_nrc = '';
+    //     this.student.mother_job = '';
+    //     this.student.mother_photo = '';
+    //     document.getElementById('faName').disabled = false;
+    //     document.getElementById('faPhone').disabled = false;
+    //     document.getElementById('faNrc').disabled = false;
+    //     document.getElementById('faJob').disabled = false;
+    //     document.getElementById('moName').disabled = false;
+    //     document.getElementById('moPhone').disabled = false;
+    //     document.getElementById('moNrc').disabled = false;
+    //     document.getElementById('moJob').disabled = false;
+    // },
     selectClass(e){
       this.sectionList =[];
       this.section_id ='';
@@ -1135,10 +1148,12 @@ export default {
 
           this.addMore = true;
           document.getElementById("footer").style.marginTop = "0";
+          document.getElementById("smBar").style.height = "311vh";
           document.getElementById('addMore').style.display = "block";
         } else{
           this.addMore = false;
           document.getElementById("footer").style.marginTop = "10px";
+          document.getElementById("smBar").style.height = "201vh";
           document.getElementById('addMore').style.display = "none";
         }
     },
@@ -1184,6 +1199,16 @@ export default {
         this.onValidationMessage("guPhone", "guPhone_msg");
         this.viladition = false;
       }
+      if(!this.student.email){
+        this.onValidationMessage('stuEmail', 'email_msg');
+        this.viladition = false;
+      }
+      if(!this.student.admission_date){
+        this.onValidationMessage('admDate', 'adm_msg');
+        this.viladition = false;
+      }
+      // 'stuEmail', 'email_msg'
+      //'admDate', 'adm_msg'
     },
     clickOther(){
       this.student.guardian_name = '';
@@ -1200,8 +1225,10 @@ export default {
       document.getElementById('guJob').disabled = false;
     },
     checkGuardian(type){
+      
       if(type=='mother'){
-        this.student.guardian_name = this.student.mother_name;
+      this.student.guardian_relation = "Mother";
+      this.student.guardian_name = this.student.mother_name;
       this.student.guardian_photo = this.student.mother_photo;
       this.student.guardian_job = this.student.mother_job;
       this.student.guardian_nrc=this.student.mother_nrc;
@@ -1214,7 +1241,24 @@ export default {
       document.getElementById('guName').disabled = true;
       document.getElementById('guReligion').disabled = true;
       document.getElementById('guJob').disabled = true;
+      this.onValidate(this.student.guardian_name, 'guName', 'guName_msg');
+      this.onValidate(this.student.guardian_relation, 'guReligion', 'guReligion_msg');
+      this.onValidate(this.student.guardian_phone, 'guPhone', 'guPhone_msg');
+      
+      if(!this.student.guardian_name){
+        this.onValidationMessage("guName", "guName_msg");
+        this.viladition = false;
+      }
+       if(!this.student.guardian_relation){
+        this.onValidationMessage("guReligion", "guReligion_msg");
+        this.viladition = false;
+      }
+       if(!this.student.guardian_phone){
+        this.onValidationMessage("guPhone", "guPhone_msg");
+        this.viladition = false;
+      }
       }else if(type=='father'){
+      this.student.guardian_relation = "Father";
       this.student.guardian_name = this.student.father_name;
       this.student.guardian_photo = this.student.father_photo;
       this.student.guardian_job = this.student.father_job;
@@ -1228,6 +1272,21 @@ export default {
       document.getElementById('guName').disabled = true;
       document.getElementById('guReligion').disabled = true;
       document.getElementById('guJob').disabled = true;
+      this.onValidate(this.student.guardian_name, 'guName', 'guName_msg');
+      this.onValidate(this.student.guardian_relation, 'guReligion', 'guReligion_msg');
+      this.onValidate(this.student.guardian_phone, 'guPhone', 'guPhone_msg');
+      if(!this.student.guardian_name){
+        this.onValidationMessage("guName", "guName_msg");
+        this.viladition = false;
+      }
+       if(!this.student.guardian_relation){
+        this.onValidationMessage("guReligion", "guReligion_msg");
+        this.viladition = false;
+      }
+       if(!this.student.guardian_phone){
+        this.onValidationMessage("guPhone", "guPhone_msg");
+        this.viladition = false;
+      }
       }
     },
     addStudent(){
@@ -1503,8 +1562,7 @@ export default {
       document.getElementById(inputId).style.border = "solid 1px red";
       document.getElementById(megId).style.display = "block";
     },
-    
-   
+ 
   }
 
 };

@@ -8,7 +8,7 @@
       :button-color="color"
       :auto-close="true"
       :format="'YYYY-MM-DD'"
-      :formatted="'YYYY/MM/DD'"
+      :formatted="'MM/DD/YYYY'"
     >
       <input class="inputbox" v-model="value" autocomplete="off" />
     </vue-ctk-date-time-picker>
@@ -37,7 +37,7 @@ export default {
     var dd = String(today.getDate()).padStart(2, "0");
     var mm = String(today.getMonth() + 1).padStart(2, "0");
     var yyyy = today.getFullYear();
-    today = yyyy + "-" + mm + "-" + dd;
+    today = yyyy + "/" + mm + "/" + dd;
     this.value = today;
   },
   mounted() {},
