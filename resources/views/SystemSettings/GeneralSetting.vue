@@ -21,14 +21,14 @@
       >
         <div
           class="modal-content"
-          style="background:none;border:none;width:100% !important;padding: 1rem;"
+          style="background:none;border:none;width:100% !important;padding: 1rem 0;"
         >
           <div class="modalCard" style="background:none;border:none;">
             <div class="card-header" id="globalcardHeader">
               <h6>System Settings</h6>
               <i
                 class="fa fa-close"
-                style="position:absolute;right: 45px;cursor:pointer;"
+                style="position:absolute;right: 25px;cursor:pointer;"
                 data-dismiss="modal"
                 id="close"
               ></i>

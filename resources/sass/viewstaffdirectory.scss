@@ -1,5 +1,5 @@
 .ViewStaffDirectory {
-  .input_readonly{
+  .input_readonly {
     border: none !important;
     background-color: transparent !important;
     text-align: right;
@@ -8,12 +8,12 @@
   }
   #row {
     margin-top: -1rem;
-    margin: -1rem;
+    margin: 0 -1rem;
     padding: 0;
     /**#efc347 **/
-    .sta-disable{
-      // background-color: #efc347;
-    }
+    // .sta-disable {
+    // background-color: #efc347;
+    // }
     .tableCard {
       .Profile {
         padding: 1rem;
@@ -26,7 +26,7 @@
           border: 3px solid #1b5e2033;
           padding: 3px;
         }
-        .disableIcon{
+        .disableIcon {
           position: absolute;
           right: 50%;
           left: 54%;
@@ -50,7 +50,7 @@
         .table tr {
           td {
             padding: 0.4rem 15px;
-            .data{
+            .data {
               color: #0e3511;
               display: flex;
               float: right;
@@ -87,22 +87,20 @@
     .detailsCard {
       padding: 0;
       .buttonCard {
-        overflow: auto;
         white-space: nowrap;
-        height: 103%;
         .tab,
         .tab1,
         .tab2,
         .tab3 {
-          height: 100%;
-          background: none;
+          height: 35px;
           padding: 0 1rem;
+          background: none;
           font-size: 10pt;
           position: relative;
           overflow: hidden;
           border: none;
           color: white;
-          margin-top: 0.7px;
+          margin-top: 2px;
         }
         .tab {
           background: white;
@@ -147,8 +145,10 @@
         }
       }
     }
-    .attendanceBody ,.documentbody {
-      .attendance ,.document{
+    .attendanceBody,
+    .documentbody {
+      .attendance,
+      .document {
         padding: 15px;
         .row {
           .col-lg-4,
@@ -167,7 +167,7 @@
               .number {
                 margin: 0 1rem;
               }
-              ion-icon{
+              ion-icon {
                 position: absolute;
                 top: 20%;
                 right: 20%;
@@ -216,9 +216,7 @@
         background: #3e4e5b;
         color: white;
       }
-      span {
-        color: white;
-        background-color: var(--info);
+      .timelineSpan {
         padding: 3px;
         display: inline-block;
         border-radius: 5px;
@@ -235,7 +233,7 @@
         content: "";
         position: absolute;
         width: 4px;
-        background-color: var(--info);
+        background-color: black;
         top: 0;
         bottom: 0;
         margin-left: 36px;
@@ -265,15 +263,13 @@
         background-color: white;
         margin-left: 42px;
       }
-      .content {
+      .timelineContent {
         position: relative;
         border-radius: 6px;
-        background-color: #12b0ca5e;
         .timeIcon {
           position: absolute;
           background: whitesmoke;
           z-index: 1;
-          box-shadow: 0 0 0 2px var(--info), inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05);
           padding: 10px;
           zoom: 1.2;
           border-radius: 50%;
@@ -281,10 +277,8 @@
           color: black;
         }
 
-        h6 {
+        .timelineTitle {
           width: 100%;
-          color: white;
-          background-color: var(--info);
           padding: 10px;
           border-top-right-radius: 3px;
           border-top-left-radius: 3px;
@@ -301,7 +295,6 @@
         .timeIcon {
           background: whitesmoke;
           z-index: 1;
-          box-shadow: 0 0 0 2px var(--info), inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05);
           padding: 10px;
           zoom: 1.2;
           border-radius: 50%;
@@ -312,22 +305,22 @@
     }
   }
 
-
   /*** Table header by wai yan soe**/
-.table_header , .table_right{
-  position: -webkit-sticky; /* for Safari */
-  position: sticky;
+  .table_header,
+  .table_right {
+    position: -webkit-sticky; /* for Safari */
+    position: sticky;
 
-  text-align: center;
-  background-color: white;
-}
-.table_header{
-  top: 0;
-}
-.table_header::after{
-  border-bottom: 1px solid grey !important;
-}
-.table_right{
-  left: 0;
-}
+    text-align: center;
+    background-color: white;
+  }
+  .table_header {
+    top: 0;
+  }
+  .table_header::after {
+    border-bottom: 1px solid grey !important;
+  }
+  .table_right {
+    left: 0;
+  }
 }

@@ -47,7 +47,6 @@
           width: 250px;
           display: none;
           margin-top: -41px;
-          display: none;
           .smallLink {
             list-style-type: none;
             color: #fdfdfdc9;
@@ -61,6 +60,7 @@
               }
             }
             .smLink:hover {
+              background: #252525 !important;
               color: white !important;
             }
           }

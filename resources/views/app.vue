@@ -20,9 +20,11 @@
             data-toggle="modal"
             data-target="#exampleModalCenter1"
           >Current Session: {{session}}</label>
-          <i class="fa fa-pencil pen fontColour" style="margin-left:10px;color:white"
-          data-toggle="modal"
-          data-target="#exampleModalCenter1"
+          <i
+            class="fa fa-pencil pen fontColour"
+            style="margin-left:10px;color:white"
+            data-toggle="modal"
+            data-target="#exampleModalCenter1"
           ></i>
         </div>
         <div class="row profile">
@@ -37,9 +39,10 @@
       <div class="nav-content">
         <div class="item" @click="closeSidebar()">
           <div @click="goToLink('dashboard')">
-          <router-link to="">
-            <i class="fa fa-credit-card" id="Icons"></i>Dashboard
-          </router-link></div>
+            <router-link to>
+              <i class="fa fa-credit-card" id="Icons"></i>Dashboard
+            </router-link>
+          </div>
         </div>
         <div class="item" id="StudentItem">
           <div @click="openDropDown('Student','StudentItem')">
@@ -50,16 +53,16 @@
           <div class="item-body" id="Student">
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('StudentInformation')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Student Details
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Student Details
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('AddStudent')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Student Admission
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Student Admission
+                </router-link>
               </div>
             </div>
           </div>
@@ -74,16 +77,16 @@
           <div class="item-body" id="Attendance">
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('stuattendance')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Student Attendance
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Student Attendance
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('attendancedate')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Attendance By Date
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Attendance By Date
+                </router-link>
               </div>
             </div>
           </div>
@@ -98,30 +101,30 @@
           <div class="item-body" id="Examination">
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('ExamList')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>ExamList
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>ExamList
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('examschadule')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Exam Schadule
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Exam Schadule
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('markgrade')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Marks Grade
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Marks Grade
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('MarkRegister')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Marks Register
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Marks Register
+                </router-link>
               </div>
             </div>
           </div>
@@ -136,58 +139,58 @@
           <div class="item-body" id="Academics">
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('viewtimetable')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Class TimeTable
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Class TimeTable
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('classteacher')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Assign Class Teacher
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Assign Class Teacher
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('viewasssubjects')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Assign Subjects
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Assign Subjects
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('prostudents')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Promote Student
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Promote Student
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('subjects')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Subjects
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Subjects
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('class')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Class
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Class
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('sections')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Sections
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Sections
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('academicyear')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Academic Year
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Academic Year
+                </router-link>
               </div>
             </div>
           </div>
@@ -202,30 +205,30 @@
           <div class="item-body" id="HRM">
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('staffdirectory')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Staff Directory
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Staff Directory
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('staattendance')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Staff Attendence
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Staff Attendence
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('department')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Department
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Department
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('designation')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i> Designation
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i> Designation
+                </router-link>
               </div>
             </div>
           </div>
@@ -240,37 +243,37 @@
           <div class="item-body" id="Download">
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('uploadcontent')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Upload Content
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Upload Content
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('assignment')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Assignments
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Assignments
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('stumaterial')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Study Material
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Study Material
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('syllabus')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i> Syllabus
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i> Syllabus
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('othdownload')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i> Other Downloads
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i> Other Downloads
+                </router-link>
               </div>
             </div>
           </div>
@@ -285,16 +288,16 @@
           <div class="item-body" id="HomeWork">
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('homework')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Add HomeWork
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Add HomeWork
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('evaluation_report')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Evaluation Report
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Evaluation Report
+                </router-link>
               </div>
             </div>
           </div>
@@ -309,23 +312,23 @@
           <div class="item-body" id="Transport">
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('routes')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i> Routes
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i> Routes
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('vehicle')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Vehicles
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Vehicles
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('assvehicle')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Assign Vehicles
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Assign Vehicles
+                </router-link>
               </div>
             </div>
           </div>
@@ -340,23 +343,23 @@
           <div class="item-body" id="Hostel">
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('hostelroom')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i> Hostel Rooms
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i> Hostel Rooms
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('roomtype')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Room Types
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Room Types
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('hostel')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Hostel
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Hostel
+                </router-link>
               </div>
             </div>
           </div>
@@ -371,65 +374,65 @@
           <div class="item-body" id="Reports">
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('stureport')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i> Student Reports
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i> Student Reports
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('')">
                 <router-link to>
-                <i class="fa fa-angle-double-right" id="Icons"></i>Student Guardians
-              </router-link>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Student Guardians
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('studenthistory')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Student History
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Student History
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('attendancereport')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Attendence Reports
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Attendence Reports
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('MarkRegister')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Exam Marks Reports
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Exam Marks Reports
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('')">
                 <router-link to>
-                <i class="fa fa-angle-double-right" id="Icons"></i>Close Academic
-              </router-link>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Close Academic
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('staattreport')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Stuff Attendence Report
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Stuff Attendence Report
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('stutransportreport')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Student Transport Report
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Student Transport Report
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('stuhostelreport')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Student Hostel Reports
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Student Hostel Reports
+                </router-link>
               </div>
             </div>
           </div>
@@ -444,23 +447,23 @@
           <div class="item-body" id="SystemSetting">
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('gensetting')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i> General Setting
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i> General Setting
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('role')">
-                <router-link to="">
-                <i class="fa fa-angle-double-right" id="Icons"></i>Roles Permissions
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Roles Permissions
+                </router-link>
               </div>
             </div>
             <div class="item-content" @click="closeSidebar()">
               <div @click="goToLink('users')">
-                <router-link to=''>
-                <i class="fa fa-angle-double-right" id="Icons"></i>Users
-              </router-link>
+                <router-link to>
+                  <i class="fa fa-angle-double-right" id="Icons"></i>Users
+                </router-link>
               </div>
             </div>
           </div>
@@ -1286,14 +1289,14 @@
           <img src="/account.jpg" class="user" />
           <!-- <i class="fa fa-user-circle user"></i> -->
         </div>
-        <div class="notific">
+        <!-- <div class="notific">
           <span class="badge">7</span>
           <i class="fa fa-bell bell"></i>
         </div>
         <div class="message">
           <span class="badge">7</span>
           <i class="fa fa-envelope mail"></i>
-        </div>
+        </div> -->
         <div class="language">
           <i class="fa fa-globe lan"></i>
           EN
@@ -1331,8 +1334,8 @@ export default {
     });
   },
   methods: {
-    goToLink(names){
-      this.$router.push({name: names});
+    goToLink(names) {
+      this.$router.push({ name: names });
     },
     getAllSession() {
       this.sessionList = [];
@@ -1426,6 +1429,36 @@ export default {
         this.colors = response.data;
         if (this.colors.color == "defaultColor") {
           document.getElementById("schoolName").style.background = "#1b5e20";
+          var dark = document.getElementsByClassName("classtap");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("timelineContent");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "khaki";
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("timeIcon");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.boxShadow =
+              "0 0 0 2px khaki, inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05)";
+          }
+          var dark = document.getElementsByClassName("timelineTitle");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("timelineSpan");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#1b5e20";
+            dark[color].style.color = "white";
+          }
           var dark = document.getElementsByClassName("tableLink");
           var color;
           for (color = 0; color < dark.length; color++) {
@@ -1534,6 +1567,36 @@ export default {
             dark[color].style.background = "#1b5e20";
           }
         } else if (this.colors.color == "redColor") {
+          var dark = document.getElementsByClassName("timelineContent");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkgrey";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("timeIcon");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.boxShadow =
+              "0 0 0 2px darkgrey, inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05)";
+          }
+          var dark = document.getElementsByClassName("timelineTitle");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkred";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("timelineSpan");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkred";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("classtap");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkred";
+            dark[color].style.color = "white";
+          }
           var dark = document.getElementsByClassName("tableLink");
           var color;
           for (color = 0; color < dark.length; color++) {
@@ -1643,6 +1706,36 @@ export default {
             dark[color].style.background = "#5e1b1b";
           }
         } else if (this.colors.color == "blueColor") {
+          var dark = document.getElementsByClassName("timelineContent");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "powderblue";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("timeIcon");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.boxShadow =
+              "0 0 0 2px powderblue, inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05)";
+          }
+          var dark = document.getElementsByClassName("timelineTitle");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkcyan";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("timelineSpan");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkcyan";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("classtap");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "darkcyan";
+            dark[color].style.color = "white";
+          }
           var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
@@ -1752,6 +1845,36 @@ export default {
             dark[color].style.background = "#1b5e5e";
           }
         } else if (this.colors.color == "darkColor") {
+          var dark = document.getElementsByClassName("timelineContent");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "gainsboro";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("timeIcon");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.boxShadow =
+              "0 0 0 2px gainsboro, inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05)";
+          }
+          var dark = document.getElementsByClassName("timelineTitle");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#212529";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("timelineSpan");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#212529";
+            dark[color].style.color = "white";
+          }
+          var dark = document.getElementsByClassName("classtap");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#212529";
+            dark[color].style.color = "white";
+          }
           var dark = document.getElementsByClassName("bg-green");
           var color;
           for (color = 0; color < dark.length; color++) {
@@ -1862,6 +1985,36 @@ export default {
             dark[color].style.background = "black";
           }
         } else if (this.colors.color == "lightColor") {
+          var dark = document.getElementsByClassName("timelineContent");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "#eef1ea";
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("timeIcon");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.boxShadow =
+              "0 0 0 2px #eef1ea, inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05)";
+          }
+          var dark = document.getElementsByClassName("timelineTitle");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "whitesmoke";
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("timelineSpan");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "whitesmoke";
+            dark[color].style.color = "black";
+          }
+          var dark = document.getElementsByClassName("classtap");
+          var color;
+          for (color = 0; color < dark.length; color++) {
+            dark[color].style.background = "whitesmoke";
+            dark[color].style.color = "black";
+          }
           var dark = document.getElementsByClassName("tableLink");
           var color;
           for (color = 0; color < dark.length; color++) {

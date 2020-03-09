@@ -1135,12 +1135,10 @@ export default {
 
           this.addMore = true;
           document.getElementById("footer").style.marginTop = "0";
-          document.getElementById("smBar").style.height = "311vh";
           document.getElementById('addMore').style.display = "block";
         } else{
           this.addMore = false;
           document.getElementById("footer").style.marginTop = "10px";
-          document.getElementById("smBar").style.height = "201vh";
           document.getElementById('addMore').style.display = "none";
         }
     },

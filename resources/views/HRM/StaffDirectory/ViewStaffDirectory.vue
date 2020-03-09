@@ -64,7 +64,7 @@
       aria-hidden="true"
     >
       <div class="modal-dialog modal-dialog-centered" role="document">
-        <div class="modal-content" style="width:653px;">
+        <div class="modal-content" style="width:500px !important;">
           <form @submit.prevent="addStaffTimeline()">
             <div class="modal-body" style="padding:0;">
               <div class="card-header" id="globalcardHeader" style="width: 100%;margin-left: 0;">
@@ -192,38 +192,38 @@
           <div class="card-header detailsCard">
             <div class="buttonCard">
               <button
-                class="tab tabTheme"
+                class="tab tabTheme staffTab"
                 id="profile"
                 onclick="toggleBtn('profile','attendance','document','timeline')"
                 @click="showForm('profile')"
               >Profile</button>
               <button
-                class="tab1 tabTheme"
+                class="tab1 tabTheme staffTab"
                 id="attendance"
                 style="margin-left: -5px;"
                 onclick="toggleBtn('attendance','profile','document','timeline')"
                 @click="showForm('attendance')"
               >Attendance</button>
               <button
-                class="tab2 tabTheme"
+                class="tab2 tabTheme staffTab"
                 style="margin-left: -5px;"
                 id="document"
                 onclick="toggleBtn('document','profile','attendance','timeline')"
                 @click="showForm('document')"
               >Documents</button>
               <button
-                class="tab3 tabTheme"
+                class="tab3 tabTheme staffTab"
                 style="margin-left: -5px;"
                 id="timeline"
                 onclick="toggleBtn('timeline','profile','document','attendance')"
                 @click="showForm('timeline')"
               >Timeline</button>
             </div>
-            <div style="position: absolute; right : 20px;">
+            <div style="position: absolute; right : 20px;padding: 0 10px;">
               <router-link :to="{name: 'editstadirectory', params: { id: $route.params.id }}">
                 <i class="fa fa-pencil"></i>
               </router-link>
-              <i title="Change Password" class="fa fa-key"></i>
+              <i title="Change Password" style="margin:0 15px;" class="fa fa-key"></i>
               <i
                 v-if="staffs.is_active == 'no'"
                 @click="enableRecord()"
@@ -238,6 +238,7 @@
                 class="fa fa-trash"
                 aria-hidden="true"
                 data-toggle="modal"
+                style="margin-left:15px;"
                 data-target="#exampleModalCenter"
               ></i>
               <i
@@ -479,12 +480,12 @@
           <div class="card-body TimeLine" v-if="timeline === true">
             <button class="add" data-toggle="modal" data-target="#addTimeline">Add</button>
             <div v-for="(time, i) in timelines" :key="i">
-              <span>{{time.timeline_date}}</span>
+              <span class="timelineSpan">{{time.timeline_date}}</span>
               <div class="timeline">
                 <div class="container right">
-                  <div class="content" style="height: fit-content;">
+                  <div class="timelineContent" style="height: fit-content;">
                     <i class="fa fa-list-alt timeIcon"></i>
-                    <h6>{{time.title}}</h6>
+                    <h6 class="timelineTitle">{{time.title}}</h6>
                     <p>{{time.description}}</p>
                   </div>
                 </div>
@@ -586,6 +587,7 @@ export default {
         this.document = true;
         this.timeline = false;
       } else if (name == "timeline") {
+        EventBus.$emit("ThemeClicked");
         this.profile = false;
         this.attendance = false;
         this.document = false;
@@ -665,7 +667,7 @@ export default {
         this.staffs = response.data;
         this.staffs.resume = "Resume";
         this.staffs.joining_letter = "Joining Letter";
-        this.staffs.other_cocument = "Other Document"
+        this.staffs.other_cocument = "Other Document";
         this.image = response.data.image;
         this.name = response.data.name;
         this.activeItem = this.staffs.role_id;

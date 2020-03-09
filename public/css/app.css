@@ -9,7 +9,7 @@
 
 .sidebar .expandsidebar {
   float: left;
-  z-index: 2;
+  z-index: 20;
   height: 100%;
   position: fixed;
   box-shadow: 0px 7px 15px #888888;
@@ -143,7 +143,7 @@ body {
   width: 100%;
   height: 61px;
   position: fixed;
-  z-index: 1;
+  z-index: 10;
 }
 
 .content .content_header .sessions {
@@ -175,7 +175,7 @@ body {
 
 .content .content_header .Items {
   position: absolute;
-  right: 14rem;
+  right: 9rem;
 }
 
 .content .content_header .Items .userTitle {
@@ -196,7 +196,7 @@ body {
 
 .content .content_header .profile {
   position: absolute;
-  right: 9rem;
+  right: 4rem;
   top: 3px;
 }
 
@@ -208,50 +208,6 @@ body {
   display: flex;
   -webkit-box-align: center;
           align-items: center;
-}
-
-.content .content_header .notific {
-  position: absolute;
-  right: 7rem;
-}
-
-.content .content_header .notific .badge {
-  background: #d82f2f;
-  border-radius: 50%;
-  font-size: 8px;
-  padding: 0.4em 0.6em;
-  position: relative;
-  top: -20px;
-  color: white;
-  left: 45px;
-  border: 1px solid #f56a6a;
-  box-shadow: 0.5px 5px 5px #ff9e9e;
-}
-
-.content .content_header .notific .bell {
-  padding: 1.5rem 1rem;
-}
-
-.content .content_header .message {
-  position: absolute;
-  right: 4.2rem;
-}
-
-.content .content_header .message .badge {
-  background: #d82f2f;
-  border-radius: 50%;
-  font-size: 8px;
-  padding: 0.4em 0.6em;
-  position: relative;
-  top: -20px;
-  color: white;
-  left: 45px;
-  border: 1px solid #f56a6a;
-  box-shadow: 0.5px 5px 5px #ff9e9e;
-}
-
-.content .content_header .message .mail {
-  padding: 1.5rem 1rem;
 }
 
 .content .content_header .language {
@@ -409,7 +365,6 @@ body {
   width: 250px;
   display: none;
   margin-top: -41px;
-  display: none;
 }
 
 .smallView .smallBar .Links .link .smallLists .smallLink {
@@ -429,6 +384,7 @@ body {
 }
 
 .smallView .smallBar .Links .link .smallLists .smallLink .smLink:hover {
+  background: #252525 !important;
   color: white !important;
 }
 
@@ -1829,8 +1785,6 @@ input[type=file] {
 }
 
 .right-side-menu .statop .statopfixed .classtap {
-  background: #a71704;
-  color: #fff;
   font-size: 16px;
   margin-bottom: 0;
   padding: 10px;
@@ -2888,7 +2842,7 @@ button:focus {
 
 .ViewStaffDirectory #row {
   margin-top: -1rem;
-  margin: -1rem;
+  margin: 0 -1rem;
   padding: 0;
   /**#efc347 **/
 }
@@ -2979,24 +2933,22 @@ button:focus {
 }
 
 .ViewStaffDirectory #row .detailsCard .buttonCard {
-  overflow: auto;
   white-space: nowrap;
-  height: 103%;
 }
 
 .ViewStaffDirectory #row .detailsCard .buttonCard .tab,
 .ViewStaffDirectory #row .detailsCard .buttonCard .tab1,
 .ViewStaffDirectory #row .detailsCard .buttonCard .tab2,
 .ViewStaffDirectory #row .detailsCard .buttonCard .tab3 {
-  height: 100%;
-  background: none;
+  height: 35px;
   padding: 0 1rem;
+  background: none;
   font-size: 10pt;
   position: relative;
   overflow: hidden;
   border: none;
   color: white;
-  margin-top: 0.7px;
+  margin-top: 2px;
 }
 
 .ViewStaffDirectory #row .detailsCard .buttonCard .tab {
@@ -3173,9 +3125,7 @@ button:focus {
   color: white;
 }
 
-.ViewStaffDirectory #row .TimeLine span {
-  color: white;
-  background-color: var(--info);
+.ViewStaffDirectory #row .TimeLine .timelineSpan {
   padding: 3px;
   display: inline-block;
   border-radius: 5px;
@@ -3194,7 +3144,7 @@ button:focus {
   content: "";
   position: absolute;
   width: 4px;
-  background-color: var(--info);
+  background-color: black;
   top: 0;
   bottom: 0;
   margin-left: 36px;
@@ -3216,17 +3166,15 @@ button:focus {
   margin-left: 42px;
 }
 
-.ViewStaffDirectory #row .TimeLine .content {
+.ViewStaffDirectory #row .TimeLine .timelineContent {
   position: relative;
   border-radius: 6px;
-  background-color: #12b0ca5e;
 }
 
-.ViewStaffDirectory #row .TimeLine .content .timeIcon {
+.ViewStaffDirectory #row .TimeLine .timelineContent .timeIcon {
   position: absolute;
   background: whitesmoke;
   z-index: 1;
-  box-shadow: 0 0 0 2px var(--info), inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05);
   padding: 10px;
   zoom: 1.2;
   border-radius: 50%;
@@ -3234,16 +3182,14 @@ button:focus {
   color: black;
 }
 
-.ViewStaffDirectory #row .TimeLine .content h6 {
+.ViewStaffDirectory #row .TimeLine .timelineContent .timelineTitle {
   width: 100%;
-  color: white;
-  background-color: var(--info);
   padding: 10px;
   border-top-right-radius: 3px;
   border-top-left-radius: 3px;
 }
 
-.ViewStaffDirectory #row .TimeLine .content p {
+.ViewStaffDirectory #row .TimeLine .timelineContent p {
   margin-top: -8px;
   padding: 10px;
   color: black;
@@ -3254,7 +3200,6 @@ button:focus {
 .ViewStaffDirectory #row .TimeLine .timelineBottom .timeIcon {
   background: whitesmoke;
   z-index: 1;
-  box-shadow: 0 0 0 2px var(--info), inset 0 0px 0 rgba(0, 0, 0, 0.08), 0 2px 0 0px rgba(0, 0, 0, 0.05);
   padding: 10px;
   zoom: 1.2;
   border-radius: 50%;
@@ -3400,7 +3345,7 @@ body {
   }
 
   #bar {
-    margin-left: 16rem;
+    margin-left: 15.9rem;
     margin-top: 2rem;
   }
 }

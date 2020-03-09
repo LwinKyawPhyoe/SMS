@@ -41,7 +41,7 @@ function schoolDetail() {
 // Change SideBar
 function changeBar() {
         if(document.getElementById('bar').style.marginLeft == '5.25rem') {
-            document.getElementById('bar').style.marginLeft = '16rem';
+            document.getElementById('bar').style.marginLeft = '15.9rem';
             document.getElementById('bigBar').style.display = 'block';
             document.getElementById('list').style.display = 'block';
             document.getElementById('smallBar').style.display = 'none';
@@ -59,7 +59,7 @@ function showForm() {
         document.getElementById('sessions').style.marginLeft = '6.5rem';
         document.getElementById('bar').style.marginLeft = '5.25rem';
     } else {
-        document.getElementById('bar').style.marginLeft = '16rem';
+        document.getElementById('bar').style.marginLeft = '15.9rem';
         document.getElementById('sessions').style.marginLeft = '21rem';
     }
 }

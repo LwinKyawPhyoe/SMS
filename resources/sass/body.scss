@@ -11,7 +11,7 @@ body {
     width: 100%;
     height: 61px;
     position: fixed;
-    z-index: 1;
+    z-index: 10;
     .sessions {
       position: absolute;
       margin-left: 21rem;
@@ -37,7 +37,7 @@ body {
     // User Name
     .Items {
       position: absolute;
-      right: 14rem;
+      right: 9rem;
       .userTitle {
         margin-top: 0.7rem;
         .userName {
@@ -56,7 +56,7 @@ body {
     // Profile
     .profile {
       position: absolute;
-      right: 9rem;
+      right: 4rem;
       top: 3px;
       .user {
         zoom: 2.5;
@@ -68,46 +68,46 @@ body {
     }
     // Profile
     // Notific
-    .notific {
-      position: absolute;
-      right: 7rem;
-      .badge {
-        background: #d82f2f;
-        border-radius: 50%;
-        font-size: 8px;
-        padding: 0.4em 0.6em;
-        position: relative;
-        top: -20px;
-        color: white;
-        left: 45px;
-        border: 1px solid #f56a6a;
-        box-shadow: 0.5px 5px 5px #ff9e9e;
-      }
-      .bell {
-        padding: 1.5rem 1rem;
-      }
-    }
+    // .notific {
+    //   position: absolute;
+    //   right: 7rem;
+    //   .badge {
+    //     background: #d82f2f;
+    //     border-radius: 50%;
+    //     font-size: 8px;
+    //     padding: 0.4em 0.6em;
+    //     position: relative;
+    //     top: -20px;
+    //     color: white;
+    //     left: 45px;
+    //     border: 1px solid #f56a6a;
+    //     box-shadow: 0.5px 5px 5px #ff9e9e;
+    //   }
+    //   .bell {
+    //     padding: 1.5rem 1rem;
+    //   }
+    // }
     // Notific
     // Message
-    .message {
-      position: absolute;
-      right: 4.2rem;
-      .badge {
-        background: #d82f2f;
-        border-radius: 50%;
-        font-size: 8px;
-        padding: 0.4em 0.6em;
-        position: relative;
-        top: -20px;
-        color: white;
-        left: 45px;
-        border: 1px solid #f56a6a;
-        box-shadow: 0.5px 5px 5px #ff9e9e;
-      }
-      .mail {
-        padding: 1.5rem 1rem;
-      }
-    }
+    // .message {
+    //   position: absolute;
+    //   right: 4.2rem;
+    //   .badge {
+    //     background: #d82f2f;
+    //     border-radius: 50%;
+    //     font-size: 8px;
+    //     padding: 0.4em 0.6em;
+    //     position: relative;
+    //     top: -20px;
+    //     color: white;
+    //     left: 45px;
+    //     border: 1px solid #f56a6a;
+    //     box-shadow: 0.5px 5px 5px #ff9e9e;
+    //   }
+    //   .mail {
+    //     padding: 1.5rem 1rem;
+    //   }
+    // }
     // Message
     // Language
     .language {
