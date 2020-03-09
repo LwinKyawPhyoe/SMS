@@ -38,7 +38,7 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div @click="clickBackground()" id="ModalBackground" style="top: 0;left: 0;width: 100%;height: 100%;background: transparent;"></div>
+                                <div @click="clickBackground()" id="ModalBackground" class="column_background"></div>
                             </div>
                         </div>
                     </div>
@@ -209,10 +209,10 @@
                 Util.clickBackground('ModalColumns','ModalBackground');
             },
             showTableHeader(data){
-                showTableHeaders(data);
+                Util.showTableHeader(data);
             },
             clickShowAllColumn(data){
-                clickShowAllColumns(data);
+                Util.clickShowAllColumn(data);
             },
         }
     }

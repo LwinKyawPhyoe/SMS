@@ -547,6 +547,7 @@ input[type="file"] {
   position: absolute;
   margin: 10px 0px;
   border: 1px solid #aba2a2;
+  z-index: 3;
   .tableLink,
   .tableLinkActive {
     border: none;

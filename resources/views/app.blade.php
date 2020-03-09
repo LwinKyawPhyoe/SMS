@@ -91,18 +91,6 @@ $('.additional-menu a').on('click',function() {
 })
 
 // For Popover Table
-function showColumns(id,idBg) {
-    document.getElementById(id).style.display = "block";
-    document.getElementById(idBg).style.display = "block";
-    this.checkColumns = true;
-    document.getElementById(idBg).style.position = "fixed";
-}
-
-function clickBackground(id,idBg){
-    document.getElementById(id).style.display = "none";
-    document.getElementById(idBg).style.display = "none";
-    this.checkColumns = false;
-}
 
 function showTableHeaders(data) {
     this.axios.get("/api/color").then(response => {

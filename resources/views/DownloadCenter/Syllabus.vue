@@ -45,7 +45,7 @@
                     </p>
                 </div>
               </div>
-              <div @click="clickBackground()" id="backgroundColumn" style="top: 0;left: 0;width: 100%;height: 100%;background: transparent;"></div>
+              <div @click="clickBackground()" id="backgroundColumn" class="column_background"></div>
             </div>
           </div>
         </div>

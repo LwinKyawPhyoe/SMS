@@ -6,11 +6,11 @@
                 <router-link to="/home" class="home">Home</router-link>> Assign Vehicle
             </h4>
         </div>
-        <hr />
-
+        <hr style="margin-bottom: -0.5rem;"/>
+        <Loading></Loading>
         <confirm :url="props"></confirm>
-        <div class="row" style="align-items: end !important;">
-            <div class="col-lg-5 col-md-12" style="padding-left:2px;">
+        <div class="row" style="align-items: end !important;margin: 0px">
+            <div class="col-lg-5 col-md-12" style="padding:0;">
                 <div class="card">
                     <div class="card-header">
                         <h6>Assign Vehicle On Route</h6>
@@ -35,14 +35,14 @@
                                 <span id="vehiclemsg" class="error_message">Vehicle is required</span>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="save">Save</button>
+                                <button type="submit" class="save" id="globalSave">Save</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-7 col-md-12" style="padding-left:0;">
+            <div class="col-lg-7 col-md-12 div_very_small" style="padding:0;padding-left: 15px;">
                 <div class="card">
                     <div class="card-header">
                         <h6>Class List</h6>
@@ -63,28 +63,42 @@
                                     </a>
                                 </div>
                                 <div class="col-3">
-                                    <a href="#" title="Columns">
+                                    <a title="Columns" @click="showColumns()">
                                         <i class="fa fa-columns"></i>
                                     </a>
+                                    <div id="columns" class="columns">
+                                        <div v-for="item in arrayTableColumns">
+                                            <p @click="showTableHeader(item)" :id="item.Id" class="tableLink">
+                                                <span>{{item.Name}}</span>
+                                            </p> 
+                                        </div>
+                                        <div>
+                                            <p @click="clickShowAllColumn(arrayTableColumns)" class="tableLinkActive">
+                                                <span>Restore visibility</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div @click="clickBackground()" id="backgroundColumn" class="column_background"></div>
                                 </div>
                             </div>
-                        </div>
+                        </div> 
+                        <h1 class="NoData" v-if="AssVehicleList.length==0">No Data</h1>
                         <div class="table-responsive" id="print">
-                            <table class="table table-hover table-striped" id="studenttable">
+                            <table class="table table-hover table-striped" id="studenttable" v-if="AssVehicleList.length!=0">
                                 <thead>
                                     <tr>
-                                        <th class="all" nowrap>Route</th>
-                                        <th class="all" nowrap>Vehicle</th>
-                                        <th class="all" style="text-align:right;" nowrap>Action</th>
+                                        <th :class="arrayTableColumns[0].class" nowrap>Route</th>
+                                        <th :class="arrayTableColumns[1].class" nowrap>Vehicle</th>
+                                        <th :class="arrayTableColumns[2].class" style="text-align:right;" nowrap>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="obj in AssVehicleList" :key="obj.id" class="active">
-                                        <td class="all" nowrap style="vertical-align:top;">{{getRouteTitle(obj.route_id)}}</td>
-                                        <td class="all" nowrap style="vertical-align:top;">
+                                        <td :class="arrayTableColumns[0].class" nowrap style="vertical-align:top;">{{getRouteTitle(obj.route_id)}}</td>
+                                        <td :class="arrayTableColumns[1].class" nowrap style="vertical-align:top;">
                                             <label v-for="vehicleno in obj.vehicle_id" :key="vehicleno" style="display: block; margin: 0px;font-size: 13px;font-weight: 200;">{{getVehicleNo(vehicleno)}}</label>                                            
                                         </td>
-                                        <td style="text-align:right; vertical-align:top;">
+                                        <td :class="arrayTableColumns[2].class" style="text-align:right; vertical-align:top;">
                                             <i @click="goEdit(obj)" class="fa fa-pencil pen">
                                                 <span class="penLabel">Edit</span>
                                             </i>
@@ -108,15 +122,22 @@ import message from "../Alertmessage/message.vue";
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js"
 import {Util} from '../../js/util';
+import Loading from "../LoadingController.vue";
 
 export default {
     components: {
         confirm,
-        message
+        message,
+        Loading
     },
     data() 
     {
         return {
+            arrayTableColumns: [
+                {"Name": "Route","Id": "Route_Title_Id", "class": "tbl_body_Route"},
+                {"Name": "Vehicle","Id": "Vehicle_Num_Id", "class": "tbl_body_Vehicle"},
+                {"Name": "Action","Id": "Action_Id", "class": "tbl_body_Action"},
+            ],
             vehicalRoute: {"id": "","routeid": "", "vehicleno": ""},
             Vehicle: [],
             routeList: [{'id':0,'route_title':'Select Route'}],
@@ -136,6 +157,9 @@ export default {
             }
         };
     },
+    mounted() {
+        EventBus.$emit("onLoad");
+    },
     created() 
     {
         EventBus.$emit("ThemeClicked");
@@ -144,7 +168,6 @@ export default {
             this.deletemsg.type = response.type;
             Util.workAlert('#delalertmsg');
             this.routeList = [{'id':0,'route_title':'Select Route'}];
-            this.vehicleList = [];
             this.getRouteList();
             this.getVehicleList();
             this.getAssVehicleList();
@@ -163,13 +186,16 @@ export default {
     methods: 
     {
         getAssVehicleList(){
+            EventBus.$emit("onLoad");
             this.AssVehicleList = [];
-            this.axios.get('/api/vehicleroute').then(response => {                                                                                            
+            this.axios.get('/api/vehicleroute').then(response => {  
+                this.clickShowAllColumn(this.arrayTableColumns);                                                                                          
                 for(let i=0; i < response.data.length; i++){
                     var vehiclenoID = [];
                     vehiclenoID = response.data[i].vehicle_id.split(',');
                     this.AssVehicleList.push({"id": response.data[i].id, "route_id": response.data[i].route_id, "vehicle_id": vehiclenoID});
-                }                
+                }
+                EventBus.$emit("onLoadEnd");           
             });
         },
 
@@ -314,7 +340,20 @@ export default {
         downloadExcel(table, name, filename) 
         {
             Util.downloadExcel(table,name,filename);
-        }
+        },
+        // Column Hide 
+        showColumns(){
+            Util.showColumns('columns','backgroundColumn');
+        },
+        clickBackground(){
+            Util.clickBackground('columns','backgroundColumn');
+        },
+        showTableHeader(data){
+            Util.showTableHeader(data);
+        },
+        clickShowAllColumn(data){
+            Util.clickShowAllColumn(data);
+        },
     }
 };
 </script>

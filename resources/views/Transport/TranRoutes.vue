@@ -3,14 +3,15 @@
         <div class="toplink">
             <h2 class="stuName">Transport</h2>
             <h4 class="stuLink">
-                <router-link class="home" to="/home">Home</router-link>> Routes
+                <router-link class="home" to="/dashboard">Home</router-link>> Routes
             </h4>
         </div>
-        <hr />
+        <hr style="margin-bottom: -0.5rem;"/>
+        <Loading></Loading>
 
         <confirm :url="props"></confirm>
-        <div class="row" style="align-items: end !important;">
-            <div class="col-lg-5 col-md-12" style="padding-left:2px;">
+        <div class="row" style="align-items: end !important;margin: 0px">
+            <div class="col-lg-5 col-md-12" style="padding: 0px">
                 <div class="card">
                     <div class="card-header">
                         <h6>Create Route</h6>
@@ -33,14 +34,14 @@
                                     v-on:blur="formatFare()" @keyup.enter="formatFare()" @click="selectAll()" />
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="save">Save</button>
+                                <button type="submit" class="save"  id="globalSave">Save</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-7 col-md-12" style="padding-left:0;">
+            <div class="col-lg-7 col-md-12 div_very_small" style="padding: 0px;padding-left: 15px;">
                 <div class="card">
                     <div class="card-header">
                         <h6>Route List</h6>
@@ -52,36 +53,50 @@
                         <div class="copyRows">
                             <div class="row" id="copyRow">                
                                 <div class="col-3">
-                                    <a href="#" @click.prevent="downloadExcel('studenttable', 'name', 'Tran_Route.xls')" title="Excel">
+                                    <a @click.prevent="downloadExcel('studenttable', 'name', 'Tran_Route.xls')" title="Excel">
                                         <i class="fa fa-file-excel-o"></i>
                                     </a>
                                 </div>
                                 <div class="col-3">
-                                    <a href="#" @click.prevent="printme('print')" title="Print">
+                                    <a @click.prevent="printme('print')" title="Print">
                                         <i class="fa fa-print"></i>
                                     </a>
                                 </div>
                                 <div class="col-3">
-                                    <a href="#" title="Columns">
+                                   <a title="Columns" @click="showColumns()">
                                         <i class="fa fa-columns"></i>
                                     </a>
+                                    <div id="columns" class="columns">
+                                        <div v-for="item in arrayTableColumns">
+                                            <p @click="showTableHeader(item)" :id="item.Id" class="tableLink">
+                                                <span>{{item.Name}}</span>
+                                            </p> 
+                                        </div>
+                                        <div>
+                                            <p @click="clickShowAllColumn(arrayTableColumns)" class="tableLinkActive">
+                                                <span>Restore visibility</span>
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div @click="clickBackground()" id="backgroundColumn" class="column_background"></div>
                                 </div>
                             </div>
                         </div>
+                        <h1 class="NoData" v-if="routeList.length==0">No Data</h1>
                         <div class="table-responsive" id="print">
-                            <table class="table table-hover table-striped" id="studenttable">
+                            <table class="table table-hover table-striped" id="studenttable" v-if="routeList.length!=0">
                                 <thead>
                                     <tr>
-                                        <th class="all" nowrap>Route Title</th>
-                                        <th class="all" nowrap>Fare</th>
-                                        <th class="all" style="text-align:right;" nowrap>Action</th>
+                                        <th :class="arrayTableColumns[0].class" nowrap>Route Title</th>
+                                        <th :class="arrayTableColumns[1].class" nowrap>Fare</th>
+                                        <th :class="arrayTableColumns[2].class" style="text-align:right;" nowrap>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="route in routeList" :key="route.id" class="active">
-                                        <td class="all" nowrap>{{route.route_title}}</td>
-                                        <td class="all" nowrap>{{route.fare}} MMK</td>
-                                        <td style="text-align:right;">
+                                        <td :class="arrayTableColumns[0].class" nowrap>{{route.route_title}}</td>
+                                        <td :class="arrayTableColumns[1].class" nowrap>{{route.fare}} MMK</td>
+                                        <td :class="arrayTableColumns[2].class" style="text-align:right;">
                                             <i @click="goEdit(route.id)" class="fa fa-pencil pen">
                                                 <span class="penLabel">Edit</span>
                                             </i>
@@ -105,15 +120,22 @@ import message from "../Alertmessage/message.vue";
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js"
 import {Util} from '../../js/util';
+import Loading from "../LoadingController.vue";
 
 export default {
     components: {
         confirm,
-        message
+        message,
+        Loading
     },
     data() 
     {
         return {
+            arrayTableColumns: [
+                {"Name": "Route Title","Id": "Route_Id", "class": "tbl_body_Route"},
+                {"Name": "Fare","Id": "Fare_Id", "class": "tbl_body_Fare"},
+                {"Name": "Action","Id": "Action_Id", "class": "tbl_body_Action"},
+            ],
             tranRoute: {"id":"","route_title":"","fare":""},
             routeList: [],
             props: {
@@ -131,6 +153,10 @@ export default {
         };
     },
 
+    mounted() {
+        EventBus.$emit("onLoad");
+    },
+
     created() 
     {
         EventBus.$emit("ThemeClicked");
@@ -140,10 +166,6 @@ export default {
             Util.workAlert('#delalertmsg');
             this.getRouteList();
         });
-        EventBus.$on("SessionSaved", response => {            
-            console.log(JSON.stringify(response));
-            this.getRouteList();
-        });
         this.getRouteList();
     },
 
@@ -151,9 +173,12 @@ export default {
     {
         getRouteList()
         {
+            EventBus.$emit("onLoad");
             this.routeList = [];
-            this.axios.get('/api/tranRouteList').then(response => {            
+            this.axios.get('/api/tranRouteList').then(response => {    
+                this.clickShowAllColumn(this.arrayTableColumns);
                 this.routeList = response.data;
+                EventBus.$emit("onLoadEnd");
             });
         },
 
@@ -162,8 +187,10 @@ export default {
             if(this.checkValidate())
             {
                 this.axios.post('/api/TranRoute/save', this.tranRoute).then(response => {              
-                    this.tranRoute = {"id":"","route_title":"","fare":""},
-                    this.getRouteList();
+                    if(response.data.type == "success"){
+                        this.tranRoute = {"id":"","route_title":"","fare":""},
+                        this.getRouteList();
+                    }
                     this.msg.text = response.data.text;
                     this.msg.type = response.data.type;
                     Util.workAlert('#alertmsg');
@@ -230,16 +257,28 @@ export default {
         selectAll() {
             this.$refs.input.select();
         },
-
         printme(table)
         {
             Util.printme(table);
         },
-
         downloadExcel(table, name, filename) 
         {
             Util.downloadExcel(table,name,filename);
-        }
+        },
+        // Column Hide 
+        showColumns(){
+            Util.showColumns('columns','backgroundColumn');
+        },
+        clickBackground(){
+            Util.clickBackground('columns','backgroundColumn');
+        },
+        showTableHeader(data){
+            Util.showTableHeader(data);
+        },
+        clickShowAllColumn(data){
+            Util.clickShowAllColumn(data);
+        },
+
     }
 };
 </script>

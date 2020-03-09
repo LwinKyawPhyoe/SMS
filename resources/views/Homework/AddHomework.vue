@@ -90,7 +90,7 @@
                                         </p>
                                     </div>
                                 </div>
-                                <div @click="clickBackground()" id="backgroundColumn" style="top: 0;left: 0;width: 100%;height: 100%;background: transparent;"></div>
+                                <div @click="clickBackground()" id="backgroundColumn" class="column_background"></div>
                             </div>
                         </div>
                     </div>
@@ -386,101 +386,11 @@ export default {
             Util.clickBackground('columns','backgroundColumn');
         },
         showTableHeader(data){
-            showTableHeaders(data);
+            Util.showTableHeader(data);
         },
         clickShowAllColumn(data){
-           clickShowAllColumns(data);
+           Util.clickShowAllColumn(data);
         },
     }
 };
 </script>
-
-<style>
-    .modal_close_btn {
-        border: none;
-        color: white;
-        font-size: 16px;
-        cursor: pointer;
-        background-color: transparent;
-    }
-
-    .btn_check_box {
-        background-color: #eae6e6;
-        color: #000;
-        height: 28px;
-        width: 28px;
-        font-size: 13px;
-        cursor: pointer;
-        border-radius: 2px;
-        border: 1px solid #a9a3a3;
-    }
-
-    .btn_check_box:hover {
-        background-color: #ddd;
-    }
-
-    .div_remove_student{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 5px;
-    }
-
-    .modal_close_btn:hover {
-        background-color: transparent;
-        color: white;
-    }
-
-    .div_noactive{
-        padding: 10px 15px;
-        border-bottom: 1px solid #a9a3a3;
-    }
-
-    .div_active{
-        padding: 10px 15px;
-        color: white;
-        background-color: #1b5e20;
-        border-bottom: 1px solid #a9a3a3;
-    }
-
-    .has-search .form-control {
-        padding-left: 2.375rem;
-    }
-
-    .has-search .form-control-feedback {
-        position: absolute;
-        z-index: 2;
-        display: block;
-        width: 2.375rem;
-        height: 2.375rem;
-        line-height: 2.375rem;
-        text-align: center;
-        pointer-events: none;
-        color: #aaa;
-    }
-
-    @media (min-width: 992px){
-        .modal-lg, .modal-xl {
-            max-width: 950px;
-        }
-    }
-    @media (max-width: 991px) and (min-width: 0px){
-        .btn_check_small{
-            float: right;
-        }
-
-        .btn_check_small1{
-            float: left;
-        }
-        
-        .div_remove_student{
-            width: 50% !important;
-            display: unset;
-        }
-    }
-    @media (max-width: 576px) and (min-width: 0px){
-        .modal-content {
-            width: auto !important;
-        }
-    }
-</style>

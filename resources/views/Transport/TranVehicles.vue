@@ -3,14 +3,15 @@
         <div class="toplink">
             <h2 class="stuName">Transport</h2>
             <h4 class="stuLink">
-                <router-link class="home" to="/home">Home</router-link>> Vehicles
+                <router-link class="home" to="/dashboard">Home</router-link>> Vehicles
             </h4>
         </div>
-        <hr />
+        <hr style="margin-bottom: -0.5rem;"/>
 
+        <Loading></Loading>
         <confirm :url="props"></confirm>
-        <div class="row" style="align-items: end !important;">
-            <div class="col-lg-5 col-md-12" style="padding-left:2px;">
+        <div class="row" style="align-items: end !important;margin: 0px">
+            <div class="col-lg-5 col-md-12" style="padding: 0px;">
                 <div class="card">
                     <div class="card-header">
                         <h6>Add Vehicle</h6>
@@ -48,14 +49,14 @@
                                 <textarea class="textareas" style="font-size: 9.5pt;" rows="2" v-model="tranVehicle.note"></textarea>
                             </div>
                             <div class="col-12">
-                                <button type="submit" class="save">Save</button>
+                                <button type="submit" class="save" id="globalSave">Save</button>
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
 
-            <div class="col-lg-7 col-md-12" style="padding-left:0;">
+            <div class="col-lg-7 col-md-12 div_very_small" style="padding: 0;padding-left:15px;">
                 <div class="card">
                     <div class="card-header">
                         <h6>Route List</h6>
@@ -77,32 +78,46 @@
                                     </a>
                                 </div>
                                 <div class="col-3">
-                                    <a href="#" title="Columns">
+                                    <a title="Columns" @click="showColumns()">
                                         <i class="fa fa-columns"></i>
                                     </a>
+                                    <div id="columns" class="columns">
+                                       <div v-for="item in arrayTableColumns">
+                                            <p @click="showTableHeader(item)" :id="item.Id" class="tableLink">
+                                                <span>{{item.Name}}</span>
+                                            </p> 
+                                        </div>
+                                        <div>
+                                            <p @click="clickShowAllColumn(arrayTableColumns)" class="tableLinkActive">
+                                                <span>Restore visibility</span>
+                                            </p>
+                                        </div> 
+                                    </div>
+                                    <div @click="clickBackground()" id="backgroundColumn" class="column_background"></div>
                                 </div>
                             </div>
                         </div>
+                        <h1 class="NoData" v-if="vehicleList.length==0">No Data</h1>
                         <div class="table-responsive" id="print">
-                            <table class="table table-hover table-striped" id="studenttable">
+                            <table class="table table-hover table-striped" id="studenttable" v-if="vehicleList.length!=0">
                                 <thead>
                                     <tr>
-                                        <th class="all" nowrap>Vehicle Number</th>
-                                        <th class="all" nowrap>Vehicle Model</th>
-                                        <th class="all" nowrap>Driver Name</th>
-                                        <th class="all" nowrap>Driver License</th>
-                                        <th class="all" nowrap>Driver Contact</th>
-                                        <th class="all" style="text-align:right;" nowrap>Action</th>
+                                        <th :class="arrayTableColumns[0].class" nowrap>Vehicle Number</th>
+                                        <th :class="arrayTableColumns[1].class" nowrap>Vehicle Model</th>
+                                        <th :class="arrayTableColumns[2].class" nowrap>Driver Name</th>
+                                        <th :class="arrayTableColumns[3].class" nowrap>Driver License</th>
+                                        <th :class="arrayTableColumns[4].class" nowrap>Driver Contact</th>
+                                        <th :class="arrayTableColumns[5].class" style="text-align:right;" nowrap>Action</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     <tr v-for="vehicle in vehicleList" :key="vehicle.id" class="active">
-                                        <td class="all" nowrap>{{vehicle.vehicle_no}}</td>
-                                        <td class="all" nowrap>{{vehicle.vehicle_model}}</td>
-                                        <td class="all" nowrap>{{vehicle.driver_name}}</td>
-                                        <td class="all" nowrap>{{vehicle.driver_licence}}</td>
-                                        <td class="all" nowrap>{{vehicle.driver_contact}}</td>
-                                        <td style="text-align:right;">
+                                        <td :class="arrayTableColumns[0].class" nowrap>{{vehicle.vehicle_no}}</td>
+                                        <td :class="arrayTableColumns[1].class" nowrap>{{vehicle.vehicle_model}}</td>
+                                        <td :class="arrayTableColumns[2].class" nowrap>{{vehicle.driver_name}}</td>
+                                        <td :class="arrayTableColumns[3].class" nowrap>{{vehicle.driver_licence}}</td>
+                                        <td :class="arrayTableColumns[4].class" nowrap>{{vehicle.driver_contact}}</td>
+                                        <td :class="arrayTableColumns[5].class" style="text-align:right;">
                                             <i @click="goEdit(vehicle.id)" class="fa fa-pencil pen">
                                                 <span class="penLabel">Edit</span>
                                             </i>
@@ -126,15 +141,25 @@ import message from "../Alertmessage/message.vue";
 import confirm from "../message/confirm.vue";
 import { EventBus } from "../../js/event-bus.js"
 import {Util} from '../../js/util';
+import Loading from "../LoadingController.vue";
 
 export default {
     components: {
         confirm,
-        message
+        message,
+        Loading
     },
     data() 
     {
         return {
+            arrayTableColumns: [
+                {"Name": "Vehicle Number","Id": "Vehicle_Number_Id", "class": "tbl_body_Number"},
+                {"Name": "Vehicle Model","Id": "Vehicle_Model_Id", "class": "tbl_body_Model"},
+                {"Name": "Driver Name","Id": "Driver_Name_Id", "class": "tbl_body_Name"},
+                {"Name": "Driver License","Id": "Driver_License_Id", "class": "tbl_body_License"},
+                {"Name": "Driver Contact","Id": "Driver_Contact_Id", "class": "tbl_body_Contact"},
+                {"Name": "Action","Id": "Action_Id", "class": "tbl_body_Action"},
+            ],
             tranVehicle: {},
             vehicleList: [],
             props: {
@@ -152,6 +177,10 @@ export default {
         };
     },
 
+    mounted() {
+        EventBus.$emit("onLoad");
+    },
+
     created() 
     {
         EventBus.$emit("ThemeClicked");
@@ -161,10 +190,6 @@ export default {
             Util.workAlert('#delalertmsg');
             this.getVehicleList();
         });
-        EventBus.$on("SessionSaved", response => {            
-            console.log(JSON.stringify(response));
-            this.getVehicleList();
-        });
         this.getVehicleList();
     },
 
@@ -172,8 +197,11 @@ export default {
     {
         getVehicleList()
         {
-            this.axios.get('/api/tranVehicleList').then(response => {            
+            EventBus.$emit("onLoad");
+            this.axios.get('/api/tranVehicleList').then(response => {
+                this.clickShowAllColumn(this.arrayTableColumns);            
                 this.vehicleList = response.data;
+                EventBus.$emit("onLoadEnd");
             });
         },
 
@@ -182,8 +210,10 @@ export default {
             if(this.checkValidate())
             {
                 this.axios.post('/api/TranVehicle/save', this.tranVehicle).then(response => {
-                    this.tranVehicle = {"id":"","vehicle_no":"","vehicle_mocel":"","driver_name":"","driver_licence":"","driver_contact":"","note":""};
-                    this.getVehicleList();
+                    if(response.data.type == "success"){
+                        this.tranVehicle = {"id":"","vehicle_no":"","vehicle_mocel":"","driver_name":"","driver_licence":"","driver_contact":"","note":""};
+                        this.getVehicleList();
+                    }
                     this.msg.text = response.data.text;
                     this.msg.type = response.data.type;
                     Util.workAlert('#alertmsg');
@@ -240,7 +270,20 @@ export default {
         downloadExcel(table, name, filename) 
         {
             Util.downloadExcel(table,name,filename);
-        }
+        },
+        // Column Hide 
+        showColumns(){
+            Util.showColumns('columns','backgroundColumn');
+        },
+        clickBackground(){
+            Util.clickBackground('columns','backgroundColumn');
+        },
+        showTableHeader(data){
+            Util.showTableHeader(data);
+        },
+        clickShowAllColumn(data){
+            Util.clickShowAllColumn(data);
+        },
     }
 };
 </script>
